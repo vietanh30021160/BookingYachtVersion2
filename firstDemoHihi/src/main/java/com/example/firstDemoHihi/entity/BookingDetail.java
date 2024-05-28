@@ -3,24 +3,26 @@ package com.example.firstDemoHihi.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "booking_details")
+@Table(name = "booking_detail")
 public class BookingDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_booking_detail", nullable = false, length = 255)
-    private String idBookingDetails;
+    private String idBookingDetail;
 
-    @Column(name = "total_price", nullable = false, precision = 10)
-    private long totalPrice;
+    @Column(name = "room_quantity", nullable = false)
+    private int roomQuantity;
 
-    @Column(name = "total_room", nullable = false)
-    private int totalRoom;
+    @Column(name = "unit_price", nullable = false)
+    private long unitPrice;
 
     @Lob
     @Column(name = "requirement")
@@ -30,7 +32,7 @@ public class BookingDetail {
     @JoinColumn(name = "id_booking", nullable = false)
     private Booking booking;
 
-    @OneToOne(mappedBy = "bookingDetail")
-    private Checkout checkout;
+    @OneToMany(mappedBy = "bookingDetail")
+    private Set<BookingDetailRoom> bookingDetailRoomSet;
 
 }

@@ -24,8 +24,7 @@ public class Schedule {
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
-    @OneToOne()
-    @JoinColumn(name = "id_booking",nullable = false, referencedColumnName = "id_booking")
+    @OneToOne(mappedBy = "schedule")
     private Booking booking;
 
 }

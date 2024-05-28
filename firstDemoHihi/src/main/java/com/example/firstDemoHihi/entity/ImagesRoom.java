@@ -9,18 +9,18 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "image_room_type_detail")
-public class ImageRoomTypeDetail {
+@Table(name = "images_room")
+public class ImagesRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id_image_room_type_detail", nullable = false, length = 255)
+    @Column(name = "id_images_room", nullable = false, length = 255)
     private String idImageRoomTypeDetail;
 
-    @Column(name = "image", nullable = false, length = 100)
+    @Column(name = "image", nullable = false, length = 255)
     private String image;
 
     @ManyToOne()
-    @JoinColumn(name = "id_room_type", nullable = false)
-    private RoomType roomType;
+    @JoinColumn(name = "id_room", nullable = false)
+    private Room room;
 
 }

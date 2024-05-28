@@ -20,22 +20,6 @@ public class RoomType {
     @Column(name = "type", nullable = false)
     private String type;
 
-    @Column(name = "price", nullable = false, precision = 10)
-    private long price;
-
-    @Column(name = "area", nullable = false, precision = 10)
-    private long area;
-
-    @Column(name = "available", nullable = false)
-    private int available;
-
-    @Lob
-    @Column(name = "description", nullable = false)
-    private String description;
-
     @OneToMany(mappedBy = "roomType")
     private Set<Room> roomSet;
-
-    @OneToMany(mappedBy = "roomType")
-    private Set<ImageRoomTypeDetail> imageRoomTypeDetailSet;
 }

@@ -21,6 +21,9 @@ public class Customer {
     @Column(name = "full_name", nullable = false)
     private String fullName;
 
+    @Column(name = "address", nullable = false)
+    private String address;
+
     @Column(name = "email", nullable = false, length = 50)
     private String email;
 

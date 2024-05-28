@@ -31,9 +31,6 @@ public class Owner {
     @JoinColumn(name = "id_company", nullable = false)
     private Company company;
 
-
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     private Set<Yacht> yachtSet;
-
-
 }
