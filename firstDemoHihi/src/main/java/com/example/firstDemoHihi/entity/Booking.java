@@ -5,7 +5,6 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Set;
-
 @Getter
 @Setter
 @Builder
@@ -19,25 +18,25 @@ public class Booking {
     @Column(name = "id_booking", nullable = false, length = 255)
     private String idBooking;
 
-    @Column(name = "bookingTime", nullable = false)
+    @Column(name = "booking_time", nullable = false)
     private LocalDateTime bookingTime;
+
+    @Column(name = "total_price", nullable = false)
+    private long totalPrice;
 
     @ManyToOne()
     @JoinColumn(name = "id_yacht", nullable = false)
     private Yacht yacht;
 
-    @Column(name = "id_schedule", nullable = false, length = 255)
-    private String idSchedule;
-
-    @ManyToOne()
-    @JoinColumn(name = "id_room", nullable = false)
-    private Room room;
+    @Column(name = "status", nullable = false)
+    private String status;
 
     @ManyToOne()
     @JoinColumn(name = "id_customer", nullable = false)
     private Customer customer;
 
-    @OneToOne(mappedBy = "booking")
+    @OneToOne()
+    @JoinColumn(name = "id_schedule", nullable = false)
     private Schedule schedule;
 
     @OneToMany(mappedBy = "booking")
