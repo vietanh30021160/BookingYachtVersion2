@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from "react-router-dom";
-import HomePage from './components/home/HomePage';
 import App from './App';
+import HomePage from './components/home/HomePage';
 // import FindYacht from './components/yacht/FindYacht';
 // import RuleYacht from './components/yacht/RuleYacht';
 // import QuestionYacht from './components/yacht/QuestionYacht';
@@ -14,9 +14,10 @@ import App from './App';
 // import Bill from './components/companySystem/Bill';
 // import ViewOwner from './components/companySystem/ViewOwner';
 // import Signup from './components/auths/Signup';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import Blog from './components/blog/Blog';
 // import Information from './components/auths/Information';
 const Layout = () => {
     return (
@@ -24,6 +25,7 @@ const Layout = () => {
             <Routes>
                 <Route path="/" element={<App />}>
                     <Route index element={<HomePage />} />
+                    <Route path='/blog' element={<Blog/>}/>
                     {/* <Route path='/duthuyen' element={<FindYacht />} />
                     <Route path='/quy-dinh-chung' element={<RuleYacht />} />
                     <Route path='/cau-hoi-thuong-gap' element={<QuestionYacht />} /> */}
