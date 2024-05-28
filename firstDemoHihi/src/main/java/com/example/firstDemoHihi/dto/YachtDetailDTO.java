@@ -1,15 +1,12 @@
 package com.example.firstDemoHihi.dto;
 
 import com.example.firstDemoHihi.entity.Yacht;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
-@Setter
-@Getter
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class YachtDetailDTO {
