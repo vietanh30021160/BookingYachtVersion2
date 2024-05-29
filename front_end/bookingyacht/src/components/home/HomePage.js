@@ -1,9 +1,9 @@
-import videoHomePage from '../../assets/Mixivivuduthuyen.mp4'
-import ShowYacht from './ShowYacht';
-import Feedback from './Feedback';
+import videoHomePage from '../../assets/duthuyenmusic.mp4';
 import Enterprice from './Enterprice';
+import Feedback from './Feedback';
 import './Home.scss';
 import ShowIsland from './ShowIsland';
+import ShowYacht from './ShowYacht';
 
 const HomePage = (props) => {
 
@@ -11,8 +11,8 @@ const HomePage = (props) => {
         <div>
             <div className='homepage-container'>
                 <div>
-                    <video autoPlay muted loop>
-                        <source src={videoHomePage} />
+                    <video autoPlay loop controls>
+                        <source src={videoHomePage} type='video/mp4'/>
                     </video>
                 </div>
                 <div className='homepage-content border container '>
