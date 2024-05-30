@@ -1,13 +1,10 @@
 package com.example.firstDemoHihi.dto;
 
 import com.example.firstDemoHihi.entity.Account;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class CompanyDTO {
@@ -16,5 +13,6 @@ public class CompanyDTO {
     private String address;
     private String logo;
     private String email;
-    private Account account;
+    private int exist;
+    private AccountDTO accountDTO;
 }
