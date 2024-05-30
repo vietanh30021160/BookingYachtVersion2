@@ -131,6 +131,7 @@ CREATE TABLE `yacht` (
   `name` nvarchar(255) NOT NULL,
   `image` varchar(255) NOT NULL,
   `price` decimal(10,0) NOT NULL,
+  `exist` int not null,
   `id_owner` varchar(255) NOT NULL,
   `id_yacht_type` varchar(255) NOT NULL,
   `id_location` varchar(255) NOT NULL,
@@ -229,19 +230,15 @@ CREATE TABLE `booking` (
   `id_booking` varchar(255) NOT NULL,
   `booking_time` datetime NOT NULL,
   `status` varchar(255) not null,
-  `id_yacht` varchar(255) NOT NULL,
-  `id_schedule` varchar(255) NOT NULL,
   `id_customer` varchar(255) NOT NULL,
+  `id_schedule` varchar(255) NOT NULL,
   PRIMARY KEY (`id_booking`),
   KEY `fk_schedule_id` (`id_schedule`),
   KEY `fk_yacht_booking_id` (`id_yacht`),
   KEY `fk_customer_booking_id` (`id_customer`),
   CONSTRAINT `fk_customer_booking_id` FOREIGN KEY (`id_customer`) REFERENCES `customer` (`id_customer`),
-  CONSTRAINT `fk_schedule_id` FOREIGN KEY (`id_schedule`) REFERENCES `schedule` (`id_schedule`),
-  CONSTRAINT `fk_yacht_booking_id` FOREIGN KEY (`id_yacht`) REFERENCES `yacht` (`id_yacht`)
+  CONSTRAINT `fk_schedule_id` FOREIGN KEY (`id_schedule`) REFERENCES `schedule` (`id_schedule`)
 ) ;
-
-
 -- test.booking_details definition
 
 CREATE TABLE `booking_detail` (
@@ -263,7 +260,6 @@ CREATE TABLE `booking_detail_room`(
     primary key(`id_room`, `id_booking_detail`),
     CONSTRAINT `ibfk_1` FOREIGN KEY (`id_room`) REFERENCES `room` (`id_room`),
 	CONSTRAINT `ibfk_2` FOREIGN KEY (`id_booking_detail`) REFERENCES `booking_detail` (`id_booking_detail`)
-    
 );
 
 -- test.schedule definition
@@ -272,7 +268,10 @@ CREATE TABLE `schedule` (
   `id_schedule` varchar(255) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
-  PRIMARY KEY (`id_schedule`)
+  `id_yacht` varchar(255) not null,
+  PRIMARY KEY (`id_schedule`),
+  CONSTRAINT `fk_schedule_yacht_id` FOREIGN KEY (`id_yacht`) REFERENCES `yacht` (`id_yacht`)
 ) ;
+
 
 
