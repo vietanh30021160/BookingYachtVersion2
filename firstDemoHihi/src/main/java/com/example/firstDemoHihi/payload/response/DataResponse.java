@@ -8,8 +8,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
-@Getter
+
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL) // không hiển thị những field null ở JSON
 public class DataResponse<T> {
