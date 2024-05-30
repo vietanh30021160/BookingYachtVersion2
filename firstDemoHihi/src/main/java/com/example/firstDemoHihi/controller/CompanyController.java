@@ -5,6 +5,7 @@ import com.example.firstDemoHihi.payload.request.OwnerRequest;
 import com.example.firstDemoHihi.payload.request.YachtDetailRequest;
 import com.example.firstDemoHihi.payload.request.YachtRequest;
 import com.example.firstDemoHihi.payload.response.DataResponse;
+import com.example.firstDemoHihi.service.implement.IFeedback;
 import com.example.firstDemoHihi.service.implement.IOwner;
 import com.example.firstDemoHihi.service.implement.IYacht;
 import com.example.firstDemoHihi.service.implement.IYachtDetail;
@@ -20,12 +21,12 @@ public class CompanyController {
 
     @Autowired
     IYacht iYacht;
-
     @Autowired
     IOwner iOwner;
-
     @Autowired
     IYachtDetail iYachtDetailService;
+    @Autowired
+    IFeedback iFeedback;
 
     @GetMapping("/yacht/viewYacht")
     public ResponseEntity<?> viewYacht() {
@@ -53,10 +54,10 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/owner/yacht/detail")
-    public ResponseEntity<?> getYachtDetailByYachtId(@RequestBody YachtDetailRequest yachtDetailRequest) {
+    @GetMapping("/yacht/detail/{id}")
+    public ResponseEntity<?> getYachtDetailByYachtId(@PathVariable String id) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iYachtDetailService.viewYachtDetail(yachtDetailRequest));
+        dataResponse.setData(iYachtDetailService.viewYachtDetail(id));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
@@ -67,5 +68,38 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/owner/deleteOwner")
+    public ResponseEntity<?> hiddenOwner(@RequestParam String id) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iOwner.hiddenOwner(id));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/yacht/deleteYacht")
+    public ResponseEntity<?> hiddenYacht(@RequestParam String id) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYacht.hiddenYacht(id));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/owner/yacht/{ownerId}")
+    public ResponseEntity<?> findAllYachtByOwner(@PathVariable String ownerId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYacht.findYachtByOwnerId(ownerId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/owner/yacht/yachtDetail/{yachtId}")
+    public ResponseEntity<?> findYachtDetailByYachtId(@PathVariable String yachtId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYachtDetailService.findYachtDetailByYacht(yachtId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/owner/yacht/yachtDetail/feedback/{yachtDetailId}")
+    public ResponseEntity<?> findFeedbackByYachtDetail(@PathVariable String yachtDetailId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iFeedback.findFeedbackByYachtDetailId(yachtDetailId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 
 }

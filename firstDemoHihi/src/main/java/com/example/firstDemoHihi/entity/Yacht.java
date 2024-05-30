@@ -49,7 +49,6 @@ public class Yacht {
     private Set<Room> roomSet;
 
     @OneToMany(mappedBy = "yacht")
-    private Set<Booking> bookingSet;
-
+    private Set<Schedule> schedules;
 
 }
