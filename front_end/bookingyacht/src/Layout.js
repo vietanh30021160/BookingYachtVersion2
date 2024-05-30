@@ -5,19 +5,19 @@ import App from './App';
 // import FindYacht from './components/yacht/FindYacht';
 // import RuleYacht from './components/yacht/RuleYacht';
 // import QuestionYacht from './components/yacht/QuestionYacht';
-// import Signin from './components/auths/Signin';
-// import ManageCompany from './components/companySystem/ManageCompany';
-// import Dashboard from './components/companySystem/Dashboard';
-// import ViewYacht from './components/companySystem/ViewYacht';
-// import ViewFeedback from './components/companySystem/ViewFeedback';
-// import ViewBooking from './components/companySystem/ViewBooking';
-// import Bill from './components/companySystem/Bill';
-// import ViewOwner from './components/companySystem/ViewOwner';
-// import Signup from './components/auths/Signup';
+import Signin from './components/auths/Signin';
+import Signup from './components/auths/Signup';
+import Information from './components/auths/Information';
+import ManageCompany from './components/company/ManageCompany';
+import ViewYacht from './components/company/ViewYacht';
+import ViewFeedback from './components/company/ViewFeedback';
+import ViewBooking from './components/company/ViewBooking';
+import Bill from './components/company/Bill';
+import ViewOwner from './components/company/ViewOwner';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-// import Information from './components/auths/Information';
+
 const Layout = () => {
     return (
         <>
@@ -29,19 +29,19 @@ const Layout = () => {
                     <Route path='/cau-hoi-thuong-gap' element={<QuestionYacht />} /> */}
                 </Route>
 
-                {/* <Route path='/signin' element={<Signin />} />
+                <Route path='/signin' element={<Signin />} />
                 <Route path='/signup' element={<Signup />} />
                 <Route path='/information' element={<Information />} />
 
 
                 <Route path='/manage-company' element={<ManageCompany />} >
-                    <Route index element={<Dashboard />} />
+                    <Route index element={<ViewBooking />} />
                     <Route path='view-yacht' element={<ViewYacht />} />
                     <Route path='view-feedback' element={<ViewFeedback />} />
-                    <Route path='view-booking' element={<ViewBooking />} />
+                    {/* <Route path='view-booking' element={<ViewBooking />} /> */}
                     <Route path='bill' element={<Bill />} />
                     <Route path='view-owner' element={<ViewOwner />} />
-                </Route> */}
+                </Route>
 
             </Routes>
 
