@@ -1,6 +1,7 @@
 package com.example.firstDemoHihi.service.service;
 
 import com.example.firstDemoHihi.dto.OwnerDTO;
+import com.example.firstDemoHihi.dto.YachtDTO;
 import com.example.firstDemoHihi.entity.*;
 import com.example.firstDemoHihi.entity.YachtDetailService;
 import com.example.firstDemoHihi.payload.request.OwnerRequest;
@@ -20,8 +21,8 @@ public class OwnerService implements IOwner {
     OwnerRepository ownerRepository;
     @Autowired
     CompanyRepository companyRepository;
-
-
+    @Autowired
+    YachtRepository yachtRepository;
 
     @Override
     public List<OwnerDTO> getAllOwner() {
@@ -30,10 +31,12 @@ public class OwnerService implements IOwner {
             List<Owner> ownerList = ownerRepository.findAll();
             for (Owner owner : ownerList) {
                 OwnerDTO ownerDTO = new OwnerDTO();
-                ownerDTO.setIdOwner(owner.getIdOwner());
-                ownerDTO.setName(owner.getName());
-                ownerDTO.setEmail(owner.getEmail());
-                ownerDTOList.add(ownerDTO);
+                if(owner.getExist() == 1){
+                    ownerDTO.setIdOwner(owner.getIdOwner());
+                    ownerDTO.setName(owner.getName());
+                    ownerDTO.setEmail(owner.getEmail());
+                    ownerDTOList.add(ownerDTO);
+                }
             }
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -42,44 +45,13 @@ public class OwnerService implements IOwner {
     }
 
 
-
-//    @Override
-//    public boolean deleteOwner(String idOwner) {
-//        try{
-//            Optional<Owner> owner = ownerRepository.findById(idOwner);
-//            if(owner.isPresent()){
-//                System.out.println("owner" + owner.get());
-//                Optional<Yacht> yacht = yachtRepository.findByOwnerId(idOwner);
-//                if(yacht.isPresent()){
-//                    System.out.println("yacht" + yacht.get());
-//                    Optional<YachtDetail> yachtDetail = yachtDetailRepository.findByYachtId(yacht.get().getIdYacht());
-//                    if(yachtDetail.isPresent()){
-//                        System.out.println("yachtDetail" + yachtDetail.get());
-//                        Optional<Feedback> feedback = feedbackRepository.findByYachtDetailsId(yachtDetail.get().getIdYachtDetail());
-//                        Optional<ImageYachtDetail> imageYachtDetail = imageYachDetailRepository.findImageYachtDetailByYachtDetailsId(yachtDetail.get().getIdYachtDetail());
-//                        Optional<YachtDetailService> yachtDetailService = yachtDetailServiceRepository.findByYachtDetailsId(yachtDetail.get().getIdYachtDetail());
-//                    }else{
-//                        System.out.println("kh ton tai yacht detail");
-//                    }
-//                }else{
-//                    System.out.println("kh ton tai yacht");
-//                }
-//            }else{
-//                System.out.println("kh ton tai owner");
-//                return false;
-//            }
-//        }catch (Exception e){
-//            System.out.println(e.getMessage());
-//        }
-//        return true;
-//    }
-
     @Override
     public boolean insertOwner(OwnerRequest ownerRequest) {
         try{
             Owner owner = new Owner();
             owner.setName(ownerRequest.getName());
             owner.setEmail(ownerRequest.getEmail());
+            owner.setExist(1);
 
             Optional<Company> company = companyRepository.findById(ownerRequest.getIdCompany());
             if(company.isPresent()){
@@ -94,5 +66,29 @@ public class OwnerService implements IOwner {
         }
         return false;
     }
+
+    @Override
+    public boolean hiddenOwner(String id) {
+        try{
+            Optional<Owner> owner = ownerRepository.findById(id);
+            if(owner.isPresent()){
+                Owner existingOwner = owner.get();
+                existingOwner.setExist(0);
+                ownerRepository.save(existingOwner);
+                return true;
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    @Override
+    public List<YachtDTO> getYachtByOwner(String ownerId) {
+        return List.of();
+    }
+
+
+
 
 }

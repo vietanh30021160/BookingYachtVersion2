@@ -17,10 +17,10 @@ public class YachtDetailService implements IYachtDetail {
     YachtDetailRepository yachtDetailRepository;
 
     @Override
-    public YachtDetailDTO viewYachtDetail(YachtDetailRequest yachtDetailRequest) {
+    public YachtDetailDTO viewYachtDetail(String id) {
         YachtDetailDTO yachtDetailDTO = new YachtDetailDTO();
         try{
-            Optional<YachtDetail> yachtDetail = yachtDetailRepository.findById(yachtDetailRequest.getYachtId());
+            Optional<YachtDetail> yachtDetail = yachtDetailRepository.findById(id);
             if(yachtDetail.isPresent()){
                 yachtDetailDTO.setDescription(yachtDetail.get().getDescription());
                 yachtDetailDTO.setIdYachtDetails(yachtDetail.get().getIdYachtDetail());
@@ -38,6 +38,25 @@ public class YachtDetailService implements IYachtDetail {
         return yachtDetailDTO;
     }
 
+    @Override
+    public YachtDetailDTO findYachtDetailByYacht(String yachtId) {
+        YachtDetailDTO yachtDetailDTO = new YachtDetailDTO();
+        try{
+            YachtDetail yachtDetail = yachtDetailRepository.findByYachtId(yachtId);
+            if(yachtDetail != null){
+                yachtDetailDTO.setIdYachtDetails(yachtDetail.getIdYachtDetail());
+                yachtDetailDTO.setDescription(yachtDetail.getDescription());
+                yachtDetailDTO.setFeedback(yachtDetail.getFeedback());
+                yachtDetailDTO.setLaunch(yachtDetail.getLaunch());
+                yachtDetailDTO.setRule(yachtDetail.getRule());
+                yachtDetailDTO.setHullBody(yachtDetail.getHullBody());
+                yachtDetailDTO.setItinerary(yachtDetail.getItinerary());
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return yachtDetailDTO;
+    }
 
 
 }

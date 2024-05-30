@@ -1,11 +1,9 @@
 package com.example.firstDemoHihi.repository;
 
-import com.example.firstDemoHihi.dto.YachtDTO;
-import com.example.firstDemoHihi.entity.Owner;
+import com.example.firstDemoHihi.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OwnerRepository extends JpaRepository<Owner, String> {
-
+public interface AdminRepository extends JpaRepository<Account, String> {
 }
