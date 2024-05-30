@@ -2,9 +2,9 @@ import React from 'react';
 import { Route, Routes } from "react-router-dom";
 import HomePage from './components/home/HomePage';
 import App from './App';
-// import FindYacht from './components/yacht/FindYacht';
-// import RuleYacht from './components/yacht/RuleYacht';
-// import QuestionYacht from './components/yacht/QuestionYacht';
+import FindYacht from './components/yacht/FindYacht';
+import YachtRule from './components/yacht/YachtRule';
+import YachtQuestion from './components/yacht/YachtQuestion';
 import Signin from './components/auths/Signin';
 import Signup from './components/auths/Signup';
 import Information from './components/auths/Information';
@@ -24,9 +24,9 @@ const Layout = () => {
             <Routes>
                 <Route path="/" element={<App />}>
                     <Route index element={<HomePage />} />
-                    {/* <Route path='/duthuyen' element={<FindYacht />} />
-                    <Route path='/quy-dinh-chung' element={<RuleYacht />} />
-                    <Route path='/cau-hoi-thuong-gap' element={<QuestionYacht />} /> */}
+                    <Route path='/duthuyen' element={<FindYacht />} />
+                    <Route path='/quy-dinh-chung' element={<YachtRule />} />
+                    <Route path='/cau-hoi-thuong-gap' element={<YachtQuestion />} />
                 </Route>
 
                 <Route path='/signin' element={<Signin />} />
