@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface IYacht {
     List<YachtDTO> getAllYacht();
-//    List<YachtDTO> searchYacht(String keyWord);
     boolean insertYacht(YachtRequest yachtRequest);
+    boolean hiddenYacht(String id);
+    boolean updateYacht(YachtRequest yachtRequest);
+    List<YachtDTO> findYachtByOwnerId(String ownerId);
 }

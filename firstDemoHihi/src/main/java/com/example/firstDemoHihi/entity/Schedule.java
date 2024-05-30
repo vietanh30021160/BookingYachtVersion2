@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,7 +25,10 @@ public class Schedule {
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
-    @OneToOne(mappedBy = "schedule")
-    private Booking booking;
+    @ManyToOne()
+    @JoinColumn(name = "id_yacht", nullable = false)
+    private Yacht yacht;
 
+    @OneToMany(mappedBy = "schedule")
+    private Set<Booking> bookingSet;
 }

@@ -17,4 +17,6 @@ public class YachtDTO {
     private OwnerDTO ownerDTO;
     private YachtTypeDTO yachtTypeDTO;
     private LocationDTO locationDTO;
+    private int exist;
+
 }
