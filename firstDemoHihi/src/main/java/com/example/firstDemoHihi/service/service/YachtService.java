@@ -1,19 +1,17 @@
 package com.example.firstDemoHihi.service.service;
 
-import com.example.firstDemoHihi.dto.LocationDTO;
-import com.example.firstDemoHihi.dto.OwnerDTO;
-import com.example.firstDemoHihi.dto.YachtDTO;
-import com.example.firstDemoHihi.dto.YachtTypeDTO;
+import com.example.firstDemoHihi.dto.*;
+import com.example.firstDemoHihi.entity.Company;
 import com.example.firstDemoHihi.entity.Location;
-import com.example.firstDemoHihi.entity.Owner;
 import com.example.firstDemoHihi.entity.Yacht;
 import com.example.firstDemoHihi.entity.YachtType;
 import com.example.firstDemoHihi.payload.request.YachtRequest;
+import com.example.firstDemoHihi.repository.CompanyRepository;
 import com.example.firstDemoHihi.repository.LocationRepository;
-import com.example.firstDemoHihi.repository.OwnerRepository;
 import com.example.firstDemoHihi.repository.YachtRepository;
 import com.example.firstDemoHihi.repository.YachtTypeRepository;
 import com.example.firstDemoHihi.service.implement.IYacht;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.web.OffsetScrollPositionHandlerMethodArgumentResolver;
 import org.springframework.stereotype.Service;
@@ -22,13 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class YachtService implements IYacht {
     @Autowired
     YachtRepository yachtRepository;
 
     @Autowired
-    OwnerRepository ownerRepository;
+    CompanyRepository companyRepository;
 
     @Autowired
     LocationRepository locationRepository;
@@ -51,6 +50,7 @@ public class YachtService implements IYacht {
                     yachtDTO.setName(yacht.getName());
                     yachtDTO.setImage(yacht.getImage());
                     yachtDTO.setPrice(yacht.getPrice());
+                    yachtDTO.setExist(yacht.getExist());
 
                     YachtTypeDTO yachtTypeDTO = new YachtTypeDTO();
                     yachtTypeDTO.setIdYachtType(yacht.getYachtType().getIdYachtType());
@@ -58,12 +58,15 @@ public class YachtService implements IYacht {
 
                     yachtDTO.setYachtTypeDTO(yachtTypeDTO);
 
-                    OwnerDTO ownerDTO = new OwnerDTO();
-                    ownerDTO.setIdOwner(yacht.getOwner().getIdOwner());
-                    ownerDTO.setName(yacht.getOwner().getName());
-                    ownerDTO.setEmail(yacht.getOwner().getEmail());
+                    CompanyDTO companyDTO = new CompanyDTO();
+                    companyDTO.setIdCompany(yacht.getCompany().getIdCompany());
+                    companyDTO.setName(yacht.getCompany().getName());
+                    companyDTO.setAddress(yacht.getCompany().getAddress());
+                    companyDTO.setLogo(yacht.getCompany().getLogo());
+                    companyDTO.setEmail(yacht.getCompany().getEmail());
+                    companyDTO.setExist(yacht.getCompany().getExist());
 
-                    yachtDTO.setOwnerDTO(ownerDTO);
+                    yachtDTO.setCompanyDTO(companyDTO);
 
                     LocationDTO locationDTO = new LocationDTO();
                     locationDTO.setName(yacht.getLocation().getName());
@@ -92,10 +95,11 @@ public class YachtService implements IYacht {
             yacht.setPrice(yachtRequest.getPrice());
             yacht.setExist(1);
 
-            Optional<Owner> owner = ownerRepository.findById(yachtRequest.getIdOwner());
-            if (owner.isPresent()) {
-                yacht.setOwner(owner.get());
+            Optional<Company> company = companyRepository.findById(yachtRequest.getIdCompany());
+            if (company.isPresent()) {
+                yacht.setCompany(company.get());
             } else {
+                log.error("loi company");
                 return false;
             }
 
@@ -103,6 +107,7 @@ public class YachtService implements IYacht {
             if (yachtType.isPresent()) {
                 yacht.setYachtType(yachtType.get());
             } else {
+                log.error("loi yacht type");
                 return false;
             }
 
@@ -110,6 +115,7 @@ public class YachtService implements IYacht {
             if (location.isPresent()) {
                 yacht.setLocation(location.get());
             } else {
+                log.error("loi location");
                 return false;
             }
 
@@ -119,6 +125,7 @@ public class YachtService implements IYacht {
         }catch (Exception e){
             System.out.println("insertYacht " + e.getMessage());
         }
+        log.error("loi default");
         return false;
     }
 
@@ -144,10 +151,10 @@ public class YachtService implements IYacht {
     }
 
     @Override
-    public List<YachtDTO> findYachtByOwnerId(String ownerId) {
+    public List<YachtDTO> findYachtByCompanyId(String companyId) {
         List<YachtDTO> yachtDTOList = new ArrayList<>();
         try{
-            List<Yacht> yachtList = yachtRepository.findAllByOwnerId(ownerId);
+            List<Yacht> yachtList = yachtRepository.findAllByCompanyId(companyId);
             if(yachtList != null) {
                 for(Yacht yacht : yachtList){
                     YachtDTO yachtDTO = new YachtDTO();

@@ -7,6 +7,7 @@ import com.example.firstDemoHihi.payload.request.CompanyCreateRequest;
 import com.example.firstDemoHihi.payload.response.DataResponse;
 import com.example.firstDemoHihi.service.implement.IAdmin;
 import com.example.firstDemoHihi.service.implement.ICompany;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -25,7 +26,7 @@ public class AdminController {
     ICompany iCompany;
 
     @PostMapping("/accounts")
-    public ResponseEntity<?> createAccountCompany(@RequestBody AccountCompanyCreationRequest request) throws Exception {
+    public ResponseEntity<?> createAccountCompany(@RequestBody @Valid AccountCompanyCreationRequest request) throws Exception {
         DataResponse<AccountDTO> dataResponse = new DataResponse<>();
         dataResponse.setData(iAdmin.createAccountCompany(request));
 

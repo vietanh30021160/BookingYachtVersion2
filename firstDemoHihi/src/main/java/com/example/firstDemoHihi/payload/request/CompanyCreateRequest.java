@@ -14,5 +14,4 @@ public class CompanyCreateRequest {
     String address;
     String logo;
     String email;
-    int exist;
 }
