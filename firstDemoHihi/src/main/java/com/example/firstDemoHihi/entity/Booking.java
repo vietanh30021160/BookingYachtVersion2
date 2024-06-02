@@ -35,11 +35,11 @@ public class Booking {
     @JoinColumn(name = "id_customer", nullable = false)
     private Customer customer;
 
-    @OneToOne()
-    @JoinColumn(name = "id_schedule", nullable = false)
-    private Schedule schedule;
-
     @OneToMany(mappedBy = "booking")
     private Set<BookingDetail> bookingDetailSet;
+
+    @ManyToOne()
+    @JoinColumn(name = "id_schedule", nullable = false)
+    private Schedule schedule;
 
 }

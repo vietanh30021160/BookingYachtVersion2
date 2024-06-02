@@ -15,6 +15,7 @@ import com.example.firstDemoHihi.repository.YachtRepository;
 import com.example.firstDemoHihi.repository.YachtTypeRepository;
 import com.example.firstDemoHihi.service.implement.IYacht;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.web.OffsetScrollPositionHandlerMethodArgumentResolver;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,6 +35,8 @@ public class YachtService implements IYacht {
 
     @Autowired
     YachtTypeRepository yachtTypeRepository;
+    @Autowired
+    private OffsetScrollPositionHandlerMethodArgumentResolver offsetResolver;
 
     @Override
     public List<YachtDTO> getAllYacht() {
@@ -43,31 +46,34 @@ public class YachtService implements IYacht {
             System.out.println(yachtList);
             for (Yacht yacht : yachtList) {
                 YachtDTO yachtDTO = new YachtDTO();
-                yachtDTO.setIdYacht(yacht.getIdYacht());
-                yachtDTO.setName(yacht.getName());
-                yachtDTO.setImage(yacht.getImage());
-                yachtDTO.setPrice(yacht.getPrice());
+                if(yacht.getExist() == 1) {
+                    yachtDTO.setIdYacht(yacht.getIdYacht());
+                    yachtDTO.setName(yacht.getName());
+                    yachtDTO.setImage(yacht.getImage());
+                    yachtDTO.setPrice(yacht.getPrice());
 
-                YachtTypeDTO yachtTypeDTO = new YachtTypeDTO();
-                yachtTypeDTO.setIdYachtType(yacht.getYachtType().getIdYachtType());
-                yachtTypeDTO.setStarRanking(yacht.getYachtType().getStarRanking());
+                    YachtTypeDTO yachtTypeDTO = new YachtTypeDTO();
+                    yachtTypeDTO.setIdYachtType(yacht.getYachtType().getIdYachtType());
+                    yachtTypeDTO.setStarRanking(yacht.getYachtType().getStarRanking());
 
-                yachtDTO.setYachtTypeDTO(yachtTypeDTO);
+                    yachtDTO.setYachtTypeDTO(yachtTypeDTO);
 
-                OwnerDTO ownerDTO = new OwnerDTO();
-                ownerDTO.setIdOwner(yacht.getOwner().getIdOwner());
-                ownerDTO.setName(yacht.getOwner().getName());
-                ownerDTO.setEmail(yacht.getOwner().getEmail());
+                    OwnerDTO ownerDTO = new OwnerDTO();
+                    ownerDTO.setIdOwner(yacht.getOwner().getIdOwner());
+                    ownerDTO.setName(yacht.getOwner().getName());
+                    ownerDTO.setEmail(yacht.getOwner().getEmail());
 
-                yachtDTO.setOwnerDTO(ownerDTO);
+                    yachtDTO.setOwnerDTO(ownerDTO);
 
-                LocationDTO locationDTO = new LocationDTO();
-                locationDTO.setName(yacht.getLocation().getName());
-                locationDTO.setIdLocation(yacht.getLocation().getIdLocation());
+                    LocationDTO locationDTO = new LocationDTO();
+                    locationDTO.setName(yacht.getLocation().getName());
+                    locationDTO.setIdLocation(yacht.getLocation().getIdLocation());
 
-                yachtDTO.setLocationDTO(locationDTO);
+                    yachtDTO.setLocationDTO(locationDTO);
 
-                listYacht.add(yachtDTO);
+                    listYacht.add(yachtDTO);
+                }
+
             }
         }catch (Exception e){
             System.out.println("YachtDTO " + e.getMessage());
@@ -84,6 +90,7 @@ public class YachtService implements IYacht {
             yacht.setName(yachtRequest.getName());
             yacht.setImage(yachtRequest.getImage());
             yacht.setPrice(yachtRequest.getPrice());
+            yacht.setExist(1);
 
             Optional<Owner> owner = ownerRepository.findById(yachtRequest.getIdOwner());
             if (owner.isPresent()) {
@@ -113,6 +120,62 @@ public class YachtService implements IYacht {
             System.out.println("insertYacht " + e.getMessage());
         }
         return false;
+    }
+
+    @Override
+    public boolean hiddenYacht(String id) {
+        try{
+            Optional<Yacht> yacht = yachtRepository.findById(id);
+            if (yacht.isPresent()) {
+                Yacht existingYacht = yacht.get();
+                existingYacht.setExist(0);
+                yachtRepository.save(existingYacht);
+                return true;
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateYacht(YachtRequest yachtRequest) {
+        return false;
+    }
+
+    @Override
+    public List<YachtDTO> findYachtByOwnerId(String ownerId) {
+        List<YachtDTO> yachtDTOList = new ArrayList<>();
+        try{
+            List<Yacht> yachtList = yachtRepository.findAllByOwnerId(ownerId);
+            if(yachtList != null) {
+                for(Yacht yacht : yachtList){
+                    YachtDTO yachtDTO = new YachtDTO();
+                    yachtDTO.setIdYacht(yacht.getIdYacht());
+                    yachtDTO.setName(yacht.getName());
+                    yachtDTO.setImage(yacht.getImage());
+                    yachtDTO.setPrice(yacht.getPrice());
+                    yachtDTO.setExist(yacht.getExist());
+
+                    LocationDTO locationDTO = new LocationDTO();
+                    locationDTO.setName(yacht.getLocation().getName());
+                    locationDTO.setIdLocation(yacht.getLocation().getIdLocation());
+
+                    yachtDTO.setLocationDTO(locationDTO);
+
+                    YachtTypeDTO yachtTypeDTO = new YachtTypeDTO();
+                    yachtTypeDTO.setIdYachtType(yacht.getYachtType().getIdYachtType());
+                    yachtTypeDTO.setStarRanking(yacht.getYachtType().getStarRanking());
+
+                    yachtDTO.setYachtTypeDTO(yachtTypeDTO);
+
+                    yachtDTOList.add(yachtDTO);
+                }
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return yachtDTOList;
     }
 
 

@@ -27,6 +27,9 @@ public class Yacht {
     @Column(name = "price", nullable = false, precision = 10)
     private long price;
 
+    @Column(name = "exist", nullable = false)
+    private int exist;
+
     @ManyToOne()
     @JoinColumn(name = "id_owner", nullable = false)
     private Owner owner;
@@ -46,7 +49,6 @@ public class Yacht {
     private Set<Room> roomSet;
 
     @OneToMany(mappedBy = "yacht")
-    private Set<Booking> bookingSet;
-
+    private Set<Schedule> schedules;
 
 }
