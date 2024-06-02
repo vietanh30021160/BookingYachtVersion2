@@ -11,5 +11,5 @@ public interface IYacht {
     boolean insertYacht(YachtRequest yachtRequest);
     boolean hiddenYacht(String id);
     boolean updateYacht(YachtRequest yachtRequest);
-    List<YachtDTO> findYachtByOwnerId(String ownerId);
+    List<YachtDTO> findYachtByCompanyId(String companyId);
 }

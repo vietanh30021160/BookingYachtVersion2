@@ -22,6 +22,8 @@ public class CompanyService implements ICompany {
     CompanyRepository companyRepository;
     AccountRepository accountRepository;
 
+    public static final String ROLE_COMPANY = "COMPANY";
+
     @Override
     public CompanyDTO addCompany(CompanyCreateRequest request) {
         if (request.getName() == null || request.getName().isEmpty()) {
@@ -35,6 +37,10 @@ public class CompanyService implements ICompany {
         // Check if the account exists
         Account account = accountRepository.findById(request.getIdAccount())
                 .orElseThrow(() -> new IllegalArgumentException("Account does not exist"));
+        if (!account.getRole().equals(ROLE_COMPANY)) {
+            log.error("Account does not have role " + ROLE_COMPANY);
+            throw new IllegalArgumentException("Account does not have role " + ROLE_COMPANY);
+        }
 
         // Convert the request to Company entity
         Company company = new Company();
@@ -83,6 +89,7 @@ public class CompanyService implements ICompany {
                 .address(company.getAddress())
                 .logo(company.getLogo())
                 .email(company.getEmail())
+                .exist(company.getExist())
                 .accountDTO(accountDTO)
                 .build();
 
