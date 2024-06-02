@@ -30,13 +30,11 @@ public class CompanyController {
 
     @GetMapping("/yacht/viewYacht")
     public ResponseEntity<?> viewYacht() {
-
 //        SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 //        String enscrypted = Encoders.BASE64.encode(secretKey.getEncoded());
 //        System.out.println(enscrypted);
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYacht.getAllYacht());
-
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

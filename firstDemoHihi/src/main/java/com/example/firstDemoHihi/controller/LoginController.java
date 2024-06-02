@@ -22,7 +22,7 @@ public class LoginController {
     AuthenticationManager authenticationManager;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> signin(@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<?> signin(@RequestParam String username, @RequestParam String password ) {
         DataResponse dataResponse = new DataResponse();
         try {
             Authentication authentication = authenticationManager.authenticate(
