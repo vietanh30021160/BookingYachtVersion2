@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 import App from './App';
 import HomePage from './components/home/HomePage';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import FindYacht from './components/yacht/FindYacht';
 import YachtRule from './components/yacht/YachtRule';
 import YachtQuestion from './components/yacht/YachtQuestion';
 import Signin from './components/auths/Signin';
@@ -17,9 +16,10 @@ import Bill from './components/company/Bill';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Blog from './components/blog/Blog';
+// import Blog from './components/blog/Blog';
 import MainPage from './components/detailYacht/mainDetailPage/MainPage';
 import Enterprise from './components/enterprise/Enterprise';
+import FindYacht from './components/yacht/FindYacht';
 const Layout = () => {
     return (
         <>
@@ -27,7 +27,7 @@ const Layout = () => {
                 <Route path="/" element={<App />}>
                     <Route index element={<HomePage />} />
 
-                    <Route path='/blog' element={<Blog />} />
+                    {/* <Route path='/blog' element={<Blog />} /> */}
                     <Route path='/doanhnhiep' element={<Enterprise />} />
                     <Route path='maybay' element={<MainPage />} />
                     <Route path='/duthuyen' element={<FindYacht />} />
