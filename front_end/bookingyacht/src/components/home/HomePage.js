@@ -38,7 +38,7 @@ const HomePage = (props) => {
                                     <option>1</option>
                                 </select>
                             </div>
-                            <button size='lg'>Tìm Kiếm</button>
+                            <button size='lg'>Search</button>
                         </div>
                     </form>
                 </div>

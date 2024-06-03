@@ -25,7 +25,7 @@ const ShowIsland = () => {
                     <Card style={{ width: '18rem' }}>
                         <Card.Img variant="top" src={HaLong} />
                         <Card.Body>
-                            <Card.Title>Vịnh Hạ Long</Card.Title>
+                            <Card.Title>Vinh Ha Long</Card.Title>
                             <Button variant="primary">Go somewhere</Button>
                         </Card.Body>
                     </Card>
@@ -35,7 +35,7 @@ const ShowIsland = () => {
                     <Card style={{ width: '18rem' }}>
                         <Card.Img variant="top" src={CatBa} />
                         <Card.Body>
-                            <Card.Title>Đảo Cát Bà</Card.Title>
+                            <Card.Title>Dao Cat Ba</Card.Title>
                             <Button variant="primary">Go somewhere</Button>
                         </Card.Body>
                     </Card>
@@ -44,7 +44,7 @@ const ShowIsland = () => {
                     <Card style={{ width: '18rem' }}>
                         <Card.Img variant="top" src={LanHa} />
                         <Card.Body>
-                            <Card.Title>Vịnh Lan Hạ</Card.Title>
+                            <Card.Title>Vinh Lan Ha</Card.Title>
                             <Button variant="primary">Go somewhere</Button>
                         </Card.Body>
                     </Card>

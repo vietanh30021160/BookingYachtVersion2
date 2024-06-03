@@ -14,7 +14,6 @@ import ViewYacht from './components/company/ViewYacht';
 import ViewFeedback from './components/company/ViewFeedback';
 import ViewBooking from './components/company/ViewBooking';
 import Bill from './components/company/Bill';
-import ViewOwner from './components/company/ViewOwner';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -48,7 +47,6 @@ const Layout = () => {
                     <Route path='view-feedback' element={<ViewFeedback />} />
                     {/* <Route path='view-booking' element={<ViewBooking />} /> */}
                     <Route path='bill' element={<Bill />} />
-                    <Route path='view-owner' element={<ViewOwner />} />
                 </Route>
 
             </Routes>
