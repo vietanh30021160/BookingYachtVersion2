@@ -51,7 +51,7 @@ const Signin = () => {
                             <NavLink to='/' className='navbar-brand' style={{ width: '150px' }}><img src={logo} className="img-fluid" alt="logo" /></NavLink>
                         </div>
                         <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1 text-center">
-                            <h1 className='text-center'>Sign in</h1>
+                            <h1 className='text-center'>Đăng Nhập</h1>
 
                             <div className="form-outline mb-4">
                                 <input type="text"
@@ -74,9 +74,9 @@ const Signin = () => {
                             </div>
                             <div className='account d-flex'>
                                 <div>
-                                    Don't have an account <Link to='/signup'>Signup</Link>
+                                    Chưa có tài khoản <Link to='/signup'>Đăng kí</Link>
                                 </div>
-                                <a href="#!">Forgot password?</a>
+                                <a href="#!">Quên mật khẩu?</a>
                             </div>
                             <button
                                 style={{ width: '100%' }}
@@ -85,15 +85,15 @@ const Signin = () => {
                                 disabled={loading}
                             >
                                 {loading === true && <ImSpinner10 className='loaderIcon' />}
-                                <span>Sign in</span>
+                                <span>Đăng nhập</span>
 
                             </button>
                             <div className="divider  d-flex align-items-center my-4">
-                                <p style={{ width: '100%' }} className=" text-center fw-bold mx-3 mb-0 text-muted">OR</p>
+                                <p style={{ width: '100%' }} className=" text-center fw-bold mx-3 mb-0 text-muted">Hoặc</p>
                             </div>
 
                             <a className="btn btn-primary btn-lg btn-block" style={{ backgroundColor: '#3b5998' }} href="#!" role="button">
-                                <FcGoogle /> Continue with Google
+                                <FcGoogle /> Tiếp tục với google
                             </a>
 
                         </div>
