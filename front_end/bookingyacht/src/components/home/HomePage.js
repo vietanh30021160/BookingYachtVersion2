@@ -1,9 +1,9 @@
-import videoHomePage from '../../assets/Mixivivuduthuyen.mp4'
-import ShowYacht from './ShowYacht';
-import Feedback from './Feedback';
+import videoHomePage from '../../assets/Mixivivuduthuyen.mp4';
 import Enterprice from './Enterprice';
+import Feedback from './Feedback';
 import './Home.scss';
 import ShowIsland from './ShowIsland';
+import ShowYacht from './ShowYacht';
 
 const HomePage = (props) => {
 
