@@ -27,27 +27,27 @@ const Layout = () => {
             <Routes>
                 <Route path="/" element={<App />}>
                     <Route index element={<HomePage />} />
-                    <Route path='/blog' element={<Blog/>}/>
-                    <Route path='/doanhnhiep' element={<Enterprise/>}/>
+                    <Route path='/blog' element={<Blog />} />
+                    <Route path='/doanhnhiep' element={<Enterprise />} />
                     {/* <Route path='/duthuyen' element={<FindYacht />} />
                     <Route path='/quy-dinh-chung' element={<RuleYacht />} />
                     <Route path='/cau-hoi-thuong-gap' element={<QuestionYacht />} /> */}
-                    <Route path='maybay' element={<MainPage/>}/>
+                    <Route path='maybay' element={<MainPage />} />
                 </Route>
 
-                {/* <Route path='/signin' element={<Signin />} />
+                <Route path='/signin' element={<Signin />} />
                 <Route path='/signup' element={<Signup />} />
                 <Route path='/information' element={<Information />} />
 
 
                 <Route path='/manage-company' element={<ManageCompany />} >
-                    <Route index element={<Dashboard />} />
+                    <Route index element={<ViewBooking />} />
                     <Route path='view-yacht' element={<ViewYacht />} />
                     <Route path='view-feedback' element={<ViewFeedback />} />
-                    <Route path='view-booking' element={<ViewBooking />} />
+                    {/* <Route path='view-booking' element={<ViewBooking />} /> */}
                     <Route path='bill' element={<Bill />} />
                     <Route path='view-owner' element={<ViewOwner />} />
-                </Route> */}
+                </Route>
 
             </Routes>
 
