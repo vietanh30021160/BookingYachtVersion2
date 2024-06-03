@@ -5,22 +5,21 @@ import HomePage from './components/home/HomePage';
 // import FindYacht from './components/yacht/FindYacht';
 // import RuleYacht from './components/yacht/RuleYacht';
 // import QuestionYacht from './components/yacht/QuestionYacht';
-// import Signin from './components/auths/Signin';
-// import ManageCompany from './components/companySystem/ManageCompany';
-// import Dashboard from './components/companySystem/Dashboard';
-// import ViewYacht from './components/companySystem/ViewYacht';
-// import ViewFeedback from './components/companySystem/ViewFeedback';
-// import ViewBooking from './components/companySystem/ViewBooking';
-// import Bill from './components/companySystem/Bill';
-// import ViewOwner from './components/companySystem/ViewOwner';
-// import Signup from './components/auths/Signup';
+import Signin from './components/auths/Signin';
+import ManageCompany from './components/company/ManageCompany';
+import ViewYacht from './components/company/ViewYacht';
+import ViewFeedback from './components/company/ViewFeedback';
+import ViewBooking from './components/company/ViewBooking';
+import Bill from './components/company/Bill';
+import ViewOwner from './components/company/ViewOwner';
+import Signup from './components/auths/Signup';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Blog from './components/blog/Blog';
 import MainPage from './components/detailYacht/mainDetailPage/MainPage';
 import Enterprise from './components/enterprise/Enterprise';
-// import Information from './components/auths/Information';
+import Information from './components/auths/Information';
 const Layout = () => {
     return (
         <>
