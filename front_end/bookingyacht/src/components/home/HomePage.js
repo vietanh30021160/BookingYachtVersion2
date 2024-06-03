@@ -1,4 +1,4 @@
-import videoHomePage from '../../assets/Mixivivuduthuyen.mp4';
+import videoHomePage from '../../assets/duthuyenhalong.mp4';
 import Enterprice from './Enterprice';
 import Feedback from './Feedback';
 import './Home.scss';
