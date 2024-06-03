@@ -11,7 +11,6 @@ import ViewYacht from './components/company/ViewYacht';
 import ViewFeedback from './components/company/ViewFeedback';
 import ViewBooking from './components/company/ViewBooking';
 import Bill from './components/company/Bill';
-import ViewOwner from './components/company/ViewOwner';
 import Signup from './components/auths/Signup';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { ToastContainer } from 'react-toastify';
@@ -45,7 +44,6 @@ const Layout = () => {
                     <Route path='view-feedback' element={<ViewFeedback />} />
                     {/* <Route path='view-booking' element={<ViewBooking />} /> */}
                     <Route path='bill' element={<Bill />} />
-                    <Route path='view-owner' element={<ViewOwner />} />
                 </Route>
 
             </Routes>
