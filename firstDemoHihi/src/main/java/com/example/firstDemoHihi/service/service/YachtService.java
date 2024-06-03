@@ -10,11 +10,13 @@ import com.example.firstDemoHihi.repository.CompanyRepository;
 import com.example.firstDemoHihi.repository.LocationRepository;
 import com.example.firstDemoHihi.repository.YachtRepository;
 import com.example.firstDemoHihi.repository.YachtTypeRepository;
+import com.example.firstDemoHihi.service.implement.IFile;
 import com.example.firstDemoHihi.service.implement.IYacht;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.web.OffsetScrollPositionHandlerMethodArgumentResolver;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,17 +27,16 @@ import java.util.Optional;
 public class YachtService implements IYacht {
     @Autowired
     YachtRepository yachtRepository;
-
     @Autowired
     CompanyRepository companyRepository;
-
     @Autowired
     LocationRepository locationRepository;
-
     @Autowired
     YachtTypeRepository yachtTypeRepository;
     @Autowired
     private OffsetScrollPositionHandlerMethodArgumentResolver offsetResolver;
+    @Autowired
+    IFile fileService;
 
     @Override
     public List<YachtDTO> getAllYacht() {
@@ -86,42 +87,42 @@ public class YachtService implements IYacht {
     }
 
     @Override
-    public boolean insertYacht(YachtRequest yachtRequest) {
+    public boolean insertYacht(String name, MultipartFile image, long price, String idCompany, String idYachtType, String idLocation) {
         try{
-            Yacht yacht = new Yacht();
+            boolean successUpFile =  fileService.save(image);
+            if(successUpFile) {
+                Yacht yacht = new Yacht();
+                yacht.setName(name);
+                yacht.setImage(image.getOriginalFilename());
+                yacht.setPrice(price);
+                yacht.setExist(1);
 
-            yacht.setName(yachtRequest.getName());
-            yacht.setImage(yachtRequest.getImage());
-            yacht.setPrice(yachtRequest.getPrice());
-            yacht.setExist(1);
+                Optional<Company> company = companyRepository.findById(idCompany);
+                if (company.isPresent()) {
+                    yacht.setCompany(company.get());
+                } else {
+                    log.error("loi company");
+                    return false;
+                }
+                Optional<YachtType> yachtType = yachtTypeRepository.findById(idYachtType);
+                if (yachtType.isPresent()) {
+                    yacht.setYachtType(yachtType.get());
+                } else {
+                    log.error("loi yacht type");
+                    return false;
+                }
+                Optional<Location> location = locationRepository.findById(idLocation);
+                if (location.isPresent()) {
+                    yacht.setLocation(location.get());
+                } else {
+                    log.error("loi location");
+                    return false;
+                }
 
-            Optional<Company> company = companyRepository.findById(yachtRequest.getIdCompany());
-            if (company.isPresent()) {
-                yacht.setCompany(company.get());
-            } else {
-                log.error("loi company");
-                return false;
+                yachtRepository.save(yacht);
+
+                return true;
             }
-
-            Optional<YachtType> yachtType = yachtTypeRepository.findById(yachtRequest.getIdYachtType());
-            if (yachtType.isPresent()) {
-                yacht.setYachtType(yachtType.get());
-            } else {
-                log.error("loi yacht type");
-                return false;
-            }
-
-            Optional<Location> location = locationRepository.findById(yachtRequest.getIdLocation());
-            if (location.isPresent()) {
-                yacht.setLocation(location.get());
-            } else {
-                log.error("loi location");
-                return false;
-            }
-
-            yachtRepository.save(yacht);
-
-            return true;
         }catch (Exception e){
             System.out.println("insertYacht " + e.getMessage());
         }
@@ -146,7 +147,29 @@ public class YachtService implements IYacht {
     }
 
     @Override
-    public boolean updateYacht(YachtRequest yachtRequest) {
+    public boolean updateYacht(String id, String name,MultipartFile image, long price, String idYachtType, String idLocation) {
+        try{
+            Optional<Yacht> yacht = yachtRepository.findById(id);
+            if (yacht.isPresent()) {
+                Yacht existingYacht = yacht.get();
+                existingYacht.setName(name);
+                existingYacht.setImage(image.getOriginalFilename());
+                existingYacht.setPrice(price);
+
+                YachtType yachtType = new YachtType();
+                yachtType.setIdYachtType(idYachtType);
+                existingYacht.setYachtType(yachtType);
+
+                Location location = new Location();
+                location.setIdLocation(idLocation);
+                existingYacht.setLocation(location);
+
+                yachtRepository.save(existingYacht);
+                return true;
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         return false;
     }
 
