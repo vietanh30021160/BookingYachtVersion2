@@ -18,6 +18,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Blog from './components/blog/Blog';
+import MainPage from './components/detailYacht/mainDetailPage/MainPage';
 import Enterprise from './components/enterprise/Enterprise';
 // import Information from './components/auths/Information';
 const Layout = () => {
@@ -31,6 +32,7 @@ const Layout = () => {
                     {/* <Route path='/duthuyen' element={<FindYacht />} />
                     <Route path='/quy-dinh-chung' element={<RuleYacht />} />
                     <Route path='/cau-hoi-thuong-gap' element={<QuestionYacht />} /> */}
+                    <Route path='maybay' element={<MainPage/>}/>
                 </Route>
 
                 {/* <Route path='/signin' element={<Signin />} />
