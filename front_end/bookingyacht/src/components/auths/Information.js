@@ -9,7 +9,7 @@ const Information = () => {
     return (
         <div className='container my-5 py-5 px-5 form-infor' style={{ backgroundColor: "#C6F5F6", }}>
 
-            <h1>Information</h1>
+            <h1>Thông tin khách hàng</h1>
 
             <Form>
                 <Row className="mb-3">

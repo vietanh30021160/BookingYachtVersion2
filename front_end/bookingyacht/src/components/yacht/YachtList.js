@@ -13,7 +13,7 @@ const ShowYacht = () => {
                 </div>
                 <div class="card-body col-md-7">
                     <div className='card-content'>
-                        <div className='location'><FaLocationDot />Vinh Ha Long</div>
+                        <div className='location'><FaLocationDot />Vịnh Hạ Long</div>
                         <div className='name'>Du thuyền Heritage Bình Chuẩn Cát Bà</div>
                         <div> <RiShipLine /> Ha thuy 2019 - Tau vo kim loai - 20 phong </div>
                         <div className='price'>

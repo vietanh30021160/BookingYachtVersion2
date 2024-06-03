@@ -2,7 +2,7 @@ import FormSearch from "../home/FormSearch";
 import './FindYacht.scss';
 import i_content from '../../assets/image_1.webp';
 import Form from 'react-bootstrap/Form';
-import ShowYacht from "./ListYacht";
+import ShowYacht from "./YachtList";
 const FindYacht = () => {
     return (
         <div className="find-yacht-body">
@@ -12,7 +12,7 @@ const FindYacht = () => {
                 </div>
                 <div className='feedback-header my-5 row'>
                     <div className='yacht-title col-md mx-4'>
-                        <h2>Tim Thay <br /> Ket Qua</h2>
+                        <h2>Tìm Thấy <br /> Kết Quả</h2>
                         <div>
                             <img src={i_content} />
                         </div>
@@ -31,11 +31,11 @@ const FindYacht = () => {
                     <div className="col-3 filter-body">
                         <div className="filter-body-header d-flex">
                             <div className="filter-body-content">
-                                Loc Ket Qua
+                                Lọc Kết Quả
                             </div>
                             <div>
                                 <button>
-                                    Dat lai
+                                    Đặt Lại
                                 </button>
                             </div>
                         </div>
@@ -44,7 +44,7 @@ const FindYacht = () => {
 
                         <div className="filter-star d-flex">
                             <div className="star-body-content">
-                                Xep Hang Sao
+                                Xếp hạng sao
                             </div>
 
                             <Form.Check id="3sao" label='3 Sao' />
@@ -53,7 +53,7 @@ const FindYacht = () => {
                         </div>
                         <div className="filter-extention d-flex">
                             <div className="extention-body-content">
-                                Tien Ich
+                                Tiện ích
                             </div>
                             <Form.Check id="" label='Phòng gia đình' lab />
                             <Form.Check id="" label='Có bể sục' />

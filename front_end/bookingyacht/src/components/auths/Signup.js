@@ -28,7 +28,7 @@ const Signup = () => {
                                 <div className="card-body p-md-5">
                                     <div className="row justify-content-center">
                                         <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                                            <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
+                                            <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Đăng ký</p>
                                             <form className="mx-1 mx-md-4">
 
                                                 <div className="d-flex flex-row align-items-center mb-4">
@@ -53,18 +53,29 @@ const Signup = () => {
                                                         />
                                                     </div>
                                                 </div>
+                                                <div className="d-flex flex-row align-items-center mb-4">
+                                                    <i class="fa-solid fa-key fa-lg me-3"></i>
+                                                    <div className="form-outline flex-fill mb-0">
+                                                        <input type="password"
+                                                            placeholder='Confirm Password'
+                                                            className="form-control"
+                                                            value={password}
+                                                            onChange={(event) => setPassword(event.target.value)}
+                                                        />
+                                                    </div>
+                                                </div>
                                                 {/* <div className="d-flex flex-row align-items-center mb-4">
                                                     <div className="form-outline flex-fill mb-0">
                                                         <input type="text" hidden value={() => setRole('customer')} className="form-control" />
                                                     </div>
                                                 </div> */}
-                                                Have an account
-                                                <Link to='/signin'>Signin</Link>
+                                                Đã có tài khoản
+                                                <Link to='/signin'>Đăng nhập</Link>
                                                 <div className="d-flex justify-content-center my-2 mx-4 mb-3 mb-lg-4">
                                                     <button type="button"
                                                         className="btn btn-primary btn-lg"
                                                         onClick={() => handleRegister()}
-                                                    >Register</button>
+                                                    >Đăng ký</button>
                                                 </div>
                                             </form>
                                         </div>

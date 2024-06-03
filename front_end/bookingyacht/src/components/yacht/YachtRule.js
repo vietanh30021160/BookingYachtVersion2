@@ -1,5 +1,5 @@
 import i_content from '../../assets/image_1.webp';
-import './YachRule.scss'
+import './YachtRule.scss'
 const YachtRule = () => {
     return (
         <div className="container">
