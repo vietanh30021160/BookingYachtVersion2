@@ -21,7 +21,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Blog from './components/blog/Blog';
 import MainPage from './components/detailYacht/mainDetailPage/MainPage';
 import Enterprise from './components/enterprise/Enterprise';
-// import Information from './components/auths/Information';
+import Information from './components/auths/Information';
 const Layout = () => {
     return (
         <>
