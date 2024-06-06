@@ -5,7 +5,7 @@ const Feedback = (props) => {
         <>
             <div className='feedback-header row'>
                 <div className='yacht-title col-md mx-4'>
-                    <h4>Danh Gia Tu Nhung <br /> Nguoi Trai Nghiem</h4>
+                    <h4>Đánh Giá Từ <br />Người Trải Nghiệm</h4>
                     <div>
                         <img src={i_content} />
                     </div>

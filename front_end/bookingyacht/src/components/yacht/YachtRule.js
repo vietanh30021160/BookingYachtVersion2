@@ -5,7 +5,7 @@ const YachtRule = () => {
         <div className="container">
             <div className='rule-yacht-header row'>
                 <div className='rule-title col-md mx-4'>
-                    <h1>Quy Dinh Chung Va Luu Y</h1>
+                    <h1>Quy Định Chung Và Lưu Ý</h1>
                     <div>
                         <img src={i_content} />
                     </div>

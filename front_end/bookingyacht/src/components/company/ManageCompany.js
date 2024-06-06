@@ -19,7 +19,6 @@ const ManageCompany = (props) => {
             <div className="company-content">
                 <div className="company-header">
                     <FaBars onClick={() => setcollapsed(!collapsed)} />
-
                 </div>
                 <div className="company-main">
                     <Outlet />

@@ -9,6 +9,7 @@ import { NavLink } from 'react-router-dom'
 // import { useDispatch, useSelector } from 'react-redux';
 import { ImSpinner10 } from "react-icons/im";
 // import { Rlogin } from '../../redux/action/CustomerAction';
+
 const Signin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -76,7 +77,7 @@ const Signin = () => {
                                 <div>
                                     Chưa có tài khoản <Link to='/signup'>Đăng kí</Link>
                                 </div>
-                                <a href="#!">Quên mật khẩu?</a>
+                                <NavLink to='/forgotpassowd'>Quên mật khẩu?</NavLink>
                             </div>
                             <button
                                 style={{ width: '100%' }}

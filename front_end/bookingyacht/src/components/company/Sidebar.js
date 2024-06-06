@@ -2,7 +2,7 @@ import 'react-pro-sidebar/dist/css/styles.css';
 import { FaShip } from "react-icons/fa6";
 // import { AiFillSchedule } from "react-icons/ai";
 import { FaMoneyCheckAlt } from "react-icons/fa";
-import { MdPeopleAlt } from "react-icons/md";
+import { MdBedroomChild } from "react-icons/md";
 import { TbLogout2 } from "react-icons/tb";
 import { TbBrandBooking } from "react-icons/tb";
 import { FaStar } from "react-icons/fa";
@@ -70,15 +70,14 @@ const Sidebar = (props) => {
                     </Menu>
 
                     <Menu iconShape="circle">
-
                         <MenuItem
-                            icon={<MdPeopleAlt />}
-                        > View Owner
+                            icon={<MdBedroomChild />}
+                        > View Room
                             <Link to='/manage-company/view-owner' />
                         </MenuItem>
                     </Menu>
 
-                    <Menu iconShape="circle">
+                    {/* <Menu iconShape="circle">
                         <MenuItem
                             icon={<FaStar />}
                         >
@@ -86,7 +85,7 @@ const Sidebar = (props) => {
                             <Link to='/manage-company/view-feedback' />
                         </MenuItem>
 
-                    </Menu>
+                    </Menu> */}
 
                     <Menu iconShape="circle">
                         <MenuItem

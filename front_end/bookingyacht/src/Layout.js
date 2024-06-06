@@ -20,6 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import MainPage from './components/detailYacht/mainDetailPage/MainPage';
 import Enterprise from './components/enterprise/Enterprise';
 import FindYacht from './components/yacht/FindYacht';
+import ForgotPassword from './components/auths/ForgotPassword';
 const Layout = () => {
     return (
         <>
@@ -38,7 +39,7 @@ const Layout = () => {
                 <Route path='/signin' element={<Signin />} />
                 <Route path='/signup' element={<Signup />} />
                 <Route path='/information' element={<Information />} />
-
+                <Route path='/forgotpassowd' element={<ForgotPassword />}></Route>
 
                 <Route path='/manage-company' element={<ManageCompany />} >
                     <Route index element={<ViewBooking />} />
