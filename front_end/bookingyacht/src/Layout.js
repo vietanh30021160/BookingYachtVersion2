@@ -1,22 +1,22 @@
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import React from 'react';
 import { Route, Routes } from "react-router-dom";
 import App from './App';
-import HomePage from './components/home/HomePage';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import YachtRule from './components/yacht/YachtRule';
-import YachtQuestion from './components/yacht/YachtQuestion';
+import Information from './components/auths/Information';
 import Signin from './components/auths/Signin';
 import Signup from './components/auths/Signup';
-import Information from './components/auths/Information';
-import ManageCompany from './components/company/ManageCompany';
-import ViewYacht from './components/company/ViewYacht';
-import ViewFeedback from './components/company/ViewFeedback';
-import ViewBooking from './components/company/ViewBooking';
 import Bill from './components/company/Bill';
+import ManageCompany from './components/company/ManageCompany';
+import ViewBooking from './components/company/ViewBooking';
+import ViewFeedback from './components/company/ViewFeedback';
+import ViewYacht from './components/company/ViewYacht';
+import HomePage from './components/home/HomePage';
+import YachtQuestion from './components/yacht/YachtQuestion';
+import YachtRule from './components/yacht/YachtRule';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import Blog from './components/blog/Blog';
+import Blog from './components/blog/Blog';
 import MainPage from './components/detailYacht/mainDetailPage/MainPage';
 import Enterprise from './components/enterprise/Enterprise';
 import FindYacht from './components/yacht/FindYacht';
@@ -28,7 +28,7 @@ const Layout = () => {
                 <Route path="/" element={<App />}>
                     <Route index element={<HomePage />} />
 
-                    {/* <Route path='/blog' element={<Blog />} /> */}
+                    <Route path='/blog' element={<Blog />} />
                     <Route path='/doanhnhiep' element={<Enterprise />} />
                     <Route path='maybay' element={<MainPage />} />
                     <Route path='/duthuyen' element={<FindYacht />} />

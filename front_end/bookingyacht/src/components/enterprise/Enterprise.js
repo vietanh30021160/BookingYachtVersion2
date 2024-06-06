@@ -1,13 +1,16 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
+import i_content from '../../assets/image_1.webp';
+import Enterprice from '../home/Enterprice';
+import '../home/Home.scss';
 import './Enterprise.scss';
-
 // Component Header
 const Header = () => (
     <div className="header">
-        <h4>Mixivivu - Tour Du thuyền Hạ Long: Kết nối doanh nghiệp, khám phá vẻ đẹp tự nhiên</h4>
-        <label>Với sự trải nghiệm thực tế, Công ty TNHH Du lịch và Dịch vụ MixiVivu mong muốn đưa du thuyền Hạ Long trở thành một lựa chọn đầu tiên cho doanh nghiệp. Nhiều chương trình du lịch hấp dẫn, đa dạng được kết hợp sẽ đem đến cho quý doanh nghiệp sự hài lòng và thuận tiện. Du thuyền Hạ Long cũng sẽ là một món quà tri ân vô cùng ý nghĩa dành cho nhân viên của quý doanh nghiệp. Bên cạnh đó, du thuyền Hạ Long còn rất phù hợp cho những cuộc hội thảo, hợp tác đầu tư hay giao lưu của quý doanh nghiệp.</label>
-        <button className="btn btn-primary">Liên Hệ MixiVivu</button>
+        <h4>Tour Du thuyền Hạ Long: Kết nối doanh nghiệp, khám phá vẻ đẹp tự nhiên</h4>
+        <img src={i_content}/>
+        <label>Với sự trải nghiệm thực tế, Công ty TNHH Du lịch và Dịch vụ của chúng tôi mong muốn đưa du thuyền Hạ Long trở thành một lựa chọn đầu tiên cho doanh nghiệp. Nhiều chương trình du lịch hấp dẫn, đa dạng được kết hợp sẽ đem đến cho quý doanh nghiệp sự hài lòng và thuận tiện. Du thuyền Hạ Long cũng sẽ là một món quà tri ân vô cùng ý nghĩa dành cho nhân viên của quý doanh nghiệp. Bên cạnh đó, du thuyền Hạ Long còn rất phù hợp cho những cuộc hội thảo, hợp tác đầu tư hay giao lưu của quý doanh nghiệp.</label>
+        <button className="btn btn-primary">Liên Hệ Chúng Tôi</button>
     </div>
 );
 
@@ -94,6 +97,9 @@ const HeaderPage = () => (
                     <BusinessItems />
                 </div>
             </div>
+        </div>
+        <div className='app-enterprice'>
+          <Enterprice/>
         </div>
     </div>
 );
