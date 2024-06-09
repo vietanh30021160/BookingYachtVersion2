@@ -9,6 +9,7 @@ import { NavLink } from 'react-router-dom'
 // import { useDispatch, useSelector } from 'react-redux';
 import { ImSpinner10 } from "react-icons/im";
 // import { Rlogin } from '../../redux/action/CustomerAction';
+import { BiSolidHome } from "react-icons/bi";
 
 const Signin = () => {
     const [email, setEmail] = useState('');
@@ -79,23 +80,20 @@ const Signin = () => {
                                 </div>
                                 <NavLink to='/forgotpassowd'>Quên mật khẩu?</NavLink>
                             </div>
-                            <button
-                                style={{ width: '100%' }}
-                                onClick={() => handleLogin()}
-                                className='btn btn-primary'
-                                disabled={loading}
-                            >
-                                {loading === true && <ImSpinner10 className='loaderIcon' />}
-                                <span>Đăng nhập</span>
+                            <div>
 
-                            </button>
-                            <div className="divider  d-flex align-items-center my-4">
-                                <p style={{ width: '100%' }} className=" text-center fw-bold mx-3 mb-0 text-muted">Hoặc</p>
+                                <button
+                                    style={{ width: '100%' }}
+                                    onClick={() => handleLogin()}
+                                    className='btn btn-primary'
+                                    disabled={loading}
+                                >
+                                    {loading === true && <ImSpinner10 className='loaderIcon' />}
+                                    <span>Đăng nhập</span>
+                                </button>
+                                <Link to='/' className='my-5' style={{ textDecoration: "none" }}><BiSolidHome className='mb-1' />Home</Link>
                             </div>
 
-                            <a className="btn btn-primary btn-lg btn-block" style={{ backgroundColor: '#3b5998' }} href="#!" role="button">
-                                <FcGoogle /> Tiếp tục với google
-                            </a>
 
                         </div>
                     </div>

@@ -1,19 +1,27 @@
 import React from 'react';
 import './Company.scss';
+import { Button, FormControl, FormGroup } from 'react-bootstrap';
 const ViewBooking = () => {
     return (
         <>
-            <h2>Booking</h2>
-            <div className='row'>
+            <div className='row my-4'>
+                <h2 className='col-3'>Booking</h2>
+                <FormGroup className='col-8 d-flex'>
+                    <FormControl placeholder='Search' type='text' />
+                    <Button className='btn btn-primary mx-3'>Search</Button>
+                </FormGroup>
+
+            </div>
+            <div className='row container'>
                 <div className="col-xl-12">
                     <div className="card mb-4 order-list">
                         <div className="gold-members p-4">
                             <a href="#">
                             </a>
                             <div className="media">
-                                <a href="#">
+                                {/* <a href="#">
                                     <img className="mr-4" src="img/3.jpg" alt="Generic placeholder image" />
-                                </a>
+                                </a> */}
                                 <div className="media-body">
                                     <a href="#">
                                         <span className="float-right text-success">Delivered on Mon, Nov 12, 7:18 PM <i className="feather-check-circle text-success" /></span>

@@ -11,7 +11,7 @@ const ShowIsland = () => {
         <>
             <div className='island-header text-center my-5'>
                 <div className='yacht-title'>
-                    <h2>Các điểm đến của Mixivivu</h2>
+                    <h2>Các điểm đến của Yacht Cruise</h2>
                 </div>
                 <p>
                     Khám phá vẻ đẹp tuyệt vời của Du thuyền Hạ Long: Hành trình đến thiên đường thiên nhiên

@@ -5,7 +5,6 @@ import { FaMoneyCheckAlt } from "react-icons/fa";
 import { MdBedroomChild } from "react-icons/md";
 import { TbLogout2 } from "react-icons/tb";
 import { TbBrandBooking } from "react-icons/tb";
-import { FaStar } from "react-icons/fa";
 import {
     ProSidebar,
     Menu,
@@ -18,6 +17,8 @@ import {
 import React from 'react';
 import sidebarBg from '../../assets/sidebar.jpg';
 import { Link, NavLink } from 'react-router-dom';
+import { ImProfile } from "react-icons/im";
+import ModalUpdateProfile from './ModalUpdateProfile';
 // import logo from '../../assets/logo_swp.png'
 const Sidebar = (props) => {
     const { image, collapsed, toggled, handleToggleSidebar } = props;
@@ -69,13 +70,6 @@ const Sidebar = (props) => {
                         </MenuItem>
                     </Menu>
 
-                    <Menu iconShape="circle">
-                        <MenuItem
-                            icon={<MdBedroomChild />}
-                        > View Room
-                            <Link to='/manage-company/view-owner' />
-                        </MenuItem>
-                    </Menu>
 
                     {/* <Menu iconShape="circle">
                         <MenuItem
@@ -93,6 +87,15 @@ const Sidebar = (props) => {
                         >
                             Bill
                             <Link to='/manage-company/bill' />
+                        </MenuItem>
+
+                    </Menu>
+                    <Menu iconShape="circle">
+                        <MenuItem
+                            icon={<ImProfile />}
+                        >
+                            Profile
+                            <Link to='/manage-company/profile' />
                         </MenuItem>
 
                     </Menu>
@@ -115,6 +118,7 @@ const Sidebar = (props) => {
                     </div>
                 </SidebarFooter>
             </ProSidebar>
+
         </div>
     );
 };

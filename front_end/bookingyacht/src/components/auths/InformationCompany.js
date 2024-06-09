@@ -6,12 +6,11 @@ import Row from 'react-bootstrap/Row';
 import './Auth.scss'
 import { Link } from 'react-router-dom';
 import { FaHome } from "react-icons/fa";
-const Information = () => {
-
+const InformationCompany = () => {
     return (
         <div className='container my-5 py-5 px-5 form-infor' style={{ backgroundColor: "#C6F5F6", }}>
 
-            <h1>Thông tin khách hàng</h1>
+            <h1>Thông tin Công Ty</h1>
 
             <Form>
                 <Row className="mb-3">
@@ -60,4 +59,4 @@ const Information = () => {
     );
 };
 
-export default Information;
+export default InformationCompany;

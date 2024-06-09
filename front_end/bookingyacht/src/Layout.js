@@ -21,6 +21,9 @@ import MainPage from './components/detailYacht/mainDetailPage/MainPage';
 import Enterprise from './components/enterprise/Enterprise';
 import FindYacht from './components/yacht/FindYacht';
 import ForgotPassword from './components/auths/ForgotPassword';
+import Profile from './components/home/Profile';
+import ProfileCompany from './components/company/Profile';
+import InformationCompany from './components/auths/InformationCompany';
 const Layout = () => {
     return (
         <>
@@ -32,14 +35,18 @@ const Layout = () => {
                     <Route path='/doanhnhiep' element={<Enterprise />} />
                     <Route path='maybay' element={<MainPage />} />
                     <Route path='/duthuyen' element={<FindYacht />} />
-                    <Route path='/quy-dinh-chung' element={<YachtRule />} />
-                    <Route path='/cau-hoi-thuong-gap' element={<YachtQuestion />} />
+                    <Route path='/yacht-rule' element={<YachtRule />} />
+                    <Route path='/yacht-question' element={<YachtQuestion />} />
                 </Route>
 
                 <Route path='/signin' element={<Signin />} />
                 <Route path='/signup' element={<Signup />} />
-                <Route path='/information' element={<Information />} />
+                <Route path='/profile' element={<Profile />} />
                 <Route path='/forgotpassowd' element={<ForgotPassword />}></Route>
+                <Route path='/information' element={<Information />} />
+                <Route path='/information-company' element={<InformationCompany />} />
+
+
 
                 <Route path='/manage-company' element={<ManageCompany />} >
                     <Route index element={<ViewBooking />} />
@@ -47,6 +54,8 @@ const Layout = () => {
                     <Route path='view-feedback' element={<ViewFeedback />} />
                     {/* <Route path='view-booking' element={<ViewBooking />} /> */}
                     <Route path='bill' element={<Bill />} />
+                    <Route path='profile' element={<ProfileCompany />} />
+
                 </Route>
 
             </Routes>

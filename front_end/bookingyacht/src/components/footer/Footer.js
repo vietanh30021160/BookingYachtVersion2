@@ -29,8 +29,8 @@ const Footer = () => {
                     <div className='body col-md'>
                         <span>Du Thuyền</span>
                         <NavLink className='nav-link'>Blog</NavLink>
-                        <NavLink to='/quy-dinh-chung' className='nav-link'>Quy Định Chung</NavLink>
-                        <NavLink to='/cau-hoi-thuong-gap' className='nav-link'>Câu Hỏi Thường Gặp</NavLink>
+                        <NavLink to='/yacht-rule' className='nav-link'>Quy Định Chung</NavLink>
+                        <NavLink to='/yacht-question' className='nav-link'>Câu Hỏi Thường Gặp</NavLink>
                     </div>
                 </div>
 

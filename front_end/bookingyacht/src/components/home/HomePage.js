@@ -57,13 +57,13 @@ const HomePage = (props) => {
                 <ShowIsland />
             </div>
 
-            <div className='app-enterprice'>
+            <div className='app-enterprice my-5'>
                 <Enterprice />
             </div>
 
-            <div className='app-blog'>
+            {/* <div className='app-blog'>
                 Blog
-            </div>
+            </div> */}
 
         </div>
     )

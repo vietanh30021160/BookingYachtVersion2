@@ -3,6 +3,9 @@ import logo from '../../assets/logo_swp.png'
 import { register } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
+
+import { IoChevronBackSharp } from "react-icons/io5";
+
 const Signup = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -54,8 +57,8 @@ const Signup = () => {
                                                     </div>
                                                 </div>
                                                 <div className="d-flex flex-row align-items-center mb-4">
-                                                    <i class="fa-solid fa-key fa-lg me-3"></i>
-                                                    <div className="form-outline flex-fill mb-0">
+                                                    <i className="fa-solid fa-key fa-lg me-3"></i>
+                                                    <div className="form-outline flex-fill mb-0 mx-1">
                                                         <input type="password"
                                                             placeholder='Confirm Password'
                                                             className="form-control"
@@ -71,11 +74,15 @@ const Signup = () => {
                                                 </div> */}
                                                 Đã có tài khoản
                                                 <Link to='/signin'>Đăng nhập</Link>
-                                                <div className="d-flex justify-content-center my-2 mx-4 mb-3 mb-lg-4">
-                                                    <button type="button"
-                                                        className="btn btn-primary btn-lg"
-                                                        onClick={() => handleRegister()}
-                                                    >Đăng ký</button>
+                                                <div>
+                                                    <div className="d-flex justify-content-center my-2 mx-4 mb-3 mb-lg-4" >
+                                                        <button type="button"
+                                                            className="btn btn-primary btn-lg"
+                                                            onClick={() => handleRegister()}
+                                                        >Đăng ký</button>
+
+                                                    </div>
+                                                    <Link to='/signin' style={{ textDecoration: "none" }}><IoChevronBackSharp className='mb-1' />Back</Link>
                                                 </div>
                                             </form>
                                         </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 const ForgotPassword = () => {
     return (
@@ -10,7 +11,7 @@ const ForgotPassword = () => {
                             <div className="row">
                                 <div className="col-12">
                                     <div className="mb-5">
-                                        <h2 className="h3">Password Reset</h2>
+                                        <h2 className="h3">Forgot Password</h2>
                                         <h3 className="fs-6 fw-normal text-secondary m-0">Provide the email address associated with your account to recover your password.</h3>
                                     </div>
                                 </div>
@@ -23,7 +24,10 @@ const ForgotPassword = () => {
                                     </div>
                                     <div className="col-12">
                                         <div className="d-grid">
-                                            <button className="btn btn-lg btn-primary" type="submit">Reset Password</button>
+                                            <button className="btn btn-lg btn-primary" type="submit">Send</button>
+                                        </div>
+                                        <div className='text-center'>
+                                            <NavLink to='/signin' className='my-4'>Back</NavLink>
                                         </div>
                                     </div>
                                 </div>
