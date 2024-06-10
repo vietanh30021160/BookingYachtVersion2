@@ -6,7 +6,6 @@ import com.example.YachtBookingBackEnd.payload.request.AccountCompanyCreationReq
 import java.util.List;
 
 public interface IAccount {
-    AccountDTO createAccountCompany(AccountCompanyCreationRequest request) throws Exception;
+    boolean createAccountCompany(String username, String password) throws Exception;
     List<AccountDTO> getAllAccountCompanies();
-
 }

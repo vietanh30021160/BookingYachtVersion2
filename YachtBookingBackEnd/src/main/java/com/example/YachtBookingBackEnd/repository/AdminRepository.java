@@ -1,6 +1,6 @@
-package com.example.firstDemoHihi.repository;
+package com.example.YachtBookingBackEnd.repository;
 
-import com.example.firstDemoHihi.entity.Account;
+import com.example.YachtBookingBackEnd.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,13 +1,16 @@
-package com.example.firstDemoHihi.service.implement;
+package com.example.YachtBookingBackEnd.service.implement;
 
-import com.example.firstDemoHihi.dto.CompanyDTO;
-import com.example.firstDemoHihi.payload.request.CompanyCreateRequest;
+import com.example.YachtBookingBackEnd.dto.CompanyDTO;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 public interface ICompany {
-    CompanyDTO addCompany(String idAccount, String name, String address, MultipartFile logo, String email);
+    boolean addCompany(String idAccount, String name, String address, MultipartFile logo, String email);
 
-    CompanyDTO searchCompanyByName(String name);
+    List<CompanyDTO> searchCompanyByName(String name);
 
-//    CompanyDTO updateCompany(String idCompany, CompanyCreateRequest request);
+    CompanyDTO getDetailCompanyByAccountID(String idAccount);
+
+    boolean hideCompany(String idCompany);
 }

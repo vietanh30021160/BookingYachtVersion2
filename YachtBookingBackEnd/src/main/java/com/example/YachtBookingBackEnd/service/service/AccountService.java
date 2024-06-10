@@ -26,31 +26,28 @@ public class AccountService implements IAccount {
 
 
     @Override
-    public AccountDTO createAccountCompany(AccountCompanyCreationRequest request) throws Exception {
-        // Kiểm tra xem username đã tồn tại hay chưa
-        if (accountRepository.existsByUsername(request.getUsername())) {
-            // Nếu tồn tại, throw exception với thông báo username đã tồn tại
-            throw new Exception("Username already exists");
+    public boolean createAccountCompany(String username, String password) throws Exception {
+        try {
+            // Kiểm tra xem username đã tồn tại hay chưa
+            if (accountRepository.existsByUsername(username)) {
+                // Nếu tồn tại, throw exception với thông báo username đã tồn tại
+                throw new Exception("Username already exists");
+            }
+
+            // Chuyển đổi đối tượng request thành đối tượng Account
+            Account account = new Account();
+            account.setUsername(username);
+            account.setPassword(passwordEncoder.encode(password));
+            account.setRole(ROLE_COMPANY);
+
+            // Lưu account vào db
+            accountRepository.save(account);
+
+            return true;
+        } catch (Exception e) {
+            log.error("Account creation failed - default error", e);
+            return false;
         }
-
-        // Chuyển đổi đối tượng request thành đối tượng Account
-        Account account = new Account();
-        account.setUsername(request.getUsername());
-        account.setPassword(passwordEncoder.encode(request.getPassword()));
-        account.setRole(ROLE_COMPANY);
-
-        // Lưu account vào db
-        Account savedAccount = accountRepository.save(account);
-
-        // Tạo AccountCompanyDTO từ Account
-        AccountDTO accountDTO = AccountDTO.builder()
-                .idAccount(savedAccount.getIdAccount())
-                .username(savedAccount.getUsername())
-                .password(savedAccount.getPassword())
-                .role(savedAccount.getRole())
-                .build();
-
-        return accountDTO;
     }
 
     @Override

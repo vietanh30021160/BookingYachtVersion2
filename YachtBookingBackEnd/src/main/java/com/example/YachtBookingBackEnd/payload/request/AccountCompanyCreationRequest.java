@@ -1,4 +1,4 @@
-package com.example.firstDemoHihi.payload.request;
+package com.example.YachtBookingBackEnd.payload.request;
 
 import jakarta.validation.constraints.Size;
 import lombok.*;
