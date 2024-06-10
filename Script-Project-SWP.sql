@@ -21,6 +21,7 @@ CREATE TABLE yacht (
     hull_body VARCHAR(255),
     description TEXT,
     rule TEXT,
+    exist INTEGER,
     itinerary VARCHAR(255),
     id_yacht_type VARCHAR(255),
     id_company VARCHAR(255),
@@ -33,6 +34,7 @@ CREATE TABLE yacht (
 CREATE TABLE room_type (
     id_room_type VARCHAR(255) PRIMARY KEY,
     type VARCHAR(255),
+    utilities VARCHAR(255),
     price DECIMAL
 );
 
@@ -48,17 +50,16 @@ CREATE TABLE room (
 );
 
 CREATE TABLE service (
-    id_room_service VARCHAR(255) PRIMARY KEY,
+    id_service VARCHAR(255) PRIMARY KEY,
     service VARCHAR(255),
-    price DECIMAL,
-    utilities VARCHAR(255)
+    price DECIMAL
 );
 
 CREATE TABLE yacht_service (
     id_service VARCHAR(255),
     id_yacht VARCHAR(255),
     PRIMARY KEY (id_service, id_yacht),
-    FOREIGN KEY (id_service) REFERENCES service(id_room_service),
+    FOREIGN KEY (id_service) REFERENCES service(id_service),
     FOREIGN KEY (id_yacht) REFERENCES yacht(id_yacht)
 );
 
@@ -79,10 +80,9 @@ CREATE TABLE yacht_image (
 CREATE TABLE account (
     id_account VARCHAR(255) PRIMARY KEY,
     username VARCHAR(50) UNIQUE,
-    password VARCHAR(50),
+    password VARCHAR(255),
     role VARCHAR(10)
 );
-alter table account modify password VARCHAR(255)
 
 CREATE TABLE company (
     id_company VARCHAR(255) PRIMARY KEY,
@@ -91,8 +91,8 @@ CREATE TABLE company (
     logo VARCHAR(50),
     email VARCHAR(50) UNIQUE,
     exist INTEGER,
-    account_id VARCHAR(255) UNIQUE,
-    FOREIGN KEY (account_id) REFERENCES account(id_account)
+    id_account VARCHAR(255) UNIQUE,
+    FOREIGN KEY (id_account) REFERENCES account(id_account)
 );
 
 CREATE TABLE customer (
@@ -166,43 +166,23 @@ CREATE TABLE transaction (
     status VARCHAR(255),
     id_receiver VARCHAR(255),
     id_wallet_sender VARCHAR(255),
-    id_booking VARCHAR(255),
+    id_booking VARCHAR(255) unique,
     FOREIGN KEY (id_booking) REFERENCES booking_order(id_booking),
     FOREIGN KEY (id_wallet_sender) REFERENCES wallet(id_wallet)
 );
 
 CREATE TABLE bill (
     id_bill VARCHAR(255) PRIMARY KEY,
-    amount DECIMAL,
-    transaction_date DATETIME,
-    id_transaction VARCHAR(255),
-    FOREIGN KEY (id_transaction) REFERENCES transaction(id_transaction)
+    id_transaction VARCHAR(255) unique,
+    id_booking VARCHAR(255) unique,
+    FOREIGN KEY (id_transaction) REFERENCES transaction(id_transaction),
+    FOREIGN KEY (id_booking) REFERENCES booking_order(id_booking)
 );
 
-
-
-
-
--- Add the column exist to the yacht table
-ALTER TABLE yacht 
-ADD COLUMN exist INTEGER
-
--- Modify the id_booking column to be unique
-ALTER TABLE `transaction` 
-ADD UNIQUE (id_booking);
-
--- Drop the columns amount and transaction_date from the bill table
-ALTER TABLE bill 
-DROP COLUMN amount, 
-DROP COLUMN transaction_date;
-
--- Add the id_booking column as a unique foreign key
-ALTER TABLE bill 
-ADD id_booking VARCHAR(255) UNIQUE,
-ADD CONSTRAINT fk_id_booking FOREIGN KEY (id_booking) REFERENCES booking_order(id_booking);
-
-
-
-
-
-
+CREATE TABLE booking_service (
+    id_service VARCHAR(255),
+    id_booking VARCHAR(255),
+    PRIMARY KEY (id_service, id_booking),
+    FOREIGN KEY (id_service) REFERENCES service(id_service),
+    FOREIGN KEY (id_booking) REFERENCES booking_order(id_booking)
+);

@@ -15,8 +15,8 @@ import java.util.Set;
 public class Service {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id_room_service", nullable = false)
-    private String idRoomService;
+    @Column(name = "idservice", nullable = false)
+    private String idService;
 
     @Column(name = "service")
     private String service;
@@ -24,9 +24,9 @@ public class Service {
     @Column(name = "price")
     private long price;
 
-    @Column(name = "utilities")
-    private String utilities;
-
     @OneToMany(mappedBy = "service")
     private Set<YachtService> yachtServiceSet;
+
+    @OneToMany(mappedBy = "service")
+    private Set<BookingService> bookingServiceSet;
 }

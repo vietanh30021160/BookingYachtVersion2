@@ -21,6 +21,9 @@ public class RoomType {
     @Column(name = "type")
     private String type;
 
+    @Column(name = "utilities")
+    private String utilities;
+
     @Column(name = "price")
     private long price;
 

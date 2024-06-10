@@ -49,4 +49,7 @@ public class BookingOrder {
 
     @OneToMany(mappedBy = "bookingOrder")
     private Set<BookingRoom> bookingRoomSet;
+
+    @OneToMany(mappedBy = "bookingOrder")
+    private Set<BookingService> bookingServiceSet;
 }
