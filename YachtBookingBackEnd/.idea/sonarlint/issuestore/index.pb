@@ -87,9 +87,7 @@ Msrc/main/java/com/example/YachtBookingBackEnd/controller/AdminController.java,
 Osrc/main/java/com/example/YachtBookingBackEnd/repository/AccountRepository.java,9\2\92b046c84014d96eb166bdc1b9788dd0bebdff48
 }
 Msrc/main/java/com/example/YachtBookingBackEnd/repository/AdminRepository.java,a\6\a69e03440f4a4c9d8088b8e502e5e8f682c17f33
-v
-Fsrc/main/java/com/example/YachtBookingBackEnd/config/ConfigFilter.java,9\6\9695ee8e1692ff8ccdd58477f5a151dec292a948
-t
-Dsrc/main/java/com/example/YachtBookingBackEnd/config/CorsFilter.java,e\8\e831815e73b26f5b647875fa9b9fcc9b0dcdc442
 x
 Hsrc/main/java/com/example/YachtBookingBackEnd/config/SecurityConfig.java,b\1\b1c8372067b10b32fcfc6180a3fb9f76bbe7a781
+€
+Psrc/main/java/com/example/YachtBookingBackEnd/security/CustomFilterSecurity.java,a\e\aef3be8cf03fd3395592fe54686960c06fb8aedc

@@ -2,6 +2,7 @@ package com.example.YachtBookingBackEnd.controller;
 
 import com.example.YachtBookingBackEnd.payload.response.DataResponse;
 import com.example.YachtBookingBackEnd.service.implement.IFile;
+import com.example.YachtBookingBackEnd.service.implement.IService;
 import com.example.YachtBookingBackEnd.service.implement.IYacht;
 import com.example.YachtBookingBackEnd.service.implement.IYachtImage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ public class CompanyController {
     IFile iFile;
     @Autowired
     IYachtImage iYachtImage;
+    @Autowired
+    IService iService;
 
     @GetMapping("/allYacht")
     public ResponseEntity<?> viewYacht() {
@@ -98,4 +101,17 @@ public class CompanyController {
         dataResponse.setData(iYachtImage.deleteImage(imageId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+    @GetMapping("/getAllService")
+    public ResponseEntity<?> getAllService() {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iService.getAllService());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @PostMapping("/addService")
+    public ResponseEntity<?> addService(@RequestParam String serviceName, @RequestParam double price) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iService.addService(serviceName, price));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
 }
