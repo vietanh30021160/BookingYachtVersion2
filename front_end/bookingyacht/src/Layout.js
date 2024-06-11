@@ -16,14 +16,19 @@ import YachtRule from './components/yacht/YachtRule';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ForgotPassword from './components/auths/ForgotPassword';
+import InformationCompany from './components/auths/InformationCompany';
 import Blog from './components/blog/Blog';
+import ProfileCompany from './components/company/Profile';
 import MainPage from './components/detailYacht/mainDetailPage/MainPage';
 import Enterprise from './components/enterprise/Enterprise';
-import FindYacht from './components/yacht/FindYacht';
-import ForgotPassword from './components/auths/ForgotPassword';
 import Profile from './components/home/Profile';
-import ProfileCompany from './components/company/Profile';
-import InformationCompany from './components/auths/InformationCompany';
+import FindYacht from './components/yacht/FindYacht';
+
+import AdminLayout from './components/admin/headerAdmin/AdminLayout';
+import CompanyManager from './components/admin/managerAdmin/CompanyManager';
+import CustomerManager from './components/admin/managerAdmin/CustomerManager';
+import AdminHome from './components/admin/pageAdmin/AdminHome';
 const Layout = () => {
     return (
         <>
@@ -56,6 +61,12 @@ const Layout = () => {
                     <Route path='bill' element={<Bill />} />
                     <Route path='profile' element={<ProfileCompany />} />
 
+                </Route>
+
+                <Route path='/admin' element={<AdminLayout/>}>
+                    <Route path='manager' element={<AdminHome/>}/>
+                    <Route path="customer" element={<CustomerManager/>} />
+                    <Route path="company" element={<CompanyManager/>} />
                 </Route>
 
             </Routes>
