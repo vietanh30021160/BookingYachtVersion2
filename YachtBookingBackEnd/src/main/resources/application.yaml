@@ -30,6 +30,6 @@ fileUpLoad:
 
 vnpay:
   api:
-    url: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
+    url: "https://sandbox.vnpayment.vn/paymentv2/"
     secret-key: "IOMD65I4028IUX9GDIKR3NO583UOKRNW"
     access-key: "OCFL0E29"

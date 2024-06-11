@@ -15,7 +15,7 @@ import java.util.Set;
 public class Service {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "idservice", nullable = false)
+    @Column(name = "id_service", nullable = false)
     private String idService;
 
     @Column(name = "service")
