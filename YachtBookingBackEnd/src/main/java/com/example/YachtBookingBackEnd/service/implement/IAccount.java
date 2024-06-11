@@ -10,5 +10,5 @@ public interface IAccount {
 
     List<AccountDTO> getAllAccountCompanies();
 
-    boolean createAccountCustomer(String username, String password);
+    String createAccountCustomer(String username, String password);
 }

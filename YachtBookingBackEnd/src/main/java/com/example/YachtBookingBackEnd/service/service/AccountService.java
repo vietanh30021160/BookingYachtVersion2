@@ -65,7 +65,7 @@ public class AccountService implements IAccount {
     }
 
     @Override
-    public boolean createAccountCustomer(String username, String password) {
+    public String createAccountCustomer(String username, String password) {
         try {
             // Kiểm tra xem username đã tồn tại hay chưa
             if (accountRepository.existsByUsername(username)) {
@@ -82,10 +82,10 @@ public class AccountService implements IAccount {
             // Lưu account vào db
             accountRepository.save(account);
 
-            return true;
+            return account.getIdAccount();
         } catch (Exception e) {
             log.error("Account customer creation failed - default error", e);
-            return false;
+            return "Account customer creation failed";
         }
     }
 

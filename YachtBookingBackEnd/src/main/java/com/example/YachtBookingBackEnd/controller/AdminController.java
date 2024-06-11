@@ -47,17 +47,6 @@ public class AdminController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/companies")
-    public ResponseEntity<?> addInfoCompany(@RequestParam String idAccount,
-                                            @RequestParam String name,
-                                            @RequestParam String address,
-                                            @RequestParam MultipartFile logo,
-                                            @RequestParam String email) {
-        DataResponse dataResponse = new DataResponse<>();
-        dataResponse.setData(iCompany.addCompany(idAccount, name, address, logo, email));
-        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-    }
-
     @GetMapping("/companies/details")
     public ResponseEntity<?> getDetailCompanyByID(@RequestParam String idAccount) {
         DataResponse dataResponse = new DataResponse<>();
