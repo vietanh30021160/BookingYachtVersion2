@@ -1,11 +1,9 @@
 package com.example.YachtBookingBackEnd.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.util.Set;
 
 @Getter
