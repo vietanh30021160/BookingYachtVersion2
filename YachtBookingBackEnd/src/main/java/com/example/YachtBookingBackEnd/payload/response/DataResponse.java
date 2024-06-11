@@ -9,10 +9,10 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@JsonInclude(JsonInclude.Include.NON_NULL) // không hiển thị những field null ở JSON
+@JsonInclude(JsonInclude.Include.NON_NULL) // Không hiển thị những field null ở JSON
 public class DataResponse<T> {
-    private int status = 200;
-    private boolean success = true;
-    private String desc;
-    private T data;
+    int status = 200;
+    boolean success = true;
+    String desc;
+    T data;
 }

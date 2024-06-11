@@ -4,9 +4,12 @@ import com.example.YachtBookingBackEnd.payload.response.DataResponse;
 import com.example.YachtBookingBackEnd.service.implement.IFile;
 import com.example.YachtBookingBackEnd.service.implement.IYacht;
 import com.example.YachtBookingBackEnd.service.implement.IYachtImage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import com.example.YachtBookingBackEnd.service.implement.ICompany;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +20,13 @@ import java.time.LocalDate;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/companies")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompanyController {
-    @Autowired
     IYacht iYacht;
-    @Autowired
     IFile iFile;
-    @Autowired
     IYachtImage iYachtImage;
+    ICompany iCompany;
 
     @GetMapping("/allYacht")
     public ResponseEntity<?> viewYacht() {
@@ -96,6 +99,16 @@ public class CompanyController {
     public ResponseEntity<?> deleteYachtImageById(@PathVariable String imageId) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYachtImage.deleteImage(imageId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @PostMapping("/profile")
+    public ResponseEntity<?> addInfoCompany(@RequestParam String idAccount,
+                                            @RequestParam String name,
+                                            @RequestParam String address,
+                                            @RequestParam MultipartFile logo,
+                                            @RequestParam String email) {
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iCompany.addCompany(idAccount, name, address, logo, email));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 }

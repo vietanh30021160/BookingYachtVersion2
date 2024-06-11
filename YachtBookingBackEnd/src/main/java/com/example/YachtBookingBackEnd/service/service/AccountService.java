@@ -23,10 +23,10 @@ public class AccountService implements IAccount {
     PasswordEncoder passwordEncoder;
 
     public static final String ROLE_COMPANY = "COMPANY";
-
+    public static final String ROLE_CUSTOMER = "CUSTOMER";
 
     @Override
-    public boolean createAccountCompany(String username, String password) throws Exception {
+    public boolean createAccountCompany(String username, String password) {
         try {
             // Kiểm tra xem username đã tồn tại hay chưa
             if (accountRepository.existsByUsername(username)) {
@@ -45,7 +45,7 @@ public class AccountService implements IAccount {
 
             return true;
         } catch (Exception e) {
-            log.error("Account creation failed - default error", e);
+            log.error("Account company creation failed - default error", e);
             return false;
         }
     }
@@ -62,6 +62,31 @@ public class AccountService implements IAccount {
                         .role(account.getRole())
                         .build())
                 .toList();
+    }
+
+    @Override
+    public String createAccountCustomer(String username, String password) {
+        try {
+            // Kiểm tra xem username đã tồn tại hay chưa
+            if (accountRepository.existsByUsername(username)) {
+                // Nếu tồn tại, throw exception với thông báo username đã tồn tại
+                throw new Exception("Username already exists");
+            }
+
+            // Chuyển đổi đối tượng request thành đối tượng Account
+            Account account = new Account();
+            account.setUsername(username);
+            account.setPassword(passwordEncoder.encode(password));
+            account.setRole(ROLE_CUSTOMER);
+
+            // Lưu account vào db
+            accountRepository.save(account);
+
+            return account.getIdAccount();
+        } catch (Exception e) {
+            log.error("Account customer creation failed - default error", e);
+            return "Account customer creation failed";
+        }
     }
 
 }

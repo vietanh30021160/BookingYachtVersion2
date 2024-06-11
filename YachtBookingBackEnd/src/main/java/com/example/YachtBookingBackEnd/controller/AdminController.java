@@ -1,21 +1,15 @@
 package com.example.YachtBookingBackEnd.controller;
 
-import com.example.YachtBookingBackEnd.dto.AccountDTO;
-import com.example.YachtBookingBackEnd.dto.CompanyDTO;
 import com.example.YachtBookingBackEnd.payload.response.DataResponse;
 import com.example.YachtBookingBackEnd.service.implement.IAccount;
 import com.example.YachtBookingBackEnd.service.implement.ICompany;
-import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/admins")
@@ -44,17 +38,6 @@ public class AdminController {
     public ResponseEntity<?> searchCompany(@RequestParam String companyName) {
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setData(iCompany.searchCompanyByName(companyName));
-        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-    }
-
-    @PostMapping("/companies")
-    public ResponseEntity<?> addInfoCompany(@RequestParam String idAccount,
-                                            @RequestParam String name,
-                                            @RequestParam String address,
-                                            @RequestParam MultipartFile logo,
-                                            @RequestParam String email) {
-        DataResponse dataResponse = new DataResponse<>();
-        dataResponse.setData(iCompany.addCompany(idAccount, name, address, logo, email));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
