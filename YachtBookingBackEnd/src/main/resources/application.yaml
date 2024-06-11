@@ -11,6 +11,10 @@ spring:
       ddl-auto: update
     show-sql: true
     open-in-view: false
+  h2:
+    console:
+      enabled: true
+
 logging:
   level:
     org:
@@ -23,3 +27,9 @@ jwt:
 
 fileUpLoad:
   rootPath: D:\UML SWP\uploads
+
+vnpay:
+  api:
+    url: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
+    secret-key: "IOMD65I4028IUX9GDIKR3NO583UOKRNW"
+    access-key: "OCFL0E29"
