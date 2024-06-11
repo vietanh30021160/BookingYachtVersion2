@@ -11,4 +11,11 @@ public interface IAccount {
     List<AccountDTO> getAllAccountCompanies();
 
     String createAccountCustomer(String username, String password);
+
+    List<AccountDTO> getAccountCustomer();
+    AccountDTO get1Account(String  id);
+
+    void deleteAccount(String id);
+
+    boolean updateAccount(String customerId, String   password);
 }

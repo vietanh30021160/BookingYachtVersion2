@@ -111,4 +111,15 @@ public class CompanyController {
         dataResponse.setData(iCompany.addCompany(idAccount, name, address, logo, email));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
+    @PutMapping("/profile/{idCompany}")
+    public ResponseEntity<?> updateCompany(@PathVariable String idCompany,
+                                           @RequestParam String name,
+                                           @RequestParam String address,
+                                           @RequestParam MultipartFile logo,
+                                           @RequestParam String email){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iCompany.updateCompany(idCompany, name, address, logo, email));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 }

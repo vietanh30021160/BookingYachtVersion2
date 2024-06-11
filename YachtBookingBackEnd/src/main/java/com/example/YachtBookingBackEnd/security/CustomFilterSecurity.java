@@ -50,12 +50,12 @@ public class CustomFilterSecurity {
         http.csrf().disable()
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/customer/**").permitAll()
+                                .requestMatchers("/api/customer/**", "/api/customer/accounts").permitAll()
                                 .requestMatchers("/login/**").permitAll() // Cho phép tất cả các yêu cầu đến /login/**
                                 .requestMatchers("/api/admins/**").hasRole("ADMIN") // Chỉ cho phép vai trò ADMIN truy cập /admin/**
                                 .requestMatchers("/api/companies/**").hasRole("COMPANY") // Chỉ cho phép vai trò COMPANY truy cập /company/**
                                 .requestMatchers("/api/customer/booking/**").hasRole("CUSTOMER")  // Chỉ cho phép vai trò CUSTOMER truy cập /customer/**
-                                .requestMatchers("/api/customer/profile/**").hasRole("CUSTOMER")
+                                .requestMatchers("/api/customer/profile/**", "/api/customer/changePassword/**").hasRole("CUSTOMER")
                                 .anyRequest().authenticated())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

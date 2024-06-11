@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -73,6 +74,26 @@ public class CompanyService implements ICompany {
             log.error("Company could not be added", e);
             return false;
         }
+    }
+
+    @Override
+    public boolean updateCompany(String idCompany, String name, String address, MultipartFile logo, String email) {
+        Optional<Company> company = companyRepository.findByIdAndExist(idCompany);
+        if(company.isPresent()){
+            Company companyEntity = company.get();
+            try{
+                companyEntity.setName(name);
+                companyEntity.setAddress(address);
+                iFile.save(logo);
+                companyEntity.setLogo(logo.getOriginalFilename());
+                companyEntity.setEmail(email);
+                companyRepository.save(companyEntity);
+                return true;
+            }catch (Exception e){
+                return false;
+            }
+        }
+        return false;
     }
 
     private boolean isValidEmail(String email) {

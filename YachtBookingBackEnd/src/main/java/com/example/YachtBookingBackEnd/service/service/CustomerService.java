@@ -1,5 +1,7 @@
 package com.example.YachtBookingBackEnd.service.service;
 
+import com.example.YachtBookingBackEnd.dto.AccountDTO;
+import com.example.YachtBookingBackEnd.dto.CustomerDTO;
 import com.example.YachtBookingBackEnd.entity.Account;
 import com.example.YachtBookingBackEnd.entity.Customer;
 import com.example.YachtBookingBackEnd.entity.Wallet;
@@ -14,6 +16,9 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,6 +31,8 @@ public class CustomerService implements ICustomer {
     AccountRepository accountRepository;
     WalletRepository walletRepository;
     IWallet iWallet;
+
+
 
     public static final String ROLE_CUSTOMER = "CUSTOMER";
 
@@ -74,6 +81,95 @@ public class CustomerService implements ICustomer {
             log.error("Error occurred while adding customer: {}", e.getMessage());
             return false;
         }
+    }
+
+    @Override
+    public List<CustomerDTO> getAllCustomer() {
+        List<CustomerDTO> customerDTOList = new ArrayList<>();
+
+        try {
+            List<Customer> customerList = customerRepository.findAll();
+
+            for (Customer customer : customerList
+            ) {
+                CustomerDTO customerDTO = new CustomerDTO();
+                AccountDTO accountDTO = new AccountDTO();
+
+                if(customer.getAccount().getRole().equals("CUSTOMER")){
+                    accountDTO.setRole(customer.getAccount().getRole());
+                    accountDTO.setIdAccount(customer.getAccount().getIdAccount());
+                    accountDTO.setUsername(customer.getAccount().getUsername());
+                    accountDTO.setPassword(customer.getAccount().getPassword());
+
+
+
+                    customerDTO.setIdCustomer(customer.getIdCustomer());
+                    customerDTO.setFullName(customer.getFullName());
+                    customerDTO.setEmail(customer.getEmail());
+                    customerDTO.setPhone(customer.getPhoneNumber());
+                    customerDTO.setAccountDTO(accountDTO);
+                    customerDTO.setAddress(customer.getAddress());
+                    customerDTOList.add(customerDTO);
+                }
+
+
+            }
+        } catch (Exception e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
+        System.out.println(customerDTOList);
+
+        return customerDTOList;
+    }
+
+    @Override
+    public CustomerDTO getCustomer(String id) {
+        Optional<Customer> customer = customerRepository.findById(id);
+        AccountDTO accountDTO = new AccountDTO();
+        CustomerDTO customerDTO = new CustomerDTO();
+        if (customer.isPresent()) {
+            customerDTO.setIdCustomer(id);
+            customerDTO.setFullName(customer.get().getFullName());
+            customerDTO.setEmail(customer.get().getEmail());
+            customerDTO.setPhone(customer.get().getPhoneNumber());
+
+            accountDTO.setIdAccount(customer.get().getAccount().getIdAccount());
+            accountDTO.setUsername(customer.get().getAccount().getUsername());
+            accountDTO.setPassword(customer.get().getAccount().getPassword());
+            accountDTO.setPassword(customer.get().getAccount().getRole());
+
+            customerDTO.setAccountDTO(accountDTO);
+        }
+        return customerDTO;
+    }
+
+    @Override
+    public boolean updateCustomer(String customerId, String fullName, String email, String phone, String address) {
+        //System.out.println(customerId);
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        System.out.println(customer);
+        if (customer.isPresent()) {
+            Customer customerEntity = customer.get();
+            System.out.println(customerEntity);
+            try {
+
+                customerEntity.setFullName(fullName);
+
+                customerEntity.setEmail(email);
+
+                customerEntity.setPhoneNumber(phone);
+                customerEntity.setAddress(address);
+
+                customerRepository.save(customerEntity);
+                return true;
+
+            } catch (Exception e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
     }
 
     private boolean isValidEmail(String email) {

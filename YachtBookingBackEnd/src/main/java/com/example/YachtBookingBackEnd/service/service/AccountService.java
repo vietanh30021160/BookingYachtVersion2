@@ -12,7 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor // Tạo constructor (final)
@@ -87,6 +89,79 @@ public class AccountService implements IAccount {
             log.error("Account customer creation failed - default error", e);
             return "Account customer creation failed";
         }
+    }
+
+
+    @Override
+    public List<AccountDTO> getAccountCustomer() {
+        List<AccountDTO> accountDTOList = new ArrayList<>();
+
+        try {
+            List<Account> accountList = accountRepository.findAll();
+
+            for (Account account : accountList
+            ) {
+
+                AccountDTO accountDTO = new AccountDTO();
+
+                accountDTO.setIdAccount(account.getIdAccount());
+                accountDTO.setUsername(account.getUsername());
+                accountDTO.setPassword(account.getPassword());
+                accountDTO.setRole(account.getRole());
+                String role = account.getRole();
+                if (role.equals("CUSTOMER")) {
+                    accountDTOList.add(accountDTO);
+                }
+                System.out.println(account);
+            }
+        } catch (Exception e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
+
+
+        return accountDTOList;
+    }
+
+    @Override
+    public AccountDTO get1Account(String  id)  {
+        Optional<Account> account=  accountRepository.findById(id);
+
+        AccountDTO accountDTO = new AccountDTO();
+        if(account.isPresent()){
+            accountDTO.setIdAccount(id);
+            accountDTO.setUsername(account.get().getUsername());
+            accountDTO.setPassword(account.get().getPassword());
+            accountDTO.setRole(account.get().getRole());
+        }
+        return accountDTO;
+    }
+
+    @Override
+    public void deleteAccount(String id){
+        accountRepository.deleteById(id);
+    }
+    public Account getAccount2(String id){
+        return accountRepository.findById(id)
+                . orElseThrow(() -> new RuntimeException("Can not found id: " + id));
+    }
+
+    @Override
+    public boolean updateAccount(String customerId, String  password) {
+
+        Optional<Account> account = accountRepository.findById(customerId);
+        if (account.isPresent()) {
+            Account account1 = account.get();
+            try {
+                account1.setPassword(passwordEncoder.encode(password));
+                accountRepository.save(account.get());
+                return true;
+            }catch (Exception e){
+                return false;
+            }
+        }else{
+            return false;
+        }
+
     }
 
 }

@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/customer")
@@ -37,6 +34,23 @@ public class CustomerController {
                                          @RequestParam String address) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iCustomer.addCustomer(idAccount, fullName, email, phoneNumber, address));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PutMapping("/changePassword/{customerAccountId}")
+    ResponseEntity<?> changePassword(@PathVariable String customerAccountId,@RequestParam String password){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iAccount.updateAccount(customerAccountId, password));
+        return new ResponseEntity<>(dataResponse,HttpStatus.OK);
+    }
+
+    @PutMapping("/updateCustomer/{customerId}")
+    ResponseEntity<?> updateCustomer(@PathVariable String customerId,@RequestParam String fullName,
+                                     @RequestParam String email,
+                                     @RequestParam String phoneNumber,
+                                     @RequestParam String address){
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iCustomer.updateCustomer(customerId, fullName, email, phoneNumber, address));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 }
