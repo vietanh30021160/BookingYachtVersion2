@@ -38,62 +38,66 @@ public class WalletService implements IWallet {
 
     @Override
     public String createVnpayWallet(Customer customer) {
+        // URL endpoint để tạo ví
         String url = VNPAY_API_URL + "wallet/create";
+
+        // Thiết lập header cho yêu cầu HTTP
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         // Tạo chuỗi chữ ký (signature) dựa trên secret-key và các thông tin khác
         String signature = createSignature(customer.getAccount().getUsername());
 
-        // Tạo request body
+        // Tạo request body với các tham số cần thiết
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("access_key", VNPAY_API_ACCESS_KEY);
-        requestBody.put("secret_key", VNPAY_API_ACCESS_KEY);
+        requestBody.put("secret_key", VNPAY_API_SECRET_KEY); // Sửa lại: phải là VNPAY_API_SECRET_KEY
         requestBody.put("username", customer.getAccount().getUsername());
         requestBody.put("signature", signature);
 
+        // Tạo HttpEntity chứa request body và header
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
 
-        // Gửi yêu cầu tạo ví đến VNPay API
+        // Gửi yêu cầu POST tới API VNPay và nhận phản hồi
         ResponseEntity<Map> response = restTemplate.postForEntity(url, entity, Map.class);
 
-        // Xử lý response và trả về wallet_id
+        // Kiểm tra trạng thái phản hồi và trả về wallet_id nếu yêu cầu thành công
         if (response.getStatusCode() == HttpStatus.OK) {
             Map<String, Object> responseBody = response.getBody();
             if (responseBody != null) {
                 return (String) responseBody.get("wallet_id");
             }
         }
+
+        // Ném ngoại lệ nếu việc tạo ví thất bại
         throw new RuntimeException("Failed to create VNPay wallet");
     }
 
     private String createSignature(String username) {
         try {
+            // Tạo dữ liệu để ký bằng cách nối username và secret key
             String dataToSign = username + VNPAY_API_SECRET_KEY;
+
+            // Tạo instance MessageDigest với thuật toán SHA-256
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+
+            // Tạo hàm băm từ dữ liệu
             byte[] hashedData = messageDigest.digest(dataToSign.getBytes());
 
             // Chuyển đổi kết quả băm thành chuỗi hex
             StringBuffer hexString = new StringBuffer();
             for (byte b : hashedData) {
                 String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
+                if (hex.length() == 1) hexString.append('0'); // Đảm bảo mỗi byte được biểu diễn bởi hai ký tự hex
                 hexString.append(hex);
             }
 
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
+            // Ghi log và xử lý ngoại lệ liên quan đến NoSuchAlgorithmException
             log.error("Error creating signature", e);
             return null;
         }
-    }
-
-    // Phương thức giả định hàm băm, bạn cần thay thế bằng hàm băm thực tế
-    private String hashFunction(String data) {
-        // Đây là một phương thức giả định, bạn cần thay thế bằng hàm băm thực tế
-        // Ví dụ: sử dụng thư viện java.security.MessageDigest để tạo chữ ký
-        // Đảm bảo sử dụng thuật toán hash mạnh và an toàn
-        return data; // Giả định là hàm băm trả về cùng chuỗi với dữ liệu đầu vào (chỉ để minh họa)
     }
 }
 
