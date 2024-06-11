@@ -1,8 +1,17 @@
 import React from 'react';
 import yacht from '../../assets/no53ab0y526yl825.webp'
 import { Button, FormControl, FormGroup } from 'react-bootstrap';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { RiShipLine } from "react-icons/ri";
+import { FaLocationDot } from "react-icons/fa6";
+import './ViewYacht.scss'
+import ReactPaginate from 'react-paginate';
+import './Company.scss'
 
 const ViewYacht = () => {
+    const navigate = useNavigate();
+
+
     return (
         <div className='view-yacht-container'>
             <div className='row my-4'>
@@ -13,34 +22,30 @@ const ViewYacht = () => {
                 </FormGroup>
 
             </div>
+
             <div className='row container'>
                 <div className="col-xl-12">
                     <div className="card mb-4 order-list">
                         <div className="gold-members p-4">
-                            <a href="#">
-                            </a>
-                            <div className="media">
-                                <a href="#">
-                                    <img className="mr-4" src={yacht} alt="Generic placeholder image" />
-                                </a>
-                                <div className="media-body">
-                                    <a href="#">
-                                        <span className="float-right text-success">Delivered on Mon, Nov 12, 7:18 PM <i className="feather-check-circle text-success" /></span>
-                                    </a>
-                                    <h6 className="mb-3"><a href="#">
-                                    </a><a href="detail.html" className="text-dark">Gus's World Famous Fried Chicken
-                                        </a>
-                                    </h6>
-                                    <p className="text-black-50 mb-1"><i className="feather-map-pin" /> 730 S Mendenhall Rd, Memphis, TN 38117, USA
-                                    </p>
-                                    <p className="text-black-50 mb-3"><i className="feather-list" /> ORDER #25102589748 <i className="feather-clock ml-2" /> Mon, Nov 12, 6:26 PM</p>
-                                    <p className="text-dark">Veg Masala Roll x 1, Veg Burger x 1, Veg Penne Pasta in Red Sauce x 1
-                                    </p>
-                                    <hr />
-                                    <div className='action d-flex'>
-                                        <p className="mb-0 text-dark text-dark pt-2"><span className="text-dark font-weight-bold"> Total Paid:</span>  $300
-                                        </p>
 
+                            <div className="media">
+
+                                <img className="mr-4" src={yacht} alt="Generic placeholder image" />
+
+                                <div className="media-body">
+                                    <div className='card-content'>
+                                        <div className='location'><FaLocationDot />Vịnh Hạ Long</div>
+                                        <div className='name'>Du thuyền Heritage Bình Chuẩn Cát Bà</div>
+                                        <div> <RiShipLine /> Ha thuy 2019 - Tau vo kim loai - 20 phong </div>
+
+                                    </div>
+                                    <div className='action d-flex'>
+                                        <p className="mb-0 text-dark text-dark pt-2"><span className="text-dark font-weight-bold"></span>
+                                        </p>
+                                        <div className="float-right">
+                                            <Button className="btn btn-sm btn-success" onClick={() => navigate('/manage-yacht')}><i className="feather-check-circle" />Manage Yacht</Button>
+                                            <Button className="btn btn-sm btn-warning" onClick={() => navigate('/manage-room')}><i className="feather-trash" /> Manage Room </Button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -49,6 +54,30 @@ const ViewYacht = () => {
                 </div>
 
             </div>
+
+            <div className='page'>
+                <ReactPaginate
+                    nextLabel="Next >"
+                    // onPageChange=
+                    pageRangeDisplayed={3}
+                    marginPagesDisplayed={2}
+                    pageCount={3}
+                    previousLabel="< Prev"
+                    pageClassName="page-item"
+                    pageLinkClassName="page-link"
+                    previousClassName="page-item"
+                    previousLinkClassName="page-link"
+                    nextClassName="page-item"
+                    nextLinkClassName="page-link"
+                    breakLabel="..."
+                    breakClassName="page-item"
+                    breakLinkClassName="page-link"
+                    containerClassName="pagination"
+                    activeClassName="active"
+                    renderOnZeroPageCount={null}
+                />
+            </div>
+
         </div>
     );
 };

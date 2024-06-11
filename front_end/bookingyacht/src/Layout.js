@@ -8,12 +8,10 @@ import Signup from './components/auths/Signup';
 import Bill from './components/company/Bill';
 import ManageCompany from './components/company/ManageCompany';
 import ViewBooking from './components/company/ViewBooking';
-import ViewFeedback from './components/company/ViewFeedback';
 import ViewYacht from './components/company/ViewYacht';
 import HomePage from './components/home/HomePage';
 import YachtQuestion from './components/yacht/YachtQuestion';
 import YachtRule from './components/yacht/YachtRule';
-
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Blog from './components/blog/Blog';
@@ -24,13 +22,14 @@ import ForgotPassword from './components/auths/ForgotPassword';
 import Profile from './components/home/Profile';
 import ProfileCompany from './components/company/Profile';
 import InformationCompany from './components/auths/InformationCompany';
+import ManageYacht from './components/company/ManageYacht';
+import ManageRoom from './components/company/ManageRoom';
 const Layout = () => {
     return (
         <>
             <Routes>
                 <Route path="/" element={<App />}>
                     <Route index element={<HomePage />} />
-
                     <Route path='/blog' element={<Blog />} />
                     <Route path='/doanhnhiep' element={<Enterprise />} />
                     <Route path='maybay' element={<MainPage />} />
@@ -51,12 +50,13 @@ const Layout = () => {
                 <Route path='/manage-company' element={<ManageCompany />} >
                     <Route index element={<ViewBooking />} />
                     <Route path='view-yacht' element={<ViewYacht />} />
-                    <Route path='view-feedback' element={<ViewFeedback />} />
-                    {/* <Route path='view-booking' element={<ViewBooking />} /> */}
                     <Route path='bill' element={<Bill />} />
                     <Route path='profile' element={<ProfileCompany />} />
-
                 </Route>
+
+                <Route path='manage-yacht' element={<ManageYacht />} />
+                <Route path='manage-room' element={<ManageRoom />} />
+
 
             </Routes>
 
