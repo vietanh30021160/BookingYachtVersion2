@@ -1,15 +1,13 @@
 package com.example.YachtBookingBackEnd.controller;
 
 import com.example.YachtBookingBackEnd.payload.response.DataResponse;
-import com.example.YachtBookingBackEnd.service.implement.IFile;
-import com.example.YachtBookingBackEnd.service.implement.IYacht;
-import com.example.YachtBookingBackEnd.service.implement.IYachtImage;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import com.example.YachtBookingBackEnd.service.implement.ICompany;
+import com.example.YachtBookingBackEnd.service.implement.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +21,17 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompanyController {
+    @Autowired
     IYacht iYacht;
+    @Autowired
     IFile iFile;
+    @Autowired
     IYachtImage iYachtImage;
+    @Autowired
+    IService iService;
+    @Autowired
+    IYachtService iYachtService;
+    @Autowired
     ICompany iCompany;
 
     @GetMapping("/allYacht")
@@ -122,4 +128,26 @@ public class CompanyController {
         dataResponse.setData(iCompany.updateCompany(companyId, name, address, logo, email));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+    @GetMapping("/getAllService")
+    public ResponseEntity<?> getAllService() {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iService.getAllService());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getServiceByYacht/{yachtId}")
+    public ResponseEntity<?> getServiceByYacht(@PathVariable String yachtId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iService.getAllServiceByYacht(yachtId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @PostMapping("/addServiceForYacht/{yachtId}")
+    public ResponseEntity<?> addServiceForYacht(@PathVariable String yachtId,
+                                                @RequestParam String service,
+                                                @RequestParam long price) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYachtService.addYachtService(yachtId, service, price));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+
 }
