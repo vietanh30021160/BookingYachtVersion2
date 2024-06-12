@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface ServiceRepository extends JpaRepository<Service,String> {
-
+    Service findByService(String service);
 }

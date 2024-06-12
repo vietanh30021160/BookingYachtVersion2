@@ -1,10 +1,7 @@
 package com.example.YachtBookingBackEnd.controller;
 
 import com.example.YachtBookingBackEnd.payload.response.DataResponse;
-import com.example.YachtBookingBackEnd.service.implement.IFile;
-import com.example.YachtBookingBackEnd.service.implement.IService;
-import com.example.YachtBookingBackEnd.service.implement.IYacht;
-import com.example.YachtBookingBackEnd.service.implement.IYachtImage;
+import com.example.YachtBookingBackEnd.service.implement.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +24,8 @@ public class CompanyController {
     IYachtImage iYachtImage;
     @Autowired
     IService iService;
+    @Autowired
+    IYachtService iYachtService;
 
     @GetMapping("/allYacht")
     public ResponseEntity<?> viewYacht() {
@@ -107,11 +106,20 @@ public class CompanyController {
         dataResponse.setData(iService.getAllService());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-    @PostMapping("/addService")
-    public ResponseEntity<?> addService(@RequestParam String serviceName, @RequestParam double price) {
+    @GetMapping("/getServiceByYacht/{yachtId}")
+    public ResponseEntity<?> getServiceByYacht(@PathVariable String yachtId) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iService.addService(serviceName, price));
+        dataResponse.setData(iService.getAllServiceByYacht(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+    @PostMapping("/addServiceForYacht/{yachtId}")
+    public ResponseEntity<?> addServiceForYacht(@PathVariable String yachtId,
+                                                @RequestParam String service,
+                                                @RequestParam long price) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYachtService.addYachtService(yachtId, service, price));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
 
 }
