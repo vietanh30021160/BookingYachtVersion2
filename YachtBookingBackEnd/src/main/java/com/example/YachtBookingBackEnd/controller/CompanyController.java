@@ -112,8 +112,8 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/profile")
-    public ResponseEntity<?> updateCompany(@RequestParam String companyId,
+    @PostMapping("/updateProfile/{companyId}")
+    public ResponseEntity<?> updateCompany(@PathVariable String companyId,
                                            @RequestParam String name,
                                            @RequestParam String address,
                                            @RequestParam MultipartFile logo,

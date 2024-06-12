@@ -15,9 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -79,25 +77,27 @@ public class CompanyService implements ICompany {
     @Override
     public boolean updateCompany(String idCompany, String name, String address, MultipartFile logo, String email) {
 
-        Optional<Company> company = companyRepository.findByIdAndExist(idCompany);
-
-        if(company.isPresent()){
-            Company companyEntity = company.get();
-            System.out.println(companyEntity);
-            System.out.println("33333333333");
-            try{
-                companyEntity.setName(name);
-                companyEntity.setAddress(address);
-                iFile.save(logo);
-                companyEntity.setLogo(logo.getOriginalFilename());
-                companyEntity.setEmail(email);
-                companyRepository.save(companyEntity);
-                return true;
-            }catch (Exception e){
-                return false;
-            }
+        Company company = companyRepository.findByIdAndExist(idCompany)
+                .orElseThrow(() -> new RuntimeException("Company not found! Try again"));
+        if(!isValidEmail(email)){
+            log.error("Sai");
         }
-        return false;
+
+        try {
+            company.setName(name);
+            company.setAddress(address);
+            iFile.save(logo);
+            company.setLogo(logo.getOriginalFilename());
+            company.setEmail(email);
+            companyRepository.save(company);
+            return true;
+        } catch (Exception e) {
+
+            System.out.println(e);
+            return false;
+        }
+
+
     }
 
     private boolean isValidEmail(String email) {
