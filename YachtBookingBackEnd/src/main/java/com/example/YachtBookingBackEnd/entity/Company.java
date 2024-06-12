@@ -38,4 +38,18 @@ public class Company {
 
     @OneToMany(mappedBy = "company")
     private Set<Yacht> yacht;
+
+    @Override
+    public String toString() {
+        return "Company{" +
+                "idCompany='" + idCompany + '\'' +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", logo='" + logo + '\'' +
+                ", email='" + email + '\'' +
+                ", exist=" + exist +
+                ", account=" + account +
+                ", yacht=" + yacht +
+                '}';
+    }
 }

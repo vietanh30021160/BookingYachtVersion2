@@ -21,4 +21,6 @@ public interface CompanyRepository extends JpaRepository<Company, String> {
     Optional<Company> findByIdAndExist(@Param("idCompany") String idCompany);
 
     boolean existsCompanyByName(String name);
+
+
 }

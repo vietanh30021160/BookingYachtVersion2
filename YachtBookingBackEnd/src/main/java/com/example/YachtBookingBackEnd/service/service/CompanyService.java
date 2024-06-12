@@ -78,9 +78,13 @@ public class CompanyService implements ICompany {
 
     @Override
     public boolean updateCompany(String idCompany, String name, String address, MultipartFile logo, String email) {
+
         Optional<Company> company = companyRepository.findByIdAndExist(idCompany);
+
         if(company.isPresent()){
             Company companyEntity = company.get();
+            System.out.println(companyEntity);
+            System.out.println("33333333333");
             try{
                 companyEntity.setName(name);
                 companyEntity.setAddress(address);
