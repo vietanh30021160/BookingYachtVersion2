@@ -132,6 +132,7 @@ public class CustomerService implements ICustomer {
             customerDTO.setFullName(customer.get().getFullName());
             customerDTO.setEmail(customer.get().getEmail());
             customerDTO.setPhone(customer.get().getPhoneNumber());
+            customerDTO.setAddress(customer.get().getAddress());
 
             accountDTO.setIdAccount(customer.get().getAccount().getIdAccount());
             accountDTO.setUsername(customer.get().getAccount().getUsername());
