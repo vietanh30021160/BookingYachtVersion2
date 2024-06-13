@@ -3,7 +3,7 @@ import NProgress from 'nprogress';
 
 
 const instance = axios.create({
-    baseURL: 'https://reqres.in',
+    baseURL: 'http://localhost:8080',
 
 });
 

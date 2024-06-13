@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/customer")
 @RequiredArgsConstructor
@@ -184,4 +185,5 @@ public class CustomerController {
         dataResponse.setData(iYacht.findYachtById(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
 }
