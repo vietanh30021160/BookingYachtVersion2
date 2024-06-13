@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.time.LocalDate;
 
 @CrossOrigin("*")
@@ -56,7 +55,7 @@ public class CompanyController {
         dataResponse.setData(iYacht.insertYacht(name, image, launch, hullBody, description, rule, itinerary, idYachtType, idLocation, idCompany));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-    @PostMapping("/yacht/updateYacht/{yachtId}")
+    @PutMapping("/yacht/updateYacht/{yachtId}")
     public ResponseEntity<?> updateYacht(@PathVariable String yachtId,
                                          @RequestParam String name,
                                          @RequestParam MultipartFile image,
@@ -70,7 +69,7 @@ public class CompanyController {
         dataResponse.setData(iYacht.updateYacht(yachtId, name, image, hullBody, description, rule, itinerary, idYachtType, idLocation));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-    @GetMapping("/yacht/delete/{id}")
+    @DeleteMapping("/yacht/delete/{id}")
     public ResponseEntity<?> deleteYacht(@PathVariable String id) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYacht.deleteYacht(id));
@@ -94,7 +93,7 @@ public class CompanyController {
         dataResponse.setData(iYachtImage.addImage(image, yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-    @GetMapping("/yacht/deleteImage/{imageId}")
+    @DeleteMapping("/yacht/deleteImage/{imageId}")
     public ResponseEntity<?> deleteYachtImageById(@PathVariable String imageId) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYachtImage.deleteImage(imageId));
@@ -120,6 +119,19 @@ public class CompanyController {
         dataResponse.setData(iYachtService.addYachtService(yachtId, service, price));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
-
+    @DeleteMapping("/deleteYachtService/{yachtId}/{serviceId}")
+    public ResponseEntity<?> deleteYachtService(@PathVariable String yachtId,
+                                                @PathVariable String serviceId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYachtService.deleteYachtService(yachtId, serviceId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @PostMapping("/updateYachtService/{yachtId}")
+    public ResponseEntity<?> updateYachtService(@PathVariable String yachtId,
+                                                @RequestParam String service,
+                                                @RequestParam long price) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYachtService.updateYachtService(yachtId, service, price));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 }
