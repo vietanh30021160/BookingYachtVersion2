@@ -19,17 +19,17 @@ const AdminNavbar = () => {
           </div>
         </Navbar.Brand>
         <Nav className="flex-column">
-          <Nav.Link href="#dashboard" as={Link} to="/admin/manager">
+          <Nav.Link href="#dashboard" as={Link} to="/dashboard/manager">
             <FaHome /> <span>Dashboard</span>
           </Nav.Link>
           <div className="nav-section">
             <Nav.Link>
               <span>Data</span>
             </Nav.Link>
-            <Nav.Link href="#manage-team" as={Link} to="/admin/customer">
+            <Nav.Link href="#manage-team" as={Link} to="/dashboard/customer">
               <FaUsers /> <span>Customer Manager</span>
             </Nav.Link>
-            <Nav.Link href="#contacts-info" as={Link} to="/admin/company">
+            <Nav.Link href="#contacts-info" as={Link} to="/dashboard/company">
               <FaAddressBook /> <span>Company Manager</span>
             </Nav.Link>
           </div>

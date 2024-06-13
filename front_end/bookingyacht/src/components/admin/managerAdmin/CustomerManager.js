@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Modal, Table } from 'react-bootstrap';
 import './Manager.scss';
+
 const CustomerManager = () => {
     const [customers, setCustomers] = useState([]);
     const [filteredCustomers, setFilteredCustomers] = useState([]);
@@ -12,10 +13,20 @@ const CustomerManager = () => {
     useEffect(() => {
         fetchCustomers();
     }, []);
-
+    const getAuthHeader = () =>{
+        const token = localStorage.getItem('token');
+        return token ? `Bearer ${token}` : '';
+    }
     const fetchCustomers = async () => {
         try {
-            const response = await axios.get('https://reqres.in/api/users?page=2');
+            const config = {
+                method : 'get',
+                url : 'http://localhost:8080/api/admins/account/getAllAccountCustomer',
+                headers : {
+                    'Authorization' : getAuthHeader()
+                }
+            };
+            const response = await axios(config);
             setCustomers(response.data.data);
             setFilteredCustomers(response.data.data);
         } catch (error) {
@@ -24,24 +35,12 @@ const CustomerManager = () => {
     };
 
     const handleSearchCustomer = value => {
-        // Add search logic here
         setSearchTerm(value);
         const filtered = customers.filter(customer =>
-            customer.first_name.toLowerCase().includes(value.toLowerCase()) ||
-            customer.last_name.toLowerCase().includes(value.toLowerCase()) ||
-            customer.email.toLowerCase().includes(value.toLowerCase())
+            customer.username.toLowerCase().includes(value.toLowerCase())
         );
         setFilteredCustomers(filtered);
     };
-
-    // const handleCreateCustomer = event => {
-    //     event.preventDefault();
-    //     const form = event.currentTarget;
-    //     const name = form.elements.name.value;
-    //     const email = form.elements.email.value;
-    //     // Add create customer logic here
-    //     setShowCustomerModal(false);
-    // };
 
     const handleDeleteCustomer = customerId => {
         // Add delete customer logic here
@@ -61,7 +60,7 @@ const CustomerManager = () => {
                 <input
                     type="text"
                     className="form-control"
-                    placeholder="Search customer by name or email"
+                    placeholder="Search customer by username"
                     value={searchTerm}
                     onChange={e => handleSearchCustomer(e.target.value)}
                 />
@@ -70,36 +69,38 @@ const CustomerManager = () => {
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
+                        <th>User Name</th>
+                        <th>Password</th>
+                        <th>Role</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {filteredCustomers.map(customer => (
-                        <tr key={customer.id}>
-                            <td>{customer.id}</td>
-                            <td>{customer.first_name} {customer.last_name}</td>
-                            <td>{customer.email}</td>
+                        <tr key={customer.idAccount}>
+                            <td>{customer.idAccount}</td>
+                            <td>{customer.username}</td>
+                            <td>{customer.password}</td>
+                            <td>{customer.role}</td>
                             <td className='button_mana'>
                                 <Button variant="primary" onClick={() => handleShowModal(customer)}>View Detail</Button>
-                                <Button variant="dark" onClick={() => handleDeleteCustomer(customer.id)}>Hidden</Button>
+                                <Button variant="dark" onClick={() => handleDeleteCustomer(customer.idAccount)}>Hidden</Button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
-            <Modal show={showModal} onHide={handleCloseModal}>
+            <Modal show={showModal} onHide={handleCloseModal} size='lg'>
                 <Modal.Header closeButton>
                     <Modal.Title>Customer Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {selectedCustomer && (
                         <>
-                            <p><strong>ID:</strong> {selectedCustomer.id}</p>
-                            <p><strong>Name:</strong> {selectedCustomer.first_name} {selectedCustomer.last_name}</p>
-                            <p><strong>Email:</strong> {selectedCustomer.email}</p>
-                            {/* Add other customer details here */}
+                            <p><strong>ID:</strong> {selectedCustomer.idAccount}</p>
+                            <p><strong>Username:</strong> {selectedCustomer.username}</p>
+                            <p><strong>Password:</strong> {selectedCustomer.password}</p>
+                            <p><strong>Role:</strong> {selectedCustomer.role}</p>
                         </>
                     )}
                 </Modal.Body>
