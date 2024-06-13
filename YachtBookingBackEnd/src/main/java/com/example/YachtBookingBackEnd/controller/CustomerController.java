@@ -42,8 +42,8 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/profile")
-    ResponseEntity<?> addCustomerProfile(@RequestParam String idAccount,
+    @PostMapping("/profile/{idAccount}")
+    ResponseEntity<?> addCustomerProfile(@PathVariable String idAccount,
                                          @RequestParam String fullName,
                                          @RequestParam String email,
                                          @RequestParam String phoneNumber,
