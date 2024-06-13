@@ -53,14 +53,14 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/changePassword/{customerAccountId}")
+    @PutMapping("/profile/changePassword/{customerAccountId}")
     ResponseEntity<?> changePassword(@PathVariable String customerAccountId,@RequestParam String password){
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iAccount.updateAccount(customerAccountId, password));
         return new ResponseEntity<>(dataResponse,HttpStatus.OK);
     }
 
-    @PutMapping("/updateCustomer/{customerId}")
+    @PutMapping("/profile/updateCustomer/{customerId}")
     ResponseEntity<?> updateCustomer(@PathVariable String customerId,@RequestParam String fullName,
                                      @RequestParam String email,
                                      @RequestParam String phoneNumber,
@@ -73,9 +73,6 @@ public class CustomerController {
 
     @GetMapping("/allYacht")
     public ResponseEntity<?> viewYacht() {
-//        SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-//        String enscrypted = Encoders.BASE64.encode(secretKey.getEncoded());
-//        System.out.println(enscrypted);
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYacht.getAllYacht());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
@@ -85,41 +82,7 @@ public class CustomerController {
         Resource resource = iFile.load(filename);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
     }
-    @PostMapping("/yacht/insertYacht/{idCompany}")
-    public ResponseEntity<?> insertYacht(@RequestParam String name,
-                                         @RequestParam MultipartFile image,
-                                         @RequestParam LocalDate launch,
-                                         @RequestParam String hullBody,
-                                         @RequestParam String description,
-                                         @RequestParam String rule,
-                                         @RequestParam String itinerary,
-                                         @RequestParam String idYachtType,
-                                         @RequestParam String idLocation,
-                                         @PathVariable String idCompany ) {
-        DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iYacht.insertYacht(name, image, launch, hullBody, description, rule, itinerary, idYachtType, idLocation, idCompany));
-        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-    }
-    @PutMapping("/yacht/updateYacht/{yachtId}")
-    public ResponseEntity<?> updateYacht(@PathVariable String yachtId,
-                                         @RequestParam String name,
-                                         @RequestParam MultipartFile image,
-                                         @RequestParam String hullBody,
-                                         @RequestParam String description,
-                                         @RequestParam String rule,
-                                         @RequestParam String itinerary,
-                                         @RequestParam String idYachtType,
-                                         @RequestParam String idLocation) {
-        DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iYacht.updateYacht(yachtId, name, image, hullBody, description, rule, itinerary, idYachtType, idLocation));
-        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-    }
-    @DeleteMapping("/yacht/delete/{id}")
-    public ResponseEntity<?> deleteYacht(@PathVariable String id) {
-        DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iYacht.deleteYacht(id));
-        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-    }
+
     @GetMapping("/yacht/findByCompany/{companyId}")
     public ResponseEntity<?> findByCompany(@PathVariable String companyId) {
         DataResponse dataResponse = new DataResponse();
@@ -132,18 +95,7 @@ public class CustomerController {
         dataResponse.setData(iYachtImage.getImageByYacht(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-    @PostMapping("/yacht/addImage/{yachtId}")
-    public ResponseEntity<?> getImageByYacht(@PathVariable String yachtId, @RequestParam MultipartFile image) {
-        DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iYachtImage.addImage(image, yachtId));
-        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-    }
-    @DeleteMapping("/yacht/deleteImage/{imageId}")
-    public ResponseEntity<?> deleteYachtImageById(@PathVariable String imageId) {
-        DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iYachtImage.deleteImage(imageId));
-        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-    }
+
     @GetMapping("/getAllService")
     public ResponseEntity<?> getAllService() {
         DataResponse dataResponse = new DataResponse();
@@ -156,29 +108,7 @@ public class CustomerController {
         dataResponse.setData(iService.getAllServiceByYacht(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-    @PostMapping("/addServiceForYacht/{yachtId}")
-    public ResponseEntity<?> addServiceForYacht(@PathVariable String yachtId,
-                                                @RequestParam String service,
-                                                @RequestParam long price) {
-        DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iYachtService.addYachtService(yachtId, service, price));
-        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-    }
-    @DeleteMapping("/deleteYachtService/{yachtId}/{serviceId}")
-    public ResponseEntity<?> deleteYachtService(@PathVariable String yachtId,
-                                                @PathVariable String serviceId) {
-        DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iYachtService.deleteYachtService(yachtId, serviceId));
-        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-    }
-    @PostMapping("/updateYachtService/{yachtId}")
-    public ResponseEntity<?> updateYachtService(@PathVariable String yachtId,
-                                                @RequestParam String service,
-                                                @RequestParam long price) {
-        DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iYachtService.updateYachtService(yachtId, service, price));
-        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-    }
+
     @GetMapping("/findYachtById/{yachtId}")
     public ResponseEntity<?> findYachtByYachtId(@PathVariable String yachtId) {
         DataResponse dataResponse = new DataResponse();
