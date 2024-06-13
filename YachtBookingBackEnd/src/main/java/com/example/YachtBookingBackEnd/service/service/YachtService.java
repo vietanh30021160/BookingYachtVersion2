@@ -260,4 +260,89 @@ public class YachtService implements IYacht {
         }
         return yachtDTOList;
     }
+    @Override
+    public YachtDTO findYachtById(String id) {
+        YachtDTO yachtDTO = new YachtDTO();
+        try {
+            Optional<Yacht> yacht = yachtRepository.findById(id);
+            if(yacht.isPresent() && yacht.get().getExist() == 1) {
+                yachtDTO.setIdYacht(yacht.get().getIdYacht());
+                yachtDTO.setName(yacht.get().getName());
+                yachtDTO.setImage(yacht.get().getImage());
+                yachtDTO.setLaunch(yacht.get().getLaunch());
+                yachtDTO.setRule(yacht.get().getRule());
+                yachtDTO.setHullBody(yacht.get().getHullBody());
+                yachtDTO.setDescription(yacht.get().getDescription());
+                yachtDTO.setItinerary(yacht.get().getItinerary());
+
+                YachtTypeDTO yachtTypeDTO = new YachtTypeDTO();
+                yachtTypeDTO.setIdYachtType(yacht.get().getYachtType().getIdYachtType());
+                yachtTypeDTO.setStarRanking(yacht.get().getYachtType().getStarRanking());
+
+                yachtDTO.setYachtType(yachtTypeDTO);
+
+                CompanyDTO companyDTO = new CompanyDTO();
+                companyDTO.setIdCompany(yacht.get().getCompany().getIdCompany());
+                companyDTO.setName(yacht.get().getCompany().getName());
+                companyDTO.setAddress(yacht.get().getCompany().getAddress());
+                companyDTO.setLogo(yacht.get().getCompany().getLogo());
+                companyDTO.setEmail(yacht.get().getCompany().getEmail());
+
+                yachtDTO.setCompany(companyDTO);
+
+                LocationDTO locationDTO = new LocationDTO();
+                locationDTO.setName(yacht.get().getLocation().getName());
+                locationDTO.setIdLocation(yacht.get().getLocation().getIdLocation());
+
+                yachtDTO.setLocation(locationDTO);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return yachtDTO;
+    }
+
+    @Override
+    public YachtDTO findYachtById(String id) {
+        YachtDTO yachtDTO = new YachtDTO();
+        try {
+            Optional<Yacht> yacht = yachtRepository.findById(id);
+            if(yacht.isPresent() && yacht.get().getExist() == 1) {
+                yachtDTO.setIdYacht(yacht.get().getIdYacht());
+                yachtDTO.setName(yacht.get().getName());
+                yachtDTO.setImage(yacht.get().getImage());
+                yachtDTO.setLaunch(yacht.get().getLaunch());
+                yachtDTO.setRule(yacht.get().getRule());
+                yachtDTO.setHullBody(yacht.get().getHullBody());
+                yachtDTO.setDescription(yacht.get().getDescription());
+                yachtDTO.setItinerary(yacht.get().getItinerary());
+
+                YachtTypeDTO yachtTypeDTO = new YachtTypeDTO();
+                yachtTypeDTO.setIdYachtType(yacht.get().getYachtType().getIdYachtType());
+                yachtTypeDTO.setStarRanking(yacht.get().getYachtType().getStarRanking());
+
+                yachtDTO.setYachtType(yachtTypeDTO);
+
+                CompanyDTO companyDTO = new CompanyDTO();
+                companyDTO.setIdCompany(yacht.get().getCompany().getIdCompany());
+                companyDTO.setName(yacht.get().getCompany().getName());
+                companyDTO.setAddress(yacht.get().getCompany().getAddress());
+                companyDTO.setLogo(yacht.get().getCompany().getLogo());
+                companyDTO.setEmail(yacht.get().getCompany().getEmail());
+
+                yachtDTO.setCompany(companyDTO);
+
+                LocationDTO locationDTO = new LocationDTO();
+                locationDTO.setName(yacht.get().getLocation().getName());
+                locationDTO.setIdLocation(yacht.get().getLocation().getIdLocation());
+
+                yachtDTO.setLocation(locationDTO);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return yachtDTO;
+    }
+
+
 }
