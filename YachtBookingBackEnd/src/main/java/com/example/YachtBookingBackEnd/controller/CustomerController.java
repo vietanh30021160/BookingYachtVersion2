@@ -35,4 +35,35 @@ public class CustomerController {
         Resource resource = iFile.load(filename);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
     }
+    @GetMapping("/yacht/findByCompany/{companyId}")
+    public ResponseEntity<?> findByCompany(@PathVariable String companyId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYacht.findYachtByCompanyId(companyId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/yacht/image/{yachtId}")
+    public ResponseEntity<?> getImageByYacht(@PathVariable String yachtId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYachtImage.getImageByYacht(yachtId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getAllService")
+    public ResponseEntity<?> getAllService() {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iService.getAllService());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getServiceByYacht/{yachtId}")
+    public ResponseEntity<?> getServiceByYacht(@PathVariable String yachtId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iService.getAllServiceByYacht(yachtId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/findYachtById/{yachtId}")
+    public ResponseEntity<?> findYachtByYachtId(@PathVariable String yachtId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYacht.findYachtById(yachtId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
 }

@@ -134,4 +134,10 @@ public class CompanyController {
         dataResponse.setData(iYachtService.updateYachtService(yachtId, service, price));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+    @GetMapping("/findYachtById/{yachtId}")
+    public ResponseEntity<?> findYachtByYachtId(@PathVariable String yachtId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYacht.findYachtById(yachtId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 }
