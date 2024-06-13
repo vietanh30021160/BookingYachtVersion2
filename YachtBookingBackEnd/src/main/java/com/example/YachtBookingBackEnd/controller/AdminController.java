@@ -64,7 +64,7 @@ public class AdminController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/account/{customerAccountId}")
+    @GetMapping("/accountCustomer/{customerAccountId}")
     public ResponseEntity<?> getAccount(@PathVariable("customerAccountId") String customerAccountId)  {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iAccount.get1Account(customerAccountId));
