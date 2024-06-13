@@ -1,9 +1,6 @@
 package com.example.YachtBookingBackEnd.service.service;
 
-import com.example.YachtBookingBackEnd.dto.CompanyDTO;
-import com.example.YachtBookingBackEnd.dto.LocationDTO;
-import com.example.YachtBookingBackEnd.dto.YachtDTO;
-import com.example.YachtBookingBackEnd.dto.YachtTypeDTO;
+import com.example.YachtBookingBackEnd.dto.*;
 import com.example.YachtBookingBackEnd.entity.Company;
 import com.example.YachtBookingBackEnd.entity.Location;
 import com.example.YachtBookingBackEnd.entity.Yacht;
@@ -75,6 +72,8 @@ public class YachtService implements IYacht {
                     locationDTO.setIdLocation(yacht.getLocation().getIdLocation());
 
                     yachtDTO.setLocation(locationDTO);
+
+
 
                     listYachtDTO.add(yachtDTO);
                 }

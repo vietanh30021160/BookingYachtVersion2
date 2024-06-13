@@ -1,12 +1,11 @@
 package com.example.YachtBookingBackEnd.controller;
 
+import com.example.YachtBookingBackEnd.entity.Yacht;
+import com.example.YachtBookingBackEnd.entity.YachtService;
 import com.example.YachtBookingBackEnd.payload.response.DataResponse;
-import com.example.YachtBookingBackEnd.service.implement.IFile;
-import com.example.YachtBookingBackEnd.service.implement.IYacht;
-import com.example.YachtBookingBackEnd.service.implement.IYachtImage;
+import com.example.YachtBookingBackEnd.service.implement.*;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
-import com.example.YachtBookingBackEnd.service.implement.ICompany;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -26,6 +25,8 @@ public class CompanyController {
     IYacht iYacht;
     IFile iFile;
     IYachtImage iYachtImage;
+
+    IService iService;
     ICompany iCompany;
 
     @GetMapping("/allYacht")
@@ -101,8 +102,15 @@ public class CompanyController {
         dataResponse.setData(iYachtImage.deleteImage(imageId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-    @PostMapping("/profile")
-    public ResponseEntity<?> addInfoCompany(@RequestParam String idAccount,
+
+    @PutMapping("/yacht/updateImage/{imageId}")
+    public ResponseEntity<?>updateYachtImage(@PathVariable String imageId, @RequestParam MultipartFile image){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYachtImage.updateImage(image, imageId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @PostMapping("/profile/{idAccount}")
+    public ResponseEntity<?> addInfoCompany(@PathVariable String idAccount,
                                             @RequestParam String name,
                                             @RequestParam String address,
                                             @RequestParam MultipartFile logo,
@@ -122,4 +130,5 @@ public class CompanyController {
         dataResponse.setData(iCompany.updateCompany(companyId, name, address, logo, email));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
 }

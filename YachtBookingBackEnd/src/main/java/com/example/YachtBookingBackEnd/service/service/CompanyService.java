@@ -80,7 +80,7 @@ public class CompanyService implements ICompany {
         Company company = companyRepository.findByIdAndExist(idCompany)
                 .orElseThrow(() -> new RuntimeException("Company not found! Try again"));
         if(!isValidEmail(email)){
-            log.error("Sai");
+            log.error("Wrong format");
         }
 
         try {

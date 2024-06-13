@@ -9,4 +9,5 @@ public interface IYachtImage {
     List<YachtImageDTO> getImageByYacht(String yachtId);
     boolean addImage(MultipartFile image, String yachtId);
     boolean deleteImage(String imageId);
+    public boolean updateImage(MultipartFile image, String imageId);
 }
