@@ -13,4 +13,6 @@ public interface ICustomer {
     CustomerDTO getCustomer(String  id);
 
     boolean updateCustomer(String customerId, String fullName, String email, String phone, String address);
+
+    boolean addFeedback(int starRating, String description, String idBooking, String idCustomer, String idYacht );
 }

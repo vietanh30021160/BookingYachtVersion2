@@ -13,4 +13,6 @@ public interface ICompany {
     CompanyDTO getDetailCompanyByAccountID(String idAccount);
 
     boolean hideCompany(String idCompany);
+
+
 }

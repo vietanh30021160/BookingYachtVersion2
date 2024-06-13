@@ -6,6 +6,7 @@ import com.example.YachtBookingBackEnd.service.implement.ICustomer;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 public class CustomerController {
     IAccount iAccount;
     ICustomer iCustomer;
+
+
 
     @PostMapping("/accounts")
     ResponseEntity<?> register(@RequestParam String username,
@@ -51,6 +54,17 @@ public class CustomerController {
                                      @RequestParam String address){
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setData(iCustomer.updateCustomer(customerId, fullName, email, phoneNumber, address));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/addFeedback/{idBooking}/{idCustomer}/{idYacht}")
+    public ResponseEntity<?> addFeedback(@RequestParam int starRating,
+                                         @RequestParam String description,
+                                         @PathVariable String idBooking,
+                                         @PathVariable String idCustomer,
+                                         @PathVariable String idYacht) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iCustomer.addFeedback(starRating,description,idBooking,idCustomer,idYacht));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 }

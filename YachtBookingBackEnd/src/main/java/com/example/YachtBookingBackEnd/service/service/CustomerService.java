@@ -2,18 +2,15 @@ package com.example.YachtBookingBackEnd.service.service;
 
 import com.example.YachtBookingBackEnd.dto.AccountDTO;
 import com.example.YachtBookingBackEnd.dto.CustomerDTO;
-import com.example.YachtBookingBackEnd.entity.Account;
-import com.example.YachtBookingBackEnd.entity.Customer;
-import com.example.YachtBookingBackEnd.entity.Wallet;
-import com.example.YachtBookingBackEnd.repository.AccountRepository;
-import com.example.YachtBookingBackEnd.repository.CustomerRepository;
-import com.example.YachtBookingBackEnd.repository.WalletRepository;
+import com.example.YachtBookingBackEnd.entity.*;
+import com.example.YachtBookingBackEnd.repository.*;
 import com.example.YachtBookingBackEnd.service.implement.ICustomer;
 import com.example.YachtBookingBackEnd.service.implement.IWallet;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -32,7 +29,12 @@ public class CustomerService implements ICustomer {
     WalletRepository walletRepository;
     IWallet iWallet;
 
+    FeedbackRepository feedbackRepository;
+    BookingOrderRepository bookingOrderRepository;
+    BillRepository billRepository;
 
+//    @Autowired
+//    BookingOrderRepository bookingOrderRepository;
 
     public static final String ROLE_CUSTOMER = "CUSTOMER";
 
@@ -170,6 +172,36 @@ public class CustomerService implements ICustomer {
             return false;
         }
 
+    }
+
+    @Override
+    public boolean addFeedback(int starRating, String description, String idBooking, String idCustomer, String idYacht) {
+        try{
+            // Kiểm tra xem đơn đặt phòng có tồn tại, đã hoàn thành và thuộc về khách hàng hay không
+            BookingOrder bookingOrder = bookingOrderRepository.findByIdAndCustomerIdAndStatus(idBooking, idCustomer)
+                    .orElseThrow(() -> new RuntimeException("Booking not found or not completed or does not belong to the customer"));
+
+            // Kiểm tra xem đơn đặt phòng có hóa đơn không
+            if(!billRepository.existsByBookingOrder_IdBooking(idBooking)){
+                throw new RuntimeException("Bill does not exist for this booking");
+            }
+            Feedback feedback = new Feedback();
+            feedback.setStarRating(starRating);
+            feedback.setDescription(description);
+            feedback.setIdBooking(idBooking);
+            Customer customer = new Customer();
+            customer.setIdCustomer(idCustomer);
+            feedback.setCustomer(customer);
+            Yacht yacht = new Yacht();
+            yacht.setIdYacht(idYacht);
+            feedback.setYacht(yacht);
+
+            feedbackRepository.save(feedback);
+            return true;
+        }catch (Exception e){
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        }
     }
 
     private boolean isValidEmail(String email) {
