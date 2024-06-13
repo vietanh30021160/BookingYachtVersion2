@@ -61,6 +61,26 @@ public class YachtImageService implements IYachtImage {
     }
 
     @Override
+    public boolean updateImage(MultipartFile image, String imageId) {
+        try{
+            YachtImage yachtImage = yachtImageRepository.findById(imageId)
+                    .orElseThrow(() -> new RuntimeException("Company not found! Try again"));
+
+
+                    System.out.println("tim thay");
+
+                    yachtImage.setImageYacht(image.getOriginalFilename());
+                    yachtImageRepository.save(yachtImage);
+                    return true;
+
+
+        }catch (Exception e){
+            System.out.println("error get image by Yacht " + e.getMessage());
+        }
+        return false;
+    }
+
+    @Override
     public boolean deleteImage(String imageId) {
         try{
             Optional<YachtImage> yachtImageOptional = yachtImageRepository.findById(imageId);
@@ -73,4 +93,8 @@ public class YachtImageService implements IYachtImage {
         }
         return false;
     }
+
+
+
+
 }

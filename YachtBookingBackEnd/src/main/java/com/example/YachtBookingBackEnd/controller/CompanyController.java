@@ -21,11 +21,8 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompanyController {
-    @Autowired
     IYacht iYacht;
-    @Autowired
     IFile iFile;
-    @Autowired
     IYachtImage iYachtImage;
     @Autowired
     IService iService;
@@ -117,7 +114,12 @@ public class CompanyController {
         dataResponse.setData(iCompany.addCompany(idAccount, name, address, logo, email));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
+    @PutMapping("/yacht/updateImage/{imageId}")
+    public ResponseEntity<?>updateYachtImage(@PathVariable String imageId, @RequestParam MultipartFile image){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYachtImage.updateImage(image, imageId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
     @PostMapping("/updateProfile/{companyId}")
     public ResponseEntity<?> updateCompany(@PathVariable String companyId,
                                            @RequestParam String name,
@@ -148,6 +150,7 @@ public class CompanyController {
         dataResponse.setData(iYachtService.addYachtService(yachtId, service, price));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
 
 
 }
