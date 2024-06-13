@@ -8,4 +8,5 @@ public interface IYachtService {
     boolean addYachtService(String yachtId, String service, long price);
     boolean deleteYachtService(String yachtId, String serviceId);
     boolean updateYachtService(String yachtId, String service, long price);
+
 }

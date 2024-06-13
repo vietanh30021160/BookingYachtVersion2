@@ -14,5 +14,6 @@ public interface IYacht {
     boolean deleteYacht(String id);
     boolean updateYacht(String yachtId, String name, MultipartFile image, String hullBody, String description, String rule, String itinerary, String idYachtType, String idLocation);
     List<YachtDTO> findYachtByCompanyId(String companyId);
+    YachtDTO findYachtById(String id);
 }
 
