@@ -34,7 +34,7 @@ public class CustomerController {
     @Autowired
     IYachtService iYachtService;
 
-    @PostMapping("/accounts")
+        @PostMapping("/accounts")
     ResponseEntity<?> register(@RequestParam String username,
                                @RequestParam String password) {
         DataResponse dataResponse = new DataResponse();

@@ -15,11 +15,23 @@ const CompanyManager = () => {
         fetchCompanies();
     }, []);
 
+    const getAuthHeader = () =>{
+        const token = localStorage.getItem('token');
+        return token ? `Bearer ${token}` : '';
+    };
+
     const fetchCompanies = async () => {
         try {
-            const response = await axios.get('https://reqres.in/api/users?page=1');
-            setCompanies(response.data.data);
-            setFilteredCompanies(response.data.data);
+           const config ={
+            method : 'get',
+            url : 'http://localhost:8080/api/admins/getAllCompany',
+            headers : {
+                'Authorization' : getAuthHeader()
+            }
+           };
+           const response = await axios(config);
+           setCompanies(response.data.data);
+           setFilteredCompanies(response.data.data);
         } catch (error) {
             console.error('Error fetching companies:', error);
         }
@@ -28,20 +40,36 @@ const CompanyManager = () => {
     const handleSearchCompany = value => {
         setSearchTerm(value);
         const filtered = companies.filter(company =>
-            company.first_name.toLowerCase().includes(value.toLowerCase()) ||
-            company.last_name.toLowerCase().includes(value.toLowerCase()) ||
-            company.email.toLowerCase().includes(value.toLowerCase())
+            company.accountDTO.username.toLowerCase().includes(value.toLowerCase())
         );
         setFilteredCompanies(filtered);
     };
 
-    const handleCreateCompany = event => {
+    const handleCreateCompany = async event => {
         event.preventDefault();
         const form = event.currentTarget;
-        const name = form.elements.name.value;
-        const email = form.elements.email.value;
+        const username = form.elements.username.value;
         const password = form.elements.password.value;
-        // Add create company logic here
+        const FormData = require('form-data');
+        let data = new FormData();
+        data.append('username', username);
+        data.append('password',  password);
+        try{
+            const config ={
+                method : 'post',
+                url : 'http://localhost:8080/api/admins/accounts',
+                headers: {
+                    'Authorization': getAuthHeader(),
+                    // 'Content-Type': 'application/json'
+                },
+                data : data
+            };
+            const response = await axios(config);
+            console.log('Company created successfully:', response.data);
+            fetchCompanies();
+        }catch (error){
+            console.error('Error creating company:', error);
+        }
         setShowCompanyModal(false);
     };
 
@@ -72,21 +100,31 @@ const CompanyManager = () => {
                     Create Company Account
                 </Button>
             </div>
-            <Table striped bordered hover>
+            <Table striped bordered hover responsive>
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
+                        <th>Address</th>
                         <th>Email</th>
+                        <th>Exist</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {filteredCompanies.map(company => (
-                        <tr key={company.id}>
-                            <td>{company.id}</td>
-                            <td>{company.first_name} {company.last_name}</td>
+                        <tr key={company.idCompany}>
+                            <td>{company.idCompany}</td>
+                            <td>{company.name}</td>
+                            <td>{company.address}</td>
                             <td>{company.email}</td>
+                            <td>
+                                {company.exist === 1 ? (
+                                    <h5>Online</h5>
+                                ) : (
+                                    <h5 style={{color: "red"}}>Offline</h5>
+                                )}
+                            </td>
                             <td className='button_mana'>
                                 <Button variant="primary" onClick={() => handleShowDetailModal(company)}>View Detail</Button>
                                 <Button variant="dark" onClick={() => handleDeleteCompany(company.id)}>Hidden</Button>
@@ -102,13 +140,9 @@ const CompanyManager = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleCreateCompany}>
-                        <Form.Group controlId="formCompanyName">
-                            <Form.Label>Username Company</Form.Label>
-                            <Form.Control type="text" placeholder="Enter company name" name="name" required />
-                        </Form.Group>
-                        <Form.Group controlId="formCompanyEmail">
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control type="email" placeholder="Enter email" name="email" required />
+                        <Form.Group controlId="formCompanyUsername">
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control type="text" placeholder="Enter Username" name="username" required />
                         </Form.Group>
                         <Form.Group controlId="formCompanyPassword">
                             <Form.Label>Password</Form.Label>
@@ -121,16 +155,17 @@ const CompanyManager = () => {
                 </Modal.Body>
             </Modal>
 
-            <Modal show={showDetailModal} onHide={handleCloseDetailModal}>
+            <Modal show={showDetailModal} onHide={handleCloseDetailModal} size='lg'>
                 <Modal.Header closeButton>
                     <Modal.Title>Company Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {selectedCompany && (
                         <>
-                            <p><strong>ID:</strong> {selectedCompany.id}</p>
-                            <p><strong>Name:</strong> {selectedCompany.first_name} {selectedCompany.last_name}</p>
-                            <p><strong>Email:</strong> {selectedCompany.email}</p>
+                            <p><strong>ID:</strong> {selectedCompany.accountDTO.idAccount}</p>
+                            <p><strong>Username:</strong> {selectedCompany.accountDTO.username}</p>
+                            <p><strong>Password:</strong> {selectedCompany.accountDTO.password}</p>
+                            <p><strong>Role:</strong> {selectedCompany.accountDTO.role}</p>
                             {/* Add other company details here */}
                         </>
                     )}

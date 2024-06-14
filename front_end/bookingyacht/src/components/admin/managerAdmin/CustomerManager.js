@@ -13,17 +13,19 @@ const CustomerManager = () => {
     useEffect(() => {
         fetchCustomers();
     }, []);
-    const getAuthHeader = () =>{
+
+    const getAuthHeader = () => {
         const token = localStorage.getItem('token');
         return token ? `Bearer ${token}` : '';
     }
+
     const fetchCustomers = async () => {
         try {
             const config = {
-                method : 'get',
-                url : 'http://localhost:8080/api/admins/account/getAllAccountCustomer',
-                headers : {
-                    'Authorization' : getAuthHeader()
+                method: 'get',
+                url: 'http://localhost:8080/api/admins/getAllCustomer',
+                headers: {
+                    'Authorization': getAuthHeader()
                 }
             };
             const response = await axios(config);
@@ -37,7 +39,7 @@ const CustomerManager = () => {
     const handleSearchCustomer = value => {
         setSearchTerm(value);
         const filtered = customers.filter(customer =>
-            customer.username.toLowerCase().includes(value.toLowerCase())
+            customer.accountDTO.username.includes(value.toLowerCase())
         );
         setFilteredCustomers(filtered);
     };
@@ -69,22 +71,24 @@ const CustomerManager = () => {
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>User Name</th>
-                        <th>Password</th>
-                        <th>Role</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Address</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {filteredCustomers.map(customer => (
-                        <tr key={customer.idAccount}>
-                            <td>{customer.idAccount}</td>
-                            <td>{customer.username}</td>
-                            <td>{customer.password}</td>
-                            <td>{customer.role}</td>
+                        <tr key={customer.idCustomer}>
+                            <td>{customer.idCustomer}</td>
+                            <td>{customer.fullName}</td>
+                            <td>{customer.email}</td>
+                            <td>{customer.phone}</td>
+                            <td>{customer.address}</td>
                             <td className='button_mana'>
                                 <Button variant="primary" onClick={() => handleShowModal(customer)}>View Detail</Button>
-                                <Button variant="dark" onClick={() => handleDeleteCustomer(customer.idAccount)}>Hidden</Button>
+                                <Button variant="dark" onClick={() => handleDeleteCustomer(customer.accountDTO.idAccount)}>Hidden</Button>
                             </td>
                         </tr>
                     ))}
@@ -97,10 +101,10 @@ const CustomerManager = () => {
                 <Modal.Body>
                     {selectedCustomer && (
                         <>
-                            <p><strong>ID:</strong> {selectedCustomer.idAccount}</p>
-                            <p><strong>Username:</strong> {selectedCustomer.username}</p>
-                            <p><strong>Password:</strong> {selectedCustomer.password}</p>
-                            <p><strong>Role:</strong> {selectedCustomer.role}</p>
+                            <p><strong>ID:</strong> {selectedCustomer.accountDTO.idAccount}</p>
+                            <p><strong>Username:</strong> {selectedCustomer.accountDTO.username}</p>
+                            <p><strong>Password:</strong> {selectedCustomer.accountDTO.password}</p>
+                            <p><strong>Role:</strong> {selectedCustomer.accountDTO.role}</p>
                         </>
                     )}
                 </Modal.Body>

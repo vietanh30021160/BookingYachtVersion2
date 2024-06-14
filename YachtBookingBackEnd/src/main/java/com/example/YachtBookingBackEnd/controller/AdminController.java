@@ -85,4 +85,11 @@ public class AdminController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/getAllCompany")
+    ResponseEntity<?> getAllListCompany(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iCompany.getAllCompany());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
 }

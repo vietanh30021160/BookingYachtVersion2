@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -175,5 +176,39 @@ public class CompanyService implements ICompany {
         companyRepository.save(company);
 
         return true;
+    }
+
+    @Override
+    public List<CompanyDTO> getAllCompany() {
+        List<CompanyDTO> companyDTOList = new ArrayList<>();
+        try {
+            List<Company> companies = companyRepository.findAll();
+            for (Company company : companies) {
+                CompanyDTO companyDTO = new CompanyDTO();
+                AccountDTO accountDTO = new AccountDTO();
+
+                if(company.getAccount().getRole().equals("COMPANY")){
+                    accountDTO.setRole(company.getAccount().getRole());
+                    accountDTO.setIdAccount(company.getAccount().getIdAccount());
+                    accountDTO.setUsername(company.getAccount().getUsername());
+                    accountDTO.setPassword(company.getAccount().getPassword());
+
+
+                    companyDTO.setIdCompany(company.getIdCompany());
+                    companyDTO.setName(company.getName());
+                    companyDTO.setAddress(company.getAddress());
+                    companyDTO.setLogo(company.getLogo());
+                    companyDTO.setEmail(company.getEmail());
+                    companyDTO.setExist(company.getExist());
+                    companyDTO.setAccountDTO(accountDTO);
+                    companyDTOList.add(companyDTO);
+
+                }
+            }
+        }catch (Exception e){
+            System.out.println("Exception: " + e.getMessage());
+        }
+        System.out.println(companyDTOList);
+        return companyDTOList;
     }
 }
