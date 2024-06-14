@@ -23,6 +23,7 @@ import Enterprise from './components/enterprise/Enterprise';
 import Profile from './components/home/Profile';
 import ManageYacht from './components/company/ManageYacht';
 import ManageRoom from './components/company/ManageRoom';
+import FindYacht from './components/yacht/FindYacht';
 const Layout = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -34,6 +35,7 @@ const Layout = () => {
                     <Route path='/blog' element={<Blog />} />
                     <Route path='/doanhnhiep' element={<Enterprise />} />
                     <Route path='/mainpage' element={<MainPage />} />
+                    <Route path='/duthuyen' element={<FindYacht />} />
                     <Route path='/yacht-rule' element={<YachtRule />} />
                     <Route path='/yacht-question' element={<YachtQuestion />} />
                 </Route>
