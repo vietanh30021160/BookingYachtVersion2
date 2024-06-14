@@ -16,9 +16,9 @@ const Footer = () => {
                     <div className='body col-md'>
                         <span>Giới Thiệu</span>
                         <NavLink className='nav-link'>Liên Hệ</NavLink>
-                        <NavLink className='nav-link'>Về Chúng Tôi</NavLink>
+                        <NavLink className='nav-link'>About Me</NavLink>
                         <NavLink className='nav-link'>Hotline</NavLink>
-                        <NavLink className='nav-link'>Email:PhamIchBo13082003@gmail.com</NavLink>
+                        <NavLink className='nav-link'>Email:YachtCrise@gmail.com</NavLink>
                     </div>
                     <div className='body col-md'>
                         <span>Điểm Đến</span>

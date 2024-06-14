@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FaHome } from "react-icons/fa";
+import ModalUpdateProfileUser from './ModalUpdateProfileUser';
 const Profile = () => {
+    const [isShowModal, setIsShowModal] = useState(false);
+
+    const handleClose = () => {
+        setIsShowModal(false);
+    }
+
     return (
         <div className="container emp-profile my-3">
             <form>
@@ -22,7 +29,7 @@ const Profile = () => {
                                 Name
                             </h5>
                             <h6>
-                                Web Developer and Designer
+                                AAAAAA
                             </h6>
                             <p className="proile-rating">RANKINGS : <span>8/10</span></p>
                             {/* <ul className="nav nav-tabs" id="myTab" role="tablist">
@@ -36,23 +43,14 @@ const Profile = () => {
                         </div>
                     </div>
                     <div className="col-md-6">
-                        <Button className='btn btn-infor'>Edit Profile</Button>
+                        <Button className='btn btn-infor' onClick={() => setIsShowModal(true)}>Edit Profile</Button>
                         <Link to='/' className='mx-5' style={{ textDecoration: "none" }}><FaHome className='mb-1' /> Home</Link>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-4">
                         <div className="profile-work">
-                            <p>WORK LINK</p>
-                            <a href>Website Link</a><br />
-                            <a href>Bootsnipp Profile</a><br />
-                            <a href>Bootply Profile</a>
-                            <p>SKILLS</p>
-                            <a href>Web Designer</a><br />
-                            <a href>Web Developer</a><br />
-                            <a href>WordPress</a><br />
-                            <a href>WooCommerce</a><br />
-                            <a href>PHP, .Net</a><br />
+                            Name
                         </div>
                     </div>
                     <div className="col-md-8">
@@ -95,7 +93,7 @@ const Profile = () => {
                                         <label>Profession</label>
                                     </div>
                                     <div className="col-md-6">
-                                        <p>Web Developer and Designer</p>
+                                        <p>13.345.000.000</p>
                                     </div>
                                 </div>
                             </div>
@@ -151,6 +149,11 @@ const Profile = () => {
                     </div>
                 </div>
             </form>
+
+            <ModalUpdateProfileUser
+                show={isShowModal}
+                handleClose={handleClose}
+            />
         </div>
 
     );
