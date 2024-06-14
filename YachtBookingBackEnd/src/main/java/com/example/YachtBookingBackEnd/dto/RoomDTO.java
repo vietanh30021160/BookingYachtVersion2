@@ -1,13 +1,11 @@
 package com.example.YachtBookingBackEnd.dto;
 
-import com.example.YachtBookingBackEnd.entity.RoomImage;
-import com.example.YachtBookingBackEnd.entity.RoomType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,6 +18,6 @@ public class RoomDTO {
     private String name;
     private int available;
     private RoomTypeDTO roomType;
-    private Set<RoomImageDTO> roomImageSet;
+    private List<RoomImageDTO> roomImageSet;
 
 }

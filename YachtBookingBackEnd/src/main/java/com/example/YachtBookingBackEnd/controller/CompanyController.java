@@ -185,6 +185,13 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/room/getRoom/{roomId}")
+    public ResponseEntity<?> getRoomByID(@PathVariable String roomId){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.getRoomByID(roomId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
 
 
 }
