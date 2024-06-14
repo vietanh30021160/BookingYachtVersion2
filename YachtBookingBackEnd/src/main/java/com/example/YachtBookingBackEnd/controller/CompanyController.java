@@ -34,6 +34,9 @@ public class CompanyController {
     @Autowired
     ICompany iCompany;
 
+    @Autowired
+    IRoom iRoom;
+
     @GetMapping("/allYacht")
     public ResponseEntity<?> viewYacht() {
 //        SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
@@ -172,6 +175,13 @@ public class CompanyController {
     public ResponseEntity<?> findYachtByYachtId(@PathVariable String yachtId) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYacht.findYachtById(yachtId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping ("/room/getAllRoom")
+    public ResponseEntity<?> getAllRoom(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.getAllRoom());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

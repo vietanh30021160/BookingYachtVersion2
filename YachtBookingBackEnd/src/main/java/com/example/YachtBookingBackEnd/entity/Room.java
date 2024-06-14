@@ -28,6 +28,9 @@ public class Room {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "available")
+    private int available;
+
     @ManyToOne()
     @JoinColumn(name = "id_room_type", nullable = false)
     private RoomType roomType;
