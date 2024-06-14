@@ -32,6 +32,7 @@ public class CustomerService implements ICustomer {
     FeedbackRepository feedbackRepository;
     BookingOrderRepository bookingOrderRepository;
     BillRepository billRepository;
+    YachtRepository yachtRepository;
 
 //    @Autowired
 //    BookingOrderRepository bookingOrderRepository;
@@ -177,6 +178,13 @@ public class CustomerService implements ICustomer {
     @Override
     public boolean addFeedback(int starRating, String description, String idBooking, String idCustomer, String idYacht) {
         try{
+            // Kiểm tra xem khách hàng đã đặt thuyền này chưa
+            List<Yacht> yachts = yachtRepository.findYachtsByCustomerAndBooking(idCustomer, idBooking);
+            boolean yachtBooked = yachts.stream().anyMatch(yacht -> yacht.getIdYacht().equals(idYacht));
+
+            if(!yachtBooked){
+                throw new RuntimeException("Customer has not booked this yacht");
+            }
             // Kiểm tra xem đơn đặt phòng có tồn tại, đã hoàn thành và thuộc về khách hàng hay không
             BookingOrder bookingOrder = bookingOrderRepository.findByIdAndCustomerIdAndStatus(idBooking, idCustomer)
                     .orElseThrow(() -> new RuntimeException("Booking not found or not completed or does not belong to the customer"));
