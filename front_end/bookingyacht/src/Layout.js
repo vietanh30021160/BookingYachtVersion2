@@ -1,5 +1,5 @@
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import React from 'react';
+import React, { useState } from 'react';
 import { Route, Routes } from "react-router-dom";
 import App from './App';
 import Information from './components/auths/Information';
@@ -26,10 +26,13 @@ import Profile from './components/home/Profile';
 import FindYacht from './components/yacht/FindYacht';
 
 import AdminLayout from './components/admin/headerAdmin/AdminLayout';
+import LoginAdmin from './components/admin/loginAdmin/LoginAdmin';
 import CompanyManager from './components/admin/managerAdmin/CompanyManager';
 import CustomerManager from './components/admin/managerAdmin/CustomerManager';
 import AdminHome from './components/admin/pageAdmin/AdminHome';
 const Layout = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
     return (
         <>
             <Routes>
@@ -63,12 +66,17 @@ const Layout = () => {
 
                 </Route>
 
-                <Route path='/admin' element={<AdminLayout/>}>
-                    <Route path='manager' element={<AdminHome/>}/>
-                    <Route path="customer" element={<CustomerManager/>} />
-                    <Route path="company" element={<CompanyManager/>} />
-                </Route>
-
+                <Route path='/admin' element={<LoginAdmin setIsLoggedIn={setIsLoggedIn}/>}/>
+                {
+                    isLoggedIn && (
+                        <Route path='/dashboard' element={<AdminLayout/>}>
+                            <Route path='manager' element={<AdminHome />} />
+                            <Route path="customer" element={<CustomerManager />} />
+                            <Route path="company" element={<CompanyManager />} />
+                        </Route>
+                    )
+                }
+                        
             </Routes>
 
             <ToastContainer
