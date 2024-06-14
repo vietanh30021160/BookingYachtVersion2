@@ -2,6 +2,7 @@ package com.example.YachtBookingBackEnd.dto;
 
 import com.example.YachtBookingBackEnd.entity.Company;
 import com.example.YachtBookingBackEnd.entity.Location;
+import com.example.YachtBookingBackEnd.entity.YachtService;
 import com.example.YachtBookingBackEnd.entity.YachtType;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
@@ -14,6 +15,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -32,4 +34,5 @@ public class YachtDTO {
     private YachtTypeDTO yachtType;
     private CompanyDTO company;
     private LocationDTO location;
+    private Set<ServiceDTO> yachtServiceSet;
 }

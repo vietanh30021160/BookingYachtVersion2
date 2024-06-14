@@ -1,5 +1,5 @@
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import React from 'react';
+import React, { useState } from 'react';
 import { Route, Routes } from "react-router-dom";
 import App from './App';
 import Information from './components/auths/Information';
@@ -14,17 +14,18 @@ import YachtQuestion from './components/yacht/YachtQuestion';
 import YachtRule from './components/yacht/YachtRule';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ForgotPassword from './components/auths/ForgotPassword';
+import InformationCompany from './components/auths/InformationCompany';
 import Blog from './components/blog/Blog';
+import ProfileCompany from './components/company/Profile';
 import MainPage from './components/detailYacht/mainDetailPage/MainPage';
 import Enterprise from './components/enterprise/Enterprise';
-import FindYacht from './components/yacht/FindYacht';
-import ForgotPassword from './components/auths/ForgotPassword';
 import Profile from './components/home/Profile';
-import ProfileCompany from './components/company/Profile';
-import InformationCompany from './components/auths/InformationCompany';
 import ManageYacht from './components/company/ManageYacht';
 import ManageRoom from './components/company/ManageRoom';
 const Layout = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
     return (
         <>
             <Routes>
@@ -32,8 +33,7 @@ const Layout = () => {
                     <Route index element={<HomePage />} />
                     <Route path='/blog' element={<Blog />} />
                     <Route path='/doanhnhiep' element={<Enterprise />} />
-                    <Route path='maybay' element={<MainPage />} />
-                    <Route path='/duthuyen' element={<FindYacht />} />
+                    <Route path='/mainpage' element={<MainPage />} />
                     <Route path='/yacht-rule' element={<YachtRule />} />
                     <Route path='/yacht-question' element={<YachtQuestion />} />
                 </Route>

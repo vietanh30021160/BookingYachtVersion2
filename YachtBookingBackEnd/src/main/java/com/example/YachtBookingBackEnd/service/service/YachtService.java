@@ -1,9 +1,6 @@
 package com.example.YachtBookingBackEnd.service.service;
 
-import com.example.YachtBookingBackEnd.dto.CompanyDTO;
-import com.example.YachtBookingBackEnd.dto.LocationDTO;
-import com.example.YachtBookingBackEnd.dto.YachtDTO;
-import com.example.YachtBookingBackEnd.dto.YachtTypeDTO;
+import com.example.YachtBookingBackEnd.dto.*;
 import com.example.YachtBookingBackEnd.entity.Company;
 import com.example.YachtBookingBackEnd.entity.Location;
 import com.example.YachtBookingBackEnd.entity.Yacht;
@@ -75,6 +72,8 @@ public class YachtService implements IYacht {
                     locationDTO.setIdLocation(yacht.getLocation().getIdLocation());
 
                     yachtDTO.setLocation(locationDTO);
+
+
 
                     listYachtDTO.add(yachtDTO);
                 }
@@ -158,52 +157,19 @@ public class YachtService implements IYacht {
         try{
             Optional<Yacht> yacht = yachtRepository.findById(yachtId);
             if(yacht.isPresent()){
-                if(name != null){
                     yacht.get().setName(name);
-                }else{
-                    yacht.get().setName(yacht.get().getName());
-                }
-                if(image != null){
                     iFile.save(image);
                     yacht.get().setImage(image.getOriginalFilename());
-                }else{
-                    yacht.get().setImage(yacht.get().getImage());
-                }
-                if(hullBody != null){
                     yacht.get().setHullBody(hullBody);
-                }else{
-                    yacht.get().setHullBody(yacht.get().getHullBody());
-                }
-                if(description != null){
                     yacht.get().setDescription(description);
-                }else{
-                    yacht.get().setDescription(yacht.get().getDescription());
-                }
-                if(rule != null){
                     yacht.get().setRule(rule);
-                }else{
-                    yacht.get().setRule(yacht.get().getRule());
-                }
-                if(itinerary != null){
                     yacht.get().setItinerary(itinerary);
-                }else{
-                    yacht.get().setItinerary(yacht.get().getItinerary());
-                }
-                if(idYachtType != null){
                     YachtType yachtType = new YachtType();
                     yachtType.setIdYachtType(idYachtType);
                     yacht.get().setYachtType(yachtType);
-                }else{
-                    yacht.get().setYachtType(yacht.get().getYachtType());
-                }
-                if(idLocation != null){
                     Location location = new Location();
                     location.setIdLocation(idLocation);
                     yacht.get().setLocation(location);
-                }else{
-                    yacht.get().setLocation(yacht.get().getLocation());
-                }
-
                 yachtRepository.save(yacht.get());
             }
             return true;
@@ -261,4 +227,46 @@ public class YachtService implements IYacht {
         }
         return yachtDTOList;
     }
+    @Override
+    public YachtDTO findYachtById(String id) {
+        YachtDTO yachtDTO = new YachtDTO();
+        try {
+            Optional<Yacht> yacht = yachtRepository.findById(id);
+            if(yacht.isPresent() && yacht.get().getExist() == 1) {
+                yachtDTO.setIdYacht(yacht.get().getIdYacht());
+                yachtDTO.setName(yacht.get().getName());
+                yachtDTO.setImage(yacht.get().getImage());
+                yachtDTO.setLaunch(yacht.get().getLaunch());
+                yachtDTO.setRule(yacht.get().getRule());
+                yachtDTO.setHullBody(yacht.get().getHullBody());
+                yachtDTO.setDescription(yacht.get().getDescription());
+                yachtDTO.setItinerary(yacht.get().getItinerary());
+
+                YachtTypeDTO yachtTypeDTO = new YachtTypeDTO();
+                yachtTypeDTO.setIdYachtType(yacht.get().getYachtType().getIdYachtType());
+                yachtTypeDTO.setStarRanking(yacht.get().getYachtType().getStarRanking());
+
+                yachtDTO.setYachtType(yachtTypeDTO);
+
+                CompanyDTO companyDTO = new CompanyDTO();
+                companyDTO.setIdCompany(yacht.get().getCompany().getIdCompany());
+                companyDTO.setName(yacht.get().getCompany().getName());
+                companyDTO.setAddress(yacht.get().getCompany().getAddress());
+                companyDTO.setLogo(yacht.get().getCompany().getLogo());
+                companyDTO.setEmail(yacht.get().getCompany().getEmail());
+
+                yachtDTO.setCompany(companyDTO);
+
+                LocationDTO locationDTO = new LocationDTO();
+                locationDTO.setName(yacht.get().getLocation().getName());
+                locationDTO.setIdLocation(yacht.get().getLocation().getIdLocation());
+
+                yachtDTO.setLocation(locationDTO);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return yachtDTO;
+    }
+
 }

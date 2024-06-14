@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ICompany {
     boolean addCompany(String idAccount, String name, String address, MultipartFile logo, String email);
-
+    boolean updateCompany(String idCompany, String name,String address, MultipartFile logo, String email);
     List<CompanyDTO> searchCompanyByName(String name);
 
     CompanyDTO getDetailCompanyByAccountID(String idAccount);

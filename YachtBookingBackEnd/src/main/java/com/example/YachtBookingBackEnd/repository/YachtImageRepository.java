@@ -13,4 +13,6 @@ import java.util.List;
 public interface YachtImageRepository extends JpaRepository<YachtImage, String> {
     @Query("SELECT yi FROM YachtImage yi WHERE yi.yacht.idYacht = :yachtId")
     List<YachtImage> findByYachtId(@Param("yachtId") String yachtId);
+
+
 }

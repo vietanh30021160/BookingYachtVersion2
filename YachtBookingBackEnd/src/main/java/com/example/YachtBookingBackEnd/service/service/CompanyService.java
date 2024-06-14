@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -73,6 +72,32 @@ public class CompanyService implements ICompany {
             log.error("Company could not be added", e);
             return false;
         }
+    }
+
+    @Override
+    public boolean updateCompany(String idCompany, String name, String address, MultipartFile logo, String email) {
+
+        Company company = companyRepository.findByIdAndExist(idCompany)
+                .orElseThrow(() -> new RuntimeException("Company not found! Try again"));
+        if(!isValidEmail(email)){
+            log.error("Wrong format");
+        }
+
+        try {
+            company.setName(name);
+            company.setAddress(address);
+            iFile.save(logo);
+            company.setLogo(logo.getOriginalFilename());
+            company.setEmail(email);
+            companyRepository.save(company);
+            return true;
+        } catch (Exception e) {
+
+            System.out.println(e);
+            return false;
+        }
+
+
     }
 
     private boolean isValidEmail(String email) {
