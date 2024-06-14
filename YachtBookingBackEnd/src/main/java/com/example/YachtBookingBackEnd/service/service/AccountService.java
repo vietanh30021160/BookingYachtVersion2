@@ -1,6 +1,7 @@
 package com.example.YachtBookingBackEnd.service.service;
 
 import com.example.YachtBookingBackEnd.dto.AccountDTO;
+import com.example.YachtBookingBackEnd.dto.CompanyDTO;
 import com.example.YachtBookingBackEnd.entity.Account;
 import com.example.YachtBookingBackEnd.payload.request.AccountCompanyCreationRequest;
 import com.example.YachtBookingBackEnd.repository.AccountRepository;
@@ -163,6 +164,7 @@ public class AccountService implements IAccount {
         }
 
     }
+
 
 }
 

@@ -90,8 +90,7 @@ public class CustomerService implements ICustomer {
         try {
             List<Customer> customerList = customerRepository.findAll();
 
-            for (Customer customer : customerList
-            ) {
+            for (Customer customer : customerList) {
                 CustomerDTO customerDTO = new CustomerDTO();
                 AccountDTO accountDTO = new AccountDTO();
 
