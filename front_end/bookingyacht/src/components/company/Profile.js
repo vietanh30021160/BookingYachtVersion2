@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import ModalUpdateProfile from './ModalUpdateProfile';
+import ModalUpdateProfile from './Modal/ModalUpdateProfile';
 
 const ProfileCompany = () => {
     const [isShowModal, setIsShowModal] = useState(false);

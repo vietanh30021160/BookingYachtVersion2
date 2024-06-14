@@ -78,7 +78,8 @@
                 display: flex;
                 flex-direction: column;
                 gap: 10px;
-
+                padding-bottom: 50px;
+                padding-top: 50px;
 
 
                 input {
@@ -96,10 +97,17 @@
                     border: none;
                     background-color: rgb(104, 204, 199);
                     padding: 10px;
+                    width: 150px;
+                    height: 50px;
 
                     &:hover {
                         background: #0aebdccf;
                     }
+                }
+
+                .select {
+                    width: 200px;
+                    height: 50px;
                 }
             }
 

@@ -1,15 +1,15 @@
 import axios from '../utils/CustomizeApi';
 
 const getUser = () => {
-    return axios.get(`/api/users`);
+    return axios.get(`https://reqres.in/api/users`);
 }
 
-const login = (email, password) => {
-    return axios.post('/api/login', { email, password })
+const login = (username, password) => {
+    return axios.post('/login/signin', { username, password })
 }
 
 const register = (email, password) => {
-    return axios.post('/api/register', { email, password });
+    return axios.post('https://reqres.in/api/register', { email, password });
 }
 const getAllYachtt = () => {
     return axios.get('/api/companies/allYacht');

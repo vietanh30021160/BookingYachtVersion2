@@ -14,7 +14,7 @@ const FindYacht = () => {
                     <div className='yacht-title col-md mx-4'>
                         <h2>Tìm Thấy <br /> Kết Quả</h2>
                         <div>
-                            <img src={i_content} />
+                            <img src={i_content} alt="" />
                         </div>
                     </div>
                     <div className='select col-md mx-4'>
@@ -55,7 +55,7 @@ const FindYacht = () => {
                             <div className="extention-body-content">
                                 Tiện ích
                             </div>
-                            <Form.Check id="" label='Phòng gia đình' lab />
+                            <Form.Check id="" label='Phòng gia đình' />
                             <Form.Check id="" label='Có bể sục' />
                             <Form.Check id="" label='Bao gồm tất cả các bữa ăn' />
                         </div>
