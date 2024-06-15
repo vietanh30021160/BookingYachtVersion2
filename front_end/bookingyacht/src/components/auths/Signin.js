@@ -2,7 +2,7 @@ import logo from '../../assets/logo_swp.png';
 import { FcGoogle } from "react-icons/fc";
 import './Auth.scss'
 import { useState } from 'react';
-import { login } from '../../services/ApiServices';
+import { login, loginCustomer } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
 import { useNavigate, Link } from 'react-router-dom';
 import { NavLink } from 'react-router-dom'
@@ -10,7 +10,7 @@ import { NavLink } from 'react-router-dom'
 import { ImSpinner10 } from "react-icons/im";
 // import { Rlogin } from '../../redux/action/CustomerAction';
 const Signin = () => {
-    const [email, setEmail] = useState('');
+    const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -27,18 +27,20 @@ const Signin = () => {
     // const dispatch = useDispatch();
     const navigate = useNavigate();
     const handleLogin = async () => {
-        if (email === '' || password === '') {
+        let res = await loginCustomer(userName, password);
+        console.log(res);
+        if (userName === '' || password === '') {
             toast.error('Invalid');
             setLoading(false);
-        }
-        setLoading(true);
-        let res = await login('eve.holt@reqres.in'.trim(), password.trim());
-        console.log(res);
-        if (res.data && res.status === 200) {
+        } else if (res && res.data.status === 200 && res.data.success === true) {
             //dispatch(Rlogin(res.data));
             toast.success("Login Successful");
             setLoading(false);
             navigate('/');
+        } else {
+            toast.error('username invalid')
+            setLoading(false);
+
         }
     }
 
@@ -57,8 +59,8 @@ const Signin = () => {
                                 <input type="text"
                                     placeholder='UserName'
                                     className="form-control form-control-lg"
-                                    value={email}
-                                    onChange={(event) => setEmail(event.target.value)}
+                                    value={userName}
+                                    onChange={(event) => setUserName(event.target.value)}
                                 />
                             </div>
                             <div className="form-outline mb-4 show-password">
