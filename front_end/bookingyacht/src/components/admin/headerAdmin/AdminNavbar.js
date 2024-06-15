@@ -1,4 +1,5 @@
-import { Nav, Navbar } from 'react-bootstrap';
+import { Nav, NavLink, Navbar } from 'react-bootstrap';
+import { AiOutlineLogout } from "react-icons/ai";
 import { FaAddressBook, FaHome, FaUsers } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import './Sidebar.scss';
@@ -32,6 +33,9 @@ const AdminNavbar = () => {
             <Nav.Link href="#contacts-info" as={Link} to="/dashboard/company">
               <FaAddressBook /> <span>Company Manager</span>
             </Nav.Link>
+            <NavLink>
+              <AiOutlineLogout/> <span>Logout</span>
+            </NavLink>
           </div>
         </Nav>
       </Navbar>

@@ -30,7 +30,7 @@ const LoginAdmin = ({setIsLoggedIn}) => {
 
         try {
             const response = await axios(config);
-
+            console.log(response);
             // Trích xuất token từ phản hồi
             const token = response.data.data;
 
