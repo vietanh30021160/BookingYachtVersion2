@@ -17,7 +17,7 @@ public class FeedbackDTO {
     private String description;
     private String idBooking;
     private Customer customer;
-    private Yacht yacht;
+    private String idYacht;
 
 
 }

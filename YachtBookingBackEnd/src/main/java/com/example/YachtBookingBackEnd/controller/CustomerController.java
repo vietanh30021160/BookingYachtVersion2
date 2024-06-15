@@ -6,7 +6,6 @@ import com.example.YachtBookingBackEnd.service.implement.ICustomer;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -65,6 +64,12 @@ public class CustomerController {
                                          @PathVariable String idYacht) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iCustomer.addFeedback(starRating,description,idBooking,idCustomer,idYacht));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getFeedbackByYachtId/{yachtId}")
+    public ResponseEntity<?> getFeedbackByYachtId(@PathVariable String yachtId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iCustomer.getFeedbackByYachtId(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 }
