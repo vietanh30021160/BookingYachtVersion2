@@ -41,10 +41,6 @@ public class LoginController {
                 String token = jwtHelper.generateToken(username, role);
                 dataResponse.setData(token);
                 dataResponse.setSuccess(true);
-                if(dataResponse.isSuccess()==true){
-                    String accountId = iAccount.getIdAccountByUsername(username);
-                    dataResponse.setDesc(accountId);
-                }
                 return new ResponseEntity<>(dataResponse, HttpStatus.OK);
             }
         } catch (AuthenticationException e) {

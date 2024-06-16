@@ -35,7 +35,8 @@ public class CompanyController {
     ICompany iCompany;
     @Autowired
     private IRoomImage iRoomImage;
-
+    @Autowired
+    private IRoomType iRoomType;
     @Autowired
     IRoom iRoom;
 
@@ -237,6 +238,41 @@ public class CompanyController {
         dataResponse.setData(iRoomImage.deleteRoomImage(imageId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
+    @GetMapping("/roomType/getAllRoomType")
+    public ResponseEntity<?>getAllRoomType(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoomType.getAllRoomType());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @PostMapping("/roomType/addRoomType")
+    public ResponseEntity<?> addRoomType(@RequestParam long price,
+                                         @RequestParam String type,
+                                         @RequestParam String utilities){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoomType.addRoomType(type, price, utilities));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @PutMapping("/roomType/updateRoomType/{roomTypeId}")
+    public ResponseEntity<?> updateRoomType(@PathVariable ("roomTypeId")String roomTypeId
+            ,@RequestParam long price,
+                                         @RequestParam String type,
+                                         @RequestParam String utilities){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoomType.updateRoomType(roomTypeId,type, price, utilities));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/roomType/deleteRoomType/{roomTypeId}")
+    public ResponseEntity<?> deleteRoomType(@PathVariable ("roomTypeId") String roomTypeId){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoomType.deleteRoomType(roomTypeId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+
+
+
 
 
 
