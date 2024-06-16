@@ -26,8 +26,14 @@ import MainPage from './components/detailYacht/mainDetailPage/MainPage';
 import Enterprise from './components/enterprise/Enterprise';
 import HomePage from './components/home/HomePage';
 import Profile from './components/home/Profile';
+<<<<<<< HEAD
+import ManageYacht from './components/company/ManageYacht';
+import ManageRoom from './components/company/ManageRoom';
+=======
 import YachtQuestion from './components/yacht/YachtQuestion';
 import YachtRule from './components/yacht/YachtRule';
+>>>>>>> 5fb831ced9d9b8de9bf186a71d31458c914635f5
+import FindYacht from './components/yacht/FindYacht';
 const Layout = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -37,8 +43,10 @@ const Layout = () => {
                 <Route path="/" element={<App />}>
                     <Route index element={<HomePage />} />
                     <Route path='/blog' element={<Blog />} />
+                    <Route path='/duthuyen' element={<FindYacht />} />
                     <Route path='/doanhnhiep' element={<Enterprise />} />
                     <Route path='/mainpage' element={<MainPage />} />
+                    <Route path='/duthuyen' element={<FindYacht />} />
                     <Route path='/yacht-rule' element={<YachtRule />} />
                     <Route path='/yacht-question' element={<YachtQuestion />} />
                 </Route>
@@ -62,17 +70,17 @@ const Layout = () => {
                 <Route path='manage-yacht' element={<ManageYacht />} />
                 <Route path='manage-room' element={<ManageRoom />} />
 
-                <Route path='/admin' element={<LoginAdmin setIsLoggedIn={setIsLoggedIn}/>}/>
+                <Route path='/admin' element={<LoginAdmin setIsLoggedIn={setIsLoggedIn} />} />
                 {
                     isLoggedIn && (
-                        <Route path='/dashboard' element={<AdminLayout/>}>
+                        <Route path='/dashboard' element={<AdminLayout />}>
                             <Route path='manager' element={<AdminHome />} />
                             <Route path="customer" element={<CustomerManager />} />
                             <Route path="company" element={<CompanyManager />} />
                         </Route>
                     )
                 }
-                
+
             </Routes>
 
             <ToastContainer

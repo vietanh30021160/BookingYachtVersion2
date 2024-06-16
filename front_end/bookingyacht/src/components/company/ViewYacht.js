@@ -1,21 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import yacht from '../../assets/no53ab0y526yl825.webp'
 import { Button, FormControl, FormGroup } from 'react-bootstrap';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { RiShipLine } from "react-icons/ri";
 import { FaLocationDot } from "react-icons/fa6";
 import './ViewYacht.scss'
 import ReactPaginate from 'react-paginate';
 import './Company.scss'
+import { FaCirclePlus } from "react-icons/fa6";
+import ModalCreateYacht from './Modal/ModalCreateYacht';
 
 const ViewYacht = () => {
     const navigate = useNavigate();
-
-
+    const [isShowModal, setIsShowModal] = useState(false);
+    const handleClose = () => {
+        setIsShowModal(false);
+    }
     return (
         <div className='view-yacht-container'>
             <div className='row my-4'>
-                <h2 className='col-3'>List Yacht</h2>
+                <h2 className='col-2'>List Yacht</h2>
+
+                <Button className='col-2 btn btn-success' onClick={() => setIsShowModal(true)}><FaCirclePlus style={{ marginRight: 8, marginBottom: 5 }} />Add New Yacht</Button>
                 <FormGroup className='col-8 d-flex'>
                     <FormControl placeholder='Search' type='text' />
                     <Button className='btn btn-primary mx-3'>Search</Button>
@@ -77,6 +83,10 @@ const ViewYacht = () => {
                     renderOnZeroPageCount={null}
                 />
             </div>
+            <ModalCreateYacht
+                show={isShowModal}
+                handleClose={handleClose}
+            />
 
         </div>
     );

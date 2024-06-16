@@ -3,7 +3,30 @@ import './FindYacht.scss';
 import i_content from '../../assets/image_1.webp';
 import Form from 'react-bootstrap/Form';
 import ShowYacht from "./YachtList";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { getYachtService } from "../../services/ApiServices";
+
 const FindYacht = () => {
+    const [service, setService] = useState([]);
+
+    const getAllYachtService = async () => {
+        let res = await getYachtService();
+        setService(res.data.data)
+    }
+
+    useEffect(() => {
+        getAllYachtService();
+    }, [])
+
+    const renderService = () => {
+        return service.map((service) => {
+            return (
+                <Form.Check key={service.idService} label={service.service} />
+            )
+        })
+    }
+
     return (
         <div className="find-yacht-body">
             <div className="find-yacht-content container">
@@ -14,7 +37,7 @@ const FindYacht = () => {
                     <div className='yacht-title col-md mx-4'>
                         <h2>Tìm Thấy <br /> Kết Quả</h2>
                         <div>
-                            <img src={i_content} />
+                            <img src={i_content} alt="" />
                         </div>
                     </div>
                     <div className='select col-md mx-4'>
@@ -55,9 +78,13 @@ const FindYacht = () => {
                             <div className="extention-body-content">
                                 Tiện ích
                             </div>
-                            <Form.Check id="" label='Phòng gia đình' lab />
+<<<<<<< HEAD
+                            <Form.Check id="" label='Phòng gia đình' />
                             <Form.Check id="" label='Có bể sục' />
                             <Form.Check id="" label='Bao gồm tất cả các bữa ăn' />
+=======
+                            {renderService()}
+>>>>>>> 5fb831ced9d9b8de9bf186a71d31458c914635f5
                         </div>
                     </div>
 

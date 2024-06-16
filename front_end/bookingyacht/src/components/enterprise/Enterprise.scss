@@ -21,19 +21,22 @@
         width: 100%;
         max-width: 600px;
     }
-    .header-form{
-        h4{
+
+    .header-form {
+        h4 {
             display: flex;
             justify-content: center;
             margin-bottom: 10px;
-            font-weight: bold; 
+            font-weight: bold;
         }
-        p{
+
+        p {
             display: flex;
             text-align: center;
             color: #6a6767;
         }
     }
+
     // .header-form h4{
     //     display: flex;
     //     justify-content: center;
@@ -49,11 +52,13 @@
     .body-form select {
         border-radius: 5px;
     }
-    .buton{
+
+    .buton {
         display: flex;
         justify-content: center;
-        
+
     }
+
     .button-wrapper {
         display: flex;
         justify-content: center;

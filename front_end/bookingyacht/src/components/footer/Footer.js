@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import logo from '../../assets/logo_swp.png'
 const Footer = () => {
     return (
-        <div className="footer-content row">
+        <div className="footer-content row" style={{ fontWeight: 'bold', backgroundColor: '#101828' }}>
             <div className='content-1 col-md-3'>
                 <img alt='logo' src={logo} />
                 <label>Công ty TNHH Du Lịch và Dịch Vụ Cây xăng 39<br />
