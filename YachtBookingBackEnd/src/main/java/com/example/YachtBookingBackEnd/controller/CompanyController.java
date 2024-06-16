@@ -66,6 +66,18 @@ public class CompanyController {
         dataResponse.setData(iYacht.insertYacht(name, image, launch, hullBody, description, rule, itinerary, idYachtType, idLocation, idCompany));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
+    @PostMapping("/room/addRoom")
+    public ResponseEntity<?> addRoom(@RequestParam String roomName,
+                                     @RequestParam double area,
+                                     @RequestParam String description,
+                                     @RequestParam String idRoomType,
+                                     @RequestParam String idYacht
+                                     ){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.addRoom(roomName, area, description, idRoomType, idYacht));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
     @PutMapping("/yacht/updateYacht/{yachtId}")
     public ResponseEntity<?> updateYacht(@PathVariable String yachtId,
                                          @RequestParam String name,
@@ -78,6 +90,15 @@ public class CompanyController {
                                          @RequestParam String idLocation) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYacht.updateYacht(yachtId, name, image, hullBody, description, rule, itinerary, idYachtType, idLocation));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PutMapping("/room/updateRoom/{roomId}")
+    public ResponseEntity<?> updateRoom(@PathVariable String roomId,
+                                        @RequestParam String description,
+                                        @RequestParam int available){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.updateRoom(roomId,  description,  available));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @DeleteMapping("/yacht/delete/{id}")
@@ -191,6 +212,8 @@ public class CompanyController {
         dataResponse.setData(iRoom.getRoomByID(roomId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
+
 
 
 

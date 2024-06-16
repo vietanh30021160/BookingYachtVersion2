@@ -10,4 +10,9 @@ public interface IRoom {
 
 
     RoomDTO getRoomByID(String roomId);
+
+    boolean addRoom(String roomName, double area, String description, String idRoomType, String idYacht);
+
+
+    boolean updateRoom(String roomId, String description, int available);
 }
