@@ -2,54 +2,58 @@ import Card from 'react-bootstrap/Card';
 import { NavLink } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import { useEffect, useState } from 'react';
-import { getUser } from '../../services/ApiServices';
+import { getAllYachtHome, getUser } from '../../services/ApiServices';
 import { GrFormNextLink } from "react-icons/gr";
 import i_content from '../../assets/image_1.webp'
+import axios from 'axios';
+import { Container } from 'react-bootstrap/Container';
+import { FaLocationDot } from "react-icons/fa6";
 
 const ShowYacht = (props) => {
-    const [listUser, setListUser] = useState([]);
+    const [yacht, setYacht] = useState([]);
+
+    const getAllYacht = async () => {
+        let res = await getAllYachtHome()
+        setYacht(res.data.data)
+    }
+
+    const avatarYachtApi = 'http://localhost:8080/api/customer/file/'
 
     useEffect(() => {
-        allUser(2);
-
-    }, []);
-
-    const allUser = async (page) => {
-        let res = await getUser(page);
-        if (res && res.data && res.data.data) {
-            setListUser(res.data.data);
-        }
-    }
+        getAllYacht()
+    }, [])
 
     return (
         <>
-
             <div className='yacht-header row'>
                 <div className='yacht-title col-md'>
-                    <h4>Du Thuyền Mới <br /> Và Phổ Biến Nhất</h4>
+                    <h3 style={{ fontWeight: 'bold' }}>Du Thuyền Mới <br /> Và Phổ Biến Nhất</h3>
                     <div>
                         <img src={i_content} />
                     </div>
                 </div>
-                <label style={{ width: "488px" }} className='col-md'>
+                <label style={{ width: "488px", color: '#475467' }} className='col-md mb-5'>
                     Tận hưởng sự xa hoa và đẳng cấp tối đa trên du thuyền mới nhất và phổ biến nhất.Khám phá một hành trình tuyệt vời đưa bạn vào thế giới của sự sang trọng,tiện nghi và trải nghiệm không thể quên.
                 </label>
             </div>
-            <div className='yacht-content '>
-                {listUser && listUser.length > 0 && listUser.map((item, index) => {
+            <div className='yacht-content'>
+                {yacht && yacht.length > 0 && (yacht.length > 6 ? yacht.slice(0, 6) : yacht).map((item) => {
                     return (
-                        <NavLink key={index} to='/duthuyen' className='nav-link'>
-                            <Card style={{ width: '18rem' }}>
-                                <Card.Img variant="top" src={item.avatar} />
-                                <Card.Body>
-                                    <Card.Title>{`${item.first_name} ${item.last_name}`}</Card.Title>
-                                    <Card.Text>
-                                        {item.email}
-                                    </Card.Text>
-                                    <Button variant="primary">Go somewhere</Button>
-                                </Card.Body>
-                            </Card>
-                        </NavLink>
+                        <div className='col-12 col-sm-6 col-md-3 col-lg-3 mb-4'>
+                            <NavLink key={item.idYacht} to='/duthuyen' className='nav-link'>
+                                <Card style={{ width: '100%', height: '350px' }}>
+                                    <Card.Img width={268} height={200} variant="top" src={`${avatarYachtApi}${item.image}`} />
+                                    <Card.Body>
+                                        <Card.Title style={{ fontWeight: 600, fontSize: 18, color: '#475467', marginBottom: 0 }}>{`${item.name}`}</Card.Title>
+                                        <div style={{ padding: '5px' }} className='location'><FaLocationDot />{item.location.name}</div>
+                                        <div className='row d-flex align-items-center mt-2'>
+                                            <p className='col-7' style={{ color: '#475467', fontWeight: '700', marginBottom: 0 }}>Price: 3.3350.000đ</p>
+                                            <button className='col-5 btn btn-warning' style={{ color: '#475467', borderRadius: 25, width: 100, fontSize: '14px' }}>Đặt ngay</button>
+                                        </div>
+                                    </Card.Body>
+                                </Card>
+                            </NavLink>
+                        </div>
                     )
                 })
                 }

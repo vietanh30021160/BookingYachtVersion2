@@ -11,12 +11,16 @@ const HomePage = (props) => {
     return (
         <div>
             <div className='homepage-container'>
-                <div>
+                <div >
                     <video autoPlay muted loop>
                         <source src={videoHomePage} />
                     </video>
                 </div>
+<<<<<<< HEAD
                 <FormSearch />
+=======
+                <FormSearch></FormSearch>
+>>>>>>> 5fb831ced9d9b8de9bf186a71d31458c914635f5
             </div>
 
             <div className='app-yacht container'>
@@ -35,10 +39,6 @@ const HomePage = (props) => {
             <div className='app-enterprice my-5'>
                 <Enterprice />
             </div>
-
-            {/* <div className='app-blog'>
-                Blog
-            </div> */}
 
         </div>
     )

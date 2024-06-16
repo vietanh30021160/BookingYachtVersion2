@@ -30,7 +30,7 @@ const LoginAdmin = ({setIsLoggedIn}) => {
 
         try {
             const response = await axios(config);
-
+            console.log(response);
             // Trích xuất token từ phản hồi
             const token = response.data.data;
 
@@ -56,24 +56,24 @@ const LoginAdmin = ({setIsLoggedIn}) => {
         return token ? `Bearer ${token}` : '';
     };
 
-    const someProtectedAction = async () => {
-        const config = {
-            method: 'get',
-            url: 'http://localhost:8080/protected/resource', // URL của API được bảo vệ
-            headers: { 
-                'Authorization': getAuthHeader()
-            }
-        };
+    // const someProtectedAction = async () => {
+    //     const config = {
+    //         method: 'get',
+    //         url: 'http://localhost:8080/protected/resource', // URL của API được bảo vệ
+    //         headers: { 
+    //             'Authorization': getAuthHeader()
+    //         }
+    //     };
 
-        try {
-            const response = await axios(config);
-            // Xử lý phản hồi từ API được bảo vệ
-            console.log(response.data);
-        } catch (error) {
-            // Xử lý lỗi
-            console.error('Lỗi khi truy cập tài nguyên được bảo vệ', error);
-        }
-    };
+    //     try {
+    //         const response = await axios(config);
+    //         // Xử lý phản hồi từ API được bảo vệ
+    //         console.log(response.data);
+    //     } catch (error) {
+    //         // Xử lý lỗi
+    //         console.error('Lỗi khi truy cập tài nguyên được bảo vệ', error);
+    //     }
+    // };
 
     return (
         <>
