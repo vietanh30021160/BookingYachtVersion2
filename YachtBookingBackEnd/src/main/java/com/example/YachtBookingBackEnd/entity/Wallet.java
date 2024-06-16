@@ -27,9 +27,9 @@ public class Wallet {
     @Column(name = "balance")
     private long balance;
 
-    @OneToMany(mappedBy = "wallet")
-    private Set<Transaction> transactionSet;
+//    @OneToMany(mappedBy = "wallet")
+//    private Set<Transaction> transactionSet;
 
-    @OneToOne(mappedBy = "wallet")
-    private Customer customer;
+//    @OneToOne(mappedBy = "wallet")
+//    private Customer customer;
 }

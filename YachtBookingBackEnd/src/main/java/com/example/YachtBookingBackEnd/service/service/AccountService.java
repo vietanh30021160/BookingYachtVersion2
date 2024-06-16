@@ -2,7 +2,6 @@ package com.example.YachtBookingBackEnd.service.service;
 
 import com.example.YachtBookingBackEnd.dto.AccountDTO;
 import com.example.YachtBookingBackEnd.entity.Account;
-import com.example.YachtBookingBackEnd.payload.request.AccountCompanyCreationRequest;
 import com.example.YachtBookingBackEnd.repository.AccountRepository;
 import com.example.YachtBookingBackEnd.service.implement.IAccount;
 import lombok.AccessLevel;

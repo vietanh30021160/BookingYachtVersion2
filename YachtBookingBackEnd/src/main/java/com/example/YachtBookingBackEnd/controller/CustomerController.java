@@ -8,18 +8,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/customer")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CustomerController {
-    IAccount iAccount;
-    ICustomer iCustomer;
+    private final IAccount iAccount;
+    private final ICustomer iCustomer;
 
     @PostMapping("/accounts")
     ResponseEntity<?> register(@RequestParam String username,
@@ -29,8 +26,8 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/profile")
-    ResponseEntity<?> addCustomerProfile(@RequestParam String idAccount,
+    @PostMapping("/profile/{idAccount}")
+    ResponseEntity<?> addCustomerProfile(@PathVariable String idAccount,
                                          @RequestParam String fullName,
                                          @RequestParam String email,
                                          @RequestParam String phoneNumber,

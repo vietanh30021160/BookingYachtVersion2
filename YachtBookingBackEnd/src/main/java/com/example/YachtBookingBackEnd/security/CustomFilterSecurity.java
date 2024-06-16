@@ -50,6 +50,7 @@ public class CustomFilterSecurity {
         http.csrf().disable()
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
+                                .requestMatchers("/api/payment/**").permitAll()
                                 .requestMatchers("/api/customer/**").permitAll()
                                 .requestMatchers("/login/**").permitAll() // Cho phép tất cả các yêu cầu đến /login/**
                                 .requestMatchers("/api/admins/**").hasRole("ADMIN") // Chỉ cho phép vai trò ADMIN truy cập /admin/**
