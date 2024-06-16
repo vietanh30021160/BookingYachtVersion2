@@ -122,4 +122,11 @@ public class CompanyController {
         dataResponse.setData(iCompany.updateCompany(companyId, name, address, logo, email));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
+    @GetMapping("/feedBackByIdCompany/{companyId}")
+    public ResponseEntity<?> getFeedbackByIdCompany(@PathVariable String companyId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iCompany.getFeedbacksByCompanyId(companyId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 }
