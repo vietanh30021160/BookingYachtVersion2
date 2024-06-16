@@ -62,17 +62,17 @@ const Layout = () => {
                 <Route path='manage-yacht' element={<ManageYacht />} />
                 <Route path='manage-room' element={<ManageRoom />} />
 
-                <Route path='/admin' element={<LoginAdmin setIsLoggedIn={setIsLoggedIn}/>}/>
+                <Route path='/admin' element={<LoginAdmin setIsLoggedIn={setIsLoggedIn} />} />
                 {
                     isLoggedIn && (
-                        <Route path='/dashboard' element={<AdminLayout/>}>
+                        <Route path='/dashboard' element={<AdminLayout />}>
                             <Route path='manager' element={<AdminHome />} />
                             <Route path="customer" element={<CustomerManager />} />
                             <Route path="company" element={<CompanyManager />} />
                         </Route>
                     )
                 }
-                
+
             </Routes>
 
             <ToastContainer

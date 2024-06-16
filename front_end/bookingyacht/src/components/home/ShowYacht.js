@@ -41,7 +41,7 @@ const ShowYacht = (props) => {
                     return (
                         <div className='col-12 col-sm-6 col-md-3 col-lg-3 mb-4'>
                             <NavLink key={item.idYacht} to='/duthuyen' className='nav-link'>
-                                <Card style={{ width: '400px', height: '350px' }}>
+                                <Card style={{ width: '100%', height: '350px' }}>
                                     <Card.Img width={268} height={200} variant="top" src={`${avatarYachtApi}${item.image}`} />
                                     <Card.Body>
                                         <Card.Title style={{ fontWeight: 600, fontSize: 18, color: '#475467', marginBottom: 0 }}>{`${item.name}`}</Card.Title>
