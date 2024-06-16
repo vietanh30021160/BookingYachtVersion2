@@ -8,6 +8,7 @@ import com.example.YachtBookingBackEnd.entity.Wallet;
 import com.example.YachtBookingBackEnd.repository.AccountRepository;
 import com.example.YachtBookingBackEnd.repository.CustomerRepository;
 import com.example.YachtBookingBackEnd.repository.WalletRepository;
+import com.example.YachtBookingBackEnd.service.implement.IAccount;
 import com.example.YachtBookingBackEnd.service.implement.ICustomer;
 import com.example.YachtBookingBackEnd.service.implement.IWallet;
 import lombok.AccessLevel;
@@ -32,7 +33,7 @@ public class CustomerService implements ICustomer {
     WalletRepository walletRepository;
     IWallet iWallet;
 
-
+    IAccount iAccount;
 
     public static final String ROLE_CUSTOMER = "CUSTOMER";
 
@@ -144,6 +145,33 @@ public class CustomerService implements ICustomer {
     }
 
     @Override
+    public CustomerDTO findCustomerByAccountId(String accountId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new RuntimeException("Not found account"));
+
+        Customer customer = customerRepository.findCustomerByAccount(account);
+
+        if (account.getRole().equals("CUSTOMER")) {
+            AccountDTO accountDTO = new AccountDTO();
+            CustomerDTO customerDTO = new CustomerDTO();
+
+            customerDTO.setIdCustomer(customer.getIdCustomer());
+            customerDTO.setFullName(customer.getFullName());
+            customerDTO.setEmail(customer.getEmail());
+            customerDTO.setPhone(customer.getPhoneNumber());
+            customerDTO.setAddress(customer.getAddress());
+            accountDTO.setIdAccount(accountId);
+            accountDTO.setUsername(account.getUsername());
+            accountDTO.setPassword(account.getPassword());
+            accountDTO.setRole(account.getRole());
+            customerDTO.setAccountDTO(accountDTO);
+            return customerDTO;
+        }
+        return null;
+
+    }
+
+    @Override
     public boolean updateCustomer(String customerId, String fullName, String email, String phone, String address) {
         //System.out.println(customerId);
         Optional<Customer> customer = customerRepository.findById(customerId);
@@ -171,6 +199,7 @@ public class CustomerService implements ICustomer {
         }
 
     }
+
 
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";

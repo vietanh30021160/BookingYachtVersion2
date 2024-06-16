@@ -2,6 +2,7 @@ package com.example.YachtBookingBackEnd.controller;
 
 import com.example.YachtBookingBackEnd.payload.response.DataResponse;
 import com.example.YachtBookingBackEnd.security.JwtHelper;
+import com.example.YachtBookingBackEnd.service.implement.IAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,8 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 @RequestMapping("/login")
 public class LoginController {
-
+    @Autowired
+    private IAccount iAccount;
     @Autowired
     JwtHelper jwtHelper;
     @Autowired
@@ -39,6 +41,10 @@ public class LoginController {
                 String token = jwtHelper.generateToken(username, role);
                 dataResponse.setData(token);
                 dataResponse.setSuccess(true);
+                if(dataResponse.isSuccess()==true){
+                    String accountId = iAccount.getIdAccountByUsername(username);
+                    dataResponse.setDesc(accountId);
+                }
                 return new ResponseEntity<>(dataResponse, HttpStatus.OK);
             }
         } catch (AuthenticationException e) {

@@ -67,7 +67,7 @@ public class AdminController {
     @GetMapping("/accountCustomer/{customerAccountId}")
     public ResponseEntity<?> getAccount(@PathVariable("customerAccountId") String customerAccountId)  {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iAccount.get1Account(customerAccountId));
+        dataResponse.setData(iAccount.getAccountById(customerAccountId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
@@ -82,6 +82,13 @@ public class AdminController {
     ResponseEntity<?> getCustomerById(@PathVariable("customerId") String customerId){
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setData(iCustomer.getCustomer(customerId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/profile/findCustomerByAccountId/{accountId}")
+    ResponseEntity<?> findCustomerByAccountId(@PathVariable("accountId") String accountId){
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iCustomer.findCustomerByAccountId(accountId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

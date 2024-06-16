@@ -13,4 +13,6 @@ public interface ICustomer {
     CustomerDTO getCustomer(String  id);
 
     boolean updateCustomer(String customerId, String fullName, String email, String phone, String address);
+
+    CustomerDTO findCustomerByAccountId(String accountId);
 }

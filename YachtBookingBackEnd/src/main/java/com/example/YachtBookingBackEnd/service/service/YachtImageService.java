@@ -65,15 +65,10 @@ public class YachtImageService implements IYachtImage {
         try{
             YachtImage yachtImage = yachtImageRepository.findById(imageId)
                     .orElseThrow(() -> new RuntimeException("Company not found! Try again"));
-
-
                     System.out.println("tim thay");
-
                     yachtImage.setImageYacht(image.getOriginalFilename());
                     yachtImageRepository.save(yachtImage);
                     return true;
-
-
         }catch (Exception e){
             System.out.println("error get image by Yacht " + e.getMessage());
         }

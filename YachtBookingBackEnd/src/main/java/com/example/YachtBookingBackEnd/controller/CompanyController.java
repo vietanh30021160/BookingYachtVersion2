@@ -33,6 +33,8 @@ public class CompanyController {
     IYachtService iYachtService;
     @Autowired
     ICompany iCompany;
+    @Autowired
+    private IRoomImage iRoomImage;
 
     @Autowired
     IRoom iRoom;
@@ -213,6 +215,28 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
+    @PostMapping("/roomImage/insertImage/{roomId}")
+    public ResponseEntity<?> insertRoomImage(@PathVariable ("roomId") String roomId,
+                                             @RequestParam MultipartFile  image){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoomImage.insertRoomImages(roomId, image));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PutMapping("/roomImage/updateImage/{imageId}")
+    public ResponseEntity<?> updateRoomImage(@PathVariable ("imageId") String imageId,
+                                             @RequestParam MultipartFile  image){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoomImage.updateRoomImage(imageId, image));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/roomImage/deleteImage/{imageId}")
+    public ResponseEntity<?> deleteRoomImage(@PathVariable ("imageId") String imageId){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoomImage.deleteRoomImage(imageId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 
 
 
