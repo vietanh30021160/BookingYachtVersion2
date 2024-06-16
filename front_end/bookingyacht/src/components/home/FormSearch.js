@@ -3,33 +3,19 @@ import './Home.scss';
 
 const FormSearch = () => {
     return (
-        <div>
-            <form className='mb-3 serach-yacht'>
+        <div className='homepage-content container '>
+            <form className='mb-3 serach-yacht p-3'>
                 <div className='text-center'>
-                    <h2>Ban Lua Chon Du Thuyen Ha Long Nao ?</h2>
-                    <p>Co Rat Nhieu Tour Du Lich Dang cho Ban</p>
+                    <h2 style={{ fontWeight: 'bold' }}>Bạn lựa chọn du thuyền Hạ Long nào?</h2>
+                    <p>Có rất nhiều du thuyền dành cho bạn</p>
                 </div>
-                <div className='form-search'>
-                    <div className='d-flex'>
-                        {/* <CiSearch /> */}
-                        <input type='text' placeholder='Nhap Ten Du Thuyen' className='form-control col-3' />
-                    </div>
-                    <div>
-                        {/* <FaMapMarkerAlt /> */}
-                        <select className='form-select'>
-                            <option>1</option>
-                            <option>2</option>
-                        </select>
-                    </div>
-                    <div>
-                        <select className='form-select'>
-                            <option>1</option>
-                        </select>
-                    </div>
-                    <button size='lg'>Search</button>
+                <div className='form-search d-flex flex-row align-items-center'>
+                    <input type='text' placeholder='Nhập tên du thuyền' className='form-control flex-grow-1 me-2' style={{ paddingLeft: '20px' }} />
+                    <button style={{ paddingLeft: '30px', paddingRight: '30px' }} size='lg'>Search</button>
                 </div>
             </form>
         </div>
+
     );
 };
 

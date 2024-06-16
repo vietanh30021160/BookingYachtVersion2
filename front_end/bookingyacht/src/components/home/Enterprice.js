@@ -8,10 +8,10 @@ import partner6 from '../../assets/partner6.png'
 
 const Enterprice = (props) => {
     return (
-        <>
+        <div className='p-5'>
             <div className='enterprice-header row'>
                 <div className='enterprice-title col-md mx-4'>
-                    <h4>Danh Gia Tu Đối tác Cùng các
+                    <h4 style={{ fontWeight: 'bold' }}>Danh Gia Tu Đối tác Cùng các
                         <br /> Hãng Du thuyền Lớn</h4>
                     <div>
                         <img src={i_content} />
@@ -41,7 +41,7 @@ const Enterprice = (props) => {
                     <img src={partner6} />
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 
