@@ -22,11 +22,10 @@ import java.util.regex.Pattern;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class CustomerService implements ICustomer {
-    CustomerRepository customerRepository;
-    AccountRepository accountRepository;
-    WalletRepository walletRepository;
-    IWallet iWallet;
-
+    private final CustomerRepository customerRepository;
+    private final AccountRepository accountRepository;
+    private final WalletRepository walletRepository;
+    private final IWallet iWallet;
     public static final String ROLE_CUSTOMER = "CUSTOMER";
 
     @Override
@@ -58,15 +57,15 @@ public class CustomerService implements ICustomer {
             customerRepository.save(customer);
 
             // Gọi API VNPay để tạo ví
-            String vnpayWalletId = iWallet.createVnpayWallet(customer);
+//            String vnpayWalletId = iWallet.createVnpayWallet(customer);
 
-            Wallet wallet = new Wallet();
-            wallet.setName(fullName);
-            wallet.setBankNumber(vnpayWalletId); // Đây là ID ví VNPay, không phải số tài khoản ngân hàng
-            wallet.setBalance(0);
-            walletRepository.save(wallet);
-
-            customer.setWallet(wallet);
+//            Wallet wallet = new Wallet();
+//            wallet.setName(fullName);
+//            wallet.setBankNumber(vnpayWalletId); // Đây là ID ví VNPay, không phải số tài khoản ngân hàng
+//            wallet.setBalance(0);
+//            walletRepository.save(wallet);
+//
+//            customer.setWallet(wallet);
             customerRepository.save(customer);
 
             return true;

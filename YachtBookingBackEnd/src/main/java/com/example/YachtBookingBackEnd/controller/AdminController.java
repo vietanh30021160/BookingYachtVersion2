@@ -41,15 +41,15 @@ public class AdminController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/companies/details")
-    public ResponseEntity<?> getDetailCompanyByID(@RequestParam String idAccount) {
+    @GetMapping("/companies/{idAccount}")
+    public ResponseEntity<?> getDetailCompanyByID(@PathVariable String idAccount) {
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setData(iCompany.getDetailCompanyByAccountID(idAccount));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/companies")
-    public ResponseEntity<?> hideCompany(@RequestParam String idCompany) {
+    @PutMapping("/companies/{idCompany}")
+    public ResponseEntity<?> hideCompany(@PathVariable String idCompany) {
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setData(iCompany.hideCompany(idCompany));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);

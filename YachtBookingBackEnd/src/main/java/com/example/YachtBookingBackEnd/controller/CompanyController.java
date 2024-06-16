@@ -101,14 +101,25 @@ public class CompanyController {
         dataResponse.setData(iYachtImage.deleteImage(imageId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-    @PostMapping("/profile")
-    public ResponseEntity<?> addInfoCompany(@RequestParam String idAccount,
+    @PostMapping("/profile/{idAccount}")
+    public ResponseEntity<?> addInfoCompany(@PathVariable String idAccount,
                                             @RequestParam String name,
                                             @RequestParam String address,
                                             @RequestParam MultipartFile logo,
                                             @RequestParam String email) {
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setData(iCompany.addCompany(idAccount, name, address, logo, email));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PutMapping("/profile/{companyId}")
+    public ResponseEntity<?> updateCompany(@PathVariable String companyId,
+                                           @RequestParam String name,
+                                           @RequestParam String address,
+                                           @RequestParam MultipartFile logo,
+                                           @RequestParam String email){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iCompany.updateCompany(companyId, name, address, logo, email));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 }
