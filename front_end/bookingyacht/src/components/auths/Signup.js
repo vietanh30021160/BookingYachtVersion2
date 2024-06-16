@@ -20,7 +20,8 @@ const Signup = () => {
         }
         else if (res && res.data.status === 200 && res.data.success === true) {
             toast.success('register success')
-            // navigate('/information')
+            console.log(res);
+            navigate('/information')
         } else {
             toast.error('create fail')
         }
