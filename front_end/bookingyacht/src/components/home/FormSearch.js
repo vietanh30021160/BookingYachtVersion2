@@ -1,8 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Home.scss';
 import { Button, Col, FormControl, FormGroup, Row } from 'react-bootstrap';
 
 const FormSearch = () => {
+    const init = {
+        nameYacht: '',
+        location: '',
+        price: ''
+    }
+    const [searchData, setSearchData] = useState(init);
+    const handleChange = (e) => {
+        setSearchData(
+            {
+                ...searchData,
+                [e.target.name]: e.target.value
+            }
+        )
+    }
+    const handleSearch = () => {
+        console.log("check search", searchData)
+    }
+
     return (
         <div>
             <div className='homepage-content border container '>
@@ -18,30 +36,32 @@ const FormSearch = () => {
                                     <FormControl
                                         placeholder='Search Yacht'
                                         type='text'
+                                        name='nameYacht'
+                                        onChange={handleChange}
                                     />
                                 </FormGroup>
                             </Col>
                             <Col>
-                                <select className='select'>
-                                    <option>Tất Cả Địa Điểm</option>
-                                    <option>Vịnh Hạ Long</option>
-                                    <option>Vịnh Lan Hạ</option>
-                                    <option>Đảo Cát Bà</option>
+                                <select className='select' name='location' onChange={handleChange}>
+                                    <option value='all'>Tất Cả Địa Điểm</option>
+                                    <option value='Vịnh Hạ Long'>Vịnh Hạ Long</option>
+                                    <option value='Vịnh Lan Hạ'>Vịnh Lan Hạ</option>
+                                    <option value='Đảo Cát Bà'>Đảo Cát Bà</option>
 
                                 </select>
 
                             </Col>
                             <Col>
-                                <select className='select'>
-                                    <option>Tất Cả Mức Giá</option>
-                                    <option>1 Đến 3 Triệu</option>
-                                    <option>3 Đến 6 Triệu</option>
-                                    <option>Trên 6 Triệu</option>
+                                <select className='select' name='price' onChange={handleChange}>
+                                    <option value='all'>Tất Cả Mức Giá</option>
+                                    <option value='1 Đến 3 Triệu'>1 Đến 3 Triệu</option>
+                                    <option value='3 Đến 6 Triệu'>3 Đến 6 Triệu</option>
+                                    <option value='Trên 6 Triệu'>Trên 6 Triệu</option>
 
                                 </select>
                             </Col>
                             <Col>
-                                <Button>Search</Button>
+                                <Button onClick={() => handleSearch()}>Search</Button>
                             </Col>
                         </Row>
 
