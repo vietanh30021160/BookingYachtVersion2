@@ -26,14 +26,9 @@ import MainPage from './components/detailYacht/mainDetailPage/MainPage';
 import Enterprise from './components/enterprise/Enterprise';
 import HomePage from './components/home/HomePage';
 import Profile from './components/home/Profile';
-<<<<<<< HEAD
-import ManageYacht from './components/company/ManageYacht';
-import ManageRoom from './components/company/ManageRoom';
-=======
+import FindYacht from './components/yacht/FindYacht';
 import YachtQuestion from './components/yacht/YachtQuestion';
 import YachtRule from './components/yacht/YachtRule';
->>>>>>> 5fb831ced9d9b8de9bf186a71d31458c914635f5
-import FindYacht from './components/yacht/FindYacht';
 const Layout = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 

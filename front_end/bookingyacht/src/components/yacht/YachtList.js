@@ -1,9 +1,7 @@
-import './FindYacht.scss';
-import { RiShipLine } from "react-icons/ri";
-import { FaLocationDot } from "react-icons/fa6";
 import { useEffect, useState } from 'react';
+// import { img_yacht } from '../../assets/no53ab0y526yl825.webp';
 import { getAllYachtHome } from '../../services/ApiServices';
-import { img_yacht } from '../../assets/no53ab0y526yl825.webp'
+import './FindYacht.scss';
 // import ReactPaginate from 'react-paginate';
 const YachtList = () => {
     const [yacht, setYacht] = useState([]);
@@ -85,7 +83,7 @@ const YachtList = () => {
                             )
                 }) */}
 
-            <div className='d-flex justify-content-center'>
+            {/* <div className='d-flex justify-content-center'>
                 {renderPages()}
             </div>
 
@@ -108,7 +106,7 @@ const YachtList = () => {
                     <div><RiShipLine />1 Ha Thuy</div>
                     <div>Tien</div>
                 </div>
-            </div>
+            </div> */}
 
             {/* <div>
                 <ReactPaginate
@@ -133,7 +131,7 @@ const YachtList = () => {
                 />
             </div> */}
 
-        </div >
+        </div>
 
     );
 };
