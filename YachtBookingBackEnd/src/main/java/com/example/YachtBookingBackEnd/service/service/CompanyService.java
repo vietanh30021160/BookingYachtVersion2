@@ -33,49 +33,6 @@ public class CompanyService implements ICompany {
 
     public static final String ROLE_COMPANY = "COMPANY";
 
-    @Override
-    public boolean addCompany(String idAccount, String name, String address, MultipartFile logo, String email) {
-        try{
-            if (name == null || name.isEmpty()) {
-                log.error("Company name is empty");
-                throw new IllegalArgumentException("Company name is empty");
-            } else if (companyRepository.existsCompanyByName(name)) {
-                log.error("Company already exists");
-                throw new IllegalArgumentException("Company already exists");
-            } else if (!isValidEmail(email)) {
-                log.error("Invalid email format");
-                throw new IllegalArgumentException("Invalid email format");
-            }
-
-            // Check if the account exists
-            Account account = accountRepository.findById(idAccount)
-                    .orElseThrow(() -> new IllegalArgumentException("Account does not exist"));
-            if (!account.getRole().equals(ROLE_COMPANY)) {
-                log.error("Account does not have role " + ROLE_COMPANY);
-                throw new IllegalArgumentException("Account does not have role " + ROLE_COMPANY);
-            }
-
-            // Convert the request to Company entity
-            Company company = new Company();
-            company.setName(name);
-            company.setAddress(address);
-            iFile.save(logo);
-            company.setLogo(logo.getOriginalFilename());
-            company.setEmail(email);
-            company.setExist(1);
-            // Set the account for the company
-            company.setAccount(account);
-
-            // Save the company to the database
-            companyRepository.save(company);
-
-            return true;
-        }catch (Exception e){
-            log.error("Company could not be added", e);
-            return false;
-        }
-    }
-
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pattern = Pattern.compile(emailRegex);
@@ -122,9 +79,18 @@ public class CompanyService implements ICompany {
     }
 
     @Override
-    public CompanyDTO getDetailCompanyByAccountID(String idAccoount) {
-        Company company = companyRepository.findByIdAccountAndExist(idAccoount)
+    public CompanyDTO getDetailCompanyByAccountID(String idAccount) {
+        Company company = companyRepository.findByIdAccountAndExist(idAccount)
                 .orElseThrow(() -> new RuntimeException("Company is hided!"));
+
+        // Tạo AccountCompanyDTO từ Account
+        Account account = company.getAccount();
+        AccountDTO accountDTO = AccountDTO.builder()
+                .idAccount(account.getIdAccount())
+                .username(account.getUsername())
+                .password(account.getPassword())
+                .role(account.getRole())
+                .build();
 
         // Tạo CompanyDTO từ Company
         CompanyDTO companyDTO = CompanyDTO.builder()
@@ -134,6 +100,7 @@ public class CompanyService implements ICompany {
                 .logo(company.getLogo())
                 .email(company.getEmail())
                 .exist(company.getExist())
+                .accountDTO(accountDTO)
                 .build();
 
         return companyDTO;
@@ -154,11 +121,14 @@ public class CompanyService implements ICompany {
     }
 
     @Override
-    public boolean updateCompany(String idCompany, String name, String address, MultipartFile logo, String email) {
-
-//        Optional<Company> company = companyRepository.findByIdAndExist(idCompany);
-        Company company = companyRepository.findByIdAndExist(idCompany)
+    public Company getCompanyById(String idCompany) {
+        return companyRepository.findByIdAndExist(idCompany)
                 .orElseThrow(() -> new RuntimeException("Company not found! Try again"));
+    }
+
+    @Override
+    public boolean updateInfoCompany(String idCompany, String name, String address, MultipartFile logo, String email) {
+        Company company = getCompanyById(idCompany);
 
         if (!isValidEmail(email)) {
             log.error("Invalid email format");
@@ -166,19 +136,24 @@ public class CompanyService implements ICompany {
         }
 
         try{
-            company.setName(name);
-            company.setAddress(address);
-            if (logo != null) {
+            if (name != null) {
+                company.setName(name);
+            }
+            if (address != null) {
+                company.setAddress(address);
+            }
+            if (logo != null && !logo.isEmpty()) {
                 iFile.save(logo);
                 company.setLogo(logo.getOriginalFilename());
             }
-            company.setEmail(email);
+            if (email != null) {
+                company.setEmail(email);
+            }
             companyRepository.save(company);
             return true;
         }catch (Exception e){
             log.error("Error updating company with ID: " + idCompany, e);
             return false;
         }
-
     }
 }

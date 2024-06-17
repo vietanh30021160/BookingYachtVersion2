@@ -3,12 +3,14 @@ package com.example.YachtBookingBackEnd.service.service;
 import com.example.YachtBookingBackEnd.entity.BookingOrder;
 import com.example.YachtBookingBackEnd.entity.BookingService;
 import com.example.YachtBookingBackEnd.entity.Service;
+import com.example.YachtBookingBackEnd.entity.key.KeysBookingService;
 import com.example.YachtBookingBackEnd.repository.BookingServiceRepository;
 import com.example.YachtBookingBackEnd.service.implement.IBookingService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -22,6 +24,7 @@ public class BookingServiceService implements IBookingService {
     BookingServiceRepository bookingServiceRepository;
 
     @Override
+    @Transactional
     public Set<BookingService> createBookingServices(List<Service> selectedServices, BookingOrder bookingOrder) {
         Set<BookingService> bookingServiceSet = new HashSet<>();
         for (Service service : selectedServices) {
@@ -29,7 +32,11 @@ public class BookingServiceService implements IBookingService {
             bookingService.setBookingOrder(bookingOrder);
             bookingService.setService(service);
 
+            KeysBookingService keys = new KeysBookingService(bookingOrder.getIdBooking(), service.getIdService());
+            bookingService.setKeys(keys);
+
             bookingServiceSet.add(bookingService);
+            bookingServiceRepository.save(bookingService);
         }
         return bookingServiceSet;
     }

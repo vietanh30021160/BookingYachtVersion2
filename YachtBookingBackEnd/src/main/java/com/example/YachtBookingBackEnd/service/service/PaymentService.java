@@ -2,10 +2,7 @@ package com.example.YachtBookingBackEnd.service.service;
 
 import com.example.YachtBookingBackEnd.dto.PaymentDTO;
 import com.example.YachtBookingBackEnd.entity.*;
-import com.example.YachtBookingBackEnd.repository.BookingOrderRepository;
-import com.example.YachtBookingBackEnd.repository.RoomRepository;
-import com.example.YachtBookingBackEnd.repository.ServiceRepository;
-import com.example.YachtBookingBackEnd.repository.TransactionRepository;
+import com.example.YachtBookingBackEnd.repository.*;
 import com.example.YachtBookingBackEnd.security.payment.VNPAYConfig;
 import com.example.YachtBookingBackEnd.service.implement.IBookingRoom;
 import com.example.YachtBookingBackEnd.service.implement.IBookingService;
@@ -17,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -38,6 +36,8 @@ public class PaymentService implements IPayment {
     ServiceRepository serviceRepository;
     IBookingService iBookingService;
     IBookingRoom iBookingRoom;
+    CustomerRepository customerRepository;
+    ScheduleRepository scheduleRepository;
 
     /**
      * Tạo yêu cầu thanh toán qua VNPAY
@@ -49,28 +49,56 @@ public class PaymentService implements IPayment {
      * @return URL thanh toán của VNPAY
      */
     @Override
-    public String createVnPayPayment(List<String> selectedRoomIds, List<String> selectedServiceIds, String requirement, String bankCode, HttpServletRequest request) {
+    @Transactional
+    public String createVnPayPayment(List<String> selectedRoomIds, List<String> selectedServiceIds, String requirement, String bankCode, HttpServletRequest request,
+                                     String idCustomer, String idSchedule) {
 
         // Tạo đơn đặt phòng mới
         BookingOrder bookingOrder = new BookingOrder();
         bookingOrder.setBookingTime(LocalDateTime.now());
         bookingOrder.setRequirement(requirement);
         bookingOrder.setStatus("Pending");
+        // Lưu `BookingOrder` vào cơ sở dữ liệu và cập nhật `id`
+        bookingOrder = bookingOrderRepository.save(bookingOrder);
 
         // Lấy danh sách các phòng đã chọn từ RoomRepository
-        List<Room> selectedRooms = roomRepository.findAllById(selectedRoomIds);
+        List<Room> selectedRooms = new ArrayList<>();
+        for (String roomId : selectedRoomIds) {
+            Optional<Room> optionalRoom = roomRepository.findById(roomId);
+            Room room = optionalRoom.orElseThrow(() -> new RuntimeException("Invalid room ID: " + roomId));
+
+            selectedRooms.add(room);
+        }
         bookingOrder.setBookingRoomSet(iBookingRoom.createBookingRooms(selectedRooms, bookingOrder));
 
         // Lấy danh sách các dịch vụ đã chọn từ ServiceRepository
-        List<com.example.YachtBookingBackEnd.entity.Service> selectedServices = serviceRepository.findAllById(selectedServiceIds);
+        List<com.example.YachtBookingBackEnd.entity.Service> selectedServices = new ArrayList<>();
+        for (String serviceId : selectedServiceIds) {
+            Optional<com.example.YachtBookingBackEnd.entity.Service> optionalService = serviceRepository.findById(serviceId);
+            com.example.YachtBookingBackEnd.entity.Service service = optionalService.orElseThrow(() -> new RuntimeException("Invalid service ID: " + serviceId));
+
+            selectedServices.add(service);
+        }
         bookingOrder.setBookingServiceSet(iBookingService.createBookingServices(selectedServices, bookingOrder));
+
+        // Lấy thông tin của customer và schedule từ các repository
+        Customer customer = customerRepository.findById(idCustomer)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid customer ID"));
+        Schedule schedule = scheduleRepository.findById(idSchedule)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid schedule ID"));
+
+        bookingOrder.setCustomer(customer);
+        bookingOrder.setSchedule(schedule);
+        // Cập nhật lại `BookingOrder` sau khi thiết lập các thông tin
+        bookingOrder = bookingOrderRepository.save(bookingOrder);
 
         calculateTotalAmount(bookingOrder);
 
         // Tạo mã tham chiếu duy nhất cho giao dịch thanh toán
         String vnp_TxnRef = vnpayConfig.getRandomNumber(8);
         bookingOrder.setTxnRef(vnp_TxnRef);
-        bookingOrderRepository.save(bookingOrder);
+        // Cập nhật lại `BookingOrder` sau khi thiết lập mã tham chiếu
+        bookingOrder = bookingOrderRepository.save(bookingOrder);
 
 
         //Tạo URL Thanh toán
@@ -83,9 +111,9 @@ public class PaymentService implements IPayment {
         vnp_Params.put("vnp_Amount", String.valueOf(bookingOrder.getAmount()*100)); //Số tiền cần thanh toán nhân với 100 để triệt tiêu phần thập phân trước khi gửi sang VNPAY
         vnp_Params.put("vnp_CurrCode", "VND");
 
-        if (bankCode != null && !bankCode.isEmpty()) {
-            vnp_Params.put("vnp_BankCode", bankCode);
-        }
+//        if (bankCode != null && !bankCode.isEmpty()) {
+//            vnp_Params.put("vnp_BankCode", bankCode);
+//        }
 
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
         vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
@@ -142,14 +170,27 @@ public class PaymentService implements IPayment {
     private void calculateTotalAmount(BookingOrder bookingOrder) {
         long totalAmount = 0;
 
-        for (BookingRoom bookingRoom : bookingOrder.getBookingRoomSet()) {
-            totalAmount += bookingRoom.getRoom().getRoomType().getPrice();
+        if (bookingOrder.getBookingRoomSet() != null) {
+            for (BookingRoom bookingRoom : bookingOrder.getBookingRoomSet()) {
+                long totalRoomPrice = bookingRoom.getRoom().getRoomType().getPrice();
+                totalAmount += totalRoomPrice;
+                System.out.println("Room price: " + totalRoomPrice);
+            }
+        } else {
+            System.out.println("No rooms found for this booking.");
         }
 
-        for (BookingService bookingService : bookingOrder.getBookingServiceSet()) {
-            totalAmount += bookingService.getService().getPrice();
+        if (bookingOrder.getBookingServiceSet() != null) {
+            for (BookingService bookingService : bookingOrder.getBookingServiceSet()) {
+                long totalServicePrice = bookingService.getService().getPrice();
+                totalAmount += totalServicePrice;
+                System.out.println("Service price: " + totalServicePrice);
+            }
+        } else {
+            System.out.println("No services found for this booking.");
         }
 
+        System.out.println("Total amount calculated: " + totalAmount);
         bookingOrder.setAmount(totalAmount);
     }
 

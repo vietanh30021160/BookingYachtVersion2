@@ -33,10 +33,6 @@ public class Customer {
     @JoinColumn(name = "id_account", nullable = false, referencedColumnName = "id_account")
     private Account account;
 
-//    @OneToOne()
-//    @JoinColumn(name = "id_wallet_customer", nullable = false, referencedColumnName = "id_wallet")
-//    private Wallet wallet;
-
     @OneToMany(mappedBy = "customer")
     private Set<BookingOrder> bookingOrderSet;
 

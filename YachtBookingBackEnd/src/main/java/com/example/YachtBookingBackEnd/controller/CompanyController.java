@@ -1,12 +1,9 @@
 package com.example.YachtBookingBackEnd.controller;
 
 import com.example.YachtBookingBackEnd.payload.response.DataResponse;
-import com.example.YachtBookingBackEnd.service.implement.IFile;
-import com.example.YachtBookingBackEnd.service.implement.IYacht;
-import com.example.YachtBookingBackEnd.service.implement.IYachtImage;
+import com.example.YachtBookingBackEnd.service.implement.*;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
-import com.example.YachtBookingBackEnd.service.implement.ICompany;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -27,6 +24,7 @@ public class CompanyController {
     IFile iFile;
     IYachtImage iYachtImage;
     ICompany iCompany;
+    IPayment iPayment;
 
     @GetMapping("/allYacht")
     public ResponseEntity<?> viewYacht() {
@@ -101,25 +99,31 @@ public class CompanyController {
         dataResponse.setData(iYachtImage.deleteImage(imageId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-    @PostMapping("/profile/{idAccount}")
-    public ResponseEntity<?> addInfoCompany(@PathVariable String idAccount,
-                                            @RequestParam String name,
-                                            @RequestParam String address,
-                                            @RequestParam MultipartFile logo,
-                                            @RequestParam String email) {
-        DataResponse dataResponse = new DataResponse<>();
-        dataResponse.setData(iCompany.addCompany(idAccount, name, address, logo, email));
-        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-    }
 
-    @PutMapping("/profile/{companyId}")
-    public ResponseEntity<?> updateCompany(@PathVariable String companyId,
+    @PutMapping("/profile/{idCompany}")
+    public ResponseEntity<?> updateInfoCompany(@PathVariable String idCompany,
                                            @RequestParam String name,
                                            @RequestParam String address,
                                            @RequestParam MultipartFile logo,
                                            @RequestParam String email){
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iCompany.updateCompany(companyId, name, address, logo, email));
+        dataResponse.setData(iCompany.updateInfoCompany(idCompany, name, address, logo, email));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/confirm")
+    public ResponseEntity<?> confirmVnPayPayment(@RequestParam String idBookingOrder) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iPayment.confirmBooking(idBookingOrder));
+
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/cancel")
+    public ResponseEntity<?> cancelVnPayPayment(@RequestParam String idBookingOrder) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iPayment.cancelBooking(idBookingOrder));
+
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 }
