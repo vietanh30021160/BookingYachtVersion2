@@ -43,7 +43,7 @@ public class AdminController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/companies/details/{idAccount}")
+    @GetMapping("/companies/{idAccount}")
     public ResponseEntity<?> getDetailCompanyByID(@PathVariable String idAccount) {
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setData(iCompany.getDetailCompanyByAccountID(idAccount));

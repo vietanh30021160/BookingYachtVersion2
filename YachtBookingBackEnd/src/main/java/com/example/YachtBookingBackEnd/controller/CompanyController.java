@@ -2,12 +2,11 @@ package com.example.YachtBookingBackEnd.controller;
 
 import com.example.YachtBookingBackEnd.payload.response.DataResponse;
 import com.example.YachtBookingBackEnd.service.implement.*;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,18 +20,13 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompanyController {
-    @Autowired
     IYacht iYacht;
-    @Autowired
     IFile iFile;
-    @Autowired
     IYachtImage iYachtImage;
-    @Autowired
     IService iService;
-    @Autowired
     IYachtService iYachtService;
-    @Autowired
     ICompany iCompany;
+    IPayment iPayment;
 
     @GetMapping("/allYacht")
     public ResponseEntity<?> viewYacht() {
@@ -63,7 +57,7 @@ public class CompanyController {
         dataResponse.setData(iYacht.insertYacht(name, image, launch, hullBody, description, rule, itinerary, idYachtType, idLocation, idCompany));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-    @PutMapping("/yacht/updateYacht/{yachtId}")
+    @PostMapping("/yacht/updateYacht/{yachtId}")
     public ResponseEntity<?> updateYacht(@PathVariable String yachtId,
                                          @RequestParam String name,
                                          @RequestParam MultipartFile image,
@@ -77,7 +71,7 @@ public class CompanyController {
         dataResponse.setData(iYacht.updateYacht(yachtId, name, image, hullBody, description, rule, itinerary, idYachtType, idLocation));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-    @DeleteMapping("/yacht/delete/{id}")
+    @GetMapping("/yacht/delete/{id}")
     public ResponseEntity<?> deleteYacht(@PathVariable String id) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYacht.deleteYacht(id));
@@ -107,14 +101,31 @@ public class CompanyController {
         dataResponse.setData(iYachtImage.deleteImage(imageId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-    @PostMapping("/profile")
-    public ResponseEntity<?> addInfoCompany(@RequestParam String idAccount,
-                                            @RequestParam String name,
-                                            @RequestParam String address,
-                                            @RequestParam MultipartFile logo,
-                                            @RequestParam String email) {
-        DataResponse dataResponse = new DataResponse<>();
-        dataResponse.setData(iCompany.addCompany(idAccount, name, address, logo, email));
+
+    @PutMapping("/profile/{idCompany}")
+    public ResponseEntity<?> updateInfoCompany(@PathVariable String idCompany,
+                                           @RequestParam String name,
+                                           @RequestParam String address,
+                                           @RequestParam MultipartFile logo,
+                                           @RequestParam String email){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iCompany.updateInfoCompany(idCompany, name, address, logo, email));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/confirm")
+    public ResponseEntity<?> confirmVnPayPayment(@RequestParam String idBookingOrder) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iPayment.confirmBooking(idBookingOrder));
+
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/cancel")
+    public ResponseEntity<?> cancelVnPayPayment(@RequestParam String idBookingOrder) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iPayment.cancelBooking(idBookingOrder));
+
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @PutMapping("/yacht/updateImage/{imageId}")
@@ -130,7 +141,7 @@ public class CompanyController {
                                            @RequestParam MultipartFile logo,
                                            @RequestParam String email){
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iCompany.updateCompany(companyId, name, address, logo, email));
+        dataResponse.setData(iCompany.updateInfoCompany(companyId, name, address, logo, email));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @GetMapping("/getAllService")

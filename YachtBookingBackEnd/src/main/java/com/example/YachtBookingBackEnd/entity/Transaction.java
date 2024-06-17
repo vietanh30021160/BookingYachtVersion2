@@ -1,12 +1,10 @@
 package com.example.YachtBookingBackEnd.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
+
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Getter
@@ -15,7 +13,6 @@ import java.time.LocalDateTime;
 @Table(name = "transaction")
 public class Transaction {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_transaction", nullable = false)
     private String idTransaction;
 
@@ -26,14 +23,13 @@ public class Transaction {
     private LocalDateTime transactionDate;
 
     @Column(name = "status")
-    private String status;
+    private String status; // PENDING, SUCCESS, FAILED
 
-    @Column(name = "id_receiver")
-    private String idReceiver;
+    @Column(name = "receiver_bank_tran_no")
+    private String receiverBankTranNo;
 
-    @ManyToOne()
-    @JoinColumn(name = "id_wallet", nullable = false)
-    private Wallet wallet;
+    @Column(name = "sender_bank_tran_no")
+    private String senderBankTranNo;
 
     @OneToOne()
     @JoinColumn(name = "id_booking", nullable = false, referencedColumnName = "id_booking")

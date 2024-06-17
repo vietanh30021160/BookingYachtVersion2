@@ -52,4 +52,8 @@ public class BookingOrder {
 
     @OneToMany(mappedBy = "bookingOrder")
     private Set<BookingService> bookingServiceSet;
+
+    //add thêm
+    @Column(name = "txn_ref", unique = true, nullable = false) // Thêm trường txn_ref
+    private String txnRef;
 }
