@@ -40,8 +40,7 @@ const Layout = () => {
                     <Route path='/blog' element={<Blog />} />
                     <Route path='/duthuyen' element={<FindYacht />} />
                     <Route path='/doanhnhiep' element={<Enterprise />} />
-                    <Route path='/mainpage' element={<MainPage />} />
-                    <Route path='/duthuyen' element={<FindYacht />} />
+                    <Route path='/mainpage/:yachtId' element={<MainPage />} />
                     <Route path='/yacht-rule' element={<YachtRule />} />
                     <Route path='/yacht-question' element={<YachtQuestion />} />
                 </Route>

@@ -1,7 +1,12 @@
+
 import { useEffect, useState } from 'react';
-// import { img_yacht } from '../../assets/no53ab0y526yl825.webp';
-import { getAllYachtHome } from '../../services/ApiServices';
+import { FaLocationDot } from "react-icons/fa6";
+import { RiShipLine } from "react-icons/ri";
 import './FindYacht.scss';
+// import { img_yacht } from '../../assets/no53ab0y526yl825.webp';
+import { useNavigate } from 'react-router-dom';
+import { getAllYachtHome } from '../../services/ApiServices';
+
 // import ReactPaginate from 'react-paginate';
 const YachtList = () => {
     const [yacht, setYacht] = useState([]);
@@ -54,59 +59,40 @@ const YachtList = () => {
         })
     }
 
+    const navigate = useNavigate()
+
+    const hanldeSelectedYacht = (idYacht) => {
+        navigate(`/mainpage/${idYacht}`);
+    }
+
     return (
-
         <div className="infor-body">
-            {/* {
+            {
                 paggingYacht.map((yacht) => {
-
                     return (
-
-                        <div class="card row" key={yacht.idYacht}>
-                            <div className="card row" key={yacht.idYacht} >
-                                <div className="col-md-5">
-                                    <img style={{ height: '220px', width: '100%' }} class="card-img-top" src={`${avatarYachtApi}${yacht.image}`} alt="Card image cap" />
-                                </div>
-                                <div className="card-body col-md-7">
-                                    <div className='card-content'>
-                                        <div style={{ padding: '0px', color: '#475467' }} className='location'><FaLocationDot />{yacht.location.name}</div>
-                                        <h1 className='name' style={{ marginBottom: 0 }}>{yacht.name}</h1>
-                                        <p style={{ margin: '0px' }}>Hạ thủy: {yacht.launch} - Vỏ Tàu {yacht.hullBody}</p>
-                                        <div style={{ fontWeight: 'bold' }}> <RiShipLine /> {yacht.itinerary} </div>
-                                        <div className='price'>
-                                            <p style={{ color: '#475467', fontWeight: '700' }}>Price: 3.3350.000đ</p>
-                                            <button style={{ borderRadius: 25 }} className='btn btn-warning'>Đặt ngay</button>
-                                        </div>
+                        <div className="card row" key={yacht.idYacht} onClick={() => { hanldeSelectedYacht(yacht.idYacht) }} style={{ cursor: 'pointer' }}>
+                            <div className="col-md-5">
+                                <img style={{ height: '220px', width: '100%' }} class="card-img-top" src={`${avatarYachtApi}${yacht.image}`} alt="Card image cap" />
+                            </div>
+                            <div className="card-body col-md-7">
+                                <div className='card-content'>
+                                    <div style={{ padding: '10px', color: '#475467' }} className='location'><FaLocationDot />{yacht.location.name}</div>
+                                    <h4 className='name' style={{ marginBottom: 0, fontWeight: 'bold' }}>{yacht.name}</h4>
+                                    <p style={{ margin: '0px' }}>Hạ thủy: {yacht.launch} - Vỏ Tàu {yacht.hullBody}</p>
+                                    <div style={{ fontWeight: 'bold' }}> <RiShipLine /> {yacht.itinerary} </div>
+                                    <div className='price d-flex' style={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <p style={{ color: '#475467', fontWeight: '700' }}>Price: 3.3350.000đ</p>
+                                        <button style={{ borderRadius: 25 }} className='btn btn-warning'>Đặt ngay</button>
                                     </div>
                                 </div>
                             </div>
-                            )
-                }) */}
-
-            {/* <div className='d-flex justify-content-center'>
+                        </div>
+                    )
+                })
+            }
+            <div className='d-flex justify-content-center'>
                 {renderPages()}
             </div>
-
-            <div class="card row" >
-                <div className="col-md-5">
-                    <img class="card-img-top" src={img_yacht} alt="Card image cap" />
-                </div>
-                <div class="card-body col-md-7">
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                </div>
-            </div>
-
-            <div class="card row" >
-                <div className="col-md-5">
-                    <img class="card-img-top" src={img_yacht} alt="Card image cap" />
-                </div>
-                <div class="card-body col-md-7">
-                    <div>Dia Diem</div>
-                    <div>Ten Du thuyen</div>
-                    <div><RiShipLine />1 Ha Thuy</div>
-                    <div>Tien</div>
-                </div>
-            </div> */}
 
             {/* <div>
                 <ReactPaginate

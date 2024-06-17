@@ -40,7 +40,7 @@ const Rating = () => {
         <Container>
             <Row className="align-items-center mb-3">
                 <Col>
-                    <h1 className="mb-0">Đánh giá sản phẩm</h1>
+                    <h4 style={{ fontWeight: 'bold' }} className="mb-0">Đánh giá sản phẩm</h4>
                 </Col>
                 <Col className="text-end">
                     <span style={{ fontSize: '2rem', color: 'red' }}>

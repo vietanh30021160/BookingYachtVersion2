@@ -2,7 +2,6 @@ package com.example.YachtBookingBackEnd.service.implement;
 
 import com.example.YachtBookingBackEnd.dto.YachtImageDTO;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
 public interface IYachtImage {

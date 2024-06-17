@@ -5,12 +5,10 @@ import './Schedule.scss';
 const Schedule = () => {
     return (
         <div>
-            <h2>Quy định chung và lưu ý</h2>
+            <h4>Quy định chung và lưu ý</h4>
             <p>Bạn có thể xem Quy định chung và lưu ý: Tại đây<FaArrowRightLong /></p>
-            <h2>Câu hỏi thường gặp</h2>
-            <p>Bạn có thể xem Câu hỏi thường gặp: Tại đây<FaArrowRightLong /></p>
-            <h2>Bản đồ lịch trình</h2>
-            <Alert variant="info" className="d-flex align-items-center">
+            <h4>Bản đồ lịch trình</h4>
+            <Alert variant="info" className="d-flex align-items-center mt-3">
                 <i className="bi bi-info-circle-fill me-2"></i>
                 <div>
                     <p className="mb-0">

@@ -21,7 +21,7 @@ const ShowIsland = () => {
                 </div>
             </div>
             <div className='island-body row'>
-                <NavLink to='/duthuyen' className='nav-link col-3'>
+                <NavLink to='/duthuyen' className='nav-link col-12 col-sm-6 col-md-3 mb-4'>
                     <Card style={{ height: '330', width: '320' }}>
                         <Card.Img variant="top" src={HaLong} />
                         <Card.Body>
@@ -31,7 +31,7 @@ const ShowIsland = () => {
                     </Card>
                 </NavLink>
 
-                <NavLink to='/duthuyen' className='nav-link col-3'>
+                <NavLink to='/duthuyen' className='nav-link col-12 col-sm-6 col-md-3 mb-4'>
                     <Card style={{ height: '330', width: '320' }}>
                         <Card.Img variant="top" src={CatBa} />
                         <Card.Body>
@@ -41,7 +41,7 @@ const ShowIsland = () => {
                     </Card>
                 </NavLink>
 
-                <NavLink to='/duthuyen' className='nav-link col-3'>
+                <NavLink to='/duthuyen' className='nav-link col-12 col-sm-6 col-md-3 mb-4'>
                     <Card >
                         <Card.Img variant="top" src={LanHa} style={{ height: 220 }} />
                         <Card.Body>
