@@ -1,5 +1,4 @@
 import logo from '../../assets/logo_swp.png';
-import { FcGoogle } from "react-icons/fc";
 import './Auth.scss'
 import { useState } from 'react';
 import { login } from '../../services/ApiServices';
@@ -12,8 +11,9 @@ import { ImSpinner10 } from "react-icons/im";
 import { BiSolidHome } from "react-icons/bi";
 
 const Signin = () => {
-    const [email, setEmail] = useState('');
+    const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
+
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -27,21 +27,28 @@ const Signin = () => {
     //         );
     // };
     // const dispatch = useDispatch();
+
     const navigate = useNavigate();
+
     const handleLogin = async () => {
-        if (email === '' || password === '') {
+        if (userName === '' || password === '') {
             toast.error('Invalid');
             setLoading(false);
         }
         setLoading(true);
-        let res = await login('eve.holt@reqres.in'.trim(), password.trim());
+        let res = await login(userName, password);
         console.log(res);
-        if (res.data && res.status === 200) {
-            //dispatch(Rlogin(res.data));
-            toast.success("Login Successful");
-            setLoading(false);
-            navigate('/');
-        }
+        // if (res.status === 200) {
+        //     //dispatch(Rlogin(res.data));
+        //     toast.success("Login Successful");
+        //     setLoading(false);
+        //     navigate('/');
+
+        // } else {
+        //     toast.error('username invalid')
+        //     setLoading(false);
+
+        // }
     }
 
     return (
@@ -59,8 +66,8 @@ const Signin = () => {
                                 <input type="text"
                                     placeholder='UserName'
                                     className="form-control form-control-lg"
-                                    value={email}
-                                    onChange={(event) => setEmail(event.target.value)}
+                                    value={userName}
+                                    onChange={(event) => setUserName(event.target.value)}
                                 />
                             </div>
                             <div className="form-outline mb-4 show-password">

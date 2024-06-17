@@ -2,14 +2,12 @@ import 'react-pro-sidebar/dist/css/styles.css';
 import { FaShip } from "react-icons/fa6";
 // import { AiFillSchedule } from "react-icons/ai";
 import { FaMoneyCheckAlt } from "react-icons/fa";
-import { MdBedroomChild } from "react-icons/md";
 import { TbLogout2 } from "react-icons/tb";
 import { TbBrandBooking } from "react-icons/tb";
 import {
     ProSidebar,
     Menu,
     MenuItem,
-    SubMenu,
     SidebarHeader,
     SidebarFooter,
     SidebarContent,
@@ -18,7 +16,6 @@ import React from 'react';
 import sidebarBg from '../../assets/sidebar.jpg';
 import { Link, NavLink } from 'react-router-dom';
 import { ImProfile } from "react-icons/im";
-import ModalUpdateProfile from './ModalUpdateProfile';
 // import logo from '../../assets/logo_swp.png'
 const Sidebar = (props) => {
     const { image, collapsed, toggled, handleToggleSidebar } = props;
