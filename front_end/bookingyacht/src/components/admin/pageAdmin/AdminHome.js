@@ -7,31 +7,48 @@ import './Homepage.scss';
 const AdminStats = () =>{
     const [customerCount, setCustomerCount] = useState(0);
     const [companyCount, setCompanyCount] = useState(0);
-
+    const [error, setError] = useState(null);
     
   useEffect(() => {
-    const fetchCustomers = async () => {
-      try {
-        const response = await axios.get('https://reqres.in/api/users?page=1');
-        setCustomerCount(response.data.total);
-      } catch (error) {
-        console.error('Error fetching customers:', error);
-      }
-    };
-
-    const fetchCompanies = async () => {
-      try {
-        const response = await axios.get('https://reqres.in/api/users?page=2');
-        setCompanyCount(response.data.total);
-      } catch (error) {
-        console.error('Error fetching companies:', error);
-      }
-    };
-
-    fetchCustomers();
     fetchCompanies();
+    fetchCustomers();
   }, []);
 
+  const fetchCompanies = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('http://localhost:8080/api/admins/getAllCompany', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        setCompanyCount(response.data.data.length);
+    } catch (error) {
+        if (error.response.status === 403) {
+            setError('Access forbidden. Please check your permissions.');
+        } else {
+            setError('Error fetching companies: ' + error.message);
+        }
+    }
+};
+
+const fetchCustomers = async () => {
+  try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get('http://localhost:8080/api/admins/getAllCustomer', {
+          headers: {
+              'Authorization': `Bearer ${token}`
+          }
+      });
+      setCustomerCount(response.data.data.length); 
+  } catch (error) {
+      if (error.response.status === 403) {
+          setError('Access forbidden. Please check your permissions.');
+      } else {
+          setError('Error fetching customers: ' + error.message);
+      }
+  }
+};
   return (
     <Container className="my-4 backgroundpage">
     <h1>OverView</h1>
@@ -61,3 +78,4 @@ const AdminStats = () =>{
   );
 }
 export default AdminStats;
+

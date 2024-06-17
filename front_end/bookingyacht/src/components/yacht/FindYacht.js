@@ -37,7 +37,7 @@ const FindYacht = () => {
                     <div className='yacht-title col-md mx-4'>
                         <h2 style={{ fontWeight: 'bold' }}>Tìm Thấy <br /> Kết Quả</h2>
                         <div>
-                            <img src={i_content} />
+                            <img src={i_content} alt="" />
                         </div>
                     </div>
                     <div className='select col-md mx-4'>
@@ -78,7 +78,13 @@ const FindYacht = () => {
                             <div className="extention-body-content">
                                 Tiện ích
                             </div>
+<<<<<<< HEAD
+                            <Form.Check id="" label='Phòng gia đình' />
+                            <Form.Check id="" label='Có bể sục' />
+                            <Form.Check id="" label='Bao gồm tất cả các bữa ăn' />
+=======
                             {renderService()}
+>>>>>>> 5fb831ced9d9b8de9bf186a71d31458c914635f5
                         </div>
                     </div>
 

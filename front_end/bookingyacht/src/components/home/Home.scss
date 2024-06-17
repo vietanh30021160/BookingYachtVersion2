@@ -63,11 +63,27 @@
     border-radius: 25px;
     box-shadow: 1px 0px 7px 2px;
 
+  }
+
+  .homepage-content {
+    position: absolute;
+    bottom: -126px;
+    transform: translateX(-50%);
+    left: 50%;
+    background: white;
+    border-radius: 25px;
+    box-shadow: 1px 0px 7px 2px;
+
     .serach-yacht {
+
+
       .form-search {
         display: flex;
         flex-direction: column;
         gap: 10px;
+        padding-bottom: 50px;
+        padding-top: 50px;
+
 
         input {
           border-radius: 35px;
@@ -78,20 +94,49 @@
           border-radius: 35px;
         }
 
+
         button {
           border-radius: 20px;
           border: none;
           background-color: rgb(104, 204, 199);
           padding: 10px;
+          width: 150px;
+          height: 50px;
 
           &:hover {
             background: #0aebdccf;
           }
         }
+
+        .select {
+          width: 200px;
+          height: 50px;
+        }
+      }
+
+      input {
+        border-radius: 35px;
+        padding: 10px;
+      }
+
+      select {
+        border-radius: 35px;
+      }
+
+      button {
+        border-radius: 20px;
+        border: none;
+        background-color: rgb(104, 204, 199);
+        padding: 10px;
+
+        &:hover {
+          background: #0aebdccf;
+        }
       }
     }
   }
 }
+
 
 .app-yacht {
   padding-top: 190px;
