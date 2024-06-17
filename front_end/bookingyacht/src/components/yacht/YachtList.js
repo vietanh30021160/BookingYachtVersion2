@@ -76,11 +76,11 @@ const YachtList = () => {
                             </div>
                             <div className="card-body col-md-7">
                                 <div className='card-content'>
-                                    <div style={{ padding: '0px', color: '#475467' }} className='location'><FaLocationDot />{yacht.location.name}</div>
-                                    <h1 className='name' style={{ marginBottom: 0 }}>{yacht.name}</h1>
+                                    <div style={{ padding: '10px', color: '#475467' }} className='location'><FaLocationDot />{yacht.location.name}</div>
+                                    <h4 className='name' style={{ marginBottom: 0, fontWeight: 'bold' }}>{yacht.name}</h4>
                                     <p style={{ margin: '0px' }}>Hạ thủy: {yacht.launch} - Vỏ Tàu {yacht.hullBody}</p>
                                     <div style={{ fontWeight: 'bold' }}> <RiShipLine /> {yacht.itinerary} </div>
-                                    <div className='price'>
+                                    <div className='price d-flex' style={{ justifyContent: 'space-between', alignItems: 'center' }}>
                                         <p style={{ color: '#475467', fontWeight: '700' }}>Price: 3.3350.000đ</p>
                                         <button style={{ borderRadius: 25 }} className='btn btn-warning'>Đặt ngay</button>
                                     </div>
