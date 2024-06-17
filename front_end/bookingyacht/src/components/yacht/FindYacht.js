@@ -35,7 +35,7 @@ const FindYacht = () => {
                 </div>
                 <div className='feedback-header my-5 row'>
                     <div className='yacht-title col-md mx-4'>
-                        <h2>Tìm Thấy <br /> Kết Quả</h2>
+                        <h2 style={{ fontWeight: 'bold' }}>Tìm Thấy <br /> Kết Quả</h2>
                         <div>
                             <img src={i_content} />
                         </div>

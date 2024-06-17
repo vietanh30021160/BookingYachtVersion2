@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Carousel, Image } from 'react-bootstrap';
 import i_content from '../../../assets/image_1.webp';
 import './CustomSlider.scss';
-const SimpleSlider = () => {
+const SimpleSlider = ({ yacht }) => {
   const images = [
     { src: 'https://minio.fares.vn/mixivivu-dev/tour/du-thuyen-heritage-binh-chuan-cat-ba/images/nx36g4ggepatgx23.webp', alt: 'First image' },
     { src: 'https://minio.fares.vn/mixivivu-dev/tour/du-thuyen-heritage-binh-chuan-cat-ba/images/1igusnttvx5r28wp.webp', alt: 'Second image' },
@@ -37,13 +37,12 @@ const SimpleSlider = () => {
 
   return (
     <div className="custom-slider">
-      <div className='title_page'>
-        <h2>Du thuyền Heritage Bình Chuẩn Cát Bà</h2>
-        <h3>3,550,000 đ/khách</h3>
-        
+      <div className='title_page mb-4' style={{ justifyContent: 'space-between' }}>
+        <h1 style={{ fontWeight: 'bold' }}>{yacht.name}</h1>
+        <h1 style={{ color: 'orange', fontWeight: 'bold' }}>3,550,000 đ/khách</h1>
       </div>
       <div>
-        <img src={i_content}/>
+        <img src={i_content} />
       </div>
       <div className='slider_page'>
         <Carousel activeIndex={currentIndex} onSelect={handleSelect} slide={false} indicators={false} interval={null}>

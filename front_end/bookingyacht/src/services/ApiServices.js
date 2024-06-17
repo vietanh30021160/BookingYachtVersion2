@@ -1,25 +1,26 @@
 import axios from '../utils/CustomizeApi';
 
-const getUser = () => {
+export const getUser = () => {
     return axios.get(`/api/users`);
 }
-
-const login = (email, password) => {
+export const login = (email, password) => {
     return axios.post('/api/login', { email, password })
 }
-
-const register = (email, password) => {
+export const register = (email, password) => {
     return axios.post('/api/register', { email, password });
 }
-const getAllYachtHome = () => {
+export const getAllYachtHome = () => {
     return axios.get('/api/customer/allYacht');
 }
-const getAvatarYacht = () => {
+export const getAvatarYacht = () => {
     return axios.get('/api/customer/file');
 }
-const getYachtService = () => {
+export const getYachtService = () => {
     return axios.get('/api/customer/getAllService')
 }
-
-
-export { getUser, login, register, getAllYachtHome, getAvatarYacht, getYachtService };
+export const getYachtByYachtId = (id) => {
+    return axios.get(`api/customer/findYachtById/${id}`)
+}
+export const getServiceByYacht = (yachtId) => {
+    return axios.get(`api/customer/getServiceByYacht/${yachtId}`)
+}

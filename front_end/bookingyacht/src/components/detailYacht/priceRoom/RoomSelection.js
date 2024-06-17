@@ -24,19 +24,19 @@ const RoomSelection = () => {
     const [showBookNow, setShowBookNow] = useState(false);
     const [selectedRooms, setSelectedRooms] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
-    const [selectedServices, setSelectedServices] = useState(rooms.reduce((acc,room)=>({...acc, [room.id] : []}), {}));
+    const [selectedServices, setSelectedServices] = useState(rooms.reduce((acc, room) => ({ ...acc, [room.id]: [] }), {}));
     useEffect(() => {
         const newSelectedRooms = rooms.filter(room => quantities[room.id] > 0);
         setSelectedRooms(newSelectedRooms);
         const totalRoomPrice = newSelectedRooms.reduce((acc, room) => acc + (room.price * quantities[room.id]), 0);
-        const totalServicePrice = newSelectedRooms.reduce((acc, room) =>{
+        const totalServicePrice = newSelectedRooms.reduce((acc, room) => {
             const roomServices = selectedServices[room.id] || [];
-            const roomServicePrice = roomServices.reduce((serviceAcc, serviceId) =>{
+            const roomServicePrice = roomServices.reduce((serviceAcc, serviceId) => {
                 const service = services.find(s => s.id === serviceId);
                 return serviceAcc + (service ? service.price : 0);
             }, 0);
             return acc + (roomServicePrice * quantities[room.id]);
-        } , 0)
+        }, 0)
         setTotalPrice(totalRoomPrice + totalServicePrice);
         // setTotalPrice(newSelectedRooms.reduce((acc, room) => acc + (room.price * quantities[room.id]), 0));
     }, [quantities, selectedServices]);
@@ -72,7 +72,7 @@ const RoomSelection = () => {
 
     return (
         <Container>
-            <h1>Các loại phòng & giá</h1>
+            <h2 className='mb-4' style={{ fontWeight: 'bold' }}>Các loại phòng & giá</h2>
             <div className='form-select'>
                 <Button variant="outline-danger" onClick={handleReset}>Xóa lựa chọn</Button>
                 {rooms.map(room => (
@@ -94,7 +94,7 @@ const RoomSelection = () => {
                         </div>
                         <div className="col-md-6 col-12 text-end">
                             <Button variant="secondary" className='rent'>Thuê trọn tàu</Button>
-                            <Button variant="custom" className='ms-2' onClick={handleBookNow}>Đặt ngay <FaArrowRightLong/></Button>
+                            <Button variant="custom" className='ms-2' onClick={handleBookNow}>Đặt ngay <FaArrowRightLong /></Button>
                         </div>
                     </div>
                 </div>
@@ -105,7 +105,7 @@ const RoomSelection = () => {
                 handleClose={() => setShowDetailRom(false)}
             />
             <BookNowModal
-                 selectedRooms={selectedRooms}
+                selectedRooms={selectedRooms}
                 quantities={quantities}
                 selectedServices={selectedServices}
                 services={services}

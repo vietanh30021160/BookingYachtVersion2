@@ -4,6 +4,8 @@ import { RiShipLine } from "react-icons/ri";
 import { FaLocationDot } from "react-icons/fa6";
 import { useEffect, useState } from 'react';
 import { getAllYachtHome } from '../../services/ApiServices';
+import MainPage from '../detailYacht/mainDetailPage/MainPage';
+import { useNavigate } from 'react-router-dom';
 
 // import ReactPaginate from 'react-paginate';
 const YachtList = () => {
@@ -57,13 +59,18 @@ const YachtList = () => {
         })
     }
 
-    return (
+    const navigate = useNavigate()
 
+    const hanldeSelectedYacht = (idYacht) => {
+        navigate(`/mainpage/${idYacht}`);
+    }
+
+    return (
         <div className="infor-body">
             {
                 paggingYacht.map((yacht) => {
                     return (
-                        <div className="card row" key={yacht.idYacht} >
+                        <div className="card row" key={yacht.idYacht} onClick={() => { hanldeSelectedYacht(yacht.idYacht) }} style={{ cursor: 'pointer' }}>
                             <div className="col-md-5">
                                 <img style={{ height: '220px', width: '100%' }} class="card-img-top" src={`${avatarYachtApi}${yacht.image}`} alt="Card image cap" />
                             </div>
@@ -86,27 +93,6 @@ const YachtList = () => {
             <div className='d-flex justify-content-center'>
                 {renderPages()}
             </div>
-
-            {/* <div class="card row" >
-                <div className="col-md-5">
-                    <img class="card-img-top" src={img_yacht} alt="Card image cap" />
-                </div>
-                <div class="card-body col-md-7">
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                </div>
-            </div>
-
-            <div class="card row" >
-                <div className="col-md-5">
-                    <img class="card-img-top" src={img_yacht} alt="Card image cap" />
-                </div>
-                <div class="card-body col-md-7">
-                    <div>Dia Diem</div>
-                    <div>Ten Du thuyen</div>
-                    <div><RiShipLine />1 Ha Thuy</div>
-                    <div>Tien</div>
-                </div>
-            </div> */}
 
             {/* <div>
                 <ReactPaginate
