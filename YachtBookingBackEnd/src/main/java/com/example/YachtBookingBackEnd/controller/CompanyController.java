@@ -96,7 +96,7 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @PostMapping("/yacht/addImage/{yachtId}")
-    public ResponseEntity<?> getImageByYacht(@PathVariable String yachtId, @RequestParam MultipartFile image) {
+    public ResponseEntity<?> insertImageForYacht(@PathVariable String yachtId, @RequestParam MultipartFile image) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYachtImage.addImage(image, yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);

@@ -1,4 +1,4 @@
-package com.example.YachtBookingBackEnd.config;
+package com.example.YachtBookingBackEnd.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
