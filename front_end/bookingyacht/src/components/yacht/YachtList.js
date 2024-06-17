@@ -75,10 +75,10 @@ const YachtList = () => {
                                         <h1 className='name' style={{ marginBottom: 0 }}>{yacht.name}</h1>
                                         <p style={{ margin: '0px' }}>Hạ thủy: {yacht.launch} - Vỏ Tàu {yacht.hullBody}</p>
                                         <div style={{ fontWeight: 'bold' }}> <RiShipLine /> {yacht.itinerary} </div>
-                                        <div className='price'>
-                                            <p style={{ color: '#475467', fontWeight: '700' }}>Price: 3.3350.000đ</p>
-                                            <button style={{ borderRadius: 25 }} className='btn btn-warning'>Đặt ngay</button>
-                                        </div>
+                                        <div className='price d-flex' style={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <p style={{ color: '#475467', fontWeight: '700' }}>Price: 3.3350.000đ</p>
+                                        <button style={{ borderRadius: 25 }} className='btn btn-warning'>Đặt ngay</button>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
