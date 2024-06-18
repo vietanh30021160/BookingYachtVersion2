@@ -2,6 +2,7 @@ package com.example.YachtBookingBackEnd.controller;
 
 import com.example.YachtBookingBackEnd.payload.response.DataResponse;
 import com.example.YachtBookingBackEnd.security.JwtHelper;
+import com.example.YachtBookingBackEnd.service.implement.IAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,8 @@ public class LoginController {
     JwtHelper jwtHelper;
     @Autowired
     AuthenticationManager authenticationManager;
+    @Autowired
+    IAccount iAccount;
 
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestParam String username, @RequestParam String password ) {
@@ -37,6 +40,8 @@ public class LoginController {
                         .findFirst()// moi user chi co 1 quyen nen lay cai dau tien
                         .orElse(null);
                 String token = jwtHelper.generateToken(username, role);
+                String idAccount = iAccount.getIdAccountByUserName(username);
+                dataResponse.setIdAccount(idAccount);
                 dataResponse.setData(token);
                 dataResponse.setSuccess(true);
                 return new ResponseEntity<>(dataResponse, HttpStatus.OK);
