@@ -5,9 +5,24 @@ import Form from 'react-bootstrap/Form';
 import ShowYacht from "./YachtList";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { getYachtService } from "../../services/ApiServices";
+import { getAllYacht, getYachtService } from "../../services/ApiServices";
+// import { getYachtService } from "../../services/ApiServices";
 
 const FindYacht = () => {
+    const [yacht, setYacht] = useState([]);
+
+    useEffect(() => {
+        getAllYachtt()
+    }, [])
+
+    const getAllYachtt = async () => {
+        let res = await getAllYacht()
+        if (res && res.data.success === true) {
+
+            setYacht(res.data.data)
+
+        }
+    }
     const [service, setService] = useState([]);
 
     const getAllYachtService = async () => {
@@ -40,14 +55,14 @@ const FindYacht = () => {
                             <img src={i_content} alt="" />
                         </div>
                     </div>
-                    <div className='select col-md mx-4'>
+                    {/* <div className='select col-md mx-4'>
                         <Form.Select size="lg">
                             <option>Open this select menu</option>
                             <option value="1">One</option>
                             <option value="2">Two</option>
                             <option value="3">Three</option>
                         </Form.Select>
-                    </div>
+                    </div> */}
 
                 </div>
                 <div className="result-search row">
@@ -85,7 +100,9 @@ const FindYacht = () => {
                     <div className="col-1"></div>
 
                     <div className="col-8 infor">
-                        <ShowYacht />
+                        <ShowYacht
+                            yacht={yacht}
+                        />
                     </div>
                 </div>
             </div>
