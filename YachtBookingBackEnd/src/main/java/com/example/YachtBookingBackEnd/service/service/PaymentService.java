@@ -39,6 +39,8 @@ public class PaymentService implements IPayment {
     CustomerRepository customerRepository;
     ScheduleRepository scheduleRepository;
 
+    public static final String DEFAULT_STATUS = "Pending";
+
     /**
      * Tạo yêu cầu thanh toán qua VNPAY
      * @param selectedRoomIds Danh sách ID phòng đã chọn
@@ -57,7 +59,7 @@ public class PaymentService implements IPayment {
         BookingOrder bookingOrder = new BookingOrder();
         bookingOrder.setBookingTime(LocalDateTime.now());
         bookingOrder.setRequirement(requirement);
-        bookingOrder.setStatus("Pending");
+        bookingOrder.setStatus(DEFAULT_STATUS);
         // Lưu `BookingOrder` vào cơ sở dữ liệu và cập nhật `id`
         bookingOrder = bookingOrderRepository.save(bookingOrder);
 
@@ -273,35 +275,5 @@ public class PaymentService implements IPayment {
         }
 
         return paymentDTO;
-    }
-
-    @Override
-    public boolean confirmBooking(String idBookingOrder) {
-        Optional<BookingOrder> bookingOrder = bookingOrderRepository.findById(idBookingOrder);
-        try {
-            if (bookingOrder.isPresent()) {
-                bookingOrder.get().setStatus("Confirmed");
-                bookingOrderRepository.save(bookingOrder.get());
-            }
-            return true;
-        } catch (Exception e) {
-            log.error("Confirm Booking failed", e);
-            return false;
-        }
-    }
-
-    @Override
-    public boolean cancelBooking(String idBookingOrder) {
-        Optional<BookingOrder> bookingOrder = bookingOrderRepository.findById(idBookingOrder);
-        try {
-            if (bookingOrder.isPresent()) {
-                bookingOrder.get().setStatus("Cancelled");
-                bookingOrderRepository.save(bookingOrder.get());
-            }
-            return true;
-        } catch (Exception e) {
-            log.error("Cancel Booking failed", e);
-            return false;
-        }
     }
 }

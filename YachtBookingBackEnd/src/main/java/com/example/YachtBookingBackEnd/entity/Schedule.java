@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Getter
@@ -19,10 +20,10 @@ public class Schedule {
     private String idSchedule;
 
     @Column(name = "start_date")
-    private Instant startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private Instant endDate;
+    private LocalDate endDate;
 
     @OneToMany(mappedBy = "schedule")
     private Set<YachtSchedule> yachtScheduleSet;

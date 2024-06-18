@@ -26,7 +26,7 @@ public class CompanyController {
     IService iService;
     IYachtService iYachtService;
     ICompany iCompany;
-    IPayment iPayment;
+    IBookingOrder iBookingOrder;
 
     @GetMapping("/allYacht")
     public ResponseEntity<?> viewYacht() {
@@ -102,32 +102,6 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/profile/{idCompany}")
-    public ResponseEntity<?> updateInfoCompany(@PathVariable String idCompany,
-                                           @RequestParam String name,
-                                           @RequestParam String address,
-                                           @RequestParam MultipartFile logo,
-                                           @RequestParam String email){
-        DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iCompany.updateInfoCompany(idCompany, name, address, logo, email));
-        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-    }
-
-    @PostMapping("/confirm")
-    public ResponseEntity<?> confirmVnPayPayment(@RequestParam String idBookingOrder) {
-        DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iPayment.confirmBooking(idBookingOrder));
-
-        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-    }
-
-    @PostMapping("/cancel")
-    public ResponseEntity<?> cancelVnPayPayment(@RequestParam String idBookingOrder) {
-        DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iPayment.cancelBooking(idBookingOrder));
-
-        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-    }
     @PutMapping("/yacht/updateImage/{imageId}")
     public ResponseEntity<?>updateYachtImage(@PathVariable String imageId, @RequestParam MultipartFile image){
         DataResponse dataResponse = new DataResponse();
@@ -186,6 +160,38 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
+    @PutMapping("/profile/{idCompany}")
+    public ResponseEntity<?> updateInfoCompany(@PathVariable String idCompany,
+                                               @RequestParam String name,
+                                               @RequestParam String address,
+                                               @RequestParam MultipartFile logo,
+                                               @RequestParam String email){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iCompany.updateInfoCompany(idCompany, name, address, logo, email));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 
+    @PostMapping("/confirm")
+    public ResponseEntity<?> confirmVnPayPayment(@RequestParam String idBookingOrder) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iBookingOrder.confirmBooking(idBookingOrder));
 
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/cancel")
+    public ResponseEntity<?> cancelVnPayPayment(@RequestParam String idBookingOrder) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iBookingOrder.cancelBooking(idBookingOrder));
+
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/bookingOrders/{idCompany}")
+    public ResponseEntity<?> getAllBookingsByCompany(@PathVariable String idCompany) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iBookingOrder.getAllBookingsByCompanyId(idCompany));
+
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 }

@@ -12,8 +12,4 @@ public interface IPayment {
     String createVnPayPayment(List<String> selectedRoomIds, List<String> selectedServiceIds, String requirement, String bankCode, HttpServletRequest request, String idCustomer, String idSchedule);
 
     PaymentDTO paymentCallbackHandler(HttpServletResponse response, HttpServletRequest request);
-
-    boolean confirmBooking(String idBookingOrder);
-
-    boolean cancelBooking(String idBookingOrder);
 }

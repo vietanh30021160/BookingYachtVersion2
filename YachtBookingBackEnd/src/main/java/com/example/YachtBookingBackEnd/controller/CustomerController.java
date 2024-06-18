@@ -136,5 +136,4 @@ public class CustomerController {
         dataResponse.setData(iYacht.findYachtById(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
 }
