@@ -68,7 +68,7 @@ const Layout = () => {
                 {
                     isLoggedIn && (
                         <Route path='/dashboard' element={<AdminLayout />}>
-                            <Route path='manager' element={<AdminHome />} />
+                            <Route index element={<AdminHome />} />
                             <Route path="customer" element={<CustomerManager />} />
                             <Route path="company" element={<CompanyManager />} />
                         </Route>

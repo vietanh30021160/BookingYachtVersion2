@@ -94,7 +94,7 @@ const CompanyManager = () => {
         const username = form.elements.username.value;
         const password = form.elements.password.value;
         const confirmPassword = form.elements.confirmPassword.value;
-        if (password!== confirmPassword) {
+        if (password !== confirmPassword) {
             setCreatetAccountMessage('Password and confirm password do not match.');
             return;
         }
@@ -270,32 +270,32 @@ const CompanyManager = () => {
                 }
             </div>
             <Modal show={showCompanyModal} onHide={() => setShowCompanyModal(false)}>
-    <Modal.Header closeButton>
-        <Modal.Title>Create Company Account</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-        <Form onSubmit={handleCreateCompany}>
-            <Form.Group controlId="formCompanyUsername">
-                <Form.Label>Username</Form.Label>
-                <Form.Control type="text" placeholder="Enter Username" name="username" required />
-            </Form.Group>
-            <Form.Group controlId="formCompanyPassword">
-                <Form.Label>Password</Form.Label>
-                <div className="password-input">
-                    <Form.Control type='password' placeholder="Enter password" name="password" required />
-                </div>
-            </Form.Group>
-            <Form.Group controlId="formCompanyConfirmPassword">
-                <Form.Label>Confirm Password</Form.Label>
-                <Form.Control type='password' placeholder="Confirm password" name="confirmPassword" required />
-            </Form.Group>
-            {createAccountMessage && <p className="text-danger">{createAccountMessage}</p>}
-            <Button variant="dark" type="submit">
-                Create
-            </Button>
-        </Form>
-    </Modal.Body>
-</Modal>
+                <Modal.Header closeButton>
+                    <Modal.Title>Create Company Account</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={handleCreateCompany}>
+                        <Form.Group controlId="formCompanyUsername">
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control type="text" placeholder="Enter Username" name="username" required />
+                        </Form.Group>
+                        <Form.Group controlId="formCompanyPassword">
+                            <Form.Label>Password</Form.Label>
+                            <div className="password-input">
+                                <Form.Control type='password' placeholder="Enter password" name="password" required />
+                            </div>
+                        </Form.Group>
+                        <Form.Group controlId="formCompanyConfirmPassword">
+                            <Form.Label>Confirm Password</Form.Label>
+                            <Form.Control type='password' placeholder="Confirm password" name="confirmPassword" required />
+                        </Form.Group>
+                        {createAccountMessage && <p className="text-danger">{createAccountMessage}</p>}
+                        <Button variant="dark" type="submit">
+                            Create
+                        </Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>
 
             <Modal show={showDetailModal} onHide={handleCloseDetailModal} size='lg'>
                 <Modal.Header closeButton>

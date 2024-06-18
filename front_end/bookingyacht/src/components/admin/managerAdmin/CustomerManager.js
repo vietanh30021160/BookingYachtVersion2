@@ -7,7 +7,7 @@ const CustomerManager = () => {
     // Các biến trạng thái để quản lý dữ liệu khách hàng và trạng thái giao diện người dùng
     const [customers, setCustomers] = useState([]);
     const [filteredCustomers, setFilteredCustomers] = useState([]);
-    
+
     const [selectedCustomer, setSelectedCustomer] = useState(null);
 
     const [showModal, setShowModal] = useState(false);
@@ -21,7 +21,7 @@ const CustomerManager = () => {
     const [paging, setPaging] = useState([]);
     const [pagedCustomers, setPagedCustomers] = useState([]);
 
-    
+
     // Lấy khách hàng khi thành phần được tải
     useEffect(() => {
         fetchCustomers();

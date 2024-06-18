@@ -20,7 +20,7 @@ const AdminNavbar = () => {
           </div>
         </Navbar.Brand>
         <Nav className="flex-column">
-          <Nav.Link href="#dashboard" as={Link} to="/dashboard/manager">
+          <Nav.Link href="#dashboard" as={Link} to="/dashboard">
             <FaHome /> <span>Dashboard</span>
           </Nav.Link>
           <div className="nav-section">
