@@ -1,25 +1,34 @@
 import React, { useState } from 'react';
 import logo from '../../assets/logo_swp.png'
-import { register } from '../../services/ApiServices';
+import { register, registerCustomer } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 import { IoChevronBackSharp } from "react-icons/io5";
 
 const Signup = () => {
-    const [email, setEmail] = useState('');
+    const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
-    const [role] = useState('customer');
+    const [confrimPassword, setConfirmpassword] = useState('')
 
     const navigate = useNavigate();
 
     const handleRegister = async () => {
-        let res = await register('eve.holt@reqres.in', password);
-        if (res.status === 200) {
-            toast.success('register success')
-            navigate('/information')
+        let res = await registerCustomer(userName, password);
+        if (userName === '' || password === '' || confrimPassword === '') {
+            toast.error('Input not empty')
         }
-        console.log(res, role);
+        else if (password !== confrimPassword) {
+            toast.error('Confirm Passwod fail');
+        }
+        else if (res && res.data.status === 200 && res.data.success === true) {
+            toast.success('register success')
+            console.log(res);
+            navigate('/information')
+        } else {
+            toast.error('create fail')
+        }
+        console.log(res);
     }
     return (
         <div >
@@ -40,8 +49,8 @@ const Signup = () => {
                                                         <input type="text"
                                                             placeholder='UserName'
                                                             className="form-control"
-                                                            value={email}
-                                                            onChange={(event) => setEmail(event.target.value)}
+                                                            value={userName}
+                                                            onChange={(event) => setUserName(event.target.value)}
                                                         />
                                                     </div>
                                                 </div>
@@ -62,8 +71,8 @@ const Signup = () => {
                                                         <input type="password"
                                                             placeholder='Confirm Password'
                                                             className="form-control"
-                                                            value={password}
-                                                            onChange={(event) => setPassword(event.target.value)}
+                                                            value={confrimPassword}
+                                                            onChange={(event) => setConfirmpassword(event.target.value)}
                                                         />
                                                     </div>
                                                 </div>

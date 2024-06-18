@@ -2,13 +2,9 @@ package com.example.YachtBookingBackEnd.service.service;
 
 import com.example.YachtBookingBackEnd.dto.AccountDTO;
 import com.example.YachtBookingBackEnd.dto.CustomerDTO;
-import com.example.YachtBookingBackEnd.entity.Account;
-import com.example.YachtBookingBackEnd.entity.Customer;
-import com.example.YachtBookingBackEnd.repository.AccountRepository;
-import com.example.YachtBookingBackEnd.repository.CustomerRepository;
-
-import com.example.YachtBookingBackEnd.service.implement.IAccount;
-
+import com.example.YachtBookingBackEnd.dto.FeedbackDTO;
+import com.example.YachtBookingBackEnd.entity.*;
+import com.example.YachtBookingBackEnd.repository.*;
 import com.example.YachtBookingBackEnd.service.implement.ICustomer;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -29,9 +25,10 @@ import java.util.regex.Pattern;
 public class CustomerService implements ICustomer {
     CustomerRepository customerRepository;
     AccountRepository accountRepository;
-
-
-    IAccount iAccount;
+    FeedbackRepository feedbackRepository;
+    BookingOrderRepository bookingOrderRepository;
+    BillRepository billRepository;
+    YachtRepository yachtRepository;
 
     public static final String ROLE_CUSTOMER = "CUSTOMER";
 
@@ -118,6 +115,7 @@ public class CustomerService implements ICustomer {
             customerDTO.setEmail(customer.get().getEmail());
             customerDTO.setPhone(customer.get().getPhoneNumber());
             customerDTO.setAddress(customer.get().getAddress());
+
             accountDTO.setIdAccount(customer.get().getAccount().getIdAccount());
             accountDTO.setUsername(customer.get().getAccount().getUsername());
             accountDTO.setPassword(customer.get().getAccount().getPassword());
@@ -183,6 +181,70 @@ public class CustomerService implements ICustomer {
 
     }
 
+    @Override
+    public boolean addFeedback(int starRating, String description, String idBooking, String idCustomer, String idYacht) {
+        try{
+            // Kiểm tra xem khách hàng đã đặt thuyền này chưa
+            List<Yacht> yachts = yachtRepository.findYachtsByCustomerAndBooking(idCustomer, idBooking);
+            boolean yachtBooked = yachts.stream().anyMatch(yacht -> yacht.getIdYacht().equals(idYacht));
+
+            if(!yachtBooked){
+                throw new RuntimeException("Customer has not booked this yacht");
+            }
+            // Kiểm tra xem đơn đặt phòng có tồn tại, đã hoàn thành và thuộc về khách hàng hay không
+            BookingOrder bookingOrder = bookingOrderRepository.findByIdAndCustomerIdAndStatus(idBooking, idCustomer)
+                    .orElseThrow(() -> new RuntimeException("Booking not found or not completed or does not belong to the customer"));
+
+            // Kiểm tra xem đơn đặt phòng có hóa đơn không
+            if(!billRepository.existsByBookingOrder_IdBooking(idBooking)){
+                throw new RuntimeException("Bill does not exist for this booking");
+            }
+            Feedback feedback = new Feedback();
+            feedback.setStarRating(starRating);
+            feedback.setDescription(description);
+            feedback.setIdBooking(idBooking);
+            Customer customer = new Customer();
+            customer.setIdCustomer(idCustomer);
+            feedback.setCustomer(customer);
+            Yacht yacht = new Yacht();
+            yacht.setIdYacht(idYacht);
+            feedback.setYacht(yacht);
+
+            feedbackRepository.save(feedback);
+            return true;
+        }catch (Exception e){
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public List<FeedbackDTO> getFeedbackByYachtId(String yachtId) {
+        List<FeedbackDTO> feedbackDTOList = new ArrayList<>();
+        try {
+            List<Feedback> feedbacks = feedbackRepository.findByYachtIdYacht(yachtId);
+            if (feedbacks != null) {
+                for (Feedback feedback : feedbacks) {
+                    FeedbackDTO feedbackDTO = new FeedbackDTO();
+                    feedbackDTO.setIdFeedback(feedback.getIdFeedback());
+                    feedbackDTO.setStarRating(feedback.getStarRating());
+                    feedbackDTO.setDescription(feedback.getDescription());
+                    feedbackDTO.setIdBooking(feedback.getIdBooking());
+                    Customer customer = new Customer();
+                    customer.setIdCustomer(feedback.getCustomer().getIdCustomer());
+                    customer.setFullName(feedback.getCustomer().getFullName());
+                    feedbackDTO.setCustomer(customer);
+
+                    feedbackDTO.setIdYacht(feedback.getYacht().getIdYacht());
+
+                    feedbackDTOList.add(feedbackDTO);
+                }
+            }
+        }catch (Exception e){
+            System.out.println("Exception: " + e.getMessage());
+        }
+        return feedbackDTOList;
+    }
 
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";

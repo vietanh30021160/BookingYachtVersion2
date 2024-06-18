@@ -1,14 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { AiFillHome } from "react-icons/ai";
 import { NavLink } from 'react-router-dom';
+import ModalManageRoomImage from './Modal/ModalManageRoomImage';
+import ModalManageRoomService from './Modal/ModalManageRoomService';
+import ModalUpdateRoom from './Modal/ModalUpdateRoom';
 
 const ManageRoom = () => {
+    const [isShowModalRoomImage, setIsShowModalRoomImage] = useState(false);
+    const [isShowModalRoomService, setIsShowModalRoomService] = useState(false);
+    const [isShowModalUpdateRoom, setIsShowModalUpdateRoom] = useState(false);
+
+
+    const handleCloseImage = () => {
+        setIsShowModalRoomImage(false);
+    }
+    const handleCloseService = () => {
+        setIsShowModalRoomService(false);
+    }
+    const handleCloseUpdate = () => {
+        setIsShowModalUpdateRoom(false);
+    }
     return (
         <div className='container'>
             <div >
                 <NavLink to='/manage-company/view-yacht' className='p-3 d-flex nav-link' style={{ gap: 20 }}>
-                    <AiFillHome className='mt-1' /> <p>Back To Manage Company</p>
+                    <AiFillHome className='' /> <p className='mb-0'>Back To Manage Company</p>
                 </NavLink>
             </div>
             <hr />
@@ -21,15 +38,28 @@ const ManageRoom = () => {
                 <div>5,300,000 đ/KHÁCH</div>
 
                 <div className='d-flex' style={{ gap: 30 }}>
-
-                    <Button className='btn btn-light'>View Image Room</Button>
-                    <Button className='btn btn-warning'>View Services</Button>
-                    <Button className='btn btn-primary'>Update</Button>
+                    <Button onClick={() => setIsShowModalRoomImage(true)} style={{ width: 180 }} className='btn btn-light'>Manage Room Image </Button>
+                    <Button onClick={() => setIsShowModalRoomService(true)} style={{ width: 173 }} className='btn btn-warning'>Manage Services</Button>
+                    <Button onClick={() => setIsShowModalUpdateRoom(true)} className='btn btn-primary'>Update</Button>
                     <Button className='btn btn-danger'>Delete</Button>
-
                 </div>
 
             </div>
+
+            <ModalManageRoomImage
+                show={isShowModalRoomImage}
+                handleClose={handleCloseImage}
+            />
+
+            <ModalManageRoomService
+                show={isShowModalRoomService}
+                handleClose={handleCloseService}
+            />
+
+            <ModalUpdateRoom
+                show={isShowModalUpdateRoom}
+                handleClose={handleCloseUpdate}
+            />
         </div>
     );
 };

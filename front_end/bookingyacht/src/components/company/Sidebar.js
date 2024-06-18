@@ -16,10 +16,16 @@ import React from 'react';
 import sidebarBg from '../../assets/sidebar.jpg';
 import { Link, NavLink } from 'react-router-dom';
 import { ImProfile } from "react-icons/im";
+import { useDispatch } from 'react-redux';
+import { doLogout } from '../../redux/action/UserAction';
 // import logo from '../../assets/logo_swp.png'
 const Sidebar = (props) => {
     const { image, collapsed, toggled, handleToggleSidebar } = props;
+    const dispatch = useDispatch();
 
+    const handleLogout = () => {
+        dispatch(doLogout());
+    }
     return (
         <div>
             <ProSidebar
@@ -107,7 +113,7 @@ const Sidebar = (props) => {
                             padding: '20px 24px',
                         }}
                     >
-                        <NavLink className='nav-link' to='/signin'><TbLogout2 />Back</NavLink>
+                        <NavLink onClick={handleLogout} className='nav-link' to='/signin'><TbLogout2 />Back</NavLink>
                         {/* <FaGithub /> */}
                         <span style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
 

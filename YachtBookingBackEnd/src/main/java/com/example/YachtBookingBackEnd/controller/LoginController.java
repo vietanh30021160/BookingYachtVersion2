@@ -23,6 +23,8 @@ public class LoginController {
     JwtHelper jwtHelper;
     @Autowired
     AuthenticationManager authenticationManager;
+    @Autowired
+    IAccount iAccount;
 
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestParam String username, @RequestParam String password ) {
@@ -39,6 +41,8 @@ public class LoginController {
                         .findFirst()// moi user chi co 1 quyen nen lay cai dau tien
                         .orElse(null);
                 String token = jwtHelper.generateToken(username, role);
+                String idAccount = iAccount.getIdAccountByUserName(username);
+                dataResponse.setIdAccount(idAccount);
                 dataResponse.setData(token);
                 dataResponse.setSuccess(true);
                 return new ResponseEntity<>(dataResponse, HttpStatus.OK);

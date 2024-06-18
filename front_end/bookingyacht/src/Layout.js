@@ -61,7 +61,7 @@ const Layout = () => {
                     <Route path='profile' element={<ProfileCompany />} />
                 </Route>
 
-                <Route path='manage-yacht' element={<ManageYacht />} />
+                <Route path='manage-yacht/:idYacht' element={<ManageYacht />} />
                 <Route path='manage-room' element={<ManageRoom />} />
 
                 <Route path='/admin' element={<LoginAdmin setIsLoggedIn={setIsLoggedIn} />} />

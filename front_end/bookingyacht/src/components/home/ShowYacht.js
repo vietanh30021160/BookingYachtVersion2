@@ -2,7 +2,7 @@ import Card from 'react-bootstrap/Card';
 import { NavLink, useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import { useEffect, useState } from 'react';
-import { getAllYachtHome, getUser } from '../../services/ApiServices';
+import { getAllYacht, getUser } from '../../services/ApiServices';
 import { GrFormNextLink } from "react-icons/gr";
 import i_content from '../../assets/image_1.webp'
 import axios from 'axios';
@@ -13,15 +13,19 @@ import { FaLocationDot } from "react-icons/fa6";
 const ShowYacht = (props) => {
     const [yacht, setYacht] = useState([]);
 
-    const getAllYacht = async () => {
-        let res = await getAllYachtHome()
-        setYacht(res.data.data)
+
+    const getAllYachtt = async () => {
+        let res = await getAllYacht()
+        if (res && res.data.success === true) {
+            setYacht(res.data.data)
+
+        }
     }
 
     const avatarYachtApi = 'http://localhost:8080/api/customer/file/'
 
     useEffect(() => {
-        getAllYacht()
+        getAllYachtt()
     }, [])
 
     return (
@@ -38,7 +42,7 @@ const ShowYacht = (props) => {
                 </label>
             </div>
             <div className='yacht-content'>
-                {yacht && yacht.length > 0 && (yacht.length > 6 ? yacht.slice(0, 6) : yacht).map((item) => {
+                {yacht.map((item) => {
                     return (
                         <div className='col-12 col-sm-6 col-md-3 col-lg-3 mb-4' key={item.idYacht}>
                             <NavLink to={`/mainpage/${item.idYacht}`} className='nav-link'>

@@ -2,10 +2,11 @@ package com.example.YachtBookingBackEnd.service.service;
 
 import com.example.YachtBookingBackEnd.dto.AccountDTO;
 import com.example.YachtBookingBackEnd.dto.CompanyDTO;
-import com.example.YachtBookingBackEnd.entity.Account;
-import com.example.YachtBookingBackEnd.entity.Company;
+import com.example.YachtBookingBackEnd.dto.FeedbackDTO;
+import com.example.YachtBookingBackEnd.entity.*;
 import com.example.YachtBookingBackEnd.repository.AccountRepository;
 import com.example.YachtBookingBackEnd.repository.CompanyRepository;
+import com.example.YachtBookingBackEnd.repository.FeedbackRepository;
 import com.example.YachtBookingBackEnd.service.implement.ICompany;
 import com.example.YachtBookingBackEnd.service.implement.IFile;
 import lombok.AccessLevel;
@@ -188,5 +189,42 @@ public class CompanyService implements ICompany {
         }
         System.out.println(companyDTOList);
         return companyDTOList;
+    }
+
+
+    @Override
+    public List<FeedbackDTO> getFeedbacksByCompanyId(String idCompany) {
+        List<FeedbackDTO> feedbackDTOList = new ArrayList<>();
+        try {
+            List<Feedback> feedbacks = companyRepository.findFeedbacksByCompanyId(idCompany);
+            if(feedbacks != null){
+                for (Feedback feedback : feedbacks) {
+                    FeedbackDTO feedbackDTO = new FeedbackDTO();
+                    feedbackDTO.setIdFeedback(feedback.getIdFeedback());
+                    feedbackDTO.setStarRating(feedback.getStarRating());
+                    feedbackDTO.setDescription(feedback.getDescription());
+                    feedbackDTO.setIdBooking(feedback.getIdBooking());
+
+                    Customer customer = new Customer();
+                    customer.setIdCustomer(feedback.getCustomer().getIdCustomer());
+                    customer.setFullName(feedback.getCustomer().getFullName());
+                    customer.setEmail(feedback.getCustomer().getEmail());
+                    customer.setPhoneNumber(feedback.getCustomer().getPhoneNumber());
+                    customer.setAddress(feedback.getCustomer().getAddress());
+
+
+                    feedbackDTO.setCustomer(customer);
+                    feedbackDTO.setIdYacht(feedback.getYacht().getIdYacht());
+
+
+                    feedbackDTOList.add(feedbackDTO);
+
+                }
+            }
+
+        }catch (Exception e){
+            System.out.println("Exception: " + e.getMessage());
+        }
+        return feedbackDTOList;
     }
 }

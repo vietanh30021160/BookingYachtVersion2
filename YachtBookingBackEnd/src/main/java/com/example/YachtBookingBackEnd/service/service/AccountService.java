@@ -183,15 +183,17 @@ public class AccountService implements IAccount {
         }
 
     }
-
-
     @Override
-    public String getIdAccountByUsername(String username) {
-        Account account = accountRepository.findAccountByUsername(username);
-        return account.getIdAccount();
+    public String getIdAccountByUserName(String username) {
+        try{
+            Optional<Account> account = accountRepository.findByUsername(username);
+            if (account.isPresent()) {
+                return account.get().getIdAccount();
+            }
+        }catch (Exception e){
+            System.out.println("Exception get Id account by username: " + e.getMessage());
+        }
+        return "";
     }
-
-
-
 }
 

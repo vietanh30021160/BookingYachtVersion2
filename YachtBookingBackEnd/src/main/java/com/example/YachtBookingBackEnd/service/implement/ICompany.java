@@ -1,6 +1,7 @@
 package com.example.YachtBookingBackEnd.service.implement;
 
 import com.example.YachtBookingBackEnd.dto.CompanyDTO;
+import com.example.YachtBookingBackEnd.dto.FeedbackDTO;
 import com.example.YachtBookingBackEnd.entity.Company;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,4 +20,7 @@ public interface ICompany {
     boolean updateInfoCompany(String idCompany, String name,String address, MultipartFile logo, String email);
 
     List<CompanyDTO> getAllCompany();
+
+    List<FeedbackDTO> getFeedbacksByCompanyId(String idCompany);
+
 }

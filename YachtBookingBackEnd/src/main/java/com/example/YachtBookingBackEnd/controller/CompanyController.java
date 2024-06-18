@@ -5,7 +5,6 @@ import com.example.YachtBookingBackEnd.service.implement.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -107,7 +106,7 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @GetMapping("/yacht/findByCompany/{companyId}")
-    public ResponseEntity<?> findByCompany(@PathVariable String companyId) {
+    public ResponseEntity<?> findYachtByCompany(@PathVariable String companyId) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYacht.findYachtByCompanyId(companyId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
@@ -163,6 +162,7 @@ public class CompanyController {
         dataResponse.setData(iYachtImage.updateImage(image, imageId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
     @PostMapping("/updateProfile/{companyId}")
     public ResponseEntity<?> updateCompany(@PathVariable String companyId,
                                            @RequestParam String name,
@@ -283,10 +283,12 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-
-
-
-
+    @GetMapping("/feedBackByIdCompany/{companyId}")
+    public ResponseEntity<?> getFeedbackByIdCompany(@PathVariable String companyId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iCompany.getFeedbacksByCompanyId(companyId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 
 
 

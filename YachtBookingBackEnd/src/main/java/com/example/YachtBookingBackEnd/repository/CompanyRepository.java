@@ -1,6 +1,8 @@
 package com.example.YachtBookingBackEnd.repository;
 
 import com.example.YachtBookingBackEnd.entity.Company;
+import com.example.YachtBookingBackEnd.entity.Feedback;
+import com.example.YachtBookingBackEnd.entity.Yacht;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,5 +24,7 @@ public interface CompanyRepository extends JpaRepository<Company, String> {
 
     boolean existsCompanyByName(String name);
 
+    @Query("SELECT f FROM Feedback f join Yacht y on f.yacht.idYacht = y.idYacht join Company c on y.company.idCompany = c.idCompany where c.idCompany = :idCompany")
+    List<Feedback> findFeedbacksByCompanyId(@Param("idCompany") String idCompany);
 
 }
