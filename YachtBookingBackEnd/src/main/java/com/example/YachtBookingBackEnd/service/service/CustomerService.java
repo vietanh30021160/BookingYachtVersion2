@@ -145,9 +145,8 @@ public class CustomerService implements ICustomer {
     }
 
     @Override
-    public CustomerDTO findCustomerByAccountId(String accountId) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Not found account"));
+    public CustomerDTO findCustomerByUsername(String username) {
+        Account account = accountRepository.findAccountByUsername(username);
 
         Customer customer = customerRepository.findCustomerByAccount(account);
 
@@ -160,8 +159,8 @@ public class CustomerService implements ICustomer {
             customerDTO.setEmail(customer.getEmail());
             customerDTO.setPhone(customer.getPhoneNumber());
             customerDTO.setAddress(customer.getAddress());
-            accountDTO.setIdAccount(accountId);
-            accountDTO.setUsername(account.getUsername());
+            accountDTO.setIdAccount(account.getIdAccount());
+            accountDTO.setUsername(username);
             accountDTO.setPassword(account.getPassword());
             accountDTO.setRole(account.getRole());
             customerDTO.setAccountDTO(accountDTO);

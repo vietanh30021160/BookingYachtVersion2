@@ -85,10 +85,10 @@ public class AdminController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/profile/findCustomerByAccountId/{accountId}")
-    ResponseEntity<?> findCustomerByAccountId(@PathVariable("accountId") String accountId){
+    @GetMapping("/profile/findCustomerByUsername")
+    ResponseEntity<?> findCustomerByUsername(@RequestParam String username){
         DataResponse dataResponse = new DataResponse<>();
-        dataResponse.setData(iCustomer.findCustomerByAccountId(accountId));
+        dataResponse.setData(iCustomer.findCustomerByUsername(username));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
