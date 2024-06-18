@@ -24,3 +24,6 @@ export const getYachtByYachtId = (id) => {
 export const getServiceByYacht = (yachtId) => {
     return axios.get(`api/customer/getServiceByYacht/${yachtId}`)
 }
+export const getImagesYacht = (yachtId) => {
+    return axios.get(`api/customer/yacht/image/${yachtId}`)
+}

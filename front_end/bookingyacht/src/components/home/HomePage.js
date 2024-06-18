@@ -16,7 +16,7 @@ const HomePage = (props) => {
                         <source src={videoHomePage} />
                     </video>
                 </div>
-                <FormSearch />
+                <FormSearch></FormSearch>
             </div>
 
             <div className='app-yacht container'>

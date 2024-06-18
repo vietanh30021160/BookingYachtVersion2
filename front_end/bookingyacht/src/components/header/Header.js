@@ -7,8 +7,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { IoCall } from 'react-icons/io5';
 const Header = () => {
     return (
-
-        <Navbar expand="lg" className="bg-body-tertiary ">
+        <Navbar expand="lg" className="bg-body-tertiary header">
             <Container>
                 {/* <Navbar.Brand href="#home"></Navbar.Brand> */}
                 <NavLink to='/' className='navbar-brand' style={{ width: '150px' }}><img className='logo' src={logo} alt='logo' /></NavLink>
