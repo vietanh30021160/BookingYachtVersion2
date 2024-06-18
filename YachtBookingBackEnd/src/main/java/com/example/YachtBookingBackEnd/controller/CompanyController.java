@@ -134,6 +134,7 @@ public class CompanyController {
         dataResponse.setData(iYachtImage.updateImage(image, imageId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
     @PostMapping("/updateProfile/{companyId}")
     public ResponseEntity<?> updateCompany(@PathVariable String companyId,
                                            @RequestParam String name,
@@ -183,6 +184,13 @@ public class CompanyController {
     public ResponseEntity<?> findYachtByYachtId(@PathVariable String yachtId) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYacht.findYachtById(yachtId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/feedBackByIdCompany/{companyId}")
+    public ResponseEntity<?> getFeedbackByIdCompany(@PathVariable String companyId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iCompany.getFeedbacksByCompanyId(companyId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

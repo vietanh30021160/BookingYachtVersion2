@@ -32,6 +32,8 @@ public class CustomerController {
     IService iService;
     IYachtService iYachtService;
 
+
+
     @PostMapping("/accounts")
     ResponseEntity<?> register(@RequestParam String username,
                                @RequestParam String password) {
@@ -88,6 +90,23 @@ public class CustomerController {
                                      @RequestParam String address){
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setData(iCustomer.updateCustomer(customerId, fullName, email, phoneNumber, address));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/addFeedback/{idBooking}/{idCustomer}/{idYacht}")
+    public ResponseEntity<?> addFeedback(@RequestParam int starRating,
+                                         @RequestParam String description,
+                                         @PathVariable String idBooking,
+                                         @PathVariable String idCustomer,
+                                         @PathVariable String idYacht) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iCustomer.addFeedback(starRating,description,idBooking,idCustomer,idYacht));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getFeedbackByYachtId/{yachtId}")
+    public ResponseEntity<?> getFeedbackByYachtId(@PathVariable String yachtId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iCustomer.getFeedbackByYachtId(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
