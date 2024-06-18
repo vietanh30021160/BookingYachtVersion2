@@ -1,4 +1,5 @@
-import { FETCH_USER_LOGIN_SUCCES, USER_LOGOUT } from "../action/UserAction";
+import { FETCH_USER_LOGIN_SUCCES, USER_LOGOUT } from "../type/Type";
+
 const INITIAL_STATE = {
     account: {
         data: '',

@@ -1,5 +1,6 @@
-export const FETCH_USER_LOGIN_SUCCES = 'FETCH_USER_LOGIN_SUCCES';
-export const USER_LOGOUT = 'USER_LOGOUT'
+import { FETCH_USER_LOGIN_SUCCES, USER_LOGOUT } from "../type/Type"
+
+
 export const doLogin = (data, role) => {
     return {
         type: FETCH_USER_LOGIN_SUCCES,

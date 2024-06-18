@@ -12,9 +12,7 @@ const ModalCreateYacht = (props) => {
     const { show, setShow, idCompany } = props;
     const [image, setImage] = useState("");
     const [previewImage, setPreviewImage] = useState("");
-    
 
-   
 
     const initInforYacht = {
         name: '',

@@ -81,10 +81,8 @@ const ViewYacht = () => {
                 <FormGroup className='col-2'>
 
                     <Form.Select >
-                        {yacht.length > 0 && yacht.map((yacht) =>
 
-                            <option>{yacht}</option>
-                        )}
+                        <option>ok</option>
                     </Form.Select>
 
                 </FormGroup>
