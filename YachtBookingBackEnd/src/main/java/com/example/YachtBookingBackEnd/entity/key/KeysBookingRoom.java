@@ -1,8 +1,20 @@
 package com.example.YachtBookingBackEnd.entity.key;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public class KeysBookingRoom {
+import java.io.Serializable;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Embeddable
+public class KeysBookingRoom implements Serializable {
     @Column(name = "id_room")
     private String idRoom;
 
