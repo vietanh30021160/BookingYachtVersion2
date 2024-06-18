@@ -11,27 +11,27 @@ const ReviewList = ({ reviews }) => {
 
     return (
         <div>
-        {reviews.map((review, index) => (
-            <Card key={index} className="mb-3 comment">
-                <Card.Body>
-                    <div className="rating">
-                        {[...Array(5)].map((star, i) => (
-                            <span
-                                key={i}
-                                className={`star ${i < review.rating ? 'user-rated' : ''}`}
-                            >
-                                ★
-                            </span>
-                        ))}
-                    </div>
-                    <Card.Text>{review.review}</Card.Text>
-                    <footer className="blockquote-footer">
-                        {review.name} - {review.date}
-                    </footer>
-                </Card.Body>
-            </Card>
-        ))}
-    </div>
+            {reviews.map((review, index) => (
+                <Card key={index} className="mb-4 comment">
+                    <Card.Body>
+                        <div className="rating">
+                            {[...Array(5)].map((star, i) => (
+                                <span
+                                    key={i}
+                                    className={`star ${i < review.rating ? 'user-rated' : ''}`}
+                                >
+                                    ★
+                                </span>
+                            ))}
+                        </div>
+                        <Card.Text>{review.review}</Card.Text>
+                        <footer className="blockquote-footer">
+                            {review.name} - {review.date}
+                        </footer>
+                    </Card.Body>
+                </Card>
+            ))}
+        </div>
     );
 };
 

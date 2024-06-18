@@ -12,6 +12,7 @@ import { Col } from 'react-bootstrap';
 
 const MainPage = () => {
   const { yachtId } = useParams();
+  console.log(yachtId)
   const [yacht, setYacht] = useState({});
   const [currentSection, setCurrentSection] = useState('');
 

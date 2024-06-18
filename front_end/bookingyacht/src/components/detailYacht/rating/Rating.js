@@ -38,6 +38,7 @@ const Rating = () => {
 
     return (
         <Container>
+            <ReviewList reviews={selectedRating !== null ? reviews.filter(review => review.rating === selectedRating) : reviews} />
             <Row className="align-items-center mb-3">
                 <Col>
                     <h4 style={{ fontWeight: 'bold' }} className="mb-0">Đánh giá sản phẩm</h4>
@@ -71,7 +72,7 @@ const Rating = () => {
                     </Button>
                 ))}
             </ButtonGroup> */}
-            <ReviewList reviews={selectedRating !== null ? reviews.filter(review => review.rating === selectedRating) : reviews} />
+
         </Container>
     );
 };
