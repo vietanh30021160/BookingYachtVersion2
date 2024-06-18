@@ -1,9 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useEffect, useState } from 'react';
+import { FcIdea } from "react-icons/fc";
 import { FaCheck } from 'react-icons/fa';
-import { GiBathtub, GiBeerBottle } from "react-icons/gi";
-import { IoRestaurantOutline } from "react-icons/io5";
 import { LuShip } from "react-icons/lu";
+import { FcApproval } from "react-icons/fc";
 import { MdFoodBank, MdOutlineAnchor, MdOutlineBedroomParent, MdOutlinePersonPin } from "react-icons/md";
 import { PiMapPinAreaLight, PiShoppingBagOpen, PiSwimmingPool } from "react-icons/pi";
 import './Section.scss';
@@ -30,14 +30,14 @@ const SectionHeader = ({ yacht }) => {
                 <div className="overview">
                     {service.map((item, index) => (
                         <div key={index} className="flex gap-8 align-center">
-                            <label><PiSwimmingPool /> {item.service}</label>
+                            <label><FcIdea /> {item.service}</label>
                         </div>
                     ))}
                 </div>
                 <div className='flex flex-col gap-24 mt-4'>
                     {description.map((des, index) => (
                         <div key={index} className="flex align-center gap-8 mb-4">
-                            <p><FaCheck /> {des}</p>
+                            <p><FcApproval size={25} /> {des}</p>
                         </div>
                     ))}
                 </div>

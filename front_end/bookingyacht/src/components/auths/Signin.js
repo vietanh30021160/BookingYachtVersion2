@@ -1,5 +1,5 @@
 import logo from '../../assets/logo_swp.png';
-import './Auth.scss'
+import './Auth.scss';
 import { useState } from 'react';
 import { login } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
@@ -7,7 +7,10 @@ import { useNavigate, Link } from 'react-router-dom';
 import { NavLink } from 'react-router-dom'
 // import { useDispatch, useSelector } from 'react-redux';
 import { ImSpinner10 } from "react-icons/im";
+import { doLogin } from '../../redux/action/UserAction';
+import { useDispatch } from 'react-redux';
 // import { Rlogin } from '../../redux/action/CustomerAction';
+import { jwtDecode } from "jwt-decode";
 import { BiSolidHome } from "react-icons/bi";
 
 const Signin = () => {
@@ -16,6 +19,8 @@ const Signin = () => {
 
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
+
 
     // const isAuthenticated = useSelector(state => state.account.isAuthenticated);
     // const account = useSelector(state => state.account.account)
@@ -31,24 +36,29 @@ const Signin = () => {
     const navigate = useNavigate();
 
     const handleLogin = async () => {
-        if (userName === '' || password === '') {
-            toast.error('Invalid');
-            setLoading(false);
-        }
-        setLoading(true);
-        let res = await login(userName, password);
+        let res = await login(userName.trim(), password.trim());
         console.log(res);
-        // if (res.status === 200) {
-        //     //dispatch(Rlogin(res.data));
-        //     toast.success("Login Successful");
-        //     setLoading(false);
-        //     navigate('/');
+        if (userName === '' || password === '') {
+            toast.error('Input Not Empty');
+            setLoading(false);
+        } else if (res && res.data.status === 200 && res.data.success === true) {
+            const role = jwtDecode(res.data.data);
+            dispatch(doLogin(res.data.data, role.role));
+            if (role && role.role === 'ROLE_COMPANY') {
+                toast.success("Login Successful");
+                setLoading(false);
+                navigate('/manage-company');
+            } else {
+                toast.success("Login Successful");
+                setLoading(false);
+                navigate('/');
+            }
 
-        // } else {
-        //     toast.error('username invalid')
-        //     setLoading(false);
+        } else {
+            toast.error('username invalid')
+            setLoading(false);
 
-        // }
+        }
     }
 
     return (

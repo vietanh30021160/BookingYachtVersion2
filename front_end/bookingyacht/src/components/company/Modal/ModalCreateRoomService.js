@@ -4,12 +4,11 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { Button } from 'react-bootstrap'
-const ModalUpdateInforyacht = (props) => {
+const ModalCreateRoomService = (props) => {
     const { show, handleClose } = props;
-
     return (
         <div>
-            <Modal size='xl'
+            <Modal
                 show={show}
                 onHide={handleClose}
                 backdrop="static"
@@ -24,41 +23,15 @@ const ModalUpdateInforyacht = (props) => {
                     <Form>
                         <Row className="mb-3">
                             <Form.Group as={Col} >
-                                <Form.Label>Name</Form.Label>
+                                <Form.Label>Name Service</Form.Label>
                                 <Form.Control type="text" placeholder="Name Yacht" />
                             </Form.Group>
 
                             <Form.Group as={Col} >
-                                <Form.Label>Hull-Body</Form.Label>
+                                <Form.Label>Price</Form.Label>
                                 <Form.Control type="text" placeholder="Price" />
                             </Form.Group>
                         </Row>
-                        <Row className="mb-3">
-                            <Form.Group as={Col} >
-                                <Form.Label>Launch</Form.Label>
-                                <Form.Control type="text" placeholder="Name Yacht" />
-                            </Form.Group>
-
-                            <Form.Group as={Col} >
-                                <Form.Label>Intinerary</Form.Label>
-                                <Form.Control type="text" placeholder="Price" />
-                            </Form.Group>
-                        </Row>
-                        <Row className="mb-3">
-                            <Form.Group as={Col} >
-                                <Form.Label>Rule</Form.Label>
-                                <Form.Control type="text" placeholder="Name Yacht" />
-                            </Form.Group>
-                        </Row>
-                        <Row className="mb-3">
-                            <Form.Group as={Col} >
-                                <Form.Label>Description</Form.Label>
-                                <Form.Control type="text" placeholder="Name Yacht" />
-                            </Form.Group>
-                        </Row>
-
-
-
 
                     </Form>
                 </Modal.Body>
@@ -75,4 +48,4 @@ const ModalUpdateInforyacht = (props) => {
     );
 };
 
-export default ModalUpdateInforyacht;
+export default ModalCreateRoomService;

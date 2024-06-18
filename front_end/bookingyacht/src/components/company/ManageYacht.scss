@@ -18,3 +18,33 @@
 button {
     height: fit-content;
 }
+
+.label-upload {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: fit-content;
+    padding: 3px 10px;
+    border-radius: 5px;
+    background: #8ae1e2;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+        background: #a39d9d;
+    }
+}
+
+.img-preview {
+    border: 1px dashed #ccc;
+    height: 150px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ccc;
+
+    img {
+        width: 200px;
+    }
+}

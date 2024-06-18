@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Home.scss';
-import { Button, Col, FormControl, FormGroup, Row } from 'react-bootstrap';
+import { Button, Col, FormControl, FormGroup, Row, Container } from 'react-bootstrap';
 
 const FormSearch = () => {
     const init = {
@@ -23,11 +23,11 @@ const FormSearch = () => {
 
     return (
         <div>
-            <div className='homepage-content border container '>
-                <form className='mb-3 serach-yacht'>
+            <div className='homepage-content container '>
+                <form className='mb-3 serach-yacht p-4'>
                     <div className='text-center'>
-                        <h2>Ban Lua Chon Du Thuyen Ha Long Nao ?</h2>
-                        <p>Co Rat Nhieu Tour Du Lich Dang cho Ban</p>
+                        <h3 style={{ fontWeight: 'bold' }}>Bạn lựa chọn du thuyền Hạ Long nào ?</h3>
+                        <p>Có rất nhiều du thuyền dành cho bạn</p>
                     </div>
                     <div className='form-search'>
                         <Row>
@@ -42,8 +42,8 @@ const FormSearch = () => {
                                 </FormGroup>
                             </Col>
                             <Col>
-                                <select className='select' name='location' onChange={handleChange}>
-                                    <option value='all'>Tất Cả Địa Điểm</option>
+                                <select className='select p-2' name='location' onChange={handleChange} style={{ color: '#595C5F' }}>
+                                    <option value='all'>Tất cả các địa điểm</option>
                                     <option value='Vịnh Hạ Long'>Vịnh Hạ Long</option>
                                     <option value='Vịnh Lan Hạ'>Vịnh Lan Hạ</option>
                                     <option value='Đảo Cát Bà'>Đảo Cát Bà</option>
@@ -52,26 +52,24 @@ const FormSearch = () => {
 
                             </Col>
                             <Col>
-                                <select className='select' name='price' onChange={handleChange}>
-                                    <option value='all'>Tất Cả Mức Giá</option>
+                                <select className='select p-2' name='price' onChange={handleChange} style={{ color: '#595C5F' }}>
+                                    <option value='all'>Tất cả các mức giá</option>
                                     <option value='1 Đến 3 Triệu'>1 Đến 3 Triệu</option>
                                     <option value='3 Đến 6 Triệu'>3 Đến 6 Triệu</option>
                                     <option value='Trên 6 Triệu'>Trên 6 Triệu</option>
-
                                 </select>
                             </Col>
                             <Col>
-                                <Button onClick={() => handleSearch()}>Search</Button>
+                                <button style={{ paddingLeft: '30px', paddingRight: '30px' }} size='lg'>Search</button>
                             </Col>
                         </Row>
 
                     </div>
                 </form>
-            </div>
+            </div >
 
-        </div>
-
-    );
+        </div >
+    )
 };
 
 export default FormSearch;

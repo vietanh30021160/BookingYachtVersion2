@@ -46,14 +46,12 @@ const InformationCompany = () => {
                     </Form.Group>
                 </Row>
 
-
                 <div>
                     <Button variant="primary" type="submit">
                         Submit
                     </Button>
-                    <Link to='/signup' className='mx-5 my-0 btn btn-light' style={{ textDecoration: "none" }}><FaHome style={{ marginBottom: 4 }} /> Home</Link>
+                    <Link to='/signin' className='mx-5 my-0 btn btn-light' style={{ textDecoration: "none" }}><FaHome style={{ marginBottom: 4 }} /> Home</Link>
                 </div>
-
             </Form>
         </div>
     );

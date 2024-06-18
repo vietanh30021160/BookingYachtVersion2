@@ -7,12 +7,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class KeysYachtSchedule {
+public class KeysYachtSchedule implements Serializable {
     @Column(name = "id_yacht")
     private String idYacht;
 
