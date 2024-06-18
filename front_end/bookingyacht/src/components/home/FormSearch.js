@@ -1,36 +1,75 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Home.scss';
+import { Button, Col, FormControl, FormGroup, Row, Container } from 'react-bootstrap';
 
 const FormSearch = () => {
+    const init = {
+        nameYacht: '',
+        location: '',
+        price: ''
+    }
+    const [searchData, setSearchData] = useState(init);
+    const handleChange = (e) => {
+        setSearchData(
+            {
+                ...searchData,
+                [e.target.name]: e.target.value
+            }
+        )
+    }
+    const handleSearch = () => {
+        console.log("check search", searchData)
+    }
+
     return (
         <div>
-            <form className='mb-3 serach-yacht'>
-                <div className='text-center'>
-                    <h2>Ban Lua Chon Du Thuyen Ha Long Nao ?</h2>
-                    <p>Co Rat Nhieu Tour Du Lich Dang cho Ban</p>
-                </div>
-                <div className='form-search'>
-                    <div className='d-flex'>
-                        {/* <CiSearch /> */}
-                        <input type='text' placeholder='Nhap Ten Du Thuyen' className='form-control col-3' />
+            <div className='homepage-content container '>
+                <form className='mb-3 serach-yacht p-4'>
+                    <div className='text-center'>
+                        <h3 style={{ fontWeight: 'bold' }}>Bạn lựa chọn du thuyền Hạ Long nào ?</h3>
+                        <p>Có rất nhiều du thuyền dành cho bạn</p>
                     </div>
-                    <div>
-                        {/* <FaMapMarkerAlt /> */}
-                        <select className='form-select'>
-                            <option>1</option>
-                            <option>2</option>
-                        </select>
+                    <div className='form-search'>
+                        <Row>
+                            <Col md={5}>
+                                <FormGroup>
+                                    <FormControl
+                                        placeholder='Search Yacht'
+                                        type='text'
+                                        name='nameYacht'
+                                        onChange={handleChange}
+                                    />
+                                </FormGroup>
+                            </Col>
+                            <Col>
+                                <select className='select p-2' name='location' onChange={handleChange} style={{ color: '#595C5F' }}>
+                                    <option value='all'>Tất cả các địa điểm</option>
+                                    <option value='Vịnh Hạ Long'>Vịnh Hạ Long</option>
+                                    <option value='Vịnh Lan Hạ'>Vịnh Lan Hạ</option>
+                                    <option value='Đảo Cát Bà'>Đảo Cát Bà</option>
+
+                                </select>
+
+                            </Col>
+                            <Col>
+                                <select className='select p-2' name='price' onChange={handleChange} style={{ color: '#595C5F' }}>
+                                    <option value='all'>Tất cả các mức giá</option>
+                                    <option value='1 Đến 3 Triệu'>1 Đến 3 Triệu</option>
+                                    <option value='3 Đến 6 Triệu'>3 Đến 6 Triệu</option>
+                                    <option value='Trên 6 Triệu'>Trên 6 Triệu</option>
+                                </select>
+                            </Col>
+                            <Col>
+                                <button style={{ paddingLeft: '30px', paddingRight: '30px' }} size='lg'>Search</button>
+                            </Col>
+                        </Row>
+
                     </div>
-                    <div>
-                        <select className='form-select'>
-                            <option>1</option>
-                        </select>
-                    </div>
-                    <button size='lg'>Search</button>
-                </div>
-            </form>
-        </div>
-    );
+                </form>
+            </div >
+
+        </div >
+    )
 };
 
 export default FormSearch;

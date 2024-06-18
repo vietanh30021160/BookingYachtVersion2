@@ -1,9 +1,11 @@
 package com.example.YachtBookingBackEnd.service.service;
 
 import com.example.YachtBookingBackEnd.dto.AccountDTO;
+import com.example.YachtBookingBackEnd.dto.CompanyDTO;
 import com.example.YachtBookingBackEnd.entity.Account;
-import com.example.YachtBookingBackEnd.payload.request.AccountCompanyCreationRequest;
+import com.example.YachtBookingBackEnd.entity.Company;
 import com.example.YachtBookingBackEnd.repository.AccountRepository;
+import com.example.YachtBookingBackEnd.repository.CompanyRepository;
 import com.example.YachtBookingBackEnd.service.implement.IAccount;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Optional;
 
 @Service
@@ -23,6 +26,7 @@ import java.util.Optional;
 public class AccountService implements IAccount {
     AccountRepository accountRepository;
     PasswordEncoder passwordEncoder;
+    CompanyRepository companyRepository;
 
     public static final String ROLE_COMPANY = "COMPANY";
     public static final String ROLE_CUSTOMER = "CUSTOMER";
@@ -45,11 +49,27 @@ public class AccountService implements IAccount {
             // Lưu account vào db
             accountRepository.save(account);
 
+            //Thêm thông tin của công ty
+            Company company = new Company();
+            company.setName("company");
+            company.setAddress("address");
+            company.setEmail(generateRandomEmail());
+            company.setExist(1);
+            company.setAccount(account);
+
+            companyRepository.save(company);
+
             return true;
         } catch (Exception e) {
             log.error("Account company creation failed - default error", e);
             return false;
         }
+    }
+
+    private String generateRandomEmail() {
+        Random random = new Random();
+        int randomNumber = random.nextInt(10000);
+        return "email" + randomNumber + "@gmail.com";
     }
 
     @Override
@@ -164,11 +184,13 @@ public class AccountService implements IAccount {
 
     }
 
+
     @Override
     public String getIdAccountByUsername(String username) {
         Account account = accountRepository.findAccountByUsername(username);
         return account.getIdAccount();
     }
+
 
 
 }

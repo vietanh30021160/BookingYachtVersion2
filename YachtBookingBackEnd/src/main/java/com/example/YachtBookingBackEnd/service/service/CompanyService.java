@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,75 +31,6 @@ public class CompanyService implements ICompany {
     IFile iFile;
 
     public static final String ROLE_COMPANY = "COMPANY";
-
-    @Override
-    public boolean addCompany(String idAccount, String name, String address, MultipartFile logo, String email) {
-        try{
-            if (name == null || name.isEmpty()) {
-                log.error("Company name is empty");
-                throw new IllegalArgumentException("Company name is empty");
-            } else if (companyRepository.existsCompanyByName(name)) {
-                log.error("Company already exists");
-                throw new IllegalArgumentException("Company already exists");
-            } else if (!isValidEmail(email)) {
-                log.error("Invalid email format");
-                throw new IllegalArgumentException("Invalid email format");
-            }
-
-            // Check if the account exists
-            Account account = accountRepository.findById(idAccount)
-                    .orElseThrow(() -> new IllegalArgumentException("Account does not exist"));
-            if (!account.getRole().equals(ROLE_COMPANY)) {
-                log.error("Account does not have role " + ROLE_COMPANY);
-                throw new IllegalArgumentException("Account does not have role " + ROLE_COMPANY);
-            }
-
-            // Convert the request to Company entity
-            Company company = new Company();
-            company.setName(name);
-            company.setAddress(address);
-            iFile.save(logo);
-            company.setLogo(logo.getOriginalFilename());
-            company.setEmail(email);
-            company.setExist(1);
-            // Set the account for the company
-            company.setAccount(account);
-
-            // Save the company to the database
-            companyRepository.save(company);
-
-            return true;
-        }catch (Exception e){
-            log.error("Company could not be added", e);
-            return false;
-        }
-    }
-
-    @Override
-    public boolean updateCompany(String idCompany, String name, String address, MultipartFile logo, String email) {
-
-        Company company = companyRepository.findByIdAndExist(idCompany)
-                .orElseThrow(() -> new RuntimeException("Company not found! Try again"));
-        if(!isValidEmail(email)){
-            log.error("Wrong format");
-        }
-
-        try {
-            company.setName(name);
-            company.setAddress(address);
-            iFile.save(logo);
-            company.setLogo(logo.getOriginalFilename());
-            company.setEmail(email);
-            companyRepository.save(company);
-            return true;
-        } catch (Exception e) {
-
-            System.out.println(e);
-            return false;
-        }
-
-
-    }
 
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
@@ -146,9 +78,18 @@ public class CompanyService implements ICompany {
     }
 
     @Override
-    public CompanyDTO getDetailCompanyByAccountID(String idAccoount) {
-        Company company = companyRepository.findByIdAccountAndExist(idAccoount)
+    public CompanyDTO getDetailCompanyByAccountID(String idAccount) {
+        Company company = companyRepository.findByIdAccountAndExist(idAccount)
                 .orElseThrow(() -> new RuntimeException("Company is hided!"));
+
+        // Tạo AccountCompanyDTO từ Account
+        Account account = company.getAccount();
+        AccountDTO accountDTO = AccountDTO.builder()
+                .idAccount(account.getIdAccount())
+                .username(account.getUsername())
+                .password(account.getPassword())
+                .role(account.getRole())
+                .build();
 
         // Tạo CompanyDTO từ Company
         CompanyDTO companyDTO = CompanyDTO.builder()
@@ -158,6 +99,7 @@ public class CompanyService implements ICompany {
                 .logo(company.getLogo())
                 .email(company.getEmail())
                 .exist(company.getExist())
+                .accountDTO(accountDTO)
                 .build();
 
         return companyDTO;
@@ -175,5 +117,76 @@ public class CompanyService implements ICompany {
         companyRepository.save(company);
 
         return true;
+    }
+
+    @Override
+    public Company getCompanyById(String idCompany) {
+        return companyRepository.findByIdAndExist(idCompany)
+                .orElseThrow(() -> new RuntimeException("Company not found! Try again"));
+    }
+
+    @Override
+    public boolean updateInfoCompany(String idCompany, String name, String address, MultipartFile logo, String email) {
+        Company company = getCompanyById(idCompany);
+
+        if (!isValidEmail(email)) {
+            log.error("Invalid email format");
+            throw new IllegalArgumentException("Invalid email format");
+        }
+
+        try{
+            if (name != null) {
+                company.setName(name);
+            }
+            if (address != null) {
+                company.setAddress(address);
+            }
+            if (logo != null && !logo.isEmpty()) {
+                iFile.save(logo);
+                company.setLogo(logo.getOriginalFilename());
+            }
+            if (email != null) {
+                company.setEmail(email);
+            }
+            companyRepository.save(company);
+            return true;
+        }catch (Exception e){
+            log.error("Error updating company with ID: " + idCompany, e);
+            return false;
+        }
+    }
+
+    @Override
+    public List<CompanyDTO> getAllCompany() {
+        List<CompanyDTO> companyDTOList = new ArrayList<>();
+        try {
+            List<Company> companies = companyRepository.findAll();
+            for (Company company : companies) {
+                CompanyDTO companyDTO = new CompanyDTO();
+                AccountDTO accountDTO = new AccountDTO();
+
+                if(company.getAccount().getRole().equals("COMPANY")){
+                    accountDTO.setRole(company.getAccount().getRole());
+                    accountDTO.setIdAccount(company.getAccount().getIdAccount());
+                    accountDTO.setUsername(company.getAccount().getUsername());
+                    accountDTO.setPassword(company.getAccount().getPassword());
+
+
+                    companyDTO.setIdCompany(company.getIdCompany());
+                    companyDTO.setName(company.getName());
+                    companyDTO.setAddress(company.getAddress());
+                    companyDTO.setLogo(company.getLogo());
+                    companyDTO.setEmail(company.getEmail());
+                    companyDTO.setExist(company.getExist());
+                    companyDTO.setAccountDTO(accountDTO);
+                    companyDTOList.add(companyDTO);
+
+                }
+            }
+        }catch (Exception e){
+            System.out.println("Exception: " + e.getMessage());
+        }
+        System.out.println(companyDTOList);
+        return companyDTOList;
     }
 }

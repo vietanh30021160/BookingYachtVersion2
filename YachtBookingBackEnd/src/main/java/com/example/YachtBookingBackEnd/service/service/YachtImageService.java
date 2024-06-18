@@ -5,6 +5,7 @@ import com.example.YachtBookingBackEnd.entity.Yacht;
 import com.example.YachtBookingBackEnd.entity.YachtImage;
 import com.example.YachtBookingBackEnd.repository.YachtImageRepository;
 import com.example.YachtBookingBackEnd.repository.YachtRepository;
+import com.example.YachtBookingBackEnd.service.implement.IFile;
 import com.example.YachtBookingBackEnd.service.implement.IYachtImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,8 @@ public class YachtImageService implements IYachtImage {
     YachtImageRepository yachtImageRepository;
     @Autowired
     YachtRepository yachtRepository;
+    @Autowired
+    IFile iFile;
 
     @Override
     public List<YachtImageDTO> getImageByYacht(String yachtId) {
@@ -40,6 +43,7 @@ public class YachtImageService implements IYachtImage {
         }catch (Exception e){
             System.out.println("error get image by Yacht " + e.getMessage());
         }
+        System.out.println(yachtImageDTOList);
         return yachtImageDTOList;
     }
 
@@ -49,6 +53,7 @@ public class YachtImageService implements IYachtImage {
             Optional<Yacht> yachtOptional = yachtRepository.findById(yachtId);
             if(yachtOptional.isPresent()){
                 YachtImage yachtImage = new YachtImage();
+                iFile.save(image);
                 yachtImage.setImageYacht(image.getOriginalFilename());
                 yachtImage.setYacht(yachtOptional.get());
                 yachtImageRepository.save(yachtImage);
@@ -66,6 +71,7 @@ public class YachtImageService implements IYachtImage {
             YachtImage yachtImage = yachtImageRepository.findById(imageId)
                     .orElseThrow(() -> new RuntimeException("Company not found! Try again"));
                     System.out.println("tim thay");
+                    iFile.save(image);
                     yachtImage.setImageYacht(image.getOriginalFilename());
                     yachtImageRepository.save(yachtImage);
                     return true;

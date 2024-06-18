@@ -1,23 +1,22 @@
 .StickyNav {
   font-family: Arial, sans-serif;
   border-radius: 5px;
-  width: 70%;
-  margin-left: 100px;
+  width: 100%;
   margin-top: 0px;
   padding-top: 0px;
+  z-index: 0;
 }
 
 .navbar-sticky {
   display: flex;
   // justify-content: space-around;
-  background-color: #F9FAFB;
+  background-color: rgb(255, 255, 255);
   position: -webkit-sticky;
   position: sticky;
   top: 100px;
   z-index: 20;
   margin-top: 0px;
   padding-top: 0px;
-  
 }
 
 .navbar-sticky a {
@@ -38,17 +37,17 @@
   color: white;
 }
 
-.content-section-sticky1{
+.content-section-sticky1 {
   padding: 60px 20px;
   height: 700px;
 }
 @media (max-width: 991px) {
   .content-section-sticky1 {
-      padding: 60px 20px;
-      height: 300px;
+    padding: 60px 20px;
+    height: 300px;
   }
 }
-.content-section-sticky2{
+.content-section-sticky2 {
   padding: 60px 20px;
   height: 500px;
 }

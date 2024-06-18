@@ -4,13 +4,12 @@ import com.example.YachtBookingBackEnd.dto.AccountDTO;
 import com.example.YachtBookingBackEnd.dto.CustomerDTO;
 import com.example.YachtBookingBackEnd.entity.Account;
 import com.example.YachtBookingBackEnd.entity.Customer;
-import com.example.YachtBookingBackEnd.entity.Wallet;
 import com.example.YachtBookingBackEnd.repository.AccountRepository;
 import com.example.YachtBookingBackEnd.repository.CustomerRepository;
-import com.example.YachtBookingBackEnd.repository.WalletRepository;
+
 import com.example.YachtBookingBackEnd.service.implement.IAccount;
+
 import com.example.YachtBookingBackEnd.service.implement.ICustomer;
-import com.example.YachtBookingBackEnd.service.implement.IWallet;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -30,8 +29,7 @@ import java.util.regex.Pattern;
 public class CustomerService implements ICustomer {
     CustomerRepository customerRepository;
     AccountRepository accountRepository;
-    WalletRepository walletRepository;
-    IWallet iWallet;
+
 
     IAccount iAccount;
 
@@ -64,19 +62,6 @@ public class CustomerService implements ICustomer {
             customer.setAddress(address);
             customer.setAccount(account);
             customerRepository.save(customer);
-
-            // Gọi API VNPay để tạo ví
-            String vnpayWalletId = iWallet.createVnpayWallet(customer);
-
-            Wallet wallet = new Wallet();
-            wallet.setName(fullName);
-            wallet.setBankNumber(vnpayWalletId); // Đây là ID ví VNPay, không phải số tài khoản ngân hàng
-            wallet.setBalance(0);
-            walletRepository.save(wallet);
-
-            customer.setWallet(wallet);
-            customerRepository.save(customer);
-
             return true;
         } catch (Exception e) {
             log.error("Error occurred while adding customer: {}", e.getMessage());
@@ -91,8 +76,7 @@ public class CustomerService implements ICustomer {
         try {
             List<Customer> customerList = customerRepository.findAll();
 
-            for (Customer customer : customerList
-            ) {
+            for (Customer customer : customerList) {
                 CustomerDTO customerDTO = new CustomerDTO();
                 AccountDTO accountDTO = new AccountDTO();
 

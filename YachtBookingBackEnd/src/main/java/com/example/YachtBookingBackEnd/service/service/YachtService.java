@@ -157,52 +157,19 @@ public class YachtService implements IYacht {
         try{
             Optional<Yacht> yacht = yachtRepository.findById(yachtId);
             if(yacht.isPresent()){
-                if(name != null){
                     yacht.get().setName(name);
-                }else{
-                    yacht.get().setName(yacht.get().getName());
-                }
-                if(image != null){
                     iFile.save(image);
                     yacht.get().setImage(image.getOriginalFilename());
-                }else{
-                    yacht.get().setImage(yacht.get().getImage());
-                }
-                if(hullBody != null){
                     yacht.get().setHullBody(hullBody);
-                }else{
-                    yacht.get().setHullBody(yacht.get().getHullBody());
-                }
-                if(description != null){
                     yacht.get().setDescription(description);
-                }else{
-                    yacht.get().setDescription(yacht.get().getDescription());
-                }
-                if(rule != null){
                     yacht.get().setRule(rule);
-                }else{
-                    yacht.get().setRule(yacht.get().getRule());
-                }
-                if(itinerary != null){
                     yacht.get().setItinerary(itinerary);
-                }else{
-                    yacht.get().setItinerary(yacht.get().getItinerary());
-                }
-                if(idYachtType != null){
                     YachtType yachtType = new YachtType();
                     yachtType.setIdYachtType(idYachtType);
                     yacht.get().setYachtType(yachtType);
-                }else{
-                    yacht.get().setYachtType(yacht.get().getYachtType());
-                }
-                if(idLocation != null){
                     Location location = new Location();
                     location.setIdLocation(idLocation);
                     yacht.get().setLocation(location);
-                }else{
-                    yacht.get().setLocation(yacht.get().getLocation());
-                }
-
                 yachtRepository.save(yacht.get());
             }
             return true;
@@ -301,7 +268,5 @@ public class YachtService implements IYacht {
         }
         return yachtDTO;
     }
-
-
 
 }

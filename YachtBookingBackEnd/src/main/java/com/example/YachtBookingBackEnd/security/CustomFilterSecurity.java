@@ -3,6 +3,7 @@ package com.example.YachtBookingBackEnd.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -50,12 +51,14 @@ public class CustomFilterSecurity {
         http.csrf().disable()
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/customer/**", "/api/customer/accounts").permitAll()
+                                .requestMatchers("/api/payment/**").permitAll()
+                                .requestMatchers("/api/customer/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/customer/**").permitAll()
                                 .requestMatchers("/login/**").permitAll() // Cho phép tất cả các yêu cầu đến /login/**
                                 .requestMatchers("/api/admins/**").hasRole("ADMIN") // Chỉ cho phép vai trò ADMIN truy cập /admin/**
                                 .requestMatchers("/api/companies/**").hasRole("COMPANY") // Chỉ cho phép vai trò COMPANY truy cập /company/**
                                 .requestMatchers("/api/customer/booking/**").hasRole("CUSTOMER")  // Chỉ cho phép vai trò CUSTOMER truy cập /customer/**
-                                .requestMatchers("/api/customer/profile/**", "/api/customer/changePassword/**").hasRole("CUSTOMER")
+                                .requestMatchers("/api/customer/profile/**").hasRole("CUSTOMER")
                                 .anyRequest().authenticated())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

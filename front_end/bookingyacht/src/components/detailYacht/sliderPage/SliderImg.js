@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Carousel, Image } from 'react-bootstrap';
-import i_content from '../../../assets/image_1.webp';
-import './CustomSlider.scss';
-const SimpleSlider = () => {
-  const images = [
-    { src: 'https://minio.fares.vn/mixivivu-dev/tour/du-thuyen-heritage-binh-chuan-cat-ba/images/nx36g4ggepatgx23.webp', alt: 'First image' },
-    { src: 'https://minio.fares.vn/mixivivu-dev/tour/du-thuyen-heritage-binh-chuan-cat-ba/images/1igusnttvx5r28wp.webp', alt: 'Second image' },
-    { src: 'https://minio.fares.vn/mixivivu-dev/tour/du-thuyen-heritage-binh-chuan-cat-ba/images/63ljiq0pp8y5szs8.webp', alt: 'Third image' },
-    { src: 'https://minio.fares.vn/mixivivu-dev/tour/du-thuyen-heritage-binh-chuan-cat-ba/images/o7kiablbgtnjaxwf.webp', alt: 'Fourth image' },
-    { src: 'https://minio.fares.vn/mixivivu-dev/tour/du-thuyen-heritage-binh-chuan-cat-ba/images/wwd7tjmchxpz8akk.webp', alt: 'Fifth image' },
-    { src: 'https://minio.fares.vn/mixivivu-dev/tour/du-thuyen-heritage-binh-chuan-cat-ba/images/wwd7tjmchxpz8akk.webp', alt: 'Sixth image' },
-    // Thêm nhiều ảnh khác nếu cần
-  ];
+import './SliderImg.scss'
+import { getImagesYacht } from '../../../services/ApiServices';
+import { LuShip } from "react-icons/lu";
+
+const SimpleSlider = ({ yacht }) => {
+
+  const [image, setImage] = useState([]);
+
+  const getImagesYachtById = async (yachtId) => {
+    const res = await getImagesYacht(yachtId);
+    setImage(res.data.data)
+    console.log(res.data.data)
+  }
+
+  useEffect(() => {
+    getImagesYachtById(yacht.idYacht)
+  }, [yacht.idYacht])
+
+  const getImageApi = `http://localhost:8080/api/customer/file/`
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -24,32 +31,30 @@ const SimpleSlider = () => {
   };
 
   const handleNextThumbnails = () => {
-    setCurrentIndex((prev) => (prev + 1) % images.length);
+    setCurrentIndex((prev) => (prev + 1) % image.length);
   };
 
   const handlePrevThumbnails = () => {
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+    setCurrentIndex((prev) => (prev - 1 + image.length) % image.length);
   };
 
-  const displayedThumbnails = images.slice(currentIndex, currentIndex + 5).concat(
-    images.slice(0, Math.max(0, currentIndex + 5 - images.length))
+  const displayedThumbnails = image.slice(currentIndex, currentIndex + 5).concat(
+    image.slice(0, Math.max(0, currentIndex + 5 - image.length))
   );
 
   return (
+
     <div className="custom-slider">
-      <div className='title_page'>
-        <h2>Du thuyền Heritage Bình Chuẩn Cát Bà</h2>
-        <h3>3,550,000 đ/khách</h3>
-        
+      <div className='title_page mb-4' style={{ justifyContent: 'space-between', alignItems: 'center' }}>
+        <h1 style={{ fontWeight: 'bold', color: '#0E4F4F' }}><span><LuShip color='gold' size={80}></LuShip></span> {yacht.name}</h1>
+        <h3 style={{ color: '#0E4F4F', fontWeight: 'normal' }}>3,550,000 đ/khách</h3>
       </div>
-      <div>
-        <img src={i_content}/>
-      </div>
+
       <div className='slider_page'>
         <Carousel activeIndex={currentIndex} onSelect={handleSelect} slide={false} indicators={false} interval={null}>
-          {images.map((image, index) => (
-            <Carousel.Item key={index}>
-              <Image src={image.src} alt={image.alt} fluid className='img1' />
+          {image.map((image, index) => (
+            <Carousel.Item key={image.idYachtImage}>
+              <Image src={`${getImageApi}${image.imageYacht}`} alt={index} fluid className='img1' />
             </Carousel.Item>
           ))}
         </Carousel>
@@ -61,7 +66,7 @@ const SimpleSlider = () => {
             className="thumbnail"
             key={index}
             onClick={() => {
-              const realIndex = (currentIndex + index) % images.length;
+              const realIndex = (currentIndex + index) % image.length;
               if (index === 0) {
                 handlePrevThumbnails();
               } else if (index === displayedThumbnails.length - 1) {
@@ -73,8 +78,8 @@ const SimpleSlider = () => {
           >
             <Image
               className='img2'
-              src={image.src}
-              alt={image.alt}
+              src={`${getImageApi}${image.imageYacht}`}
+              alt={`${getImageApi}${image.imageYacht}`}
               thumbnail
             />
           </div>

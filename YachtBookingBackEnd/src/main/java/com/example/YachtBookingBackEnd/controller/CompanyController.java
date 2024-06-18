@@ -21,24 +21,19 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompanyController {
-    @Autowired
     IYacht iYacht;
-    @Autowired
     IFile iFile;
-    @Autowired
     IYachtImage iYachtImage;
-    @Autowired
     IService iService;
-    @Autowired
     IYachtService iYachtService;
-    @Autowired
     ICompany iCompany;
-    @Autowired
-    private IRoomImage iRoomImage;
-    @Autowired
-    private IRoomType iRoomType;
-    @Autowired
+    IRoomImage iRoomImage;
+    IRoomType iRoomType;
+
     IRoom iRoom;
+
+    IPayment iPayment;
+
 
     @GetMapping("/allYacht")
     public ResponseEntity<?> viewYacht() {
@@ -69,6 +64,7 @@ public class CompanyController {
         dataResponse.setData(iYacht.insertYacht(name, image, launch, hullBody, description, rule, itinerary, idYachtType, idLocation, idCompany));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
 
     @PostMapping("/room/addRoom")
     public ResponseEntity<?> addRoom(@RequestParam String roomName,
@@ -123,7 +119,7 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @PostMapping("/yacht/addImage/{yachtId}")
-    public ResponseEntity<?> getImageByYacht(@PathVariable String yachtId, @RequestParam MultipartFile image) {
+    public ResponseEntity<?> insertImageForYacht(@PathVariable String yachtId, @RequestParam MultipartFile image) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYachtImage.addImage(image, yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
@@ -134,14 +130,31 @@ public class CompanyController {
         dataResponse.setData(iYachtImage.deleteImage(imageId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-    @PostMapping("/profile")
-    public ResponseEntity<?> addInfoCompany(@RequestParam String idAccount,
-                                            @RequestParam String name,
-                                            @RequestParam String address,
-                                            @RequestParam MultipartFile logo,
-                                            @RequestParam String email) {
-        DataResponse dataResponse = new DataResponse<>();
-        dataResponse.setData(iCompany.addCompany(idAccount, name, address, logo, email));
+
+    @PutMapping("/profile/{idCompany}")
+    public ResponseEntity<?> updateInfoCompany(@PathVariable String idCompany,
+                                           @RequestParam String name,
+                                           @RequestParam String address,
+                                           @RequestParam MultipartFile logo,
+                                           @RequestParam String email){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iCompany.updateInfoCompany(idCompany, name, address, logo, email));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/confirm")
+    public ResponseEntity<?> confirmVnPayPayment(@RequestParam String idBookingOrder) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iPayment.confirmBooking(idBookingOrder));
+
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/cancel")
+    public ResponseEntity<?> cancelVnPayPayment(@RequestParam String idBookingOrder) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iPayment.cancelBooking(idBookingOrder));
+
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @PutMapping("/yacht/updateImage/{imageId}")
@@ -157,7 +170,7 @@ public class CompanyController {
                                            @RequestParam MultipartFile logo,
                                            @RequestParam String email){
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iCompany.updateCompany(companyId, name, address, logo, email));
+        dataResponse.setData(iCompany.updateInfoCompany(companyId, name, address, logo, email));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @GetMapping("/getAllService")

@@ -1,4 +1,5 @@
-import { Nav, Navbar } from 'react-bootstrap';
+import { Nav, NavLink, Navbar } from 'react-bootstrap';
+import { AiOutlineLogout } from "react-icons/ai";
 import { FaAddressBook, FaHome, FaUsers } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import './Sidebar.scss';
@@ -19,19 +20,22 @@ const AdminNavbar = () => {
           </div>
         </Navbar.Brand>
         <Nav className="flex-column">
-          <Nav.Link href="#dashboard" as={Link} to="/admin/manager">
+          <Nav.Link href="#dashboard" as={Link} to="/dashboard">
             <FaHome /> <span>Dashboard</span>
           </Nav.Link>
           <div className="nav-section">
             <Nav.Link>
               <span>Data</span>
             </Nav.Link>
-            <Nav.Link href="#manage-team" as={Link} to="/admin/customer">
+            <Nav.Link href="#manage-team" as={Link} to="/dashboard/customer">
               <FaUsers /> <span>Customer Manager</span>
             </Nav.Link>
-            <Nav.Link href="#contacts-info" as={Link} to="/admin/company">
+            <Nav.Link href="#contacts-info" as={Link} to="/dashboard/company">
               <FaAddressBook /> <span>Company Manager</span>
             </Nav.Link>
+            <NavLink>
+              <AiOutlineLogout/> <span>Logout</span>
+            </NavLink>
           </div>
         </Nav>
       </Navbar>
