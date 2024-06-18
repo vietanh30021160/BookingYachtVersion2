@@ -78,13 +78,7 @@ const FindYacht = () => {
                             <div className="extention-body-content">
                                 Tiện ích
                             </div>
-<<<<<<< HEAD
-                            <Form.Check id="" label='Phòng gia đình' />
-                            <Form.Check id="" label='Có bể sục' />
-                            <Form.Check id="" label='Bao gồm tất cả các bữa ăn' />
-=======
                             {renderService()}
->>>>>>> 5fb831ced9d9b8de9bf186a71d31458c914635f5
                         </div>
                     </div>
 

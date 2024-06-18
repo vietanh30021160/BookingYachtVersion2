@@ -54,7 +54,7 @@ const Rating = () => {
                 </Col>
             </Row>
             <ReviewForm addReview={addReview} />
-            <ButtonGroup className="my-3">
+            {/* <ButtonGroup className="my-3">
                 <Button
                     variant={selectedRating === null ? 'primary' : 'outline-primary'}
                     onClick={() => handleSelectRating(null)}
@@ -70,7 +70,7 @@ const Rating = () => {
                         {rating} Sao ({ratingCounts[rating]})
                     </Button>
                 ))}
-            </ButtonGroup>
+            </ButtonGroup> */}
             <ReviewList reviews={selectedRating !== null ? reviews.filter(review => review.rating === selectedRating) : reviews} />
         </Container>
     );
