@@ -51,6 +51,7 @@ public class CustomFilterSecurity {
         http.csrf().disable()
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
+                                .requestMatchers("/api/payment/**").permitAll()
                                 .requestMatchers("/api/customer/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/customer/**").permitAll()
                                 .requestMatchers("/login/**").permitAll() // Cho phép tất cả các yêu cầu đến /login/**
