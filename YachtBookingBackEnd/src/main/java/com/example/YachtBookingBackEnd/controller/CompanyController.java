@@ -78,7 +78,7 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @GetMapping("/yacht/findByCompany/{companyId}")
-    public ResponseEntity<?> findByCompany(@PathVariable String companyId) {
+    public ResponseEntity<?> findYachtByCompany(@PathVariable String companyId) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYacht.findYachtByCompanyId(companyId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);

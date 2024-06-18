@@ -19,4 +19,5 @@ public interface ICompany {
     boolean updateInfoCompany(String idCompany, String name,String address, MultipartFile logo, String email);
 
     List<CompanyDTO> getAllCompany();
+
 }

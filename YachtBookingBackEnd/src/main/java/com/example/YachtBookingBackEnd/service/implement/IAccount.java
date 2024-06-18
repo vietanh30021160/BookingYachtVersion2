@@ -20,4 +20,5 @@ public interface IAccount {
 
     boolean updateAccount(String customerId, String   password);
 
+    String getIdAccountByUserName(String username);
 }
