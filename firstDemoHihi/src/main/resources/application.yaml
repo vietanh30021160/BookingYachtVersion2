@@ -1,7 +1,6 @@
 server:
   port: 8080
-#  servlet:
-#    context-path: /identity
+
 
 spring:
   datasource:
@@ -22,3 +21,6 @@ logging:
 
 jwt:
   privateKey: WoOXNLcTzDlQqjp2JzMNJ7+fi7UQ3O8FAselbtKQSgM=
+
+fileUpLoad:
+  rootPath: D:\UML SWP\uploads

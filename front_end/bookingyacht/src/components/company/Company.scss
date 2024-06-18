@@ -10,10 +10,6 @@
     .company-content {
         width: 100%;
 
-        .company-header {
-            height: 40px;
-            border: 1px solid green;
-        }
     }
 }
 
@@ -55,4 +51,11 @@
             }
         }
     }
+}
+
+
+
+.page {
+    display: flex;
+    justify-content: center;
 }

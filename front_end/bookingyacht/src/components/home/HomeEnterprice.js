@@ -11,7 +11,7 @@ const Enterprice = (props) => {
         <>
             <div className='enterprice-header row'>
                 <div className='enterprice-title col-md mx-4'>
-                    <h4>Danh Gia Tu Đối tác Cùng các
+                    <h4>Đối tác Cùng các
                         <br /> Hãng Du thuyền Lớn</h4>
                     <div>
                         <img alt='logo' src={i_content} />

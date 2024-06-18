@@ -11,7 +11,7 @@ const ShowIsland = () => {
         <>
             <div className='island-header text-center my-5'>
                 <div className='yacht-title'>
-                    <h2>Các điểm đến của Mixivivu</h2>
+                    <h2 style={{ fontWeight: 'bold' }}>Các điểm đến của Yacht Cruise</h2>
                 </div>
                 <p>
                     Khám phá vẻ đẹp tuyệt vời của Du thuyền Hạ Long: Hành trình đến thiên đường thiên nhiên
@@ -20,32 +20,33 @@ const ShowIsland = () => {
                     <img src={i_content} />
                 </div>
             </div>
-            <div className='island-body'>
-                <NavLink to='/duthuyen' className='nav-link'>
-                    <Card style={{ width: '18rem' }}>
+            <div className='island-body row'>
+                <NavLink to='/duthuyen' className='nav-link col-3'>
+                    <Card style={{ height: '330', width: '320' }}>
                         <Card.Img variant="top" src={HaLong} />
                         <Card.Body>
-                            <Card.Title>Vinh Ha Long</Card.Title>
-                            <Button variant="primary">Go somewhere</Button>
+                            <Card.Title>Vịnh Hạ Long</Card.Title>
+                            <button className='btn btn-outline-dark'>View</button>
                         </Card.Body>
                     </Card>
                 </NavLink>
 
-                <NavLink to='/duthuyen' className='nav-link'>
-                    <Card style={{ width: '18rem' }}>
+                <NavLink to='/duthuyen' className='nav-link col-3'>
+                    <Card style={{ height: '330', width: '320' }}>
                         <Card.Img variant="top" src={CatBa} />
                         <Card.Body>
-                            <Card.Title>Dao Cat Ba</Card.Title>
-                            <Button variant="primary">Go somewhere</Button>
+                            <Card.Title>Đảo Cát Bà</Card.Title>
+                            <button className='btn btn-outline-dark'>View</button>
                         </Card.Body>
                     </Card>
                 </NavLink>
-                <NavLink to='/duthuyen' className='nav-link'>
-                    <Card style={{ width: '18rem' }}>
-                        <Card.Img variant="top" src={LanHa} />
+
+                <NavLink to='/duthuyen' className='nav-link col-3'>
+                    <Card >
+                        <Card.Img variant="top" src={LanHa} style={{ height: 220 }} />
                         <Card.Body>
-                            <Card.Title>Vinh Lan Ha</Card.Title>
-                            <Button variant="primary">Go somewhere</Button>
+                            <Card.Title>Vịnh Lan Hạ</Card.Title>
+                            <button className='btn btn-outline-dark'>View</button>
                         </Card.Body>
                     </Card>
                 </NavLink>

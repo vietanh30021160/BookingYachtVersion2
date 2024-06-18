@@ -3,9 +3,9 @@ import Carousel from 'react-bootstrap/Carousel';
 const Feedback = (props) => {
     return (
         <>
-            <div className='feedback-header row'>
+            <div className='feedback-header row container p-5'>
                 <div className='yacht-title col-md mx-4'>
-                    <h4>Danh Gia Tu Nhung <br /> Nguoi Trai Nghiem</h4>
+                    <h4 style={{ fontWeight: 'bold' }}>Đánh Giá Từ <br />Người Trải Nghiệm</h4>
                     <div>
                         <img src={i_content} />
                     </div>

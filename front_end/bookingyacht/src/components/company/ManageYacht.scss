@@ -34,3 +34,17 @@ button {
         background: #a39d9d;
     }
 }
+
+.img-preview {
+    border: 1px dashed #ccc;
+    height: 150px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ccc;
+
+    img {
+        width: 200px;
+    }
+}

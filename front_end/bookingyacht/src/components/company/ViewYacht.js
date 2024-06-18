@@ -1,106 +1,185 @@
-import React from 'react';
-import { Button } from 'react-bootstrap'
-import { FcPlus } from "react-icons/fc";
-import { useState } from 'react';
-import Modal from 'react-bootstrap/Modal';
-import Col from 'react-bootstrap/Col';
+import React, { useEffect, useState } from 'react';
+import { Button, FormControl, FormGroup } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { RiShipLine } from "react-icons/ri";
+import { FaLocationDot } from "react-icons/fa6";
+import './ViewYacht.scss'
+import ReactPaginate from 'react-paginate';
+import './Company.scss'
+import { FaCirclePlus } from "react-icons/fa6";
+import ModalCreateYacht from './Modal/ModalCreateYacht';
+import { deleteYacht, getAllYachtCompany } from '../../services/ApiServices';
+import _ from 'lodash';
 import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-
-function Example() {
-    const [show, setShow] = useState(false);
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
-    return (
-        <>
-            <Button variant="primary" onClick={handleShow}>
-                Add new yacht
-            </Button>
-
-            <Modal size='xl' show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Add New Yacht</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Row className="mb-3">
-                            <Form.Group as={Col} >
-                                <Form.Label>Name</Form.Label>
-                                <Form.Control type="text" placeholder="Name Yacht" />
-                            </Form.Group>
-
-                            <Form.Group as={Col} >
-                                <Form.Label>Price</Form.Label>
-                                <Form.Control type="text" placeholder="Price" />
-                            </Form.Group>
-                        </Row>
-
-
-                        <Button variant="primary" type="submit">
-                            Submit
-                        </Button>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </>
-    );
-}
-
-
-
 const ViewYacht = () => {
+    const navigate = useNavigate();
+    const [isShowModal, setIsShowModal] = useState(false);
+
+    const [yacht, setYacht] = useState([]);
+    const [idCompany, setIdCompany] = useState('');
+
+    const [searchYacht, setSearchYacht] = useState('');
+    const [filteredYachts, setFilteredYachts] = useState([]);
+    //pagging
+    // const [isChange, setIsChange] = useState(true);
+    // const [paggingProuct, setPaggingProduct] = useState([]);
+    // const [pagging, setPagging] = useState([]);
+
+    useEffect(() => {
+        listYacht()
+    }, [])
+
+
+    const listYacht = async () => {
+        let res = await getAllYachtCompany();
+        console.log(res)
+        if (res && res.data.success === true) {
+            setYacht(res.data.data);
+            setFilteredYachts(res.data.data)
+        }
+    }
+
+    const handleDeleteYacht = async (id, name) => {
+        if (window.confirm(`Delete Yacht With Name: ${name}`)) {
+            let res = await deleteYacht(id);
+            console.log(res);
+        }
+    }
+    const handleCreateYacht = () => {
+        setIsShowModal(true);
+        // console.log(yacht)
+        // let company = _.chain(yacht)
+        //     // Group the elements of Array based on `color` property
+        //     .groupBy("company")
+        //     // `key` is group's name (color), `value` is the array of objects
+        //     .map((value, key) => ({ company: key, yachtt: value }))
+        //     .value()
+        console.log("check yacht modal", yacht[0].company)
+        setIdCompany(yacht[0].company.idCompany)
+    }
+
+    const handleSearchYacht = () => {
+        if (searchYacht) {
+            const newYacht = yacht.filter((yacht) => yacht.name.toLowerCase().includes(searchYacht.toLocaleLowerCase().trim()))
+            if (newYacht && newYacht.length > 0) {
+                setYacht(newYacht);
+                setSearchYacht('');
+            }
+        } else {
+            setYacht(filteredYachts)
+        }
+
+    }
     return (
-        <div>
-            <h2>List Yacht</h2>
-            <Button className='my-3'><FcPlus className='mx-3' /> Add New Yacht</Button>
+        <div className='view-yacht-container'>
+            <div className='row my-4'>
+                <h2 className='col-2'>List Yacht</h2>
 
-            <Example />
-            <div
-                class="table-responsive container"
-            >
-                <table
-                    class="table table-striped table-hover table-bordered table-primary align-middle"
-                >
 
-                    <thead class="table-light">
+                <Button className='col-2 btn btn-success' onClick={() => handleCreateYacht()}><FaCirclePlus style={{ marginRight: 8, marginBottom: 5 }} />Add New Yacht</Button>
 
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Price</th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-group-divider">
-                        <tr
-                            class="table-primary"
-                        >
-                            <td scope="row">1</td>
-                            <td>Cruise Ha Long</td>
-                            <td>21.000.0000</td>
-                        </tr>
-                        <tr
-                            class="table-primary"
-                        >
-                            <td scope="row">Item</td>
-                            <td>Item</td>
-                            <td>Item</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
+                <FormGroup className='col-2'>
 
-                    </tfoot>
-                </table>
+                    <Form.Select >
+                        {yacht.length > 0 && yacht.map((yacht) =>
+
+                            <option>{yacht}</option>
+                        )}
+                    </Form.Select>
+
+                </FormGroup>
+
+                <FormGroup className='col-2'>
+                    <Form.Select >
+                        <option>Default select</option>
+                    </Form.Select>
+                </FormGroup>
+
+
+                <FormGroup className='col-4 d-flex'>
+                    <FormControl
+                        placeholder='Search'
+                        type='text'
+                        value={searchYacht}
+                        onChange={(event) => setSearchYacht(event.target.value)}
+                    />
+                    <Button onClick={handleSearchYacht} className='btn btn-primary mx-3'>Search</Button>
+                </FormGroup>
+
+
             </div>
+
+            <div className='row container'>
+                <div className="col-xl-12">
+                    {
+                        yacht && yacht.length > 0 && yacht.map((yacht, index) => {
+
+                            return (
+                                <div key={yacht.idYacht} className="card mb-4 order-list">
+                                    <div className="gold-members p-4">
+
+                                        <div className="media">
+
+                                            <img className="mr-4" src={`http://localhost:8080/api/customer/file/${yacht.image}`} alt="Generic placeholder image" />
+
+                                            <div className="media-body">
+                                                <div className='card-content'>
+                                                    <div className='location'><FaLocationDot />{yacht.location.name}</div>
+                                                    <div className='name'>{yacht.name}</div>
+                                                    <div> <RiShipLine /> Hạ Thủy {yacht.launch} - Tàu Vỏ {yacht.hullBody}  </div>
+
+                                                </div>
+                                                <div className='action d-flex'>
+                                                    <p className="mb-0 text-dark text-dark pt-2"><span className="text-dark font-weight-bold"></span>
+                                                    </p>
+                                                    <div className="float-right">
+                                                        <Button className="btn btn-sm btn-success" onClick={() => navigate(`/manage-yacht/${yacht.idYacht}`)}><i className="feather-check-circle" />Manage Yacht</Button>
+                                                        <Button className="btn btn-sm btn-warning" onClick={() => navigate('/manage-room')}><i className="feather-trash" /> Manage Room </Button>
+                                                        <Button className="btn btn-sm btn-danger" onClick={() => handleDeleteYacht(yacht.idYacht, yacht.name)}><i className="feather-trash" /> Delete Yacht </Button>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        })
+
+                    }
+
+                </div>
+
+            </div>
+
+            <div className='page'>
+                <ReactPaginate
+                    nextLabel="Next >"
+                    // onPageChange=
+                    pageRangeDisplayed={3}
+                    marginPagesDisplayed={2}
+                    pageCount={3}
+                    previousLabel="< Prev"
+                    pageClassName="page-item"
+                    pageLinkClassName="page-link"
+                    previousClassName="page-item"
+                    previousLinkClassName="page-link"
+                    nextClassName="page-item"
+                    nextLinkClassName="page-link"
+                    breakLabel="..."
+                    breakClassName="page-item"
+                    breakLinkClassName="page-link"
+                    containerClassName="pagination"
+                    activeClassName="active"
+                    renderOnZeroPageCount={null}
+                />
+            </div>
+            <ModalCreateYacht
+                show={isShowModal}
+                setShow={setIsShowModal}
+                idCompany={idCompany}
+                listYacht={listYacht}
+            />
 
         </div>
     );

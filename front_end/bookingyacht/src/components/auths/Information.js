@@ -4,12 +4,14 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import './Auth.scss'
+import { Link } from 'react-router-dom';
+import { FaHome } from "react-icons/fa";
 const Information = () => {
 
     return (
         <div className='container my-5 py-5 px-5 form-infor' style={{ backgroundColor: "#C6F5F6", }}>
 
-            <h1>Information</h1>
+            <h1>Thông tin khách hàng</h1>
 
             <Form>
                 <Row className="mb-3">
@@ -46,10 +48,13 @@ const Information = () => {
                 </Row>
 
 
+                <div>
+                    <Button variant="primary" type="submit">
+                        Submit
+                    </Button>
+                    <Link to='/signup' className='mx-5 my-0 btn btn-light' style={{ textDecoration: "none" }}><FaHome style={{ marginBottom: 4 }} /> Home</Link>
+                </div>
 
-                <Button variant="primary" type="submit">
-                    Submit
-                </Button>
             </Form>
         </div>
     );

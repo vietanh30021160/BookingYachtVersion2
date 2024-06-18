@@ -2,15 +2,12 @@ import 'react-pro-sidebar/dist/css/styles.css';
 import { FaShip } from "react-icons/fa6";
 // import { AiFillSchedule } from "react-icons/ai";
 import { FaMoneyCheckAlt } from "react-icons/fa";
-import { MdPeopleAlt } from "react-icons/md";
 import { TbLogout2 } from "react-icons/tb";
 import { TbBrandBooking } from "react-icons/tb";
-import { FaStar } from "react-icons/fa";
 import {
     ProSidebar,
     Menu,
     MenuItem,
-    SubMenu,
     SidebarHeader,
     SidebarFooter,
     SidebarContent,
@@ -18,10 +15,17 @@ import {
 import React from 'react';
 import sidebarBg from '../../assets/sidebar.jpg';
 import { Link, NavLink } from 'react-router-dom';
+import { ImProfile } from "react-icons/im";
+import { useDispatch } from 'react-redux';
+import { doLogout } from '../../redux/action/UserAction';
 // import logo from '../../assets/logo_swp.png'
 const Sidebar = (props) => {
     const { image, collapsed, toggled, handleToggleSidebar } = props;
+    const dispatch = useDispatch();
 
+    const handleLogout = () => {
+        dispatch(doLogout());
+    }
     return (
         <div>
             <ProSidebar
@@ -69,16 +73,8 @@ const Sidebar = (props) => {
                         </MenuItem>
                     </Menu>
 
-                    <Menu iconShape="circle">
 
-                        <MenuItem
-                            icon={<MdPeopleAlt />}
-                        > View Owner
-                            <Link to='/manage-company/view-owner' />
-                        </MenuItem>
-                    </Menu>
-
-                    <Menu iconShape="circle">
+                    {/* <Menu iconShape="circle">
                         <MenuItem
                             icon={<FaStar />}
                         >
@@ -86,7 +82,7 @@ const Sidebar = (props) => {
                             <Link to='/manage-company/view-feedback' />
                         </MenuItem>
 
-                    </Menu>
+                    </Menu> */}
 
                     <Menu iconShape="circle">
                         <MenuItem
@@ -94,6 +90,15 @@ const Sidebar = (props) => {
                         >
                             Bill
                             <Link to='/manage-company/bill' />
+                        </MenuItem>
+
+                    </Menu>
+                    <Menu iconShape="circle">
+                        <MenuItem
+                            icon={<ImProfile />}
+                        >
+                            Profile
+                            <Link to='/manage-company/profile' />
                         </MenuItem>
 
                     </Menu>
@@ -108,7 +113,7 @@ const Sidebar = (props) => {
                             padding: '20px 24px',
                         }}
                     >
-                        <NavLink className='nav-link' to='/signin'><TbLogout2 />Back</NavLink>
+                        <NavLink onClick={handleLogout} className='nav-link' to='/signin'><TbLogout2 />Back</NavLink>
                         {/* <FaGithub /> */}
                         <span style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
 
@@ -116,6 +121,7 @@ const Sidebar = (props) => {
                     </div>
                 </SidebarFooter>
             </ProSidebar>
+
         </div>
     );
 };

@@ -1,47 +1,22 @@
-import videoHomePage from '../../assets/Mixivivuduthuyen.mp4'
-import ShowYacht from './ShowYacht';
-import Feedback from './Feedback';
+import videoHomePage from '../../assets/duthuyenhalong.mp4';
 import Enterprice from './Enterprice';
+import Feedback from './Feedback';
+import FormSearch from './FormSearch';
 import './Home.scss';
 import ShowIsland from './ShowIsland';
+import ShowYacht from './ShowYacht';
 
 const HomePage = (props) => {
 
     return (
         <div>
             <div className='homepage-container'>
-                <div>
+                <div >
                     <video autoPlay muted loop>
                         <source src={videoHomePage} />
                     </video>
                 </div>
-                <div className='homepage-content border container '>
-                    <form className='mb-3 serach-yacht'>
-                        <div className='text-center'>
-                            <h2>Ban Lua Chon Du Thuyen Ha Long Nao ?</h2>
-                            <p>Co Rat Nhieu Tour Du Lich Dang cho Ban</p>
-                        </div>
-                        <div className='form-search'>
-                            <div className='d-flex'>
-                                {/* <CiSearch /> */}
-                                <input type='text' placeholder='Nhap Ten Du Thuyen' className='form-control col-3' />
-                            </div>
-                            <div>
-                                {/* <FaMapMarkerAlt /> */}
-                                <select className='form-select'>
-                                    <option>1</option>
-                                    <option>2</option>
-                                </select>
-                            </div>
-                            <div>
-                                <select className='form-select'>
-                                    <option>1</option>
-                                </select>
-                            </div>
-                            <button size='lg'>Search</button>
-                        </div>
-                    </form>
-                </div>
+                <FormSearch />
             </div>
 
             <div className='app-yacht container'>
@@ -57,12 +32,8 @@ const HomePage = (props) => {
                 <ShowIsland />
             </div>
 
-            <div className='app-enterprice'>
+            <div className='app-enterprice my-5'>
                 <Enterprice />
-            </div>
-
-            <div className='app-blog'>
-                Blog
             </div>
 
         </div>

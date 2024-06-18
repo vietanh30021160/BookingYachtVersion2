@@ -1,47 +1,80 @@
-import React from 'react';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import React, { useState } from 'react';
 import { Route, Routes } from "react-router-dom";
-import HomePage from './components/home/HomePage';
-import App from './App';
-// import FindYacht from './components/yacht/FindYacht';
-// import RuleYacht from './components/yacht/RuleYacht';
-// import QuestionYacht from './components/yacht/QuestionYacht';
-import Signin from './components/auths/Signin';
-import Signup from './components/auths/Signup';
-import Information from './components/auths/Information';
-import ManageCompany from './components/company/ManageCompany';
-import ViewYacht from './components/company/ViewYacht';
-import ViewFeedback from './components/company/ViewFeedback';
-import ViewBooking from './components/company/ViewBooking';
-import Bill from './components/company/Bill';
-import ViewOwner from './components/company/ViewOwner';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-
+import App from './App';
+import AdminLayout from './components/admin/headerAdmin/AdminLayout';
+import LoginAdmin from './components/admin/loginAdmin/LoginAdmin';
+import CompanyManager from './components/admin/managerAdmin/CompanyManager';
+import CustomerManager from './components/admin/managerAdmin/CustomerManager';
+import AdminHome from './components/admin/pageAdmin/AdminHome';
+import ForgotPassword from './components/auths/ForgotPassword';
+import Information from './components/auths/Information';
+import InformationCompany from './components/auths/InformationCompany';
+import Signin from './components/auths/Signin';
+import Signup from './components/auths/Signup';
+import Blog from './components/blog/Blog';
+import Bill from './components/company/Bill';
+import ManageCompany from './components/company/ManageCompany';
+import ManageRoom from './components/company/ManageRoom';
+import ManageYacht from './components/company/ManageYacht';
+import ProfileCompany from './components/company/Profile';
+import ViewBooking from './components/company/ViewBooking';
+import ViewYacht from './components/company/ViewYacht';
+import MainPage from './components/detailYacht/mainDetailPage/MainPage';
+import Enterprise from './components/enterprise/Enterprise';
+import HomePage from './components/home/HomePage';
+import Profile from './components/home/Profile';
+import YachtQuestion from './components/yacht/YachtQuestion';
+import YachtRule from './components/yacht/YachtRule';
+import FindYacht from './components/yacht/FindYacht';
 const Layout = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
     return (
         <>
             <Routes>
                 <Route path="/" element={<App />}>
                     <Route index element={<HomePage />} />
-                    {/* <Route path='/duthuyen' element={<FindYacht />} />
-                    <Route path='/quy-dinh-chung' element={<RuleYacht />} />
-                    <Route path='/cau-hoi-thuong-gap' element={<QuestionYacht />} /> */}
+                    <Route path='/blog' element={<Blog />} />
+                    <Route path='/duthuyen' element={<FindYacht />} />
+                    <Route path='/doanhnhiep' element={<Enterprise />} />
+                    <Route path='/mainpage' element={<MainPage />} />
+                    <Route path='/duthuyen' element={<FindYacht />} />
+                    <Route path='/yacht-rule' element={<YachtRule />} />
+                    <Route path='/yacht-question' element={<YachtQuestion />} />
                 </Route>
 
                 <Route path='/signin' element={<Signin />} />
                 <Route path='/signup' element={<Signup />} />
+                <Route path='/profile' element={<Profile />} />
+                <Route path='/forgotpassowd' element={<ForgotPassword />}></Route>
                 <Route path='/information' element={<Information />} />
+                <Route path='/information-company' element={<InformationCompany />} />
+
 
 
                 <Route path='/manage-company' element={<ManageCompany />} >
                     <Route index element={<ViewBooking />} />
                     <Route path='view-yacht' element={<ViewYacht />} />
-                    <Route path='view-feedback' element={<ViewFeedback />} />
-                    {/* <Route path='view-booking' element={<ViewBooking />} /> */}
                     <Route path='bill' element={<Bill />} />
-                    <Route path='view-owner' element={<ViewOwner />} />
+                    <Route path='profile' element={<ProfileCompany />} />
                 </Route>
+
+                <Route path='manage-yacht/:idYacht' element={<ManageYacht />} />
+                <Route path='manage-room' element={<ManageRoom />} />
+
+                <Route path='/admin' element={<LoginAdmin setIsLoggedIn={setIsLoggedIn} />} />
+                {
+                    isLoggedIn && (
+                        <Route path='/dashboard' element={<AdminLayout />}>
+                            <Route path='manager' element={<AdminHome />} />
+                            <Route path="customer" element={<CustomerManager />} />
+                            <Route path="company" element={<CompanyManager />} />
+                        </Route>
+                    )
+                }
 
             </Routes>
 

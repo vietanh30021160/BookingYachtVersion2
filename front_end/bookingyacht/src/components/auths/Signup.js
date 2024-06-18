@@ -3,6 +3,9 @@ import logo from '../../assets/logo_swp.png'
 import { register, registerCustomer } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
+
+import { IoChevronBackSharp } from "react-icons/io5";
+
 const Signup = () => {
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
@@ -37,7 +40,7 @@ const Signup = () => {
                                 <div className="card-body p-md-5">
                                     <div className="row justify-content-center">
                                         <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                                            <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
+                                            <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Đăng ký</p>
                                             <form className="mx-1 mx-md-4">
 
                                                 <div className="d-flex flex-row align-items-center mb-4">
@@ -78,13 +81,17 @@ const Signup = () => {
                                                         <input type="text" hidden value={() => setRole('customer')} className="form-control" />
                                                     </div>
                                                 </div> */}
-                                                Have an account
-                                                <Link to='/signin'>Signin</Link>
-                                                <div className="d-flex justify-content-center my-2 mx-4 mb-3 mb-lg-4">
-                                                    <button type="button"
-                                                        className="btn btn-primary btn-lg"
-                                                        onClick={() => handleRegister()}
-                                                    >Register</button>
+                                                Đã có tài khoản
+                                                <Link to='/signin'>Đăng nhập</Link>
+                                                <div>
+                                                    <div className="d-flex justify-content-center my-2 mx-4 mb-3 mb-lg-4" >
+                                                        <button type="button"
+                                                            className="btn btn-primary btn-lg"
+                                                            onClick={() => handleRegister()}
+                                                        >Đăng ký</button>
+
+                                                    </div>
+                                                    <Link to='/signin' style={{ textDecoration: "none" }}><IoChevronBackSharp className='mb-1' />Back</Link>
                                                 </div>
                                             </form>
                                         </div>

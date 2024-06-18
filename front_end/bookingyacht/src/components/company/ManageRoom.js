@@ -25,7 +25,7 @@ const ManageRoom = () => {
         <div className='container'>
             <div >
                 <NavLink to='/manage-company/view-yacht' className='p-3 d-flex nav-link' style={{ gap: 20 }}>
-                    <AiFillHome className='mt-1' /> <p>Back To Manage Company</p>
+                    <AiFillHome className='' /> <p className='mb-0'>Back To Manage Company</p>
                 </NavLink>
             </div>
             <hr />

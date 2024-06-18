@@ -1,6 +1,8 @@
 import React from 'react';
 import './Company.scss';
 import { Button, FormControl, FormGroup } from 'react-bootstrap';
+import ReactPaginate from 'react-paginate';
+import './Company.scss'
 
 const ViewBooking = () => {
     return (
@@ -60,6 +62,31 @@ const ViewBooking = () => {
 
                 </div>
             </div >
+
+            <div className='page'>
+                <ReactPaginate
+                    nextLabel="Next >"
+                    // onPageChange=
+                    pageRangeDisplayed={3}
+                    marginPagesDisplayed={2}
+                    pageCount={3}
+                    previousLabel="< Prev"
+                    pageClassName="page-item"
+                    pageLinkClassName="page-link"
+                    previousClassName="page-item"
+                    previousLinkClassName="page-link"
+                    nextClassName="page-item"
+                    nextLinkClassName="page-link"
+                    breakLabel="..."
+                    breakClassName="page-item"
+                    breakLinkClassName="page-link"
+                    containerClassName="pagination"
+                    activeClassName="active"
+                    renderOnZeroPageCount={null}
+                />
+            </div>
+
+
         </>
     );
 };

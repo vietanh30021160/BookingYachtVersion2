@@ -1,8 +1,7 @@
 import logo from '../../assets/logo_swp.png';
-import { FcGoogle } from "react-icons/fc";
-import './Auth.scss'
+import './Auth.scss';
 import { useState } from 'react';
-import { login, loginCustomer } from '../../services/ApiServices';
+import { login } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
 import { useNavigate, Link } from 'react-router-dom';
 import { NavLink } from 'react-router-dom'
@@ -12,24 +11,39 @@ import { doLogin } from '../../redux/action/UserAction';
 import { useDispatch } from 'react-redux';
 // import { Rlogin } from '../../redux/action/CustomerAction';
 import { jwtDecode } from "jwt-decode";
+import { BiSolidHome } from "react-icons/bi";
+
 const Signin = () => {
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
+
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
 
 
+    // const isAuthenticated = useSelector(state => state.account.isAuthenticated);
+    // const account = useSelector(state => state.account.account)
+    // const validateEmail = (e) => {
+    //     return String(e)
+    //         .toLowerCase()
+    //         .match(
+    //             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    //         );
+    // };
+    // const dispatch = useDispatch();
+
     const navigate = useNavigate();
+
     const handleLogin = async () => {
-        let res = await loginCustomer(userName, password);
+        let res = await login(userName.trim(), password.trim());
         console.log(res);
         if (userName === '' || password === '') {
-            toast.error('Invalid');
+            toast.error('Input Not Empty');
             setLoading(false);
         } else if (res && res.data.status === 200 && res.data.success === true) {
-            dispatch(doLogin(res));
             const role = jwtDecode(res.data.data);
+            dispatch(doLogin(res.data.data, role.role));
             if (role && role.role === 'ROLE_COMPANY') {
                 toast.success("Login Successful");
                 setLoading(false);
@@ -56,7 +70,7 @@ const Signin = () => {
                             <NavLink to='/' className='navbar-brand' style={{ width: '150px' }}><img src={logo} className="img-fluid" alt="logo" /></NavLink>
                         </div>
                         <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1 text-center">
-                            <h1 className='text-center'>Sign in</h1>
+                            <h1 className='text-center'>Đăng Nhập</h1>
 
                             <div className="form-outline mb-4">
                                 <input type="text"
@@ -79,27 +93,24 @@ const Signin = () => {
                             </div>
                             <div className='account d-flex'>
                                 <div>
-                                    Don't have an account <Link to='/signup'>Signup</Link>
+                                    Chưa có tài khoản <Link to='/signup'>Đăng kí</Link>
                                 </div>
-                                <a href="#!">Forgot password?</a>
+                                <NavLink to='/forgotpassowd'>Quên mật khẩu?</NavLink>
                             </div>
-                            <button
-                                style={{ width: '100%' }}
-                                onClick={() => handleLogin()}
-                                className='btn btn-primary'
-                                disabled={loading}
-                            >
-                                {loading === true && <ImSpinner10 className='loaderIcon' />}
-                                <span>Sign in</span>
+                            <div>
 
-                            </button>
-                            <div className="divider  d-flex align-items-center my-4">
-                                <p style={{ width: '100%' }} className=" text-center fw-bold mx-3 mb-0 text-muted">OR</p>
+                                <button
+                                    style={{ width: '100%' }}
+                                    onClick={() => handleLogin()}
+                                    className='btn btn-primary'
+                                    disabled={loading}
+                                >
+                                    {loading === true && <ImSpinner10 className='loaderIcon' />}
+                                    <span>Đăng nhập</span>
+                                </button>
+                                <Link to='/' className='my-5' style={{ textDecoration: "none" }}><BiSolidHome className='mb-1' />Home</Link>
                             </div>
 
-                            <a className="btn btn-primary btn-lg btn-block" style={{ backgroundColor: '#3b5998' }} href="#!" role="button">
-                                <FcGoogle /> Continue with Google
-                            </a>
 
                         </div>
                     </div>

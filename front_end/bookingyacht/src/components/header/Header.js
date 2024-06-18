@@ -5,12 +5,19 @@ import { NavLink } from 'react-router-dom';
 import logo from '../../assets/logo_swp.png';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { IoCall } from 'react-icons/io5';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { doLogout } from '../../redux/action/UserAction';
 const Header = () => {
     const isAuthenticated = useSelector(state => state.account.isAuthenticated);
-
+    const role = useSelector(state => state.account.account.role);
+    console.log(role);
+    const dispatch = useDispatch();
+    const handleLogout = () => {
+        dispatch(doLogout());
+    }
     return (
-        <Navbar expand="lg" className="bg-body-tertiary">
+
+        <Navbar expand="lg" className="bg-body-tertiary ">
             <Container>
                 {/* <Navbar.Brand href="#home"></Navbar.Brand> */}
                 <NavLink to='/' className='navbar-brand' style={{ width: '150px' }}><img className='logo' src={logo} alt='logo' /></NavLink>
@@ -23,7 +30,7 @@ const Header = () => {
                         <NavLink to="/blog" className='nav-link'>Blog</NavLink>
 
                     </Nav>
-                    <Nav>
+                    <Nav className='d-flex' style={{ gap: 50 }}>
                         <p className='nav-link' style={{ cursor: "pointer" }}><IoCall />Hotline: 0969951736</p>
                         <NavDropdown title="Setting" id="basic-nav-dropdown">
                             {
@@ -45,7 +52,7 @@ const Header = () => {
                                         </NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item>
-                                            <NavLink className='nav-link'>Đăng Xuất</NavLink>
+                                            <NavLink onClick={handleLogout} className='nav-link'>Đăng Xuất</NavLink>
                                         </NavDropdown.Item>
 
                                     </>

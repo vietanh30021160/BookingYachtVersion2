@@ -1,26 +1,29 @@
 import React, { useState } from 'react';
 import './ManageYacht.scss'
 import { AiFillHome } from "react-icons/ai";
-import { NavLink } from 'react-router-dom';
-import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
+import { NavLink, useParams } from 'react-router-dom';
+import { Button, Col, Row } from 'react-bootstrap';
 import image from '../../assets/no53ab0y526yl825.webp';
 import ViewFeedback from './ViewFeedback';
 import ManageInforYacht from './ManageInforYacht';
-import ModalCreateYacht from './Modal/ModalCreateYacht';
 import { FaCirclePlus } from "react-icons/fa6";
 
 const ManageYacht = () => {
+    const { idYacht } = useParams();
+
 
     return (
         <div>
             <div >
                 <NavLink to='/manage-company/view-yacht' className='p-3 d-flex nav-link' style={{ gap: 20 }}>
-                    <AiFillHome className='mt-1' /> <p>Back To Manage Company</p>
+                    <AiFillHome className='' /> <p className='mb-0'>Back To Manage Company</p>
                 </NavLink>
             </div>
             <hr />
             <div className='manage-infor-yacht container my-5'>
-                <ManageInforYacht />
+                <ManageInforYacht
+                    idYacht={idYacht}
+                />
             </div>
             <hr />
             <div className='manage-image container'>

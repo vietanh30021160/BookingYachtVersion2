@@ -6,18 +6,21 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import reportWebVitals from './reportWebVitals';
 import 'nprogress/nprogress.css';
 import { Provider } from 'react-redux'
-import store from './redux/Store'
+import { store, persistor } from './redux/Store'
 import Layout from './Layout';
+import { PersistGate } from 'redux-persist/integration/react'
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <BrowserRouter>
-      {/* <React.StrictMode> */}
-      <Layout />
-      {/* </React.StrictMode> */}
-    </BrowserRouter>
+    <PersistGate loading={null} persistor={persistor}>
+      <BrowserRouter>
+        {/* <React.StrictMode> */}
+        <Layout />
+        {/* </React.StrictMode> */}
+      </BrowserRouter>
+    </PersistGate>
   </Provider>
 );
 

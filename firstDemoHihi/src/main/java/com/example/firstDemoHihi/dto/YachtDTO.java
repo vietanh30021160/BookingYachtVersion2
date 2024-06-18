@@ -1,12 +1,9 @@
 package com.example.firstDemoHihi.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class YachtDTO {
@@ -14,7 +11,8 @@ public class YachtDTO {
     private String name;
     private String image;
     private long price;
-    private OwnerDTO ownerDTO;
+    private CompanyDTO companyDTO;
     private YachtTypeDTO yachtTypeDTO;
     private LocationDTO locationDTO;
+    private int exist;
 }

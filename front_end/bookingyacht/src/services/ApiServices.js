@@ -1,36 +1,49 @@
 import axios from '../utils/CustomizeApi';
 
-const getUser = () => {
-    return axios.get(`/api/users`);
+export const getAllYacht = () => {
+    return axios.get('/api/customer/allYacht');
+}
+export const getAvatarYacht = () => {
+    return axios.get('/api/companies/file');
 }
 
-const login = (email, password) => {
-    return axios.post('/api/login', { email, password })
+export const login = (username, password) => {
+    const data = new FormData();
+    data.append('username', username);
+    data.append('password', password);
+    return axios.post('/login/signin', data)
 }
 
-const register = (email, password) => {
-    return axios.post('https://reqres.in/api/register', { email, password });
+export const registerCustomer = (username, password) => {
+    const data = new FormData();
+    data.append('username', username);
+    data.append('password', password);
+    return axios.post('/api/customer/accounts', data)
 }
-const getAllYachtt = () => {
+
+export const getAllYachtCompany = () => {
     return axios.get('/api/companies/allYacht');
 }
-// const getAvatarYacht = () => {
-//     return axios.get('/api/companies/file');
-// }
-
-const loginCustomer = (username, password) => {
-    const data = new FormData();
-    data.append('username', username);
-    data.append('password', password);
-    return axios.post('http://localhost:8080/login/signin', data)
+export const getYachtById = (yachtId) => {
+    return axios.get(`/api/companies/findYachtById/${yachtId}`);
+}
+export const deleteYacht = (idYacht) => {
+    return axios.delete(`/api/companies/yacht/delete/${idYacht}`)
 }
 
-const registerCustomer = (username, password) => {
-    const data = new FormData();
-    data.append('username', username);
-    data.append('password', password);
-    return axios.post('http://localhost:8080/api/customer/accounts', data)
+export const createYacht = (idCompany, name, image, launch, hullBody, description, rule, itinerary, idYachtType, idLocation) => {
+    const data = new FormData()
+    data.append('name', name);
+    data.append('image', image);
+    data.append('launch', launch);
+    data.append('hullBody', hullBody);
+    data.append('description', description);
+    data.append('rule', rule);
+    data.append('itinerary', itinerary);
+    data.append('idYachtType', idYachtType);
+    data.append('idLocation', idLocation);
+    return axios.post(`/api/companies/yacht/insertYacht/${idCompany}`, data);
 }
 
 
-export { getUser, login, register, loginCustomer, registerCustomer };
+

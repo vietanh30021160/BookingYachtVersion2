@@ -1,11 +1,10 @@
 import axios from "axios";
 import NProgress from 'nprogress';
-import store from '../redux/Store'
+import { store } from '../redux/Store'
 
 
 const instance = axios.create({
-    baseURL: 'https://reqres.in',
-
+    baseURL: 'http://localhost:8080',
 });
 
 NProgress.configure({
