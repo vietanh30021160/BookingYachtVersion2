@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, FormControl, FormGroup } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { RiShipLine } from "react-icons/ri";
 import { FaLocationDot } from "react-icons/fa6";
 import './ViewYacht.scss'
@@ -8,54 +8,70 @@ import ReactPaginate from 'react-paginate';
 import './Company.scss'
 import { FaCirclePlus } from "react-icons/fa6";
 import ModalCreateYacht from './Modal/ModalCreateYacht';
-import { deleteYacht, getAllYachtCompany } from '../../services/ApiServices';
+import { deleteYacht, getAllLocation, getAllYachtCompany } from '../../services/ApiServices';
 import _ from 'lodash';
 import Form from 'react-bootstrap/Form';
-const ViewYacht = () => {
+import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+const ViewYacht = (props) => {
     const navigate = useNavigate();
     const [isShowModal, setIsShowModal] = useState(false);
+    const idCompany = useSelector(state => state.account.account.idCompany);
 
     const [yacht, setYacht] = useState([]);
-    const [idCompany, setIdCompany] = useState('');
+    // const [idCompany, setIdCompany] = useState('');
 
     const [searchYacht, setSearchYacht] = useState('');
     const [filteredYachts, setFilteredYachts] = useState([]);
+    const [location, setLocation] = useState([]);
+
+    const [filterLocation, setFilterLocation] = useState('');
     //pagging
     // const [isChange, setIsChange] = useState(true);
     // const [paggingProuct, setPaggingProduct] = useState([]);
     // const [pagging, setPagging] = useState([]);
 
     useEffect(() => {
-        listYacht()
+        listYacht();
+        getLocation();
     }, [])
 
 
     const listYacht = async () => {
-        let res = await getAllYachtCompany();
-        console.log(res)
-        if (res && res.data.success === true) {
+        let res = await getAllYachtCompany(idCompany);
+        if (res && res.data.data.length > 0 && res.data.success === true) {
             setYacht(res.data.data);
-            setFilteredYachts(res.data.data)
+            setFilteredYachts(res.data.data);
         }
     }
 
     const handleDeleteYacht = async (id, name) => {
         if (window.confirm(`Delete Yacht With Name: ${name}`)) {
             let res = await deleteYacht(id);
-            console.log(res);
+            if (res.data.data === true) {
+                toast.success('Delete Successfully');
+                listYacht();
+
+            }
         }
     }
-    const handleCreateYacht = () => {
-        setIsShowModal(true);
-        // console.log(yacht)
-        // let company = _.chain(yacht)
-        //     // Group the elements of Array based on `color` property
-        //     .groupBy("company")
-        //     // `key` is group's name (color), `value` is the array of objects
-        //     .map((value, key) => ({ company: key, yachtt: value }))
-        //     .value()
-        console.log("check yacht modal", yacht[0].company)
-        setIdCompany(yacht[0].company.idCompany)
+    // const handleCreateYacht = () => {
+    //     setIsShowModal(true);
+    //     console.log(yacht)
+    //     let company = _.chain(yacht)
+    //         // Group the elements of Array based on `color` property
+    //         .groupBy("company")
+    //         // `key` is group's name (color), `value` is the array of objects
+    //         .map((value, key) => ({ company: key, yachtt: value }))
+    //     //     .value()
+    //     console.log("check yacht modal", yacht[0].company)
+    //     setIdCompany(yacht[0].company.idCompany)
+    // }
+    const getLocation = async () => {
+        let res = await getAllLocation();
+        if (res && res.data.success === true && res.data.status === 200) {
+            setLocation(res.data.data);
+        }
     }
 
     const handleSearchYacht = () => {
@@ -70,31 +86,38 @@ const ViewYacht = () => {
         }
 
     }
+    const handleFilterLocation = () => {
+        if (filterLocation) {
+            const newYacht = yacht.filter((yacht) => yacht.location.idLocation.includes(filterLocation));
+            setYacht(newYacht);
+            setFilterLocation('1');
+        } else {
+            setYacht(filteredYachts);
+        }
+    }
+
+
     return (
         <div className='view-yacht-container'>
-            <div className='row my-4'>
-                <h2 className='col-2'>List Yacht</h2>
+            <div className='row my-4 mx-2'>
 
 
-                <Button className='col-2 btn btn-success' onClick={() => handleCreateYacht()}><FaCirclePlus style={{ marginRight: 8, marginBottom: 5 }} />Add New Yacht</Button>
+                <Button className='col-2 btn btn-success' onClick={() => setIsShowModal(true)}><FaCirclePlus style={{ marginRight: 8, marginBottom: 5 }} />Add New Yacht</Button>
 
                 <FormGroup className='col-2'>
 
-                    <Form.Select >
-
-                        <option>ok</option>
+                    <Form.Select onChange={event => setFilterLocation(event.target.value)}>
+                        <option value=''>All Location</option>
+                        {
+                            location && location.length > 0 && location.map((location) =>
+                                <option key={location.idLocation} value={location.idLocation}>{location.name}</option>
+                            )
+                        }
                     </Form.Select>
 
                 </FormGroup>
-
-                <FormGroup className='col-2'>
-                    <Form.Select >
-                        <option>Default select</option>
-                    </Form.Select>
-                </FormGroup>
-
-
-                <FormGroup className='col-4 d-flex'>
+                <Button onClick={handleFilterLocation} className='col-2 btn btn-warning'>Search</Button>
+                <FormGroup className='col-6 d-flex'>
                     <FormControl
                         placeholder='Search'
                         type='text'
@@ -111,37 +134,38 @@ const ViewYacht = () => {
                 <div className="col-xl-12">
                     {
                         yacht && yacht.length > 0 && yacht.map((yacht, index) => {
+                            if (yacht.exist === 1) {
+                                return (
+                                    <div key={yacht.idYacht} className="card mb-4 order-list">
+                                        <div className="gold-members p-4">
 
-                            return (
-                                <div key={yacht.idYacht} className="card mb-4 order-list">
-                                    <div className="gold-members p-4">
+                                            <div className="media">
 
-                                        <div className="media">
+                                                <img className="mr-4" src={`http://localhost:8080/api/customer/file/${yacht.image}`} alt="Generic placeholder image" />
 
-                                            <img className="mr-4" src={`http://localhost:8080/api/customer/file/${yacht.image}`} alt="Generic placeholder image" />
+                                                <div className="media-body">
+                                                    <div className='card-content'>
+                                                        <div className='location'><FaLocationDot />{yacht.location.name}</div>
+                                                        <div className='name'>{yacht.name}</div>
+                                                        <div> <RiShipLine /> Hạ Thủy {yacht.launch} - Tàu Vỏ {yacht.hullBody}  </div>
 
-                                            <div className="media-body">
-                                                <div className='card-content'>
-                                                    <div className='location'><FaLocationDot />{yacht.location.name}</div>
-                                                    <div className='name'>{yacht.name}</div>
-                                                    <div> <RiShipLine /> Hạ Thủy {yacht.launch} - Tàu Vỏ {yacht.hullBody}  </div>
+                                                    </div>
+                                                    <div className='action d-flex'>
+                                                        <p className="mb-0 text-dark text-dark pt-2"><span className="text-dark font-weight-bold"></span>
+                                                        </p>
+                                                        <div className="float-right">
+                                                            <Button className="btn btn-sm btn-success" onClick={() => navigate(`/manage-yacht/${yacht.idYacht}`)}><i className="feather-check-circle" />Manage Yacht</Button>
+                                                            <Button className="btn btn-sm btn-warning" onClick={() => navigate('/manage-room')}><i className="feather-trash" /> Manage Room </Button>
+                                                            <Button className="btn btn-sm btn-danger" onClick={() => handleDeleteYacht(yacht.idYacht, yacht.name)}><i className="feather-trash" /> Delete Yacht </Button>
 
-                                                </div>
-                                                <div className='action d-flex'>
-                                                    <p className="mb-0 text-dark text-dark pt-2"><span className="text-dark font-weight-bold"></span>
-                                                    </p>
-                                                    <div className="float-right">
-                                                        <Button className="btn btn-sm btn-success" onClick={() => navigate(`/manage-yacht/${yacht.idYacht}`)}><i className="feather-check-circle" />Manage Yacht</Button>
-                                                        <Button className="btn btn-sm btn-warning" onClick={() => navigate('/manage-room')}><i className="feather-trash" /> Manage Room </Button>
-                                                        <Button className="btn btn-sm btn-danger" onClick={() => handleDeleteYacht(yacht.idYacht, yacht.name)}><i className="feather-trash" /> Delete Yacht </Button>
-
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            )
+                                )
+                            }
                         })
 
                     }
