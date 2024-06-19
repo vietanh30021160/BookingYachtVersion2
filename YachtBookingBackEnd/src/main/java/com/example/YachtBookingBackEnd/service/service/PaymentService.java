@@ -60,18 +60,27 @@ public class PaymentService implements IPayment {
         bookingOrder.setBookingTime(LocalDateTime.now());
         bookingOrder.setRequirement(requirement);
         bookingOrder.setStatus(DEFAULT_STATUS);
-        // Lưu `BookingOrder` vào cơ sở dữ liệu và cập nhật `id`
-        bookingOrder = bookingOrderRepository.save(bookingOrder);
 
-        // Lấy danh sách các phòng đã chọn từ RoomRepository
+        // Lấy thông tin của customer và schedule từ các repository
+        Customer customer = customerRepository.findById(idCustomer)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid customer ID"));
+        Schedule schedule = scheduleRepository.findById(idSchedule)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid schedule ID"));
+        bookingOrder.setCustomer(customer);
+        bookingOrder.setSchedule(schedule);
+
+        // Lấy danh sách các phòng đã chọn từ RoomRepository và kiểm tra available
         List<Room> selectedRooms = new ArrayList<>();
         for (String roomId : selectedRoomIds) {
             Optional<Room> optionalRoom = roomRepository.findById(roomId);
             Room room = optionalRoom.orElseThrow(() -> new RuntimeException("Invalid room ID: " + roomId));
 
+            boolean isRoomValid = bookingOrderRepository.existsByRoomAndSchedule(room, schedule);
+            if (isRoomValid) {
+                throw new RuntimeException("Room " + roomId + "is not available in schedule");
+            }
             selectedRooms.add(room);
         }
-        bookingOrder.setBookingRoomSet(iBookingRoom.createBookingRooms(selectedRooms, bookingOrder));
 
         // Lấy danh sách các dịch vụ đã chọn từ ServiceRepository
         List<com.example.YachtBookingBackEnd.entity.Service> selectedServices = new ArrayList<>();
@@ -81,17 +90,13 @@ public class PaymentService implements IPayment {
 
             selectedServices.add(service);
         }
+
+        // Lưu BookingOrder vào cơ sở dữ liệu và cập nhật id
+        bookingOrder = bookingOrderRepository.save(bookingOrder);
+
+        bookingOrder.setBookingRoomSet(iBookingRoom.createBookingRooms(selectedRooms, bookingOrder));
         bookingOrder.setBookingServiceSet(iBookingService.createBookingServices(selectedServices, bookingOrder));
 
-        // Lấy thông tin của customer và schedule từ các repository
-        Customer customer = customerRepository.findById(idCustomer)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid customer ID"));
-        Schedule schedule = scheduleRepository.findById(idSchedule)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid schedule ID"));
-
-        bookingOrder.setCustomer(customer);
-        bookingOrder.setSchedule(schedule);
-        // Cập nhật lại `BookingOrder` sau khi thiết lập các thông tin
         bookingOrder = bookingOrderRepository.save(bookingOrder);
 
         calculateTotalAmount(bookingOrder);
@@ -99,7 +104,7 @@ public class PaymentService implements IPayment {
         // Tạo mã tham chiếu duy nhất cho giao dịch thanh toán
         String vnp_TxnRef = vnpayConfig.getRandomNumber(8);
         bookingOrder.setTxnRef(vnp_TxnRef);
-        // Cập nhật lại `BookingOrder` sau khi thiết lập mã tham chiếu
+        // Cập nhật lại BookingOrder sau khi thiết lập mã tham chiếu
         bookingOrder = bookingOrderRepository.save(bookingOrder);
 
 

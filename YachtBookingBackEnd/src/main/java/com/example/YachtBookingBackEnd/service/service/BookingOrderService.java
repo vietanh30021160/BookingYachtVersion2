@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +27,8 @@ public class BookingOrderService implements IBookingOrder {
     public static final String DEFAULT_STATUS = "Pending";
 
     @Override
+    // Sử dụng @Transactional để giữ phiên Hibernate mở trong suốt quá trình xử lý
+    @Transactional(readOnly = true)
     public List<BookingOrderDTO> getAllBookingsByCompanyId(String idCompany) {
         List<BookingOrder> bookingOrderList = bookingOrderRepository.findBookingOrdersByCompany(idCompany);
         return bookingOrderList.stream()

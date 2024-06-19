@@ -31,7 +31,7 @@ public class BookingOrder {
     private String requirement;
 
     @Column(name = "status")
-    private String status;  //Pending,
+    private String status;  //Pending, Confirmed, Cancelled
 
     @ManyToOne()
     @JoinColumn(name = "id_schedule",  nullable = false)

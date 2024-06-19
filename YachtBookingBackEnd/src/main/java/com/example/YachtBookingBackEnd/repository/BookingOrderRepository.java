@@ -1,21 +1,30 @@
 package com.example.YachtBookingBackEnd.repository;
 
 import com.example.YachtBookingBackEnd.entity.BookingOrder;
+import com.example.YachtBookingBackEnd.entity.Room;
+import com.example.YachtBookingBackEnd.entity.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface BookingOrderRepository extends JpaRepository<BookingOrder, String> {
     BookingOrder findByTxnRef(String txnRef);
 
     @Query("SELECT b FROM BookingOrder b " +
-            "JOIN b.schedule s " +
-            "JOIN  s.yachtScheduleSet ys " +
-            "JOIN  ys.yacht y " +
+            "JOIN FETCH b.bookingRoomSet br " +
+            "JOIN FETCH  br.room r " +
+            "JOIN FETCH  r.yacht y " +
             "WHERE  y.company.idCompany = :idCompany")
     List<BookingOrder> findBookingOrdersByCompany(@Param("idCompany") String idCompany);
+
+    @Query("SELECT COUNT(b) > 0 " +
+            "FROM  BookingOrder b " +
+            "JOIN b.bookingRoomSet br " +
+            "WHERE br.room = :room AND  b.schedule = :schedule")
+    boolean existsByRoomAndSchedule(@Param("room") Room room, @Param("schedule") Schedule schedule);
 }
