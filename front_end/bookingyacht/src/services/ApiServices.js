@@ -64,5 +64,6 @@ export const createYacht = (idCompany, name, image, launch, hullBody, descriptio
     return axios.post(`/api/companies/yacht/insertYacht/${idCompany}`, data);
 }
 
-
-
+export const getRoomByYacht = (yachtId) => {
+    return axios.get(`/api/customer/getRoomByYacht/${yachtId}`)
+}

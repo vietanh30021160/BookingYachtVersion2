@@ -5,19 +5,18 @@ import BookNowModal from './BookNowModal';
 import './FormRoom.scss';
 import RoomDetailModal from './RoomDetailModal';
 import RoomItem from './RoomItem';
+import { getRoomByYacht } from '../../../services/ApiServices';
+
+
+
 const services = [
     { id: 1, name: 'Bữa sáng', price: 200000 },
     { id: 2, name: 'Đưa đón sân bay', price: 500000 },
     { id: 3, name: 'Gói spa', price: 700000 },
 ];
-const rooms = [
-    { id: 1, name: 'Phòng Delta Suite', size: '33 m²', price: 3550000, maxGuests: 2, image: 'image1.png' },
-    { id: 2, name: 'Phòng Ocean Suite', size: '33 m²', price: 3700000, maxGuests: 2, image: 'image2.png' },
-    { id: 3, name: 'Phòng Captain Suite', size: '38 m²', price: 3950000, maxGuests: 2, image: 'image3.png' },
-    { id: 4, name: 'Phòng Regal Suite', size: '46 m²', price: 4200000, maxGuests: 2, image: 'image4.png' }
-];
 
-const RoomSelection = () => {
+
+const RoomSelection = ({ yacht }) => {
     const [quantities, setQuantities] = useState(rooms.reduce((acc, room) => ({ ...acc, [room.id]: 0 }), {}));
     const [showDetailRom, setShowDetailRom] = useState(false);
     const [selectedRoom, setSelectedRoom] = useState(null);
@@ -25,6 +24,8 @@ const RoomSelection = () => {
     const [selectedRooms, setSelectedRooms] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [selectedServices, setSelectedServices] = useState(rooms.reduce((acc, room) => ({ ...acc, [room.id]: [] }), {}));
+    const [rooms, setRooms] = useState([]);
+
     useEffect(() => {
         const newSelectedRooms = rooms.filter(room => quantities[room.id] > 0);
         setSelectedRooms(newSelectedRooms);
@@ -40,6 +41,15 @@ const RoomSelection = () => {
         setTotalPrice(totalRoomPrice + totalServicePrice);
         // setTotalPrice(newSelectedRooms.reduce((acc, room) => acc + (room.price * quantities[room.id]), 0));
     }, [quantities, selectedServices]);
+
+    const getRoomList = async (yachtId) => {
+        let res = await getRoomByYacht(yachtId)
+        setRooms(res.data.data)
+    }
+
+    useEffect(() => {
+        getRoomList(yacht.idYacht)
+    }, [yacht.idYacht])
 
     const handleQuantityChange = (id, delta) => {
         setQuantities(prevQuantities => ({
@@ -77,9 +87,8 @@ const RoomSelection = () => {
                 <Button variant="outline-danger" onClick={handleReset}>Xóa lựa chọn</Button>
                 {rooms.map(room => (
                     <RoomItem
-                        key={room.id}
+                        key={room.idRoom}
                         room={room}
-                        handleQuantityChange={handleQuantityChange}
                         quantity={quantities[room.id]}
                         handleDetail={handleDetail}
                         services={services}
