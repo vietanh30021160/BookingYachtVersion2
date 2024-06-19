@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 @RequestMapping("/login")
 public class LoginController {
-
     @Autowired
-    JwtHelper jwtHelper;
+    private IAccount iAccount;
+    @Autowired
+    private JwtHelper jwtHelper;
     @Autowired
     AuthenticationManager authenticationManager;
-    @Autowired
-    IAccount iAccount;
+
 
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestParam String username, @RequestParam String password ) {

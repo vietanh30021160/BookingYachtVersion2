@@ -23,14 +23,15 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CustomerController {
-    IAccount iAccount;
-    ICustomer iCustomer;
-    IPayment iPayment;
-    IYacht iYacht;
-    IFile iFile;
-    IYachtImage iYachtImage;
-    IService iService;
-    IYachtService iYachtService;
+    private IAccount iAccount;
+    private ICustomer iCustomer;
+    private IPayment iPayment;
+    private IYacht iYacht;
+    private IFile iFile;
+    private IYachtImage iYachtImage;
+    private IService iService;
+    private IYachtService iYachtService;
+    private ISchedule iSchedule;
 
 
 
@@ -155,5 +156,16 @@ public class CustomerController {
         dataResponse.setData(iYacht.findYachtById(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
+    @GetMapping("/getAllSchedule")
+    public ResponseEntity<?> getAllSchedule() {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iSchedule.getAllSchedule());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getScheduleByYacht/{yachtId}")
+    public ResponseEntity<?> getScheduleByYacht(@PathVariable String yachtId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iSchedule.getAllScheduleByYacht(yachtId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 }

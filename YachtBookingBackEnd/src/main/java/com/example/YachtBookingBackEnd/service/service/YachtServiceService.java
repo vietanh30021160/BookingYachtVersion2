@@ -29,6 +29,7 @@ public class YachtServiceService implements IYachtService {
         try{
             Optional<Yacht> yacht = yachtRepository.findById(yachtId);
             if(yacht.isPresent()) {
+//                com.example.YachtBookingBackEnd.entity.Service isService = serviceRepository.findService(service);
                 com.example.YachtBookingBackEnd.entity.Service isService = serviceRepository.findByService(service);
                 if(isService == null) {
                     isService = new com.example.YachtBookingBackEnd.entity.Service();
@@ -59,6 +60,7 @@ public class YachtServiceService implements IYachtService {
             KeysYachtService key = new KeysYachtService(yachtId, serviceId);
             Optional<YachtService> yachtService = yachtServiceRepository.findByKeys(key);
             if(yachtService.isPresent()) {
+                System.out.println("tim tahy");
                 yachtServiceRepository.delete(yachtService.get());
                 return true;
             }
@@ -69,15 +71,24 @@ public class YachtServiceService implements IYachtService {
     }
 
     @Override
-    public boolean updateYachtService(String yachtId, String service, long price) {
+    public boolean updateYachtService(String yachtId, String serviceId, String service, long price) {
         try{
-            Optional<Yacht> yacht = yachtRepository.findById(yachtId);
-            if(yacht.isPresent()) {
-                com.example.YachtBookingBackEnd.entity.Service isService = serviceRepository.findByService(service);
-                if(isService != null) {
-                    isService.setService(service);
-                    isService.setPrice(price);
-                    serviceRepository.save(isService);
+            KeysYachtService key = new KeysYachtService(yachtId, serviceId);
+            Optional<YachtService> yachtService = yachtServiceRepository.findByKeys(key);
+            if(yachtService.isPresent()) {
+                //lay ra doi tuong Service
+                com.example.YachtBookingBackEnd.entity.Service serviceObject = yachtService.get().getService();
+
+                // Check if another service with the same name exists
+                com.example.YachtBookingBackEnd.entity.Service existingService = serviceRepository.findByService(service);
+
+                //co ton tai mot service giong nhau
+                if(existingService != null && !existingService.getIdService().equals(serviceId)) {
+                    return false;
+                } else {
+                    serviceObject.setService(service);
+                    serviceObject.setPrice(price);
+                    serviceRepository.save(serviceObject);
                     return true;
                 }
             }

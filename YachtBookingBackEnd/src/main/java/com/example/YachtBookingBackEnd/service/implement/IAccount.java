@@ -1,8 +1,6 @@
 package com.example.YachtBookingBackEnd.service.implement;
 
 import com.example.YachtBookingBackEnd.dto.AccountDTO;
-import com.example.YachtBookingBackEnd.dto.CompanyDTO;
-import com.example.YachtBookingBackEnd.payload.request.AccountCompanyCreationRequest;
 
 import java.util.List;
 
@@ -14,7 +12,7 @@ public interface IAccount {
     String createAccountCustomer(String username, String password);
 
     List<AccountDTO> getAccountCustomer();
-    AccountDTO get1Account(String  id);
+    AccountDTO getAccountById(String  id);
 
     void deleteAccount(String id);
 

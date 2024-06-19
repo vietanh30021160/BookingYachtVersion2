@@ -15,6 +15,7 @@ public class RoomImage {
     @Column(name = "id_room_image", nullable = false)
     private String idRoomImage;
 
+    @Lob
     @Column(name = "image_room")
     private String imageRoom;
 

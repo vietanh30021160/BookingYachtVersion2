@@ -62,7 +62,6 @@
     background: white;
     border-radius: 25px;
     box-shadow: 1px 0px 7px 2px;
-
   }
 
   .homepage-content {
@@ -75,15 +74,12 @@
     box-shadow: 1px 0px 7px 2px;
 
     .serach-yacht {
-
-
       .form-search {
         display: flex;
         flex-direction: column;
         gap: 10px;
         padding-bottom: 50px;
         padding-top: 50px;
-
 
         input {
           border-radius: 35px;
@@ -93,7 +89,6 @@
         select {
           border-radius: 35px;
         }
-
 
         button {
           border-radius: 20px;
@@ -136,7 +131,6 @@
     }
   }
 }
-
 
 .app-yacht {
   padding-top: 190px;

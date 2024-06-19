@@ -143,7 +143,7 @@ public class AccountService implements IAccount {
     }
 
     @Override
-    public AccountDTO get1Account(String  id)  {
+    public AccountDTO getAccountById(String  id)  {
         Optional<Account> account=  accountRepository.findById(id);
 
         AccountDTO accountDTO = new AccountDTO();
@@ -183,7 +183,6 @@ public class AccountService implements IAccount {
         }
 
     }
-
     @Override
     public String getIdAccountByUserName(String username) {
         try{

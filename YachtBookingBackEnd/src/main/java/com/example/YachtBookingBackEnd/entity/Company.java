@@ -23,10 +23,10 @@ public class Company {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "logo", length = 50)
+    @Column(name = "logo", length = 255)
     private String logo;
 
-    @Column(name = "email", length = 50)
+    @Column(name = "email", length = 255)
     private String email;
 
     @Column(name = "exist")

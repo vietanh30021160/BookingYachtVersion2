@@ -43,7 +43,7 @@ public class AdminController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/companies/{idAccount}")
+    @GetMapping("/companies/details/{idAccount}")
     public ResponseEntity<?> getDetailCompanyByID(@PathVariable String idAccount) {
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setData(iCompany.getDetailCompanyByAccountID(idAccount));
@@ -64,10 +64,10 @@ public class AdminController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/account/{customerAccountId}")
+    @GetMapping("/accountCustomer/{customerAccountId}")
     public ResponseEntity<?> getAccount(@PathVariable("customerAccountId") String customerAccountId)  {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iAccount.get1Account(customerAccountId));
+        dataResponse.setData(iAccount.getAccountById(customerAccountId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
@@ -82,6 +82,13 @@ public class AdminController {
     ResponseEntity<?> getCustomerById(@PathVariable("customerId") String customerId){
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setData(iCustomer.getCustomer(customerId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/profile/findCustomerByUsername")
+    ResponseEntity<?> findCustomerByUsername(@RequestParam String username) {
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iCustomer.findCustomerByUsername(username));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

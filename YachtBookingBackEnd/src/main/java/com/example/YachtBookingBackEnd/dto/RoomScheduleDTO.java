@@ -5,19 +5,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoomDTO {
+public class RoomScheduleDTO {
     private String idRoom;
+    private String roomName;
     private double area;
-    private String description;
-    private String name;
-    private int available;
-    private RoomTypeDTO roomType;
-    private List<RoomImageDTO> roomImageSet;
+    private String idSchedule;
+    private Instant startDate;
+    private Instant endDate;
+    private long price;
 
 }

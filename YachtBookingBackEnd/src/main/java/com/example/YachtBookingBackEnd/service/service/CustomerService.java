@@ -59,9 +59,6 @@ public class CustomerService implements ICustomer {
             customer.setAddress(address);
             customer.setAccount(account);
             customerRepository.save(customer);
-
-            customerRepository.save(customer);
-
             return true;
         } catch (Exception e) {
             log.error("Error occurred while adding customer: {}", e.getMessage());
@@ -117,6 +114,7 @@ public class CustomerService implements ICustomer {
             customerDTO.setFullName(customer.get().getFullName());
             customerDTO.setEmail(customer.get().getEmail());
             customerDTO.setPhone(customer.get().getPhoneNumber());
+            customerDTO.setAddress(customer.get().getAddress());
 
             accountDTO.setIdAccount(customer.get().getAccount().getIdAccount());
             accountDTO.setUsername(customer.get().getAccount().getUsername());
@@ -126,6 +124,32 @@ public class CustomerService implements ICustomer {
             customerDTO.setAccountDTO(accountDTO);
         }
         return customerDTO;
+    }
+
+    @Override
+    public CustomerDTO findCustomerByUsername(String username) {
+        Account account = accountRepository.findAccountByUsername(username);
+
+        Customer customer = customerRepository.findCustomerByAccount(account);
+
+        if (account.getRole().equals("CUSTOMER")) {
+            AccountDTO accountDTO = new AccountDTO();
+            CustomerDTO customerDTO = new CustomerDTO();
+
+            customerDTO.setIdCustomer(customer.getIdCustomer());
+            customerDTO.setFullName(customer.getFullName());
+            customerDTO.setEmail(customer.getEmail());
+            customerDTO.setPhone(customer.getPhoneNumber());
+            customerDTO.setAddress(customer.getAddress());
+            accountDTO.setIdAccount(account.getIdAccount());
+            accountDTO.setUsername(username);
+            accountDTO.setPassword(account.getPassword());
+            accountDTO.setRole(account.getRole());
+            customerDTO.setAccountDTO(accountDTO);
+            return customerDTO;
+        }
+        return null;
+
     }
 
     @Override
