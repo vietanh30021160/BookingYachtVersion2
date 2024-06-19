@@ -21,6 +21,7 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompanyController {
     IYacht iYacht;
+    IBookingOrder iBookingOrder;
     IFile iFile;
     IYachtImage iYachtImage;
     IService iService;
@@ -295,6 +296,13 @@ public class CompanyController {
                                                 @PathVariable("idSchedule") String idSchedule){
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iRoom.getRoomAndSchedule(idYacht,idSchedule));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllBooking")
+    public ResponseEntity<?>getAllBooking(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iBookingOrder.getAllBooking());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
