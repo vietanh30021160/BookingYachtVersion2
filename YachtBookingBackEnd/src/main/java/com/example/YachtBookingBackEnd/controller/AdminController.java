@@ -23,9 +23,12 @@ public class AdminController {
 
     @PostMapping("/accounts")
     public ResponseEntity<?> createAccountCompany(@RequestParam String username,
-                                                  @RequestParam String password) throws Exception {
+                                                  @RequestParam String password,
+                                                  @RequestParam String companyName,
+                                                  @RequestParam String address,
+                                                  @RequestParam String email) throws Exception {
         DataResponse dataResponse = new DataResponse<>();
-        dataResponse.setData(iAccount.createAccountCompany(username, password));
+        dataResponse.setData(iAccount.createAccountCompany(username, password, companyName, address, email));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

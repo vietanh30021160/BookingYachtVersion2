@@ -108,16 +108,6 @@ public class CompanyController {
         dataResponse.setData(iYachtImage.updateImage(image, imageId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-    @PostMapping("/updateProfile/{companyId}")
-    public ResponseEntity<?> updateCompany(@PathVariable String companyId,
-                                           @RequestParam String name,
-                                           @RequestParam String address,
-                                           @RequestParam MultipartFile logo,
-                                           @RequestParam String email){
-        DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iCompany.updateInfoCompany(companyId, name, address, logo, email));
-        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-    }
     @GetMapping("/getAllService")
     public ResponseEntity<?> getAllService() {
         DataResponse dataResponse = new DataResponse();
@@ -164,10 +154,9 @@ public class CompanyController {
     public ResponseEntity<?> updateInfoCompany(@PathVariable String idCompany,
                                                @RequestParam String name,
                                                @RequestParam String address,
-                                               @RequestParam MultipartFile logo,
-                                               @RequestParam String email){
+                                               @RequestParam MultipartFile logo){
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iCompany.updateInfoCompany(idCompany, name, address, logo, email));
+        dataResponse.setData(iCompany.updateInfoCompany(idCompany, name, address, logo));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

@@ -24,15 +24,8 @@ public class BookingOrderMapper {
         scheduleDTO.setEndDate(schedule.getEndDate());
         dto.setSchedule(scheduleDTO);
 
-        // Map Customer
-        CustomerDTO customerDTO = new CustomerDTO();
-        Customer customer = bookingOrder.getCustomer();
-        customerDTO.setIdCustomer(customer.getIdCustomer());
-        customerDTO.setFullName(customer.getFullName());
-        customerDTO.setEmail(customer.getEmail());
-        customerDTO.setPhone(customer.getPhoneNumber());
-        customerDTO.setAddress(customer.getAddress());
-        dto.setCustomer(customerDTO);
+        // Map customer name
+        dto.setCustomerName(bookingOrder.getCustomer().getFullName());
 
         //Map rooms
         Set<RoomDTO> roomDTOS = bookingOrder.getBookingRoomSet().stream()
@@ -56,6 +49,13 @@ public class BookingOrderMapper {
                     return serviceDTO;
                 }).collect(Collectors.toSet());
         dto.setServices(serviceDTOS);
+
+        //Map yacht name
+        if (!bookingOrder.getBookingRoomSet().isEmpty()) {
+            Room getRoom = bookingOrder.getBookingRoomSet().iterator().next().getRoom();;
+            Yacht yacht = getRoom.getYacht();
+            dto.setYachtName(yacht.getName());
+        }
 
         return dto;
     }

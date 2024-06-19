@@ -243,7 +243,7 @@ public class PaymentService implements IPayment {
                     paymentDTO.setCode("00");
                     paymentDTO.setMessage("Giao dịch thành công");
 
-                    response.sendRedirect("http://frontend-code.com/success");  //frontend thiết kế giao diện Giao dịch thất bại
+                    response.sendRedirect("localhost:300");  //frontend thiết kế giao diện Giao dịch thất bại
                 } else  {
                     // Giao dịch thất bại
                     bookingOrder.setStatus("Failed");
@@ -252,13 +252,13 @@ public class PaymentService implements IPayment {
                     paymentDTO.setCode("99");
                     paymentDTO.setMessage("Giao dịch thất bại");
 
-                    response.sendRedirect("http://frontend-code.com/failure"); //frontend thiết kế giao diện Giao dịch thất bại
+                    response.sendRedirect("localhost:300"); //frontend thiết kế giao diện Giao dịch thất bại
                 }
             } else  {
                 paymentDTO.setCode("01");
                 paymentDTO.setMessage("Không tìm thấy đơn đặt phòng");
 
-                response.sendRedirect("http://frontend-code.com/failure");
+                response.sendRedirect("localhost:300");
             }
         } catch (IOException e) {
             log.error("Lỗi xử lý callback thanh toán: ", e);

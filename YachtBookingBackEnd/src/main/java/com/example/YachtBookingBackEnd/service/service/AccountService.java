@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor // Tạo constructor (final)
@@ -32,7 +34,7 @@ public class AccountService implements IAccount {
     public static final String ROLE_CUSTOMER = "CUSTOMER";
 
     @Override
-    public boolean createAccountCompany(String username, String password) {
+    public boolean createAccountCompany(String username, String password, String companyName, String address, String email) {
         try {
             // Kiểm tra xem username đã tồn tại hay chưa
             if (accountRepository.existsByUsername(username)) {
@@ -50,10 +52,14 @@ public class AccountService implements IAccount {
             accountRepository.save(account);
 
             //Thêm thông tin của công ty
+            if (!isValidEmail(email)) {
+                log.error("Invalid email format");
+                throw new IllegalArgumentException("Invalid email format");
+            }
             Company company = new Company();
-            company.setName("company");
-            company.setAddress("address");
-            company.setEmail(generateRandomEmail());
+            company.setName(companyName);
+            company.setAddress(address);
+            company.setEmail(email);
             company.setExist(1);
             company.setAccount(account);
 
@@ -66,10 +72,14 @@ public class AccountService implements IAccount {
         }
     }
 
-    private String generateRandomEmail() {
-        Random random = new Random();
-        int randomNumber = random.nextInt(10000);
-        return "email" + randomNumber + "@gmail.com";
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        if (email == null) {
+            return false;
+        }
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     @Override

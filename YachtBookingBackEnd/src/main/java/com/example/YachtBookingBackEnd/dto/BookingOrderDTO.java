@@ -20,7 +20,8 @@ public class BookingOrderDTO {
     private String status;
     private String txnRef;
     private ScheduleDTO schedule;
-    private CustomerDTO customer;
+    private String customerName;
     private Set<RoomDTO> rooms;
     private Set<ServiceDTO> services;
+    private String yachtName;
 }

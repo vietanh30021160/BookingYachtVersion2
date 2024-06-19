@@ -7,7 +7,7 @@ import com.example.YachtBookingBackEnd.payload.request.AccountCompanyCreationReq
 import java.util.List;
 
 public interface IAccount {
-    boolean createAccountCompany(String username, String password);
+    boolean createAccountCompany(String username, String password, String companyName, String address, String email);
 
     List<AccountDTO> getAllAccountCompanies();
 
