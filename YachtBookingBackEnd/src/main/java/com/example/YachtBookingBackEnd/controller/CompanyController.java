@@ -65,12 +65,12 @@ public class CompanyController {
     }
 
 
-    @PostMapping("/room/addRoom")
+    @PostMapping("/room/addRoom/{idYacht}")
     public ResponseEntity<?> addRoom(@RequestParam String roomName,
                                      @RequestParam double area,
                                      @RequestParam String description,
                                      @RequestParam String idRoomType,
-                                     @RequestParam String idYacht
+                                     @PathVariable("idYacht") String idYacht
                                      ){
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iRoom.addRoom(roomName, area, description, idRoomType, idYacht));
@@ -290,7 +290,7 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/getAllRoomSchedule")
+    @GetMapping("/getAllRoomSchedule/{idYacht}")
     public ResponseEntity<?> getAllRoomSchedule(@PathVariable("idYacht") String idYacht ){
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iRoom.getRoomAndSchedule(idYacht));
