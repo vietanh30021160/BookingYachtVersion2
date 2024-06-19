@@ -5,6 +5,7 @@ import BookNowModal from './BookNowModal';
 import './FormRoom.scss';
 import RoomDetailModal from './RoomDetailModal';
 import RoomItem from './RoomItem';
+
 const services = [
     { id: 1, name: 'Bữa sáng', price: 200000 },
     { id: 2, name: 'Đưa đón sân bay', price: 500000 },
@@ -74,7 +75,7 @@ const RoomSelection = () => {
         <Container>
             <h2 className='mb-4' style={{ fontWeight: 'bold' }}>Các loại phòng & giá</h2>
             <div className='form-select'>
-                <Button variant="outline-danger" onClick={handleReset}>Xóa lựa chọn</Button>
+
                 {rooms.map(room => (
                     <RoomItem
                         key={room.id}
@@ -87,10 +88,11 @@ const RoomSelection = () => {
                         handleServiceChange={handleServiceChange}
                     />
                 ))}
-                <div className='my-3'>
+                <div className='my-3 mt-3'>
                     <div className="row">
                         <div className="col-md-6 col-12">
-                            <h5>Tổng tiền: {totalPrice.toLocaleString()} đ</h5>
+                            <Button variant="outline-danger" onClick={handleReset}>Xóa lựa chọn</Button>
+                            <h5 style={{ fontWeight: 'bold' }} className='mt-3'>Tổng tiền: {totalPrice.toLocaleString()} đ</h5>
                         </div>
                         <div className="col-md-6 col-12 text-end">
                             <Button variant="secondary" className='rent'>Thuê trọn tàu</Button>

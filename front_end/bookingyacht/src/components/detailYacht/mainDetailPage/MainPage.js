@@ -62,7 +62,7 @@ const MainPage = () => {
       </div>
 
       <Col md={8}>
-        <div id="rooms" className="content-section-sticky3">
+        <div id="rooms" className="content-section-sticky3 mt-5">
           <RoomSelection />
         </div>
 
