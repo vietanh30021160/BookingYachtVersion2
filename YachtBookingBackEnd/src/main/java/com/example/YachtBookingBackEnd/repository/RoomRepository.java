@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, String > {
     @Query("SELECT new com.example.YachtBookingBackEnd.dto.RoomScheduleDTO" +
-            "(r.idRoom,r.name,r.area,s.idSchedule,s.startDate,s.endDate,rt.price)" +
+            "(r.idRoom,r.name,r.area,s.idSchedule,s.startDate,s.endDate,rt.price, rt.type)" +
             " FROM Room r " +
             "JOIN r.yacht y " +
             "JOIN YachtSchedule ys ON y.idYacht = ys.yacht.idYacht " +
