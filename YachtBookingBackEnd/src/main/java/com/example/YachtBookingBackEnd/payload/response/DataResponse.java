@@ -13,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 public class DataResponse<T> {
     int status = 200;
     boolean success = true;
-    private String idAccount;
+    private String idCompany;
     String desc;
     T data;
 }

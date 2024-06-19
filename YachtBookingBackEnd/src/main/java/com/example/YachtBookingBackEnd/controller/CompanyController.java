@@ -141,6 +141,7 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
+
     @PostMapping("/confirm")
     public ResponseEntity<?> confirmVnPayPayment(@RequestParam String idBookingOrder) {
         DataResponse dataResponse = new DataResponse();
@@ -287,6 +288,13 @@ public class CompanyController {
     public ResponseEntity<?> getFeedbackByIdCompany(@PathVariable String companyId) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iCompany.getFeedbacksByCompanyId(companyId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllLocation")
+    public ResponseEntity<?> getAllLocation(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYacht.getAllLocation());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
