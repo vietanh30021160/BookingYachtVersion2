@@ -201,12 +201,13 @@ public class CompanyController {
         dataResponse.setData(iYachtService.deleteYachtService(yachtId, serviceId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-    @PostMapping("/updateYachtService/{yachtId}")
+    @PutMapping("/updateYachtService/{yachtId}/{serviceId}")
     public ResponseEntity<?> updateYachtService(@PathVariable String yachtId,
+                                                @PathVariable String serviceId,
                                                 @RequestParam String service,
                                                 @RequestParam long price) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iYachtService.updateYachtService(yachtId, service, price));
+        dataResponse.setData(iYachtService.updateYachtService(yachtId, serviceId, service, price));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @GetMapping("/findYachtById/{yachtId}")
@@ -296,7 +297,7 @@ public class CompanyController {
         dataResponse.setData(iSchedule.getAllScheduleByYacht(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-    @GetMapping("/addSchedule/{yachtId}")
+    @PostMapping("/addSchedule/{yachtId}")
     public ResponseEntity<?> addSchedule(@PathVariable String yachtId,
                                          @RequestParam Instant startDate,
                                          @RequestParam Instant endDate){
@@ -305,7 +306,7 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/deleteSchedule/{yachtId}/{scheduleId}")
+    @DeleteMapping("/deleteSchedule/{yachtId}/{scheduleId}")
     public ResponseEntity<?> deleteSchedule(@PathVariable String yachtId,
                                             @PathVariable String scheduleId){
         DataResponse dataResponse = new DataResponse();
@@ -313,7 +314,7 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/updateSchedule/{yachtId}/{scheduleId}")
+    @PutMapping("/updateSchedule/{yachtId}/{scheduleId}")
     public ResponseEntity<?> updateSchedule(@PathVariable String yachtId,
                                             @PathVariable String scheduleId,
                                             @RequestParam Instant startDate,

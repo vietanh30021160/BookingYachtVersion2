@@ -41,6 +41,10 @@ public class YachtScheduleService implements IYachtSchedule {
                     YachtSchedule yachtSchedule = new YachtSchedule();
                     yachtSchedule.setSchedule(newSchedule);
                     yachtSchedule.setYacht(yacht.get());
+
+                    KeysYachtSchedule key = new KeysYachtSchedule(yachtId, newSchedule.getIdSchedule());
+                    yachtSchedule.setKeys(key);
+
                     yachtScheduleRepository.save(yachtSchedule);
                     return true;
                 }
@@ -67,15 +71,25 @@ public class YachtScheduleService implements IYachtSchedule {
     }
 
     @Override
-    public boolean updateYachtSchedule(String yachtId, String scheduleId, Instant startDate,  Instant endDate) {
+    public boolean updateYachtSchedule(String yachtId, String scheduleId, Instant newStartDate,  Instant newEndDate) {
         try{
-            Optional<Yacht> yacht = yachtRepository.findById(yachtId);
-            Optional<Schedule> schedule = scheduleRepository.findById(scheduleId);
-            if(yacht.isPresent() && schedule.isPresent()) {
-                schedule.get().setStartDate(startDate);
-                schedule.get().setEndDate(endDate);
-                scheduleRepository.save(schedule.get());
+            KeysYachtSchedule key = new KeysYachtSchedule(yachtId, scheduleId);
+            Optional<YachtSchedule> yachtSchedule = yachtScheduleRepository.findByKeys(key);
+            if (yachtSchedule.isPresent()) {
+                Schedule schedule = yachtSchedule.get().getSchedule();
+
+                // Check if there's an existing schedule with the new dates (but ignore the current schedule)
+                Optional<Schedule> existingSchedule = scheduleRepository.findByStartDateAndEndDate(newStartDate, newEndDate);
+                if (existingSchedule.isPresent() && !existingSchedule.get().getIdSchedule().equals(scheduleId)) {
+                    return false;
+                }
+
+                schedule.setStartDate(newStartDate);
+                schedule.setEndDate(newEndDate);
+                scheduleRepository.save(schedule);
                 return true;
+            } else {
+                return false;
             }
         }catch (Exception e){
             System.out.println("Error update yacht schedule: "+e.getMessage());

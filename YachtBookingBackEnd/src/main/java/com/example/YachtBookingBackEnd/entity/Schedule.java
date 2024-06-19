@@ -18,10 +18,10 @@ public class Schedule {
     @Column(name = "id_schedule", nullable = false)
     private String idSchedule;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", columnDefinition = "DATETIME")
     private Instant startDate;
 
-    @Column(name = "end_date")
+    @Column(name = "end_date", columnDefinition = "DATETIME")
     private Instant endDate;
 
     @OneToMany(mappedBy = "schedule")
