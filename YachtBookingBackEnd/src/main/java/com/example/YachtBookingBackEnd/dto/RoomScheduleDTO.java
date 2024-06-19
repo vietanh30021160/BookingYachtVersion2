@@ -20,5 +20,6 @@ public class RoomScheduleDTO {
     private Instant startDate;
     private Instant endDate;
     private long price;
+    private String  type;
 
 }
