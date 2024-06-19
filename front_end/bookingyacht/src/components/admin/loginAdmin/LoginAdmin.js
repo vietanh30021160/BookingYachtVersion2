@@ -1,12 +1,13 @@
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 import { useState } from 'react';
 import { BiSolidHome } from "react-icons/bi";
 import { ImSpinner10 } from "react-icons/im";
 import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import logo from '../../../assets/logo_swp.png';
 import './Auth.scss';
-
-const LoginAdmin = ({setIsLoggedIn}) => {
+const LoginAdmin = ({ setIsLoggedIn }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -36,11 +37,17 @@ const LoginAdmin = ({setIsLoggedIn}) => {
 
             // Kiểm tra token
             if (token) {
-                // Lưu token vào localStorage
-                localStorage.setItem('token', token);
-                setIsLoggedIn(true);
-                // Điều hướng tới trang dashboard hoặc bất kỳ trang bảo vệ nào khác
-                navigate('/dashboard');
+                const decodedToken = jwtDecode(token);
+                if (decodedToken.role && decodedToken.role === 'ROLE_ADMIN') {
+                    // Lưu token vào localStorage
+                    localStorage.setItem('token', token);
+                    setIsLoggedIn(true);
+                    // Điều hướng tới trang dashboard hoặc bất kỳ trang bảo vệ nào khác
+                    navigate('/dashboard');
+                }else{
+                    toast.error("Bạn không đủ quyền hạn để truy cập.")
+                }
+
             } else {
                 setError('Không nhận được token từ phản hồi.');
             }
@@ -55,25 +62,6 @@ const LoginAdmin = ({setIsLoggedIn}) => {
         const token = localStorage.getItem('token');
         return token ? `Bearer ${token}` : '';
     };
-
-    // const someProtectedAction = async () => {
-    //     const config = {
-    //         method: 'get',
-    //         url: 'http://localhost:8080/protected/resource', // URL của API được bảo vệ
-    //         headers: { 
-    //             'Authorization': getAuthHeader()
-    //         }
-    //     };
-
-    //     try {
-    //         const response = await axios(config);
-    //         // Xử lý phản hồi từ API được bảo vệ
-    //         console.log(response.data);
-    //     } catch (error) {
-    //         // Xử lý lỗi
-    //         console.error('Lỗi khi truy cập tài nguyên được bảo vệ', error);
-    //     }
-    // };
 
     return (
         <>

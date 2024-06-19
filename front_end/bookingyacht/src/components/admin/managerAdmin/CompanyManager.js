@@ -1,14 +1,48 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Dropdown, DropdownButton, Form, Modal, Table } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 import './Manager.scss';
 const CompanyManager = () => {
+
+    const getImageApi = `http://localhost:8080/api/companies/file/`
+
     const [companies, setCompanies] = useState([]);
     const [filteredCompanies, setFilteredCompanies] = useState([]);
     const [selectedCompany, setSelectedCompany] = useState(null);
 
     const [showCompanyModal, setShowCompanyModal] = useState(false);
     const [showDetailModal, setShowDetailModal] = useState(false);
+
+    const [showInfoDetailModal, setShowInfoDetailModal] = useState(false);
+    const [newAccountId, setNewAccountId] = useState(null);
+    const [companyDetail, setComPanyDetail] = useState({
+        address: '',
+        email: '',
+        logo: null,
+        name: ''
+    })
+
+    const [logo, setLogo] = useState(null);
+
+    useEffect(() => {
+        if (companyDetail.logo) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setLogo(reader.result);
+            };
+            reader.readAsDataURL(companyDetail.logo);
+        } else {
+            setLogo(null);
+        }
+    }, [companyDetail.logo])
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setComPanyDetail({ ...companyDetail, logo: file });
+        }
+    };
 
     const [searchName, setSearchName] = useState("");
     const [searchEmail, setSearchEmail] = useState("");
@@ -114,8 +148,11 @@ const CompanyManager = () => {
             };
             const response = await axios(config);
             if (response.data.data) {
-                setCreatetAccountMessage('Company created successfully.');
+                // setCreatetAccountMessage('Company created successfully.');
+                toast.success('Company created successfully.')
                 fetchCompanies();
+                setNewAccountId(response.data.idAccount)
+                setShowInfoDetailModal(true)
             } else {
                 setCreatetAccountMessage('Failed to create company. Please try again.');
             }
@@ -126,8 +163,47 @@ const CompanyManager = () => {
                 setCreatetAccountMessage('Error creating company. Please try again.');
             }
         }
-        // setShowCompanyModal(false);
+        setShowCompanyModal(false);
     };
+
+    const handleSubmitCompanyDetail = async event => {
+        event.preventDefault();
+        const { address, email, logo, name } = companyDetail;
+        const data = new FormData();
+        data.append('address', address);
+        data.append('email', email);
+        data.append('logo', logo);
+        data.append('name', name);
+        data.append('idAccount', newAccountId);
+
+        try {
+            const config = {
+                method: 'post',
+                url: `http://localhost:8080/api/admins/insertInfoCompanyByIdAccount/${newAccountId}`,
+                headers: {
+                    'Authorization': getAuthHeader(),
+                    'Content-Type': 'multipart/form-data'
+                },
+                data: data
+            };
+            await axios(config);
+            toast.success('Company details added successfully.');
+            setShowInfoDetailModal(false);
+            fetchCompanies();
+
+            // Reset infomation
+            setComPanyDetail({
+                address: '',
+                email: '',
+                logo: null,
+                name: ''
+            });
+            
+            setLogo(null);
+        } catch (error) {
+            toast.error('Created infomation company false');
+        }
+    }
 
     const handleDeleteCompany = companyId => {
         // Add delete company logic here
@@ -317,6 +393,58 @@ const CompanyManager = () => {
                         Close
                     </Button>
                 </Modal.Footer>
+            </Modal>
+
+            <Modal show={showInfoDetailModal} onHide={() => setShowInfoDetailModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Enter Infomation Company</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={handleSubmitCompanyDetail}>
+                        <Form.Group controlId='formCompanyName'>
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control
+                                type='text'
+                                placeholder='Enter company name'
+                                value={companyDetail.name}
+                                onChange={e => setComPanyDetail({ ...companyDetail, name: e.target.value })}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group controlId='formCompanyAddress'>
+                            <Form.Label>Address</Form.Label>
+                            <Form.Control
+                                type='text'
+                                placeholder='Enter company address'
+                                value={companyDetail.address}
+                                onChange={e => setComPanyDetail({ ...companyDetail, address: e.target.value })}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group controlId='formCompanyEmail'>
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control
+                                type='email'
+                                placeholder='Enter company email'
+                                value={companyDetail.email}
+                                onChange={e => setComPanyDetail({ ...companyDetail, email: e.target.value })}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group controlId='formCompanyLogo'>
+                            <Form.Label>Logo</Form.Label>
+                            <img src={logo || `${getImageApi}${companyDetail.logo}`} alt="Company Logo" style={{ width: 200, marginTop: 20 }} />
+                            <Form.Control
+                                type='file'
+                                onChange={handleFileChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Button variant='dark' type='submit'>
+                            Insert
+                        </Button>
+                    </Form>
+                </Modal.Body>
             </Modal>
         </div>
     );
