@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { getAllYachtHome } from '../../services/ApiServices';
 
 // import ReactPaginate from 'react-paginate';
-const ShowYacht = () => {
+const YachtList = () => {
     const [yacht, setYacht] = useState([]);
     const [pagging, setPagging] = useState([]); // page 1, 2, 3, ...
     const [paggingYacht, setPaggingYacht] = useState([]); // products in a page

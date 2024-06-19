@@ -168,4 +168,12 @@ public class CustomerController {
         dataResponse.setData(iSchedule.getAllScheduleByYacht(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
+    @GetMapping("/getAllCompany")
+    public ResponseEntity<?> getAllCompany() {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iCustomer.getAllCompanies());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
 }
