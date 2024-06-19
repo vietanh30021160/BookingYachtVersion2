@@ -1,5 +1,5 @@
 .find-yacht-body {
-  background-image: url('../../assets/section-background.png');
+  background-image: url("../../assets/section-background.png");
 
   .find-yacht-content {
     padding: 80px 32px;
@@ -10,7 +10,6 @@
       justify-content: center;
       width: 200px;
       height: 50px;
-
 
       .form-select {
         border-radius: 25px;
@@ -127,7 +126,7 @@
                 justify-content: center;
                 background-color: rgb(210, 207, 207);
                 border-radius: 25px;
-                width: fit-content;
+                // width: fit-content;
               }
             }
 
@@ -143,7 +142,6 @@
                 padding-bottom: 50px;
                 padding-top: 50px;
 
-
                 input {
                   border-radius: 35px;
                   padding: 10px;
@@ -152,7 +150,6 @@
                 select {
                   border-radius: 35px;
                 }
-
 
                 button {
                   border-radius: 20px;
@@ -165,7 +162,6 @@
                   &:hover {
                     background: #0aebdccf;
                   }
-
                 }
               }
             }
@@ -216,7 +212,6 @@
               }
 
               .infor {
-
                 .infor-body {
                   display: flex;
                   flex-direction: column;
@@ -241,7 +236,7 @@
 
                       .location {
                         border: none;
-                        width: fit-content;
+                        // width: fit-content;
                         background-color: rgb(210, 207, 207);
                         border-radius: 25px;
                         display: flex;
