@@ -290,6 +290,12 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/getAllRoomSchedule")
+    public ResponseEntity<?> getAllRoomSchedule(@PathVariable("idYacht") String idYacht ){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.getRoomAndSchedule(idYacht));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 
 
 }

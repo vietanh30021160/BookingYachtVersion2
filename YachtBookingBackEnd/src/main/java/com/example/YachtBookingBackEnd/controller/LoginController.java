@@ -23,8 +23,6 @@ public class LoginController {
     JwtHelper jwtHelper;
     @Autowired
     AuthenticationManager authenticationManager;
-    @Autowired
-    IAccount iAccount;
 
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestParam String username, @RequestParam String password ) {
