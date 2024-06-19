@@ -56,10 +56,7 @@ public class RoomService implements IRoom {
         return roomDTOList;
     }
 
-    @Override
-    public List<RoomScheduleDTO> getRoomAndSchedule(String idYacht) {
-        return roomRepository.findAllRoomsWithSchedulesByYachtId(idYacht);
-    }
+
 
     @Override
     public RoomDTO getRoomByID(String roomId) {
@@ -153,7 +150,10 @@ public class RoomService implements IRoom {
         return false;
     }
 
-
+    @Override
+    public List<RoomScheduleDTO> getRoomAndSchedule(String idYacht, String idSchedule) {
+        return roomRepository.findAllRoomsWithSchedulesByYachtId(idYacht, idSchedule);
+    }
 
 
 }

@@ -290,10 +290,11 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/getAllRoomSchedule/{idYacht}")
-    public ResponseEntity<?> getAllRoomSchedule(@PathVariable("idYacht") String idYacht ){
+    @GetMapping("/getAllRoomSchedule/{idYacht}/{idSchedule}")
+    public ResponseEntity<?> getAllRoomSchedule(@PathVariable("idYacht") String idYacht,
+                                                @PathVariable("idSchedule") String idSchedule){
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iRoom.getRoomAndSchedule(idYacht));
+        dataResponse.setData(iRoom.getRoomAndSchedule(idYacht,idSchedule));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

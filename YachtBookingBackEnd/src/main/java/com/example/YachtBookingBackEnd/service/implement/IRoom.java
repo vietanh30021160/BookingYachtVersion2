@@ -17,5 +17,6 @@ public interface IRoom {
 
     boolean updateRoom(String roomId, String description, int available);
 
-    List<RoomScheduleDTO> getRoomAndSchedule(String idYacht);
+
+    List<RoomScheduleDTO> getRoomAndSchedule(String idYacht, String idSchedule);
 }

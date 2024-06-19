@@ -18,7 +18,8 @@ public interface RoomRepository extends JpaRepository<Room, String > {
             "JOIN YachtSchedule ys ON y.idYacht = ys.yacht.idYacht " +
             "JOIN Schedule s ON ys.schedule.idSchedule = s.idSchedule " +
             "JOIN r.roomType rt " +
-            "WHERE y.idYacht = :idYacht")
-    List<RoomScheduleDTO> findAllRoomsWithSchedulesByYachtId(@Param("idYacht") String idYacht);
+            "WHERE y.idYacht = :idYacht and s.idSchedule=:idSchedule")
+    List<RoomScheduleDTO> findAllRoomsWithSchedulesByYachtId(@Param("idYacht") String idYacht,
+                                                             @Param("idSchedule") String idSchedule);
 
 }
