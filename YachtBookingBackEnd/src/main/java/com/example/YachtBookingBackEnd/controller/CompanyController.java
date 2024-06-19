@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Date;
 
 @CrossOrigin("*")
 @RestController
@@ -20,19 +22,18 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompanyController {
-    IYacht iYacht;
-    IFile iFile;
-    IYachtImage iYachtImage;
-    IService iService;
-    IYachtService iYachtService;
-    ICompany iCompany;
-    IRoomImage iRoomImage;
-    IRoomType iRoomType;
-
-    IRoom iRoom;
-
-    IPayment iPayment;
-
+    private IYacht iYacht;
+    private IFile iFile;
+    private IYachtImage iYachtImage;
+    private IService iService;
+    private IYachtService iYachtService;
+    private ICompany iCompany;
+    private IRoomImage iRoomImage;
+    private IRoomType iRoomType;
+    private IRoom iRoom;
+    private IPayment iPayment;
+    private ISchedule iSchedule;
+    private IYachtSchedule iYachtSchedule;
 
     @GetMapping("/allYacht")
     public ResponseEntity<?> viewYacht() {
@@ -289,7 +290,36 @@ public class CompanyController {
         dataResponse.setData(iCompany.getFeedbacksByCompanyId(companyId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+    @GetMapping("/getScheduleByYacht/{yachtId}")
+    public ResponseEntity<?> getScheduleByYacht(@PathVariable String yachtId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iSchedule.getAllScheduleByYacht(yachtId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/addSchedule/{yachtId}")
+    public ResponseEntity<?> addSchedule(@PathVariable String yachtId,
+                                         @RequestParam Instant startDate,
+                                         @RequestParam Instant endDate){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData((iYachtSchedule.addYachtSchedule(yachtId, startDate, endDate)));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 
+    @GetMapping("/deleteSchedule/{yachtId}/{scheduleId}")
+    public ResponseEntity<?> deleteSchedule(@PathVariable String yachtId,
+                                            @PathVariable String scheduleId){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYachtSchedule.deleteYachtSchedule(yachtId, scheduleId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 
-
+    @GetMapping("/updateSchedule/{yachtId}/{scheduleId}")
+    public ResponseEntity<?> updateSchedule(@PathVariable String yachtId,
+                                            @PathVariable String scheduleId,
+                                            @RequestParam Instant startDate,
+                                            @RequestParam Instant endDate){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYachtSchedule.updateYachtSchedule(yachtId, scheduleId, startDate, endDate));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 }

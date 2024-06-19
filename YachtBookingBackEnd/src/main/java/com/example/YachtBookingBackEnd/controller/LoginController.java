@@ -20,11 +20,10 @@ public class LoginController {
     @Autowired
     private IAccount iAccount;
     @Autowired
-    JwtHelper jwtHelper;
+    private JwtHelper jwtHelper;
     @Autowired
     AuthenticationManager authenticationManager;
-    @Autowired
-    IAccount iAccount;
+
 
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestParam String username, @RequestParam String password ) {
