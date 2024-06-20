@@ -1,8 +1,10 @@
 package com.example.YachtBookingBackEnd.service.implement;
 
 
+import com.example.YachtBookingBackEnd.dto.CompanyDTO;
 import com.example.YachtBookingBackEnd.dto.CustomerDTO;
 import com.example.YachtBookingBackEnd.dto.FeedbackDTO;
+import com.example.YachtBookingBackEnd.entity.Company;
 
 import java.util.List;
 
@@ -22,4 +24,5 @@ public interface ICustomer {
 
     List<FeedbackDTO> getFeedbackByYachtId(String yachtId);
 
+    List<CompanyDTO> getAllCompanies();
 }

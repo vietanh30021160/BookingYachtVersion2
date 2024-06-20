@@ -271,23 +271,7 @@ public class YachtService implements IYacht {
         return yachtDTO;
     }
 
-    @Override
-    public List<LocationDTO> getAllLocation() {
-        List<LocationDTO> listLocationDTO = new ArrayList<>();
-        try{
-            List<Location> locationList = locationRepository.findAll();
-            System.out.println(locationList);
-            for (Location location : locationList) {
-                LocationDTO locationDTO = new LocationDTO();
-                locationDTO.setIdLocation(location.getIdLocation());
-                locationDTO.setName(location.getName());
-                listLocationDTO.add(locationDTO);
-                }
 
-        }catch (Exception e){
-            System.out.println("Error LocationDTO " + e.getMessage());
-        }
-        return listLocationDTO;
-    }
+
 
 }

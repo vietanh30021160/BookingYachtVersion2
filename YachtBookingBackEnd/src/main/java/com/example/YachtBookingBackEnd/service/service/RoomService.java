@@ -2,6 +2,7 @@ package com.example.YachtBookingBackEnd.service.service;
 
 import com.example.YachtBookingBackEnd.dto.RoomDTO;
 import com.example.YachtBookingBackEnd.dto.RoomImageDTO;
+import com.example.YachtBookingBackEnd.dto.RoomScheduleDTO;
 import com.example.YachtBookingBackEnd.dto.RoomTypeDTO;
 import com.example.YachtBookingBackEnd.entity.Room;
 import com.example.YachtBookingBackEnd.entity.RoomImage;
@@ -54,6 +55,8 @@ public class RoomService implements IRoom {
         }
         return roomDTOList;
     }
+
+
 
     @Override
     public RoomDTO getRoomByID(String roomId) {
@@ -145,6 +148,11 @@ public class RoomService implements IRoom {
 
         }
         return false;
+    }
+
+    @Override
+    public List<RoomScheduleDTO> getRoomAndSchedule(String idYacht, String idSchedule) {
+        return roomRepository.findAllRoomsWithSchedulesByYachtId(idYacht, idSchedule);
     }
 
 

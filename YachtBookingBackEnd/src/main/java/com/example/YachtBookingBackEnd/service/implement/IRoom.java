@@ -1,6 +1,7 @@
 package com.example.YachtBookingBackEnd.service.implement;
 
 import com.example.YachtBookingBackEnd.dto.RoomDTO;
+import com.example.YachtBookingBackEnd.dto.RoomScheduleDTO;
 
 import java.util.List;
 
@@ -15,4 +16,7 @@ public interface IRoom {
 
 
     boolean updateRoom(String roomId, String description, int available);
+
+
+    List<RoomScheduleDTO> getRoomAndSchedule(String idYacht, String idSchedule);
 }

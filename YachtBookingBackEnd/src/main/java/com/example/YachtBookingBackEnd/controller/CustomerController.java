@@ -23,14 +23,16 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CustomerController {
-    IAccount iAccount;
-    ICustomer iCustomer;
-    IPayment iPayment;
-    IYacht iYacht;
-    IFile iFile;
-    IYachtImage iYachtImage;
-    IService iService;
-    IYachtService iYachtService;
+    private IAccount iAccount;
+    private ICustomer iCustomer;
+    private IPayment iPayment;
+    private IYacht iYacht;
+    private IFile iFile;
+    private IYachtImage iYachtImage;
+    private IService iService;
+    private IYachtService iYachtService;
+    private ISchedule iSchedule;
+    private IYachtType iYachtType;
 
 
 
@@ -153,6 +155,31 @@ public class CustomerController {
     public ResponseEntity<?> findYachtByYachtId(@PathVariable String yachtId) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYacht.findYachtById(yachtId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getAllSchedule")
+    public ResponseEntity<?> getAllSchedule() {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iSchedule.getAllSchedule());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getScheduleByYacht/{yachtId}")
+    public ResponseEntity<?> getScheduleByYacht(@PathVariable String yachtId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iSchedule.getAllScheduleByYacht(yachtId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllCompany")
+    public ResponseEntity<?> getAllCompany() {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iCustomer.getAllCompanies());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getYachtType")
+    public ResponseEntity<?> getYachtType(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYachtType.getYachtTypes());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

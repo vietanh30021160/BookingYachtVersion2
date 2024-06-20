@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 @CrossOrigin("*")
@@ -20,19 +21,20 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompanyController {
-    IYacht iYacht;
-    IFile iFile;
-    IYachtImage iYachtImage;
-    IService iService;
-    IYachtService iYachtService;
-    ICompany iCompany;
-    IRoomImage iRoomImage;
-    IRoomType iRoomType;
-
-    IRoom iRoom;
-
-    IPayment iPayment;
-
+    private IYacht iYacht;
+    private IFile iFile;
+    private IYachtImage iYachtImage;
+    private IService iService;
+    private IYachtService iYachtService;
+    private ICompany iCompany;
+    private IRoomImage iRoomImage;
+    private IRoomType iRoomType;
+    private IRoom iRoom;
+    private IPayment iPayment;
+    private ISchedule iSchedule;
+    private IYachtSchedule iYachtSchedule;
+    private IYachtType iYachtType;
+    private ILocation ilocation;
 
     @GetMapping("/allYacht")
     public ResponseEntity<?> viewYacht() {
@@ -164,7 +166,7 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/updateProfile/{companyId}")
+    @PutMapping("/updateProfile/{companyId}")
     public ResponseEntity<?> updateCompany(@PathVariable String companyId,
                                            @RequestParam String name,
                                            @RequestParam String address,
@@ -201,12 +203,13 @@ public class CompanyController {
         dataResponse.setData(iYachtService.deleteYachtService(yachtId, serviceId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-    @PostMapping("/updateYachtService/{yachtId}")
+    @PutMapping("/updateYachtService/{yachtId}/{serviceId}")
     public ResponseEntity<?> updateYachtService(@PathVariable String yachtId,
+                                                @PathVariable String serviceId,
                                                 @RequestParam String service,
                                                 @RequestParam long price) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iYachtService.updateYachtService(yachtId, service, price));
+        dataResponse.setData(iYachtService.updateYachtService(yachtId, serviceId, service, price));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @GetMapping("/findYachtById/{yachtId}")
@@ -290,14 +293,57 @@ public class CompanyController {
         dataResponse.setData(iCompany.getFeedbacksByCompanyId(companyId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+    @GetMapping("/getScheduleByYacht/{yachtId}")
+    public ResponseEntity<?> getScheduleByYacht(@PathVariable String yachtId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iSchedule.getAllScheduleByYacht(yachtId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @PostMapping("/addSchedule/{yachtId}")
+    public ResponseEntity<?> addSchedule(@PathVariable String yachtId,
+                                         @RequestParam Instant startDate,
+                                         @RequestParam Instant endDate){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData((iYachtSchedule.addYachtSchedule(yachtId, startDate, endDate)));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 
     @GetMapping("/getAllLocation")
     public ResponseEntity<?> getAllLocation(){
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iYacht.getAllLocation());
+        dataResponse.setData(ilocation.getAllLocation());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteSchedule/{yachtId}/{scheduleId}")
+    public ResponseEntity<?> deleteSchedule(@PathVariable String yachtId,
+                                            @PathVariable String scheduleId){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYachtSchedule.deleteYachtSchedule(yachtId, scheduleId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
 
-
+    @PutMapping("/updateSchedule/{yachtId}/{scheduleId}")
+    public ResponseEntity<?> updateSchedule(@PathVariable String yachtId,
+                                            @PathVariable String scheduleId,
+                                            @RequestParam Instant startDate,
+                                            @RequestParam Instant endDate){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYachtSchedule.updateYachtSchedule(yachtId, scheduleId, startDate, endDate));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getAllRoomSchedule/{idYacht}/{idSchedule}")
+    public ResponseEntity<?> getAllRoomSchedule(@PathVariable("idYacht") String idYacht,
+                                                @PathVariable("idSchedule") String idSchedule){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.getRoomAndSchedule(idYacht,idSchedule));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getYachtType")
+    public ResponseEntity<?> getYachtType(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYachtType.getYachtTypes());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 }

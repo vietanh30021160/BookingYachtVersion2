@@ -42,10 +42,10 @@ const ShowYacht = (props) => {
                 </label>
             </div>
             <div className='yacht-content'>
-                {yacht.map((item) => {
+                {yacht && yacht.length > 0 && (yacht.length > 6 ? yacht.slice(0, 6) : yacht).map((item) => {
                     return (
-                        <div className='col-12 col-sm-6 col-md-3 col-lg-3 mb-4' key={item.idYacht}>
-                            <NavLink to={`/mainpage/${item.idYacht}`} className='nav-link'>
+                        <div className='col-12 col-sm-6 col-md-3 col-lg-3 mb-4'>
+                            <NavLink key={item.idYacht} to='/duthuyen' className='nav-link'>
                                 <Card style={{ width: '100%', height: '350px' }}>
                                     <Card.Img width={268} height={200} variant="top" src={`${avatarYachtApi}${item.image}`} />
                                     <Card.Body>

@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -26,6 +27,18 @@ public class AdminController {
                                                   @RequestParam String password) throws Exception {
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setData(iAccount.createAccountCompany(username, password));
+        dataResponse.setIdCompany(iAccount.getIdAccountByUserName(username));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/insertInfoCompanyByIdAccount/{idAccount}")
+    public ResponseEntity<?> insertInfoCompanyByIdAccount(@RequestParam String address,
+                                                          @RequestParam String email,
+                                                          @RequestParam MultipartFile logo,
+                                                          @RequestParam String name,
+                                                          @PathVariable String idAccount) {
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iAccount.insertInfoCompanyByIdAccount(address,email,logo,name, idAccount));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

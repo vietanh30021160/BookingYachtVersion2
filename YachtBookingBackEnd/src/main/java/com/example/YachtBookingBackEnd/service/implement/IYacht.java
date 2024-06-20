@@ -17,6 +17,5 @@ public interface IYacht {
     List<YachtDTO> findYachtByCompanyId(String companyId);
     YachtDTO findYachtById(String id);
 
-    List<LocationDTO> getAllLocation();
 }
 

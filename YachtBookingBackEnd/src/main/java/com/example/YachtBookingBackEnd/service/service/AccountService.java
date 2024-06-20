@@ -13,11 +13,14 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor // Tạo constructor (final)
@@ -50,14 +53,14 @@ public class AccountService implements IAccount {
             accountRepository.save(account);
 
             //Thêm thông tin của công ty
-            Company company = new Company();
-            company.setName("company");
-            company.setAddress("address");
-            company.setEmail(generateRandomEmail());
-            company.setExist(1);
-            company.setAccount(account);
+//            Company company = new Company();
+//            company.setName("company");
+//            company.setAddress("address");
+//            company.setEmail(generateRandomEmail());
+//            company.setExist(1);
+//            company.setAccount(account);
 
-            companyRepository.save(company);
+//            companyRepository.save(company);
 
             return true;
         } catch (Exception e) {
@@ -195,5 +198,41 @@ public class AccountService implements IAccount {
         }
         return "";
     }
+
+    @Override
+    public boolean insertInfoCompanyByIdAccount(String address, String email,MultipartFile logo, String name, String idAccount) {
+
+        if(!isValidEmail(email)){
+            log.error("Invalid email format");
+            throw new IllegalArgumentException("Invalid email format");
+        }
+        try{
+            Company company = new Company();
+            company.setAddress(address);
+            company.setEmail(email);
+            company.setExist(1);
+            company.setName(name);
+            company.setLogo(logo.getOriginalFilename());
+            Account account = new Account();
+            account.setIdAccount(idAccount);
+            company.setAccount(account);
+            companyRepository.save(company);
+            return true;
+        }catch (Exception e){
+            log.error("Exception get company by id account: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        if (email == null) {
+            return false;
+        }
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
 }
 

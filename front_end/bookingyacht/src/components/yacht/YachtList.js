@@ -76,7 +76,7 @@ const YachtList = () => {
                             </div>
                             <div className="card-body col-md-7">
                                 <div className='card-content'>
-                                    <div style={{ padding: '10px', color: '#475467' }} className='location'><FaLocationDot />{yacht.location.name}</div>
+                                    <div style={{ padding: '10px', color: '#475467', width: '80px' }} className='location'><FaLocationDot />{yacht.location.name}</div>
                                     <h4 className='name' style={{ marginBottom: 0, fontWeight: 'bold' }}>{yacht.name}</h4>
                                     <p style={{ margin: '0px' }}>Hạ thủy: {yacht.launch} - Vỏ Tàu {yacht.hullBody}</p>
                                     <div style={{ fontWeight: 'bold' }}> <RiShipLine /> {yacht.itinerary} </div>

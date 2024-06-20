@@ -4,6 +4,7 @@ import i_content from '../../assets/image_1.webp';
 import Enterprice from '../home/Enterprice';
 import '../home/Home.scss';
 import './Enterprise.scss';
+import ViewInfoCompany from './ViewInfoCompany';
 // Component Header
 const Header = () => (
   <div className="header">
@@ -95,6 +96,9 @@ const HeaderPage = () => (
         </div>
         <div className="col-lg-6">
           <BusinessItems />
+        </div>
+        <div>
+          <ViewInfoCompany/>
         </div>
       </div>
     </div>

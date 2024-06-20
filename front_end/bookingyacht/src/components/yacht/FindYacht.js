@@ -2,7 +2,7 @@ import FormSearch from "../home/FormSearch";
 import './FindYacht.scss';
 import i_content from '../../assets/image_1.webp';
 import Form from 'react-bootstrap/Form';
-import ShowYacht from "./YachtList";
+import YachtList from "./YachtList";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { getAllYacht, getYachtService } from "../../services/ApiServices";
@@ -50,7 +50,7 @@ const FindYacht = () => {
                 </div>
                 <div className='feedback-header my-5 row'>
                     <div className='yacht-title col-md mx-4'>
-                        <h2 style={{ fontWeight: 'bold' }}>Tìm Thấy <br /> Kết Quả</h2>
+                        <h2 style={{ fontWeight: 'bold' }}>Tìm Thấy Kết Quả</h2>
                         <div>
                             <img src={i_content} alt="" />
                         </div>
@@ -100,7 +100,7 @@ const FindYacht = () => {
                     <div className="col-1"></div>
 
                     <div className="col-8 infor">
-                        <ShowYacht
+                        <YachtList
                             yacht={yacht}
                         />
                     </div>
