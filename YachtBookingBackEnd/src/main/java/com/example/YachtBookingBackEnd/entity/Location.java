@@ -13,7 +13,7 @@ import java.util.Set;
 @Table(name = "location")
 public class Location {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_location", nullable = false)
     private String idLocation;
 

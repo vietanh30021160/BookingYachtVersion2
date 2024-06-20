@@ -11,7 +11,7 @@ import lombok.Setter;
 @Table(name = "room_image")
 public class RoomImage {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_room_image", nullable = false)
     private String idRoomImage;
 

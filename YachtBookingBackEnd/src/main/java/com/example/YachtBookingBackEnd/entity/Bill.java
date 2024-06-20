@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "bill")
 public class Bill {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_bill", nullable = false)
     private String idBill;
 

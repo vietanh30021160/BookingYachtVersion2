@@ -12,7 +12,7 @@ import java.util.Set;
 @Table(name = "service")
 public class Service {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_service", nullable = false)
     private String idService;
 
