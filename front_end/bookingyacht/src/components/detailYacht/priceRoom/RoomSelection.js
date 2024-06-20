@@ -17,6 +17,7 @@ const services = [
 
 
 const RoomSelection = ({ yacht }) => {
+    const [rooms, setRooms] = useState([]);
     const [quantities, setQuantities] = useState(rooms.reduce((acc, room) => ({ ...acc, [room.id]: 0 }), {}));
     const [showDetailRom, setShowDetailRom] = useState(false);
     const [selectedRoom, setSelectedRoom] = useState(null);
@@ -24,7 +25,18 @@ const RoomSelection = ({ yacht }) => {
     const [selectedRooms, setSelectedRooms] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [selectedServices, setSelectedServices] = useState(rooms.reduce((acc, room) => ({ ...acc, [room.id]: [] }), {}));
-    const [rooms, setRooms] = useState([]);
+
+
+
+    const getRoomList = async (yachtId) => {
+        let res = await getRoomByYacht(yachtId)
+        setRooms(res.data.data)
+        console.log(res.data.data)
+    }
+
+    useEffect(() => {
+        getRoomList(yacht.idYacht)
+    }, [yacht.idYacht])
 
     useEffect(() => {
         const newSelectedRooms = rooms.filter(room => quantities[room.id] > 0);
@@ -39,24 +51,17 @@ const RoomSelection = ({ yacht }) => {
             return acc + (roomServicePrice * quantities[room.id]);
         }, 0)
         setTotalPrice(totalRoomPrice + totalServicePrice);
-        // setTotalPrice(newSelectedRooms.reduce((acc, room) => acc + (room.price * quantities[room.id]), 0));
+        setTotalPrice(newSelectedRooms.reduce((acc, room) => acc + (room.price * quantities[room.id]), 0));
     }, [quantities, selectedServices]);
 
-    const getRoomList = async (yachtId) => {
-        let res = await getRoomByYacht(yachtId)
-        setRooms(res.data.data)
-    }
 
-    useEffect(() => {
-        getRoomList(yacht.idYacht)
-    }, [yacht.idYacht])
 
-    const handleQuantityChange = (id, delta) => {
-        setQuantities(prevQuantities => ({
-            ...prevQuantities,
-            [id]: Math.max(0, prevQuantities[id] + delta)
-        }));
-    };
+    // const handleQuantityChange = (id, delta) => {
+    //     setQuantities(prevQuantities => ({
+    //         ...prevQuantities,
+    //         [id]: Math.max(0, prevQuantities[id] + delta)
+    //     }));
+    // };
     const handleServiceChange = (roomId, serviceId) => {
         setSelectedServices(prevServices => {
             const roomServices = prevServices[roomId] || [];
@@ -67,7 +72,7 @@ const RoomSelection = ({ yacht }) => {
         });
     };
     const handleReset = () => {
-        setQuantities(rooms.reduce((acc, room) => ({ ...acc, [room.id]: 0 }), {}));
+        // setQuantities(rooms.reduce((acc, room) => ({ ...acc, [room.id]: 0 }), {}));
         setSelectedServices(rooms.reduce((acc, room) => ({ ...acc, [room.id]: [] }), {}));
     };
 
@@ -83,8 +88,9 @@ const RoomSelection = ({ yacht }) => {
     return (
         <Container>
             <h2 className='mb-4' style={{ fontWeight: 'bold' }}>Các loại phòng & giá</h2>
+
             <div className='form-select'>
-                <Button variant="outline-danger" onClick={handleReset}>Xóa lựa chọn</Button>
+
                 {rooms.map(room => (
                     <RoomItem
                         key={room.idRoom}
@@ -99,6 +105,7 @@ const RoomSelection = ({ yacht }) => {
                 <div className='my-3'>
                     <div className="row">
                         <div className="col-md-6 col-12">
+                            <Button className='mb-3' variant="outline-danger">Xóa lựa chọn</Button>
                             <h5>Tổng tiền: {totalPrice.toLocaleString()} đ</h5>
                         </div>
                         <div className="col-md-6 col-12 text-end">
@@ -108,18 +115,18 @@ const RoomSelection = ({ yacht }) => {
                     </div>
                 </div>
             </div>
-            <RoomDetailModal
+            {/* <RoomDetailModal
                 room={selectedRoom}
                 show={showDetailRom}
                 handleClose={() => setShowDetailRom(false)}
-            />
+            /> */}
             <BookNowModal
                 selectedRooms={selectedRooms}
-                quantities={quantities}
-                selectedServices={selectedServices}
+                // quantities={quantities}
+                // selectedServices={selectedServices}
                 services={services}
-                handleQuantityChange={handleQuantityChange}
-                handleServiceChange={handleServiceChange}
+                // handleQuantityChange={handleQuantityChange}
+                // handleServiceChange={handleServiceChange}
                 totalPrice={totalPrice}
                 show={showBookNow}
                 handleClose={() => setShowBookNow(false)}

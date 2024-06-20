@@ -67,3 +67,6 @@ export const createYacht = (idCompany, name, image, launch, hullBody, descriptio
 export const getRoomByYacht = (yachtId) => {
     return axios.get(`/api/customer/getRoomByYacht/${yachtId}`)
 }
+export const getRoomById = (roomId) => {
+    return axios.get(`/api/customer/getRoomById/${roomId}`)
+}

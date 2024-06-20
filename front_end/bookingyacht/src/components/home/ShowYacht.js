@@ -16,10 +16,9 @@ const ShowYacht = (props) => {
 
     const getAllYachtt = async () => {
         let res = await getAllYacht()
-        if (res && res.data.success === true) {
-            setYacht(res.data.data)
+        setYacht(res.data.data)
 
-        }
+
     }
 
     const avatarYachtApi = 'http://localhost:8080/api/customer/file/'
