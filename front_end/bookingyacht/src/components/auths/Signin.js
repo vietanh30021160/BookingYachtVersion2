@@ -36,6 +36,7 @@ const Signin = () => {
     const navigate = useNavigate();
 
     const handleLogin = async () => {
+        setLoading(true)
         let res = await login(userName.trim(), password.trim());
         console.log(res);
         if (userName === '' || password === '') {
@@ -43,15 +44,15 @@ const Signin = () => {
             setLoading(false);
         } else if (res && res.data.status === 200 && res.data.success === true) {
             const role = jwtDecode(res.data.data);
-            dispatch(doLogin(res.data.data, role.role));
+            dispatch(doLogin(res.data.data, role.role, res.data.idCompany));
             if (role && role.role === 'ROLE_COMPANY') {
                 toast.success("Login Successful");
                 setLoading(false);
-                navigate('/manage-company');
+                navigate(`/manage-company`);
             } else {
                 toast.success("Login Successful");
                 setLoading(false);
-                navigate('/');
+                navigate(`/`);
             }
 
         } else {

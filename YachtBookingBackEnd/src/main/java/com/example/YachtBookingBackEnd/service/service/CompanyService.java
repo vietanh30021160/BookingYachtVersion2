@@ -157,6 +157,7 @@ public class CompanyService implements ICompany {
         }
     }
 
+
     @Override
     public List<CompanyDTO> getAllCompany() {
         List<CompanyDTO> companyDTOList = new ArrayList<>();

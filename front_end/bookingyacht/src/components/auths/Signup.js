@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import logo from '../../assets/logo_swp.png'
 import { register, registerCustomer } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useParams } from 'react-router-dom';
 
 import { IoChevronBackSharp } from "react-icons/io5";
 
@@ -12,6 +12,7 @@ const Signup = () => {
     const [confrimPassword, setConfirmpassword] = useState('')
 
     const navigate = useNavigate();
+    const { idCustomer } = useParams();
 
     const handleRegister = async () => {
         let res = await registerCustomer(userName, password);
@@ -24,7 +25,7 @@ const Signup = () => {
         else if (res && res.data.status === 200 && res.data.success === true) {
             toast.success('register success')
             console.log(res);
-            navigate('/information')
+            navigate(`/information/${res.data.idAccount}`)
         } else {
             toast.error('create fail')
         }

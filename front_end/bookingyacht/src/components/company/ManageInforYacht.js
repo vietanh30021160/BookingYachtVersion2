@@ -157,9 +157,9 @@ const ManageInforYacht = (props) => {
                             </div>
                             <div className='col-md-12 img-preview'>
                                 {previewImage ?
-                                    <img src={`http://localhost:8080/api/customer/file/${previewImage}`} />
+                                    <img src={previewImage} />
                                     :
-                                    <span>Preview Avartar</span>
+                                    <span>Update Avartar</span>
                                 }
                             </div>
 

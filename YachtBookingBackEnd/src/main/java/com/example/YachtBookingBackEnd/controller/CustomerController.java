@@ -32,6 +32,7 @@ public class CustomerController {
     private IService iService;
     private IYachtService iYachtService;
     private ISchedule iSchedule;
+    private IYachtType iYachtType;
 
 
 
@@ -173,6 +174,12 @@ public class CustomerController {
     public ResponseEntity<?> getAllCompany() {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iCustomer.getAllCompanies());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getYachtType")
+    public ResponseEntity<?> getYachtType(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYachtType.getYachtTypes());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import ModalUpdateProfile from './Modal/ModalUpdateProfile';
-const ProfileCompany = () => {
+const ProfileCompany = (props) => {
+
+    const { idComapny } = props;
     const [isShowModal, setIsShowModal] = useState(false);
+
     const handleClose = () => {
         setIsShowModal(false);
     }
+
     return (
 
         <div>
@@ -61,6 +65,7 @@ const ProfileCompany = () => {
             <ModalUpdateProfile
                 show={isShowModal}
                 handleClose={handleClose}
+                idComapny={idComapny}
             />
 
         </div>

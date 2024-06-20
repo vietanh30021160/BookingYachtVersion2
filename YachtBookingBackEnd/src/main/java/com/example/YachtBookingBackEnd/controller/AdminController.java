@@ -27,7 +27,7 @@ public class AdminController {
                                                   @RequestParam String password) throws Exception {
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setData(iAccount.createAccountCompany(username, password));
-        dataResponse.setIdAccount(iAccount.getIdAccountByUserName(username));
+        dataResponse.setIdCompany(iAccount.getIdAccountByUserName(username));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
