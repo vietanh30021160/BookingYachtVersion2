@@ -71,10 +71,11 @@ public class CompanyController {
                                      @RequestParam double area,
                                      @RequestParam String description,
                                      @RequestParam String idRoomType,
-                                     @RequestParam String idYacht
+                                     @RequestParam String idYacht,
+                                     @RequestParam MultipartFile avatar
                                      ){
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iRoom.addRoom(roomName, area, description, idRoomType, idYacht));
+        dataResponse.setData(iRoom.addRoom(roomName, area, description, idRoomType, idYacht, avatar));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @PutMapping("/yacht/updateYacht/{yachtId}")
@@ -95,9 +96,10 @@ public class CompanyController {
     @PutMapping("/room/updateRoom/{roomId}")
     public ResponseEntity<?> updateRoom(@PathVariable String roomId,
                                         @RequestParam String description,
+                                        @RequestParam MultipartFile avatar,
                                         @RequestParam int available){
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iRoom.updateRoom(roomId,  description,  available));
+        dataResponse.setData(iRoom.updateRoom(roomId, description, available, avatar));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @DeleteMapping("/yacht/delete/{id}")
@@ -328,6 +330,12 @@ public class CompanyController {
                                                 @PathVariable("idSchedule") String idSchedule){
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iRoom.getRoomAndSchedule(idYacht,idSchedule));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getRoomByYacht/{yachtId}")
+    public ResponseEntity<?> getRoomByYacht(@PathVariable String yachtId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.getRoomByYacht(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 }
