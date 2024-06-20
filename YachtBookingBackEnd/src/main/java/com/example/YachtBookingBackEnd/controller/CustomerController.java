@@ -13,9 +13,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 @CrossOrigin("*")
 @RestController
@@ -66,10 +69,9 @@ public class CustomerController {
     }
 
     @GetMapping("/payment-callback")
-    public ResponseEntity<?> handlePaymentCallback(HttpServletResponse response,
-                                                   HttpServletRequest request) {
+    public ResponseEntity<?> handleVnpayReturn(HttpServletRequest request) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iPayment.paymentCallbackHandler(response, request));
+        dataResponse.setData(iPayment.handleReturn(request));
 
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }

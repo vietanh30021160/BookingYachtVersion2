@@ -9,11 +9,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
 public interface BookingOrderRepository extends JpaRepository<BookingOrder, String> {
-    BookingOrder findByTxnRef(String txnRef);
+    Optional<BookingOrder> findByTxnRef(String txnRef);
 
     @Query("SELECT b FROM BookingOrder b " +
             "JOIN FETCH b.bookingRoomSet br " +
