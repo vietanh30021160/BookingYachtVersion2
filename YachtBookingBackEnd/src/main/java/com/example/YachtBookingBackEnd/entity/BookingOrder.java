@@ -16,7 +16,7 @@ import java.util.Set;
 @Table(name = "booking_order")
 public class BookingOrder {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_booking", nullable = false)
     private String idBooking;
 

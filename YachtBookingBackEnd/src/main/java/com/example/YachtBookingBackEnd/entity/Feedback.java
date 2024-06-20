@@ -11,7 +11,7 @@ import lombok.Setter;
 @Table(name = "feedback")
 public class Feedback {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_feedback", nullable = false)
     private String idFeedback;
 
