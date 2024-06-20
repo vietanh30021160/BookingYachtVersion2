@@ -40,8 +40,8 @@ export const registerCustomer = (username, password) => {
     return axios.post('/api/customer/accounts', data)
 }
 
-export const getAllYachtCompany = () => {
-    return axios.get('/api/companies/allYacht');
+export const getAllYachtCompany = (idCompany) => {
+    return axios.get(`/api/companies/yacht/findByCompany/${idCompany}`);
 }
 export const getYachtById = (yachtId) => {
     return axios.get(`/api/companies/findYachtById/${yachtId}`);
@@ -65,6 +65,54 @@ export const createYacht = (idCompany, name, image, launch, hullBody, descriptio
 }
 export const getRoomByYacht = () => {
     return axios.get('/api/customer/room');
+}
+
+export const fillInformationCustomer = (idCustomer, fullName, email, phoneNumber, address) => {
+    const data = new FormData()
+    data.append('fullName', fullName);
+    data.append('email', email);
+    data.append('phoneNumber', phoneNumber);
+    data.append('address', address);
+
+    return axios.put(`/api/customer/profile/${idCustomer}`, data);
+}
+
+export const fillInformationCompany = (idCompany, name, address, logo, email) => {
+    const data = new FormData()
+    data.append('name', name);
+    data.append('email', email);
+    data.append('logo', logo);
+    data.append('address', address);
+
+    return axios.put(`/api/customer/profile/${idCompany}`, data);
+}
+
+export const getAllLocation = () => {
+    return axios.get('/api/companies/getAllLocation');
+}
+
+export const createYachtImage = (idYacht, image) => {
+    const data = new FormData();
+    data.append('image', image);
+    return axios.post(`/api/companies/yacht/addImage/${idYacht}`, data);
+}
+
+export const getYachtImage = (idYacht) => {
+    return axios.get(`/api/companies/yacht/image/${idYacht}`);
+}
+
+export const deleteYachtImage = (idImage) => {
+    return axios.delete(`/api/companies/yacht/deleteImage/${idImage}`);
+}
+
+export const updateYachtImage = (idImage, image) => {
+    const data = new FormData();
+    data.append('image', image)
+    return axios.put(`/api/companies/yacht/updateImage/${idImage}`, data);
+}
+
+export const getFeedbackCompany = (idCompany) => {
+    return axios.get(`/api/companies/feedBackByIdCompany/${idCompany}`)
 }
 
 

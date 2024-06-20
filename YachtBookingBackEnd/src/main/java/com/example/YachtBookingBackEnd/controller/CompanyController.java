@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Date;
 
 @CrossOrigin("*")
 @RestController
@@ -23,6 +22,7 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompanyController {
     private IYacht iYacht;
+    IBookingOrder iBookingOrder;
     private IFile iFile;
     private IYachtImage iYachtImage;
     private IService iService;
@@ -34,6 +34,8 @@ public class CompanyController {
     private IPayment iPayment;
     private ISchedule iSchedule;
     private IYachtSchedule iYachtSchedule;
+    private IYachtType iYachtType;
+    private ILocation ilocation;
 
     @GetMapping("/allYacht")
     public ResponseEntity<?> viewYacht() {
@@ -142,6 +144,7 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
+
     @PostMapping("/confirm")
     public ResponseEntity<?> confirmVnPayPayment(@RequestParam String idBookingOrder) {
         DataResponse dataResponse = new DataResponse();
@@ -164,7 +167,7 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/updateProfile/{companyId}")
+    @PutMapping("/updateProfile/{companyId}")
     public ResponseEntity<?> updateCompany(@PathVariable String companyId,
                                            @RequestParam String name,
                                            @RequestParam String address,
@@ -306,6 +309,13 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/getAllLocation")
+    public ResponseEntity<?> getAllLocation(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(ilocation.getAllLocation());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
     @DeleteMapping("/deleteSchedule/{yachtId}/{scheduleId}")
     public ResponseEntity<?> deleteSchedule(@PathVariable String yachtId,
                                             @PathVariable String scheduleId){
@@ -313,6 +323,7 @@ public class CompanyController {
         dataResponse.setData(iYachtSchedule.deleteYachtSchedule(yachtId, scheduleId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
 
     @PutMapping("/updateSchedule/{yachtId}/{scheduleId}")
     public ResponseEntity<?> updateSchedule(@PathVariable String yachtId,
@@ -328,6 +339,19 @@ public class CompanyController {
                                                 @PathVariable("idSchedule") String idSchedule){
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iRoom.getRoomAndSchedule(idYacht,idSchedule));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getYachtType")
+    public ResponseEntity<?> getYachtType(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYachtType.getYachtTypes());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllBooking")
+    public ResponseEntity<?> getAllBooking(){
+        DataResponse dataResponse =new DataResponse();
+        dataResponse.setData(iBookingOrder.getAllBooking());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 }

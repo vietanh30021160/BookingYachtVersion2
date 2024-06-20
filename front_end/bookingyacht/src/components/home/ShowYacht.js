@@ -16,9 +16,9 @@ const ShowYacht = (props) => {
 
     const getAllYachtt = async () => {
         let res = await getAllYacht()
-        if (res && res.data.success === true) {
+        console.log(res)
+        if (res && res.data.data) {
             setYacht(res.data.data)
-
         }
     }
 

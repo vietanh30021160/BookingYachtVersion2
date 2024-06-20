@@ -1,6 +1,7 @@
 package com.example.YachtBookingBackEnd.service.service;
 
 import com.example.YachtBookingBackEnd.dto.AccountDTO;
+import com.example.YachtBookingBackEnd.dto.CompanyDTO;
 import com.example.YachtBookingBackEnd.dto.CustomerDTO;
 import com.example.YachtBookingBackEnd.dto.FeedbackDTO;
 import com.example.YachtBookingBackEnd.entity.*;
@@ -29,6 +30,7 @@ public class CustomerService implements ICustomer {
     BookingOrderRepository bookingOrderRepository;
     BillRepository billRepository;
     YachtRepository yachtRepository;
+    CompanyRepository companyRepository;
 
     public static final String ROLE_CUSTOMER = "CUSTOMER";
 
@@ -244,6 +246,30 @@ public class CustomerService implements ICustomer {
             System.out.println("Exception: " + e.getMessage());
         }
         return feedbackDTOList;
+    }
+
+    @Override
+    public List<CompanyDTO> getAllCompanies() {
+        List<CompanyDTO> companyDTOList = new ArrayList<>();
+        try {
+            List<Company> companies = companyRepository.findAll();
+            if (companies != null) {
+                for (Company company : companies) {
+                    CompanyDTO companyDTO = new CompanyDTO();
+                    companyDTO.setIdCompany(company.getIdCompany());
+                    companyDTO.setName(company.getName());
+                    companyDTO.setAddress(company.getAddress());
+                    companyDTO.setEmail(company.getEmail());
+                    companyDTO.setLogo(company.getLogo());
+                    companyDTO.setExist(company.getExist());
+                    companyDTOList.add(companyDTO);
+                }
+            }
+
+        }catch (Exception e){
+            System.out.println("Exception: " + e.getMessage());
+        }
+        return companyDTOList;
     }
 
     private boolean isValidEmail(String email) {

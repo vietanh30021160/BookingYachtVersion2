@@ -1,6 +1,7 @@
 package com.example.YachtBookingBackEnd.controller;
 
 import com.example.YachtBookingBackEnd.payload.response.DataResponse;
+import com.example.YachtBookingBackEnd.repository.CompanyRepository;
 import com.example.YachtBookingBackEnd.security.JwtHelper;
 import com.example.YachtBookingBackEnd.service.implement.IAccount;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,15 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 @RequestMapping("/login")
 public class LoginController {
+
     @Autowired
-    private IAccount iAccount;
-    @Autowired
-    private JwtHelper jwtHelper;
+    JwtHelper jwtHelper;
     @Autowired
     AuthenticationManager authenticationManager;
-
+    @Autowired
+    IAccount iAccount;
+    @Autowired
+    private CompanyRepository companyRepository;
 
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestParam String username, @RequestParam String password ) {
@@ -41,7 +44,8 @@ public class LoginController {
                         .orElse(null);
                 String token = jwtHelper.generateToken(username, role);
                 String idAccount = iAccount.getIdAccountByUserName(username);
-                dataResponse.setIdAccount(idAccount);
+                String idCompany = companyRepository.findIdCompanyByIdAccount(idAccount);
+                dataResponse.setIdCompany(idCompany);
                 dataResponse.setData(token);
                 dataResponse.setSuccess(true);
                 return new ResponseEntity<>(dataResponse, HttpStatus.OK);
