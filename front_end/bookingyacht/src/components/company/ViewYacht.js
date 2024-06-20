@@ -133,9 +133,9 @@ const ViewYacht = (props) => {
             <div className='row container'>
                 <div className="col-xl-12">
                     {
-                        yacht && yacht.length > 0 && yacht.map((yacht, index) => {
-                            if (yacht.exist === 1) {
-                                return (
+                        yacht && yacht.length > 0 && yacht.map((yacht, index) =>
+                            yacht.exist === 1 ?
+                                (
                                     <div key={yacht.idYacht} className="card mb-4 order-list">
                                         <div className="gold-members p-4">
 
@@ -165,8 +165,11 @@ const ViewYacht = (props) => {
                                         </div>
                                     </div>
                                 )
-                            }
-                        })
+                                :
+                                <div>
+                                    You Don't Have Any Yacht Manage
+                                </div>
+                        )
 
                     }
 
