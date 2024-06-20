@@ -29,6 +29,8 @@ import Profile from './components/home/Profile';
 import FindYacht from './components/yacht/FindYacht';
 import YachtQuestion from './components/yacht/YachtQuestion';
 import YachtRule from './components/yacht/YachtRule';
+
+
 const Layout = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -49,14 +51,14 @@ const Layout = () => {
                 <Route path='/signup' element={<Signup />} />
                 <Route path='/profile' element={<Profile />} />
                 <Route path='/forgotpassowd' element={<ForgotPassword />}></Route>
-                <Route path='/information' element={<Information />} />
+                <Route path='/information/:idCustomer' element={<Information />} />
                 <Route path='/information-company' element={<InformationCompany />} />
 
 
 
                 <Route path='/manage-company' element={<ManageCompany />} >
                     <Route index element={<ViewBooking />} />
-                    <Route path='view-yacht' element={<ViewYacht />} />
+                    <Route path='view-yacht/' element={<ViewYacht />} />
                     <Route path='bill' element={<Bill />} />
                     <Route path='profile' element={<ProfileCompany />} />
                 </Route>

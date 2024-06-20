@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './ManageYacht.scss'
 import { AiFillHome } from "react-icons/ai";
 import { NavLink, useParams } from 'react-router-dom';
@@ -7,9 +7,49 @@ import image from '../../assets/no53ab0y526yl825.webp';
 import ViewFeedback from './ViewFeedback';
 import ManageInforYacht from './ManageInforYacht';
 import { FaCirclePlus } from "react-icons/fa6";
+import { deleteYachtImage, getYachtImage, updateYachtImage } from '../../services/ApiServices';
+import ModalCreateImageYacht from './Modal/ModalCreateImageYacht';
+import { toast } from 'react-toastify';
+import ModalUpdateImageYacht from './Modal/ModalUpdateImageYacht';
 
 const ManageYacht = () => {
     const { idYacht } = useParams();
+
+    const [isShowModalCreateImage, setIsShowModalCreateImage] = useState(false);
+    const [isShowModalUpdateImage, setIsShowModalUpdateImage] = useState(false);
+    const [listYachtImage, setListYachtImage] = useState([])
+
+    const [dataUpdate, setDataUpdate] = useState('');
+    useEffect(() => {
+        getAllImagesYacht()
+    }, [])
+
+    const getAllImagesYacht = async () => {
+        let res = await getYachtImage(idYacht);
+        if (res && res.data.data) {
+            setListYachtImage(res.data.data);
+        }
+    }
+
+    const handleDeleteImage = async (idImage) => {
+        if (window.confirm(`Do you want to delete Image`)) {
+            let res = await deleteYachtImage(idImage);
+            if (res && res.data.data === true) {
+                toast.success('Delete Successfully');
+                getAllImagesYacht();
+            } else {
+                toast.error('Delete Fail');
+            }
+
+        }
+    }
+
+
+    const handleUpdateYachtImage = async (image) => {
+        setIsShowModalUpdateImage(true);
+        setDataUpdate(image);
+    }
+
 
 
     return (
@@ -30,12 +70,9 @@ const ManageYacht = () => {
                 <div
                     className=""
                 >
-                    <label className='btn btn-success my-3' htmlFor='labelUpload'> <FaCirclePlus /> Upload File IMAGE</label>
-                    <input
-                        type='file'
-                        hidden id='labelUpload'
 
-                    />
+                    <Button onClick={() => setIsShowModalCreateImage(true)} className='btn btn-success my-3' htmlFor='labelUpload'> <FaCirclePlus /> Upload File IMAGE</Button>
+
                     <table
                         className="table table-striped table-hover table-borderless table-primary align-middle"
                     >
@@ -48,31 +85,31 @@ const ManageYacht = () => {
                             </tr>
                         </thead>
                         <tbody className="table-group-divider">
-                            <tr
-                                className="table-primary"
-                            >
-                                <td>
-                                    <img src={image} width={200} alt='' />
-                                </td>
-                                <td width={300}>
-                                    <Row>
-                                        <Col md={4}>
-                                            <label className='btn btn-primary' htmlFor='labelUpload'>Update</label>
-                                            <input
-                                                type='file'
-                                                hidden id='labelUpload'
+                            {
+                                listYachtImage && listYachtImage.length > 0 && listYachtImage.map((image) =>
 
-                                            />
+                                    <tr
+                                        key={image.idYachtImage}
+                                        className="table-primary"
+                                    >
+                                        <td>
+                                            <img src={`http://localhost:8080/api/customer/file/${image.imageYacht}`} width={200} alt='' />
+                                        </td>
+                                        <td width={300}>
+                                            <Row>
+                                                <Col md={4}>
+                                                    <label onClick={() => handleUpdateYachtImage(image)} className='btn btn-primary' >Update</label>
+                                                </Col>
+                                                <Col md={4}>
+                                                    <Button onClick={() => handleDeleteImage(image.idYachtImage)} className='btn btn-danger'>Delete</Button>
+                                                </Col>
+                                            </Row>
 
-                                        </Col>
-                                        <Col md={4}>
-                                            <Button className='btn btn-danger'>Delete</Button>
-                                        </Col>
-                                    </Row>
+                                        </td>
 
-                                </td>
-
-                            </tr>
+                                    </tr>
+                                )
+                            }
 
                         </tbody>
                         <tfoot>
@@ -84,11 +121,24 @@ const ManageYacht = () => {
             </div>
 
             <div className='view-feedback container my-5'>
-                <ViewFeedback />
+                <ViewFeedback
+                />
 
             </div>
 
+            <ModalCreateImageYacht
+                show={isShowModalCreateImage}
+                setShow={setIsShowModalCreateImage}
+                idYacht={idYacht}
+                getAllImagesYacht={getAllImagesYacht}
+            />
+            <ModalUpdateImageYacht
+                show={isShowModalUpdateImage}
+                setShow={setIsShowModalUpdateImage}
+                dataUpdate={dataUpdate}
+                getAllImagesYacht={getAllImagesYacht}
 
+            />
 
         </div>
     );

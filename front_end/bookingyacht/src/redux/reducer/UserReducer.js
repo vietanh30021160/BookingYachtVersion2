@@ -3,7 +3,8 @@ import { FETCH_USER_LOGIN_SUCCES, USER_LOGOUT } from "../type/Type";
 const INITIAL_STATE = {
     account: {
         data: '',
-        role: ''
+        role: '',
+        idCompany: ''
     },
     isAuthenticated: false
 };
@@ -14,7 +15,8 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 account: {
                     data: action.payload.data,
-                    role: action.payload.role
+                    role: action.payload.role,
+                    idCompany: action.payload.idCompany
                 },
                 isAuthenticated: true
             };

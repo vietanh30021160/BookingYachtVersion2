@@ -23,6 +23,7 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompanyController {
     private IYacht iYacht;
+    IBookingOrder iBookingOrder;
     private IFile iFile;
     private IYachtImage iYachtImage;
     private IService iService;
@@ -34,6 +35,8 @@ public class CompanyController {
     private IPayment iPayment;
     private ISchedule iSchedule;
     private IYachtSchedule iYachtSchedule;
+    private IYachtType iYachtType;
+    private ILocation ilocation;
 
     @GetMapping("/allYacht")
     public ResponseEntity<?> viewYacht() {
@@ -71,8 +74,8 @@ public class CompanyController {
                                      @RequestParam double area,
                                      @RequestParam String description,
                                      @RequestParam String idRoomType,
-                                     @RequestParam String idYacht,
-                                     @RequestParam MultipartFile avatar
+                                     @RequestParam MultipartFile avatar,
+                                     @RequestParam String idYacht
                                      ){
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iRoom.addRoom(roomName, area, description, idRoomType, idYacht, avatar));
@@ -316,6 +319,7 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
+
     @PutMapping("/updateSchedule/{yachtId}/{scheduleId}")
     public ResponseEntity<?> updateSchedule(@PathVariable String yachtId,
                                             @PathVariable String scheduleId,
@@ -336,6 +340,19 @@ public class CompanyController {
     public ResponseEntity<?> getRoomByYacht(@PathVariable String yachtId) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iRoom.getRoomByYacht(yachtId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getYachtType")
+    public ResponseEntity<?> getYachtType(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYachtType.getYachtTypes());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllBooking")
+    public ResponseEntity<?> getAllBooking(){
+        DataResponse dataResponse =new DataResponse();
+        dataResponse.setData(iBookingOrder.getAllBooking());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 }

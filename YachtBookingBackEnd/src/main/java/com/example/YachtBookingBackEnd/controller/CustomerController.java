@@ -30,9 +30,12 @@ public class CustomerController {
     private IFile iFile;
     private IYachtImage iYachtImage;
     private IService iService;
+    private IYachtService iYachtService;
     private ISchedule iSchedule;
     private IRoom iRoom;
     private IRoomType iRoomType;
+    private IYachtType iYachtType;
+
 
 
     @PostMapping("/accounts")
@@ -211,4 +214,18 @@ public class CustomerController {
         dataResponse.setData(iRoom.getRoomByRoomType(idRoomType));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
+    @GetMapping("/getAllCompany")
+    public ResponseEntity<?> getAllCompany() {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iCustomer.getAllCompanies());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getYachtType")
+    public ResponseEntity<?> getYachtType(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYachtType.getYachtTypes());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
 }

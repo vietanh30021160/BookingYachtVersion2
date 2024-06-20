@@ -51,6 +51,7 @@ public class YachtService implements IYacht {
                     yachtDTO.setHullBody(yacht.getHullBody());
                     yachtDTO.setDescription(yacht.getDescription());
                     yachtDTO.setItinerary(yacht.getItinerary());
+                    yachtDTO.setExist(yacht.getExist());
 
                     YachtTypeDTO yachtTypeDTO = new YachtTypeDTO();
                     yachtTypeDTO.setIdYachtType(yacht.getYachtType().getIdYachtType());
@@ -64,6 +65,7 @@ public class YachtService implements IYacht {
                     companyDTO.setAddress(yacht.getCompany().getAddress());
                     companyDTO.setLogo(yacht.getCompany().getLogo());
                     companyDTO.setEmail(yacht.getCompany().getEmail());
+                    companyDTO.setExist(yacht.getCompany().getExist());
 
                     yachtDTO.setCompany(companyDTO);
 
@@ -196,7 +198,7 @@ public class YachtService implements IYacht {
                         yachtDTO.setHullBody(yacht.getHullBody());
                         yachtDTO.setDescription(yacht.getDescription());
                         yachtDTO.setItinerary(yacht.getItinerary());
-
+                        yachtDTO.setExist(yacht.getExist());
                         YachtTypeDTO yachtTypeDTO = new YachtTypeDTO();
                         yachtTypeDTO.setIdYachtType(yacht.getYachtType().getIdYachtType());
                         yachtTypeDTO.setStarRanking(yacht.getYachtType().getStarRanking());
@@ -268,5 +270,8 @@ public class YachtService implements IYacht {
         }
         return yachtDTO;
     }
+
+
+
 
 }

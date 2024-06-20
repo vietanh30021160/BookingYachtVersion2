@@ -1,12 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import './Auth.scss'
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { FaHome } from "react-icons/fa";
+import { fillInformationCustomer } from '../../services/ApiServices';
 const Information = () => {
+    const [email, setEmail] = useState('');
+    const [fullName, setFullName] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [address, setAddress] = useState('');
+
+    const { idCustomer } = useParams()
+    const handleFillInformation = async () => {
+        let res = await fillInformationCustomer(idCustomer, email, fullName, phoneNumber, address);
+        console.log("chek fill", res)
+    }
+
+
 
     return (
         <div className='container my-5 py-5 px-5 form-infor' style={{ backgroundColor: "#C6F5F6", }}>
@@ -17,40 +30,57 @@ const Information = () => {
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="formGridEmail">
                         <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" placeholder="Enter email" />
+                        <Form.Control
+                            type="email"
+                            placeholder="Enter email"
+                            onChange={event => setEmail(event.target.value)}
+                        />
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="formGridPassword">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Password" />
+                        <Form.Label>FullName</Form.Label>
+                        <Form.Control
+                            type="text"
+                            placeholder="FullName"
+                            onChange={event => setFullName(event.target.value)}
+                        />
+
+
                     </Form.Group>
                 </Row>
 
 
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="formGridCity">
-                        <Form.Label>City</Form.Label>
-                        <Form.Control />
+                        <Form.Label>PhoneNumber</Form.Label>
+                        <Form.Control
+                            type='text'
+                            placeholder='Phone'
+                            onChange={event => setPhoneNumber(event.target.value)}
+
+                        />
                     </Form.Group>
 
-                    <Form.Group as={Col} controlId="formGridState">
-                        <Form.Label>State</Form.Label>
-                        <Form.Select defaultValue="Choose...">
-                            <option>Choose...</option>
-                            <option>...</option>
-                        </Form.Select>
-                    </Form.Group>
 
                     <Form.Group as={Col} controlId="formGridZip">
-                        <Form.Label>Zip</Form.Label>
-                        <Form.Control />
+                        <Form.Label>Address</Form.Label>
+                        <Form.Control
+                            type='text'
+                            placeholder='Address'
+                            onChange={event => setAddress(event.target.value)}
+
+                        />
                     </Form.Group>
                 </Row>
 
 
                 <div>
-                    <Button variant="primary" type="submit">
+                    <Button
+                        variant="primary"
+                        type="submit"
+                        onClick={() => handleFillInformation()}>
                         Submit
+
                     </Button>
                     <Link to='/signup' className='mx-5 my-0 btn btn-light' style={{ textDecoration: "none" }}><FaHome style={{ marginBottom: 4 }} /> Home</Link>
                 </div>
