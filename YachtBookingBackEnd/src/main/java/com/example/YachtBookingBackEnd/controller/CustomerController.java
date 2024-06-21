@@ -40,7 +40,7 @@ public class CustomerController {
         DataResponse dataResponse = new DataResponse();
         String message = iAccount.createAccountCustomer(username, password);
         dataResponse.setDesc(message);
-        if(!message.equalsIgnoreCase("Fail")){
+        if(!message.equalsIgnoreCase("Creation account fail")){
             dataResponse.setData(true);
         }
         else {
