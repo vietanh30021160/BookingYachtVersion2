@@ -67,4 +67,15 @@ public class BookingOrderService implements IBookingOrder {
         }
         return false;
     }
+
+    @Override
+    @Transactional
+    public List<BookingOrderDTO> getBookingOrderByPrice(String idCompany, Long min, Long max) {
+        List<BookingOrder> bookingOrderList = bookingOrderRepository.findPriceByRange(idCompany, min, max);
+        return bookingOrderList.stream()
+                .map(BookingOrderMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+
 }

@@ -20,7 +20,7 @@ public interface BookingOrderRepository extends JpaRepository<BookingOrder, Stri
             "JOIN FETCH b.bookingRoomSet br " +
             "JOIN FETCH  br.room r " +
             "JOIN FETCH  r.yacht y " +
-            "WHERE  y.company.idCompany = :idCompany")
+            "WHERE  y.company.idCompany = :idCompany ")
     List<BookingOrder> findBookingOrdersByCompany(@Param("idCompany") String idCompany);
 
     @Query("SELECT COUNT(b) > 0 " +
@@ -31,4 +31,14 @@ public interface BookingOrderRepository extends JpaRepository<BookingOrder, Stri
 
     @Query("SELECT bo FROM BookingOrder bo WHERE bo.idBooking = :idBooking AND bo.customer.idCustomer = :idCustomer AND bo.status = 'completed'")
     Optional<BookingOrder> findByIdAndCustomerIdAndStatus(@Param("idBooking") String idBooking, @Param("idCustomer") String idCustomer);
+
+    @Query("SELECT b FROM BookingOrder b " +
+            "JOIN FETCH b.bookingRoomSet br " +
+            "JOIN FETCH  br.room r " +
+            "JOIN FETCH  r.yacht y " +
+            "WHERE  y.company.idCompany = :idCompany " +
+            "AND (b.amount >= :min OR :min IS NULL) " +
+            "AND (b.amount <= :max OR :max IS NULL) " +
+            "ORDER BY b.amount ASC ")
+    List<BookingOrder> findPriceByRange(@Param("idCompany") String idCompany, @Param("min") Long min, @Param("max") Long max);
 }
