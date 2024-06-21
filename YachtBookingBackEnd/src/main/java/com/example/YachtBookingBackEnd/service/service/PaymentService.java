@@ -268,6 +268,9 @@ public class PaymentService implements IPayment {
 
                                 response.put("RspCode", "00");
                                 response.put("Message", "Confirm Success");
+                            } else {
+                                response.put("RspCode", "01");
+                                response.put("Message", "Transaction Failed");
                             }
                         } else {
                             response.put("RspCode", "02");

@@ -81,6 +81,14 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
+    @PostMapping("/ipn")
+    public ResponseEntity<?> createVnIpnPayment(HttpServletRequest request) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iPayment.handleIPN(request));
+
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
     @GetMapping("/payment-callback")
     public ResponseEntity<?> handleVnpayReturn(HttpServletRequest request) {
         DataResponse dataResponse = new DataResponse();
