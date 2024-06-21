@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { Col } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
+import { getYachtByYachtId } from '../../../services/ApiServices';
 import RoomSelection from '../priceRoom/RoomSelection';
 import Rating from '../rating/Rating';
 import Schedule from '../scheduleDetail/Schedule';
 import SectionHeader from '../sectionHeader/SectionHeade';
 import SimpleSlider from '../sliderPage/SliderImg';
 import './MainPage.scss';
-import { useParams } from 'react-router-dom';
-import { getYachtByYachtId } from '../../../services/ApiServices';
-import { Col } from 'react-bootstrap';
 
 
 const MainPage = () => {
@@ -76,7 +76,7 @@ const MainPage = () => {
         </div>
 
         <div id="reviews" className="content-section-sticky6 mt-5 mb-5">
-          <Rating />
+          <Rating yacht={yacht}/>
         </div>
       </Col>
 

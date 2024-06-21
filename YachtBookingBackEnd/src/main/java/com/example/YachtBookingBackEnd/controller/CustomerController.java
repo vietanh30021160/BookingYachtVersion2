@@ -13,9 +13,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 @CrossOrigin("*")
 @RestController
@@ -23,18 +26,16 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CustomerController {
-    private IAccount iAccount;
-    private ICustomer iCustomer;
-    private IPayment iPayment;
-    private IYacht iYacht;
-    private IFile iFile;
-    private IYachtImage iYachtImage;
-    private IService iService;
-    private IYachtService iYachtService;
-    private ISchedule iSchedule;
-    private IYachtType iYachtType;
-
-
+    IAccount iAccount;
+    ICustomer iCustomer;
+    IPayment iPayment;
+    IYacht iYacht;
+    IFile iFile;
+    IYachtImage iYachtImage;
+    IService iService;
+    IYachtService iYachtService;
+    ISchedule iSchedule;
+    IYachtType iYachtType;
 
     @PostMapping("/accounts")
     ResponseEntity<?> register(@RequestParam String username,
@@ -70,10 +71,9 @@ public class CustomerController {
     }
 
     @GetMapping("/payment-callback")
-    public ResponseEntity<?> handlePaymentCallback(HttpServletResponse response,
-                                                   HttpServletRequest request) {
+    public ResponseEntity<?> handleVnpayReturn(HttpServletRequest request) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iPayment.paymentCallbackHandler(response, request));
+        dataResponse.setData(iPayment.handleReturn(request));
 
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }

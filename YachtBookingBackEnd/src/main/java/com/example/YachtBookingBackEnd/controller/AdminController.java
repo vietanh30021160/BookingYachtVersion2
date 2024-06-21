@@ -31,7 +31,7 @@ public class AdminController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/insertInfoCompanyByIdAccount/{idAccount}")
+    @PostMapping("/accounts/{idAccount}")
     public ResponseEntity<?> insertInfoCompanyByIdAccount(@RequestParam String address,
                                                           @RequestParam String email,
                                                           @RequestParam MultipartFile logo,
@@ -77,7 +77,7 @@ public class AdminController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/accountCustomer/{customerAccountId}")
+    @GetMapping("/account/{customerAccountId}")
     public ResponseEntity<?> getAccount(@PathVariable("customerAccountId") String customerAccountId)  {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iAccount.getAccountById(customerAccountId));
