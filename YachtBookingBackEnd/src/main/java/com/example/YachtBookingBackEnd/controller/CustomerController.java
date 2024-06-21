@@ -38,7 +38,14 @@ public class CustomerController {
     ResponseEntity<?> register(@RequestParam String username,
                                @RequestParam String password) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iAccount.createAccountCustomer(username, password));
+        String message = iAccount.createAccountCustomer(username, password);
+        dataResponse.setDesc(message);
+        if(!message.equalsIgnoreCase("Fail")){
+            dataResponse.setData(true);
+        }
+        else {
+            dataResponse.setData(false);
+        }
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

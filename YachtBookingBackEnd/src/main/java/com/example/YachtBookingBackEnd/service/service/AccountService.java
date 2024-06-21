@@ -107,7 +107,7 @@ public class AccountService implements IAccount {
             return account.getIdAccount();
         } catch (Exception e) {
             log.error("Account customer creation failed - default error", e);
-            return "Account customer creation failed";
+            return "Fail";
         }
     }
 
