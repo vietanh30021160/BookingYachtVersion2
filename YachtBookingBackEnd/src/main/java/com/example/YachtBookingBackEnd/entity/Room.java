@@ -1,11 +1,9 @@
 package com.example.YachtBookingBackEnd.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.util.Set;
 
 @Getter
@@ -30,9 +28,6 @@ public class Room {
 
     @Column(name = "avatar")
     private String avatar;
-//
-//    @Column(name = "available")
-//    private int available;
 
     @ManyToOne()
     @JoinColumn(name = "id_room_type", nullable = false)
