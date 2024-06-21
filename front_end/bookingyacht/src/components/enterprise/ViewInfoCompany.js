@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from "react";
-import { Card, Col, Container, Row, Spinner } from 'react-bootstrap';
+import { Card, Col, Container, Row } from 'react-bootstrap';
 import './Enterprise.scss';
 
 const CompanyList = () => {
@@ -12,13 +12,12 @@ const CompanyList = () => {
         axios.get('http://localhost:8080/api/customer/getAllCompany')
             .then(res => {
                 setCompanies(res.data.data.filter(c => c.exist === 1));
-                // setLoading(true);
-            })
-
-            .catch(error => {
-                console.log(error);
                 // setLoading(false);
             })
+            .catch(error => {
+                // setLoading(false);
+                
+            });
     }, []);
 
     // if (loading) {
@@ -27,6 +26,7 @@ const CompanyList = () => {
     //     </Spinner>
     // }
 
+    // Chia mảng companies thành các mảng con với kích thước mỗi mảng con là 2.
     const chunkArray = (array, chunkSize) => {
         const chunks = [];
         for (let i = 0; i < array.length; i += chunkSize) {
@@ -44,7 +44,7 @@ const CompanyList = () => {
                     {chunk.map(company => (
                         <Col md={6} key={company.id}>
                             <Card style={{ padding: '20px', border: 'none' }}>
-                                <Row style={{ alignItems: 'center' }}>
+                                <Row style={{alignItems : 'center'}}>
                                     <Col md={3}>
                                         <img
                                             src={`${getImageApi}${company.logo}`} alt={company.logo}
@@ -64,6 +64,6 @@ const CompanyList = () => {
             ))}
         </Container>
     );
-
 }
+
 export default CompanyList;

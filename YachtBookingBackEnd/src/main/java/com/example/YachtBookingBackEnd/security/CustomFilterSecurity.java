@@ -57,7 +57,7 @@ public class CustomFilterSecurity {
                                 .requestMatchers("/login/**").permitAll() // Cho phép tất cả các yêu cầu đến /login/**
                                 .requestMatchers("/api/admins/**").hasRole("ADMIN") // Chỉ cho phép vai trò ADMIN truy cập /admin/**
                                 .requestMatchers("/api/companies/**").hasRole("COMPANY") // Chỉ cho phép vai trò COMPANY truy cập /company/**
-                                .requestMatchers("/api/customer/booking/**").hasRole("CUSTOMER")  // Chỉ cho phép vai trò CUSTOMER truy cập /customer/**
+                                .requestMatchers("/api/customer/payment/**").hasRole("CUSTOMER")  // Chỉ cho phép vai trò CUSTOMER truy cập /customer/**
                                 .requestMatchers("/api/customer/profile/**").hasRole("CUSTOMER")
                                 .anyRequest().authenticated())
                 .sessionManagement(session ->

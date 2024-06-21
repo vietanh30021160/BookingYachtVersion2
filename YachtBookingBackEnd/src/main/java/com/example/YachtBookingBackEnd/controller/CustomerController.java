@@ -13,9 +13,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 @CrossOrigin("*")
 @RestController
@@ -42,7 +45,14 @@ public class CustomerController {
     ResponseEntity<?> register(@RequestParam String username,
                                @RequestParam String password) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iAccount.createAccountCustomer(username, password));
+        String message = iAccount.createAccountCustomer(username, password);
+        dataResponse.setDesc(message);
+        if(!message.equalsIgnoreCase("Account customer creation failed")){
+            dataResponse.setData(true);
+        }
+        else {
+            dataResponse.setData(false);
+        }
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
@@ -72,10 +82,9 @@ public class CustomerController {
     }
 
     @GetMapping("/payment-callback")
-    public ResponseEntity<?> handlePaymentCallback(HttpServletResponse response,
-                                                   HttpServletRequest request) {
+    public ResponseEntity<?> handleVnpayReturn(HttpServletRequest request) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iPayment.paymentCallbackHandler(response, request));
+        dataResponse.setData(iPayment.handleReturn(request));
 
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }

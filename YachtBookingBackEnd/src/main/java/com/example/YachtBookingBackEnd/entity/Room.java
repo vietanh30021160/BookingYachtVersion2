@@ -30,9 +30,9 @@ public class Room {
 
     @Column(name = "avatar")
     private String avatar;
-
-    @Column(name = "available")
-    private int available;
+//
+//    @Column(name = "available")
+//    private int available;
 
     @ManyToOne()
     @JoinColumn(name = "id_room_type", nullable = false)

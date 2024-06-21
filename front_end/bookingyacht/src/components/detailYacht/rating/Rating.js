@@ -38,7 +38,7 @@ const Rating = () => {
 
     return (
         <Container>
-            <ReviewList reviews={selectedRating !== null ? reviews.filter(review => review.rating === selectedRating) : reviews} />
+            
             <Row className="align-items-center mb-3">
                 <Col>
                     <h4 style={{ fontWeight: 'bold' }} className="mb-0">Đánh giá sản phẩm</h4>
@@ -54,10 +54,10 @@ const Rating = () => {
                     </div>
                 </Col>
             </Row>
-            <ReviewForm addReview={addReview} />
-            {/* <ButtonGroup className="my-3">
+            <ReviewList reviews={selectedRating !== null ? reviews.filter(review => review.rating === selectedRating) : reviews} />
+            <ButtonGroup className="my-3">
                 <Button
-                    variant={selectedRating === null ? 'primary' : 'outline-primary'}
+                    variant={selectedRating === null ? 'dark' : 'outline-dark'}
                     onClick={() => handleSelectRating(null)}
                 >
                     Tất cả({reviews.length})
@@ -65,13 +65,15 @@ const Rating = () => {
                 {[5, 4, 3, 2, 1].map((rating) => (
                     <Button
                         key={rating}
-                        variant={selectedRating === rating ? 'primary' : 'outline-primary'}
+                        variant={selectedRating === rating ? 'dark' : 'outline-dark'}
                         onClick={() => handleSelectRating(rating)}
                     >
                         {rating} Sao ({ratingCounts[rating]})
                     </Button>
                 ))}
-            </ButtonGroup> */}
+            </ButtonGroup>
+            <ReviewForm addReview={addReview} />
+
 
         </Container>
     );
