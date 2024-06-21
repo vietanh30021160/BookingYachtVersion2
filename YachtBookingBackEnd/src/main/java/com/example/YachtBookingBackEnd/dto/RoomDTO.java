@@ -13,4 +13,5 @@ public class RoomDTO {
     private String idRoom;
     private String description;
     private String name;
+    private long price;
 }

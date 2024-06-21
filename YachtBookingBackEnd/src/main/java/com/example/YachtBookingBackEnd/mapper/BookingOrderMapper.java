@@ -34,6 +34,7 @@ public class BookingOrderMapper {
                     Room room = bookingRoom.getRoom();
                     roomDTO.setIdRoom(room.getIdRoom());
                     roomDTO.setName(room.getName());
+                    roomDTO.setPrice(room.getRoomType().getPrice());
                     return roomDTO;
                 }).collect(Collectors.toSet());
         dto.setRooms(roomDTOS);
