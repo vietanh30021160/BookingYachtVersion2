@@ -71,7 +71,6 @@ public class RoomService implements IRoom {
             roomDTO.setName(room.getName());
             roomDTO.setDescription(room.getDescription());
             roomDTO.setArea(room.getArea());
-            roomDTO.setAvailable(room.getAvailable());
             RoomTypeDTO roomTypeDTO = new RoomTypeDTO();
             roomTypeDTO.setIdRoomType(room.getRoomType().getIdRoomType());
             roomTypeDTO.setType(room.getRoomType().getType());
@@ -118,7 +117,6 @@ public class RoomService implements IRoom {
             Yacht yacht = yachtRepository.findById(idYacht)
                     .orElseThrow(()-> new RuntimeException("Not found yacht!"));
             room.setYacht(yacht);
-            room.setAvailable(1);
             roomRepository.save(room);
         }catch (Exception e){
             System.out.println("Can't insert room: "+e);
@@ -140,7 +138,6 @@ public class RoomService implements IRoom {
                 room.setDescription(room.getDescription());
             }
 
-            room.setAvailable(available);
             roomRepository.save(room);
             return  true;
         }catch (Exception e){

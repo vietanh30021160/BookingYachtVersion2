@@ -1,11 +1,10 @@
 package com.example.YachtBookingBackEnd.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter
@@ -19,10 +18,10 @@ public class Schedule {
     private String idSchedule;
 
     @Column(name = "start_date", columnDefinition = "DATETIME")
-    private Instant startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date", columnDefinition = "DATETIME")
-    private Instant endDate;
+    private LocalDateTime endDate;
 
     @OneToMany(mappedBy = "schedule")
     private Set<YachtSchedule> yachtScheduleSet;

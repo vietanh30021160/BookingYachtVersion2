@@ -9,12 +9,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerDTO {
-
-    String idCustomer;
-    String fullName;
-    String email;
-    String  phone;
-    String address;
-    AccountDTO accountDTO;
-
+    private String idCustomer;
+    private String fullName;
+    private String email;
+    private String phone;
+    private String address;
+    private AccountDTO accountDTO;
 }
