@@ -6,41 +6,40 @@ import './FindYacht.scss';
 // import { img_yacht } from '../../assets/no53ab0y526yl825.webp';
 import { useNavigate } from 'react-router-dom';
 import { getAllYachtHome } from '../../services/ApiServices';
-
-// import ReactPaginate from 'react-paginate';
+import { useSelector, useDispatch } from 'react-redux';
+import { getYachtListApi } from '../../redux/action/YachtListAction'
 const YachtList = () => {
-    const [yacht, setYacht] = useState([]);
+
     const [pagging, setPagging] = useState([]); // page 1, 2, 3, ...
-    const [paggingYacht, setPaggingYacht] = useState([]); // products in a page
+    const [paggingYacht, setPaggingYacht] = useState([]); // yachts in a page
     const [currentPage, setCurrentPage] = useState(1);
 
-    const getAllYacht = async () => {
-        let res = await getAllYachtHome()
-        if (res.data.data.length >= 5) {
-            setPaggingYacht(res.data.data.slice(0, 5));
-        } else {
-            setPaggingYacht(res.data.data.slice(0, res.data.data.length));
-        }
-        let pages = [];
-        let num = Math.ceil(res.data.data.length / 5);
-        for (let i = 1; i <= num; i++) {
-            pages = [...pages, i]
-        }
-        setPagging(pages)
-        setYacht(res.data.data)
+    const dispatch = useDispatch();
+
+    const { yachtList } = useSelector((state) => state.YachtListReducer);
+    const getYachtList = () => {
+        dispatch(getYachtListApi())
     }
+    useEffect(() => {
+        getYachtList();
+    }, [dispatch])
+
+    useEffect(() => {
+        if (yachtList.length) {
+            const startIndex = (currentPage - 1) * 5;
+            const endIndex = startIndex + 5;
+            setPaggingYacht(yachtList.slice(startIndex, endIndex));
+
+            const pages = [];
+            const num = Math.ceil(yachtList.length / 5);
+            for (let i = 1; i <= num; i++) {
+                pages.push(i);
+            }
+            setPagging(pages);
+        }
+    }, [yachtList, currentPage]);
 
     const avatarYachtApi = 'http://localhost:8080/api/customer/file/'
-
-    useEffect(() => {
-        getAllYacht()
-    }, [])
-
-    useEffect(() => {
-        const startIndex = (currentPage - 1) * 5;
-        const endIndex = (startIndex + 5);
-        setPaggingYacht(yacht.slice(startIndex, endIndex));
-    }, [currentPage, yacht])
 
     const handelChangePage = (pageNumber) => {
         setCurrentPage(pageNumber)
@@ -72,7 +71,7 @@ const YachtList = () => {
                     return (
                         <div className="card row" key={yacht.idYacht} onClick={() => { hanldeSelectedYacht(yacht.idYacht) }} style={{ cursor: 'pointer' }}>
                             <div className="col-md-5">
-                                <img style={{ height: '220px', width: '100%' }} class="card-img-top" src={`${avatarYachtApi}${yacht.image}`} alt="Card image cap" />
+                                <img style={{ height: '250px', width: '100%' }} className="card-img-top object-fit-cover" src={`${avatarYachtApi}${yacht.image}`} alt="Card image cap" />
                             </div>
                             <div className="card-body col-md-7">
                                 <div className='card-content'>
@@ -93,29 +92,6 @@ const YachtList = () => {
             <div className='d-flex justify-content-center'>
                 {renderPages()}
             </div>
-
-            {/* <div>
-                <ReactPaginate
-                    nextLabel="Next >"
-                    // onPageChange=
-                    pageRangeDisplayed={3}
-                    marginPagesDisplayed={2}
-                    pageCount={3}
-                    previousLabel="< Prev"
-                    pageClassName="page-item"
-                    pageLinkClassName="page-link"
-                    previousClassName="page-item"
-                    previousLinkClassName="page-link"
-                    nextClassName="page-item"
-                    nextLinkClassName="page-link"
-                    breakLabel="..."
-                    breakClassName="page-item"
-                    breakLinkClassName="page-link"
-                    containerClassName="pagination"
-                    activeClassName="active"
-                    renderOnZeroPageCount={null}
-                />
-            </div> */}
 
         </div>
     );

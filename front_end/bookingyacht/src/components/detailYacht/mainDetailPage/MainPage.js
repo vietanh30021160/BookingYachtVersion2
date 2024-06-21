@@ -8,22 +8,26 @@ import './MainPage.scss';
 import { useParams } from 'react-router-dom';
 import { getYachtByYachtId } from '../../../services/ApiServices';
 import { Col } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import { getYachtByYachtIdApi } from '../../../redux/action/YachtAction';
 
 
 const MainPage = () => {
   const { yachtId } = useParams();
-  console.log(yachtId)
-  const [yacht, setYacht] = useState({});
+  const { yacht } = useSelector(state => state.YachtReducer);
+  const dispatch = useDispatch();
   const [currentSection, setCurrentSection] = useState('');
 
-  const getYachtById = async (yachtId) => {
-    let res = await getYachtByYachtId(yachtId);
-    setYacht(res.data.data)
+  const getYachtById = (yachtId) => {
+    dispatch(getYachtByYachtIdApi(yachtId))
   }
 
   useEffect(() => {
-    getYachtById(yachtId)
+    if (yachtId) {
+      getYachtById(yachtId)
+    }
   }, [yachtId])
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,6 +47,7 @@ const MainPage = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
   return (
     <div className="container">
       <nav className="navbar-sticky StickyNav">

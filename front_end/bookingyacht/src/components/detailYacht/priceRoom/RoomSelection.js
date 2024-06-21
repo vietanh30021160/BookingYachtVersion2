@@ -26,8 +26,6 @@ const RoomSelection = ({ yacht }) => {
     const [totalPrice, setTotalPrice] = useState(0);
     const [selectedServices, setSelectedServices] = useState(rooms.reduce((acc, room) => ({ ...acc, [room.id]: [] }), {}));
 
-
-
     const getRoomList = async (yachtId) => {
         let res = await getRoomByYacht(yachtId)
         setRooms(res.data.data)
@@ -102,6 +100,7 @@ const RoomSelection = ({ yacht }) => {
                         handleServiceChange={handleServiceChange}
                     />
                 ))}
+
                 <div className='my-3'>
                     <div className="row">
                         <div className="col-md-6 col-12">

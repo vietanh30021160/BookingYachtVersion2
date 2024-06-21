@@ -8,24 +8,23 @@ import i_content from '../../assets/image_1.webp'
 import axios from 'axios';
 import { Container } from 'react-bootstrap/Container';
 import { FaLocationDot } from "react-icons/fa6";
+import { useDispatch, useSelector } from 'react-redux';
+import { getYachtListApi } from '../../redux/action/YachtListAction';
 
 
-const ShowYacht = (props) => {
-    const [yacht, setYacht] = useState([]);
+const ShowYacht = () => {
+    const dispatch = useDispatch();
 
-
-    const getAllYachtt = async () => {
-        let res = await getAllYacht()
-        setYacht(res.data.data)
-
-
+    const { yachtList } = useSelector((state) => state.YachtReducer);
+    const getYachtList = () => {
+        dispatch(getYachtListApi())
     }
+    useEffect(() => {
+        getYachtList();
+    }, [dispatch])
+
 
     const avatarYachtApi = 'http://localhost:8080/api/customer/file/'
-
-    useEffect(() => {
-        getAllYachtt()
-    }, [])
 
     return (
         <>
@@ -41,12 +40,12 @@ const ShowYacht = (props) => {
                 </label>
             </div>
             <div className='yacht-content'>
-                {yacht && yacht.length > 0 && (yacht.length > 6 ? yacht.slice(0, 6) : yacht).map((item) => {
+                {yachtList && yachtList.length > 0 && (yachtList.length > 6 ? yachtList.slice(0, 6) : yachtList).map((item) => {
                     return (
                         <div className='col-12 col-sm-6 col-md-3 col-lg-3 mb-4'>
                             <NavLink key={item.idYacht} to={`/mainpage/${item.idYacht}`} className='nav-link'>
                                 <Card style={{ width: '100%', height: '350px' }}>
-                                    <Card.Img width={268} height={200} variant="top" src={`${avatarYachtApi}${item.image}`} />
+                                    <img height={200} variant="top" src={`${avatarYachtApi}${item.image}`} />
                                     <Card.Body>
                                         <Card.Title style={{ fontWeight: 600, fontSize: 18, color: '#475467', marginBottom: 0 }}>{`${item.name}`}</Card.Title>
                                         <div style={{ padding: '5px' }} className='location'><FaLocationDot />{item.location.name}</div>

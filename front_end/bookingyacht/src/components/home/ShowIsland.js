@@ -22,8 +22,8 @@ const ShowIsland = () => {
             </div>
             <div className='island-body row'>
                 <NavLink to='/duthuyen' className='nav-link col-12 col-sm-6 col-md-3 mb-4'>
-                    <Card style={{ height: '330', width: '320' }}>
-                        <Card.Img variant="top" src={HaLong} />
+                    <Card style={{ height: '330px', width: '320px' }}>
+                        <Card.Img variant="top" src={HaLong} style={{ height: 220 }} className='object-fit-cover' />
                         <Card.Body>
                             <Card.Title>Vịnh Hạ Long</Card.Title>
                             <button className='btn btn-outline-dark'>View</button>
@@ -32,8 +32,8 @@ const ShowIsland = () => {
                 </NavLink>
 
                 <NavLink to='/duthuyen' className='nav-link col-12 col-sm-6 col-md-3 mb-4'>
-                    <Card style={{ height: '330', width: '320' }}>
-                        <Card.Img variant="top" src={CatBa} />
+                    <Card style={{ height: '330px', width: '320px' }}>
+                        <Card.Img variant="top" src={CatBa} style={{ height: 220 }} className='object-fit-cover' />
                         <Card.Body>
                             <Card.Title>Đảo Cát Bà</Card.Title>
                             <button className='btn btn-outline-dark'>View</button>
@@ -42,8 +42,8 @@ const ShowIsland = () => {
                 </NavLink>
 
                 <NavLink to='/duthuyen' className='nav-link col-12 col-sm-6 col-md-3 mb-4'>
-                    <Card >
-                        <Card.Img variant="top" src={LanHa} style={{ height: 220 }} />
+                    <Card style={{ height: '330px', width: '320px' }}>
+                        <Card.Img variant="top" src={LanHa} style={{ height: 220 }} className='object-fit-cover' />
                         <Card.Body>
                             <Card.Title>Vịnh Lan Hạ</Card.Title>
                             <button className='btn btn-outline-dark'>View</button>

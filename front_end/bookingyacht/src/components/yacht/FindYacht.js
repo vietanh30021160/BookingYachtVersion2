@@ -4,38 +4,24 @@ import i_content from '../../assets/image_1.webp';
 import Form from 'react-bootstrap/Form';
 import YachtList from "./YachtList";
 import { useState, useEffect } from "react";
-import axios from "axios";
-import { getAllYacht, getYachtService } from "../../services/ApiServices";
-// import { getYachtService } from "../../services/ApiServices";
+import { getYachtService } from "../../services/ApiServices";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllServiceApi } from "../../redux/action/YachtServiceAction";
 
 const FindYacht = () => {
-    const [yacht, setYacht] = useState([]);
+    const { services } = useSelector(state => state.YachtServiceReducer)
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        getAllYachtt()
-    }, [])
+        dispatch(getAllServiceApi())
+    }, [dispatch])
 
-    const getAllYachtt = async () => {
-        let res = await getAllYacht()
-        if (res && res.data.success === true) {
-
-            setYacht(res.data.data)
-
-        }
-    }
-    const [service, setService] = useState([]);
-
-    const getAllYachtService = async () => {
-        let res = await getYachtService();
-        setService(res.data.data)
-    }
-
-    useEffect(() => {
-        getAllYachtService();
-    }, [])
+    //The useEffect will run once when the component mounts because:
+    // The dispatch function does not change between renders.
+    // The empty dependency array [dispatch] behaves similarly to [], meaning the effect runs once after the initial render.
 
     const renderService = () => {
-        return service.map((service) => {
+        return services.map((service) => {
             return (
                 <Form.Check key={service.idService} label={service.service} />
             )
@@ -55,15 +41,6 @@ const FindYacht = () => {
                             <img src={i_content} alt="" />
                         </div>
                     </div>
-                    {/* <div className='select col-md mx-4'>
-                        <Form.Select size="lg">
-                            <option>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </Form.Select>
-                    </div> */}
-
                 </div>
                 <div className="result-search row">
                     <div className="col-3 filter-body">
@@ -100,9 +77,7 @@ const FindYacht = () => {
                     <div className="col-1"></div>
 
                     <div className="col-8 infor">
-                        <YachtList
-                            yacht={yacht}
-                        />
+                        <YachtList />
                     </div>
                 </div>
             </div>
