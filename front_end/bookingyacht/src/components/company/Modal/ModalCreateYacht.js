@@ -1,18 +1,18 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { Button } from 'react-bootstrap'
 import { FcPlus } from "react-icons/fc";
-import { createYacht } from '../../../services/ApiServices';
+import { createYacht, getYachtType } from '../../../services/ApiServices';
 import { toast } from 'react-toastify';
 
 const ModalCreateYacht = (props) => {
-    const { show, setShow, idCompany } = props;
+    const { show, setShow, idCompany, location } = props;
     const [image, setImage] = useState("");
     const [previewImage, setPreviewImage] = useState("");
-
+    const [yachtType, setYachtType] = useState([]);
 
     const initInforYacht = {
         name: '',
@@ -24,6 +24,11 @@ const ModalCreateYacht = (props) => {
         location: '1',
         yachtType: '1',
     }
+
+    useEffect(() => {
+        getAllType()
+    }, [])
+
     const handleClose = () => {
         setShow(false)
         setPreviewImage('');
@@ -43,6 +48,7 @@ const ModalCreateYacht = (props) => {
         )
 
     }
+
     const handelUploadImage = (event) => {
         if (event.target.files[0] && event.target && event.target.files) {
             setPreviewImage(URL.createObjectURL(event.target.files[0]));
@@ -57,11 +63,18 @@ const ModalCreateYacht = (props) => {
             if (res && res.data.data === true) {
                 toast.success('Create Successfully');
                 await props.listYacht();
+                handleClose();
             } else {
                 toast.error("Create Fail")
             }
         }
 
+    }
+
+    const getAllType = async () => {
+        let res = await getYachtType();
+        console.log("check yacht type", res)
+        setYachtType(res.data.data)
     }
 
 
@@ -139,19 +152,24 @@ const ModalCreateYacht = (props) => {
                             </Form.Group>
                             <Form.Group as={Col} >
                                 <Form.Label>Location</Form.Label>
-                                <Form.Select value='1' onChange={handleChange} name='location'>
-                                    <option value='1'>Vịnh Hạ Long</option>
-                                    <option value='2'>Vịnh Lan Hạ</option>
-                                    <option value='3'>Đảo Cát Bà</option>
+                                <Form.Select onChange={handleChange} name='location'>
+                                    {
+                                        location && location.map((location) =>
+                                            <option key={location.idLocation} value={location.idLocation}>{location.name}</option>
+                                        )
+                                    }
 
                                 </Form.Select>
                             </Form.Group>
                             <Form.Group as={Col} >
                                 <Form.Label>Yacht Type</Form.Label>
-                                <Form.Select value='1' onChange={handleChange} name='yactType'>
-                                    <option value='1'>3 Sao</option>
-                                    <option value='2'>4 Sao</option>
-                                    <option value='3'>5 Sao</option>
+                                <Form.Select onChange={handleChange} name='yachtType'>
+                                    {
+                                        yachtType && yachtType.map((type) =>
+                                            <option key={type.idYachtType} value={type.idYachtType}>{type.starRanking} Sao</option>
+                                        )
+                                    }
+
 
                                 </Form.Select>
                             </Form.Group>

@@ -112,5 +112,21 @@ export const getFeedbackCompany = (idCompany) => {
     return axios.get(`/api/companies/feedBackByIdCompany/${idCompany}`)
 }
 
+export const getYachtType = () => {
+    return axios.get('/api/companies/getYachtType')
+}
+
+export const updateYacht = (idYacht, name, image, hullBody, description, rule, itinerary, idYachtType, idLocation) => {
+    const data = new FormData();
+    data.append('name', name);
+    data.append('image', image);
+    data.append('hullBody', hullBody);
+    data.append('description', description);
+    data.append('rule', rule);
+    data.append('itinerary', itinerary);
+    data.append('idYachtType', idYachtType);
+    data.append('idLocation', idLocation);
+    return axios.put(`/api/companies/yacht/updateYacht/${idYacht}`, data)
+}
 
 

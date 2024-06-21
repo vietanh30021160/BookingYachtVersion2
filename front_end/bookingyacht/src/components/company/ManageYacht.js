@@ -26,8 +26,10 @@ const ManageYacht = () => {
 
     const getAllImagesYacht = async () => {
         let res = await getYachtImage(idYacht);
-        if (res && res.data.data) {
+        if (res && res.data.data.length > 0) {
             setListYachtImage(res.data.data);
+        } else {
+            toast.error('Not Found');
         }
     }
 
@@ -49,7 +51,6 @@ const ManageYacht = () => {
         setIsShowModalUpdateImage(true);
         setDataUpdate(image);
     }
-
 
 
     return (

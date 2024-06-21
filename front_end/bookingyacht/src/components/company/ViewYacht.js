@@ -42,6 +42,8 @@ const ViewYacht = (props) => {
         if (res && res.data.data.length > 0 && res.data.success === true) {
             setYacht(res.data.data);
             setFilteredYachts(res.data.data);
+        } else {
+            toast.info('Please Adding New Yacht');
         }
     }
 
@@ -51,26 +53,18 @@ const ViewYacht = (props) => {
             if (res.data.data === true) {
                 toast.success('Delete Successfully');
                 listYacht();
-
+            } else {
+                toast.error('Delete Fail')
             }
         }
     }
-    // const handleCreateYacht = () => {
-    //     setIsShowModal(true);
-    //     console.log(yacht)
-    //     let company = _.chain(yacht)
-    //         // Group the elements of Array based on `color` property
-    //         .groupBy("company")
-    //         // `key` is group's name (color), `value` is the array of objects
-    //         .map((value, key) => ({ company: key, yachtt: value }))
-    //     //     .value()
-    //     console.log("check yacht modal", yacht[0].company)
-    //     setIdCompany(yacht[0].company.idCompany)
-    // }
+
     const getLocation = async () => {
         let res = await getAllLocation();
-        if (res && res.data.success === true && res.data.status === 200) {
+        if (res && res.data.data.length > 0) {
             setLocation(res.data.data);
+        } else {
+            setLocation('Not Found')
         }
     }
 
@@ -80,6 +74,8 @@ const ViewYacht = (props) => {
             if (newYacht && newYacht.length > 0) {
                 setYacht(newYacht);
                 setSearchYacht('');
+            } else {
+                toast.error('Not Found Yacht')
             }
         } else {
             setYacht(filteredYachts)
@@ -88,9 +84,14 @@ const ViewYacht = (props) => {
     }
     const handleFilterLocation = () => {
         if (filterLocation) {
-            const newYacht = yacht.filter((yacht) => yacht.location.idLocation.includes(filterLocation));
-            setYacht(newYacht);
-            setFilterLocation('1');
+            const newYacht = filteredYachts.filter((yacht) =>
+                yacht.location.idLocation.includes(filterLocation)
+            );
+            if (newYacht.length > 0) {
+                setYacht(newYacht);
+            } else {
+                toast.error('No yacht found for this location');
+            }
         } else {
             setYacht(filteredYachts);
         }
@@ -204,6 +205,7 @@ const ViewYacht = (props) => {
                 setShow={setIsShowModal}
                 idCompany={idCompany}
                 listYacht={listYacht}
+                location={location}
             />
 
         </div>
