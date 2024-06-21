@@ -40,8 +40,8 @@ export const registerCustomer = (username, password) => {
     return axios.post('/api/customer/accounts', data)
 }
 
-export const getAllYachtCompany = (idCompany) => {
-    return axios.get(`/api/companies/yacht/findByCompany/${idCompany}`);
+export const getAllYachtCompany = () => {
+    return axios.get('/api/companies/allYacht');
 }
 export const getYachtById = (yachtId) => {
     return axios.get(`/api/companies/findYachtById/${yachtId}`);
@@ -67,6 +67,12 @@ export const getRoomByYacht = () => {
     return axios.get('/api/customer/room');
 }
 
+export const getRoomByYacht = (yachtId) => {
+    return axios.get(`/api/customer/getRoomByYacht/${yachtId}`)
+}
+export const getRoomById = (roomId) => {
+    return axios.get(`/api/customer/getRoomById/${roomId}`)
+}
 export const fillInformationCustomer = (idCustomer, fullName, email, phoneNumber, address) => {
     const data = new FormData()
     data.append('fullName', fullName);

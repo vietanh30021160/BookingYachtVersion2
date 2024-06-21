@@ -33,7 +33,7 @@ const ViewYacht = (props) => {
 
     useEffect(() => {
         listYacht();
-        getLocation();
+        // getLocation();
     }, [])
 
 
@@ -67,12 +67,12 @@ const ViewYacht = (props) => {
     //     console.log("check yacht modal", yacht[0].company)
     //     setIdCompany(yacht[0].company.idCompany)
     // }
-    const getLocation = async () => {
-        let res = await getAllLocation();
-        if (res && res.data.success === true && res.data.status === 200) {
-            setLocation(res.data.data);
-        }
-    }
+    // const getLocation = async () => {
+    //     let res = await getAllLocation();
+    //     if (res && res.data.success === true && res.data.status === 200) {
+    //         setLocation(res.data.data);
+    //     }
+    // }
 
     const handleSearchYacht = () => {
         if (searchYacht) {

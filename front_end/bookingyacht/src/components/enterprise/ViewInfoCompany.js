@@ -5,51 +5,65 @@ import './Enterprise.scss';
 
 const CompanyList = () => {
     const [companies, setCompanies] = useState([]);
-    const [loading, setLoading] = useState(true);
+    // const [loading, setLoading] = useState(true);
     const getImageApi = `http://localhost:8080/api/customer/file/`
 
     useEffect(() => {
         axios.get('http://localhost:8080/api/customer/getAllCompany')
             .then(res => {
                 setCompanies(res.data.data.filter(c => c.exist === 1));
-                setLoading(false);
+                // setLoading(true);
             })
 
             .catch(error => {
-                setLoading(false);
+                console.log(error);
+                // setLoading(false);
             })
     }, []);
 
-    if (loading) {
-        return <Spinner animation="border" role="status">
-            <span className="sr-only">Loading...</span>
-        </Spinner>
-    }
+    // if (loading) {
+    //     return <Spinner animation="border" role="status">
+    //         <span className="sr-only">Loading...</span>
+    //     </Spinner>
+    // }
+
+    const chunkArray = (array, chunkSize) => {
+        const chunks = [];
+        for (let i = 0; i < array.length; i += chunkSize) {
+            chunks.push(array.slice(i, i + chunkSize));
+        }
+        return chunks;
+    };
+
+    const companyChunks = chunkArray(companies, 2);
 
     return (
         <Container>
-            <Row>
-                {
-                    companies.map(company => (
-                        <Col key={company.idCompany} xs={12} md={6} lg={4}>
-                            {/* <CompanyCard company={company} getImageApi={getImageApi}/> */}
-                            <Card style={{ width: '18rem', margin: '10px' }}>
-                                {/* <Card.Img variant="top" src={company.logo !== "0" ? company.logo : 'default-logo.png'} alt="Company Logo" style={{ height: '150px', objectFit: 'contain' }} /> */}
-                                <Card.Img src={`${getImageApi}${company.logo}`} alt={company.logo}/>
-                                <Card.Body>
-                                    <Card.Title>{company.name}</Card.Title>
-                                    <Card.Text>
-                                        <strong>Address:</strong> {company.address}
-                                        <br />
-                                        <strong>Email:</strong> {company.email}
-                                    </Card.Text>
-                                </Card.Body>
+            {companyChunks.map((chunk, index) => (
+                <Row key={index} className="mb-4">
+                    {chunk.map(company => (
+                        <Col md={6} key={company.id}>
+                            <Card style={{ padding: '20px', border: 'none' }}>
+                                <Row style={{ alignItems: 'center' }}>
+                                    <Col md={3}>
+                                        <img
+                                            src={`${getImageApi}${company.logo}`} alt={company.logo}
+                                            style={{ width: '100%', borderRadius: '8px' }}
+                                        />
+                                    </Col>
+                                    <Col md={9}>
+                                        <h5>{company.name}</h5>
+                                        <p>{company.address}</p>
+                                        <p>{company.email}</p>
+                                    </Col>
+                                </Row>
                             </Card>
                         </Col>
-                    ))
-                }
-            </Row>
+                    ))}
+                </Row>
+            ))}
         </Container>
-    )
+    );
+
 }
 export default CompanyList;

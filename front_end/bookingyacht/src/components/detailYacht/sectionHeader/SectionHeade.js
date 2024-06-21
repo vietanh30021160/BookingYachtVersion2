@@ -8,17 +8,28 @@ import { MdFoodBank, MdOutlineAnchor, MdOutlineBedroomParent, MdOutlinePersonPin
 import { PiMapPinAreaLight, PiShoppingBagOpen, PiSwimmingPool } from "react-icons/pi";
 import './Section.scss';
 import { getServiceByYacht } from '../../../services/ApiServices';
+import { useSelector, useDispatch } from 'react-redux';
+import { getServiceByYachtApi } from '../../../redux/action/ServiceByYachtAction';
 
 const SectionHeader = ({ yacht }) => {
-    const [service, setService] = useState([]);
+    const [services, setServices] = useState([]);
     const getServiceByYachtId = async (yachtId) => {
         let res = await getServiceByYacht(yachtId);
-        setService(res.data.data)
+        setServices(res.data.data)
         console.log(res.data.data)
     }
     useEffect(() => {
         getServiceByYachtId(yacht.idYacht)
     }, [yacht.idYacht])
+
+    // const { services } = useSelector(state => state.ServiceByYachtReducer);
+    // const dispatch = useDispatch();
+
+    // useEffect(() => {
+    //     if (yacht && yacht.idYacht) {
+    //         dispatch(getServiceByYachtApi(yacht.idYacht));
+    //     }
+    // }, [yacht, dispatch]);
 
     const description = yacht.description ? yacht.description.split('.').filter(sentence => sentence.trim()) : [];
     return (
@@ -28,7 +39,7 @@ const SectionHeader = ({ yacht }) => {
                     <h4 className='mb-4'>Đặc điểm nổi bật</h4>
                 </div>
                 <div className="overview">
-                    {service.map((item, index) => (
+                    {services.map((item, index) => (
                         <div key={index} className="flex gap-8 align-center">
                             <label><FcIdea /> {item.service}</label>
                         </div>

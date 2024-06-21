@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Date;
 
 @CrossOrigin("*")
 @RestController
@@ -73,10 +74,11 @@ public class CompanyController {
                                      @RequestParam double area,
                                      @RequestParam String description,
                                      @RequestParam String idRoomType,
+                                     @RequestParam MultipartFile avatar,
                                      @RequestParam String idYacht
                                      ){
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iRoom.addRoom(roomName, area, description, idRoomType, idYacht));
+        dataResponse.setData(iRoom.addRoom(roomName, area, description, idRoomType, idYacht, avatar));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @PutMapping("/yacht/updateYacht/{yachtId}")
@@ -97,9 +99,10 @@ public class CompanyController {
     @PutMapping("/room/updateRoom/{roomId}")
     public ResponseEntity<?> updateRoom(@PathVariable String roomId,
                                         @RequestParam String description,
+                                        @RequestParam MultipartFile avatar,
                                         @RequestParam int available){
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iRoom.updateRoom(roomId,  description,  available));
+        dataResponse.setData(iRoom.updateRoom(roomId, description, available, avatar));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @DeleteMapping("/yacht/delete/{id}")
@@ -144,7 +147,6 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-
     @PostMapping("/confirm")
     public ResponseEntity<?> confirmVnPayPayment(@RequestParam String idBookingOrder) {
         DataResponse dataResponse = new DataResponse();
@@ -167,7 +169,7 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/updateProfile/{companyId}")
+    @PostMapping("/updateProfile/{companyId}")
     public ResponseEntity<?> updateCompany(@PathVariable String companyId,
                                            @RequestParam String name,
                                            @RequestParam String address,
@@ -309,13 +311,6 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/getAllLocation")
-    public ResponseEntity<?> getAllLocation(){
-        DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(ilocation.getAllLocation());
-        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-    }
-
     @DeleteMapping("/deleteSchedule/{yachtId}/{scheduleId}")
     public ResponseEntity<?> deleteSchedule(@PathVariable String yachtId,
                                             @PathVariable String scheduleId){
@@ -339,6 +334,12 @@ public class CompanyController {
                                                 @PathVariable("idSchedule") String idSchedule){
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iRoom.getRoomAndSchedule(idYacht,idSchedule));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getRoomByYacht/{yachtId}")
+    public ResponseEntity<?> getRoomByYacht(@PathVariable String yachtId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.getRoomByYacht(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @GetMapping("/getYachtType")

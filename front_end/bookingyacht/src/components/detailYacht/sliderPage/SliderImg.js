@@ -3,20 +3,21 @@ import { Carousel, Image } from 'react-bootstrap';
 import './SliderImg.scss'
 import { getImagesYacht } from '../../../services/ApiServices';
 import { LuShip } from "react-icons/lu";
+import { useDispatch, useSelector } from 'react-redux';
+import { getYachtImagesApi } from '../../../redux/action/YachtImagesAction';
 
 const SimpleSlider = ({ yacht }) => {
+  const { images } = useSelector(state => state.YachtImagesReducer);
+  const dispatch = useDispatch();
 
-  const [image, setImage] = useState([]);
-
-  const getImagesYachtById = async (yachtId) => {
-    const res = await getImagesYacht(yachtId);
-    setImage(res.data.data)
-    console.log(res.data.data)
-  }
+  console.log(images)
 
   useEffect(() => {
-    getImagesYachtById(yacht.idYacht)
-  }, [yacht.idYacht])
+    if (yacht && yacht.idYacht) {
+      dispatch(getYachtImagesApi(yacht.idYacht));
+    }
+  }, [yacht, dispatch]);
+
 
   const getImageApi = `http://localhost:8080/api/customer/file/`
 
@@ -31,15 +32,15 @@ const SimpleSlider = ({ yacht }) => {
   };
 
   const handleNextThumbnails = () => {
-    setCurrentIndex((prev) => (prev + 1) % image.length);
+    setCurrentIndex((prev) => (prev + 1) % images.length);
   };
 
   const handlePrevThumbnails = () => {
-    setCurrentIndex((prev) => (prev - 1 + image.length) % image.length);
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
-  const displayedThumbnails = image.slice(currentIndex, currentIndex + 5).concat(
-    image.slice(0, Math.max(0, currentIndex + 5 - image.length))
+  const displayedThumbnails = images.slice(currentIndex, currentIndex + 5).concat(
+    images.slice(0, Math.max(0, currentIndex + 5 - images.length))
   );
 
   return (
@@ -47,12 +48,12 @@ const SimpleSlider = ({ yacht }) => {
     <div className="custom-slider">
       <div className='title_page mb-4' style={{ justifyContent: 'space-between', alignItems: 'center' }}>
         <h1 style={{ fontWeight: 'bold', color: '#0E4F4F' }}><span><LuShip color='gold' size={80}></LuShip></span> {yacht.name}</h1>
-        <h3 style={{ color: '#0E4F4F', fontWeight: 'normal' }}>3,550,000 đ/khách</h3>
+        <h3 style={{ color: '#0E4F4F', fontWeight: 'normal' }}>3,550,000 đ/phòng</h3>
       </div>
 
       <div className='slider_page'>
         <Carousel activeIndex={currentIndex} onSelect={handleSelect} slide={false} indicators={false} interval={null}>
-          {image.map((image, index) => (
+          {images.map((image, index) => (
             <Carousel.Item key={image.idYachtImage}>
               <Image src={`${getImageApi}${image.imageYacht}`} alt={index} fluid className='img1' />
             </Carousel.Item>

@@ -22,4 +22,9 @@ public interface RoomRepository extends JpaRepository<Room, String > {
     List<RoomScheduleDTO> findAllRoomsWithSchedulesByYachtId(@Param("idYacht") String idYacht,
                                                              @Param("idSchedule") String idSchedule);
 
+    @Query("SELECT r FROM Room r WHERE r.yacht.idYacht = :idYacht")
+    List<Room> findAllByYachtId(@Param("idYacht") String idYacht);
+
+    @Query("SELECT r FROM Room r WHERE r.roomType.idRoomType = :idRoomType")
+    List<Room> findAllByRoomTypeId(@Param("idRoomType") String idRoomType);
 }

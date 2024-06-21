@@ -28,6 +28,9 @@ public class Room {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "avatar")
+    private String avatar;
+
     @Column(name = "available")
     private int available;
 

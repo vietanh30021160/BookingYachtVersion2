@@ -32,6 +32,8 @@ public class CustomerController {
     private IService iService;
     private IYachtService iYachtService;
     private ISchedule iSchedule;
+    private IRoom iRoom;
+    private IRoomType iRoomType;
     private IYachtType iYachtType;
 
 
@@ -167,6 +169,49 @@ public class CustomerController {
     public ResponseEntity<?> getScheduleByYacht(@PathVariable String yachtId) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iSchedule.getAllScheduleByYacht(yachtId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping ("/room/getAllRoom")
+    public ResponseEntity<?> getAllRoom(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.getAllRoom());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/room/getRoom/{roomId}")
+    public ResponseEntity<?> getRoomByID(@PathVariable String roomId){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.getRoomByID(roomId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/roomType/getAllRoomType")
+    public ResponseEntity<?>getAllRoomType(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoomType.getAllRoomType());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getAllRoomSchedule/{idYacht}/{idSchedule}")
+    public ResponseEntity<?> getAllRoomSchedule(@PathVariable("idYacht") String idYacht,
+                                                @PathVariable("idSchedule") String idSchedule){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.getRoomAndSchedule(idYacht,idSchedule));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getRoomByYacht/{yachtId}")
+    public ResponseEntity<?> getRoomByYacht(@PathVariable String yachtId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.getRoomByYacht(yachtId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getRoomById/{id}")
+    public ResponseEntity<?> getRoomById(@PathVariable String id) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.getRoomByID(id));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getRoomByRoomType/{idRoomType}")
+    public ResponseEntity<?> getRoomByRoomType(@PathVariable String idRoomType) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.getRoomByRoomType(idRoomType));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
