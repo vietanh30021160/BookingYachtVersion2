@@ -17,12 +17,6 @@ import java.util.*;
 @Configuration
 public class VNPAYConfig {
 
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
-
     @Value("${payment.vnPay.payUrl}")
     public String vnp_PayUrl;
 

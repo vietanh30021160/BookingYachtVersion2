@@ -222,8 +222,8 @@ public class PaymentService implements IPayment {
                 String fieldName = paramsEnum.nextElement();
                 String fieldValue = request.getParameter(fieldName);
                 if ((fieldValue != null) && (!fieldValue.isEmpty())) {
-                    fields.put(URLEncoder.encode(fieldName,StandardCharsets.US_ASCII.toString()),
-                            URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                    fields.put(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII),
+                            URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII));
                 }
             }
 
@@ -239,7 +239,7 @@ public class PaymentService implements IPayment {
                 String vnpTxnRef = request.getParameter("vnp_TxnRef");
                 String vnpResponseCode = request.getParameter("vnp_ResponseCode");
                 String vnpTransactionNo = request.getParameter("vnp_TransactionNo");
-                long vnpAmount = Long.parseLong(request.getParameter("vnp_Amount")) / 100; // VNPAY trả về số tiền nhân với 100
+                long vnpAmount = Long.parseLong(request.getParameter("vnp_Amount")) / 100; // Divide by 100 to get the correct value
                 LocalDateTime vnpPayDate = LocalDateTime.parse(request.getParameter("vnp_PayDate"));
                 Optional<BookingOrder> bookingOrderOpt = bookingOrderRepository.findByTxnRef(vnpTxnRef);
 
@@ -311,10 +311,10 @@ public class PaymentService implements IPayment {
             for (Enumeration<String> paramsEnum = request.getParameterNames(); paramsEnum.hasMoreElements();) {
                 String fieldName = paramsEnum.nextElement();
                 String fieldValue = request.getParameter(fieldName);
-                if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                if ((fieldValue != null) && (!fieldValue.isEmpty())) {
                     // Encode values for handling safety
-                    fields.put(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()),
-                            URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                    fields.put(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII),
+                            URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII));
                 }
             }
 
