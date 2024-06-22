@@ -29,6 +29,8 @@ import Profile from './components/home/Profile';
 import FindYacht from './components/yacht/FindYacht';
 import YachtQuestion from './components/yacht/YachtQuestion';
 import YachtRule from './components/yacht/YachtRule';
+import Page404 from './components/page404.js/Page404';
+import ProtectedRoute from './components/routers/ProtectedRoute';
 
 
 const Layout = () => {
@@ -55,12 +57,19 @@ const Layout = () => {
                 <Route path='/information-company' element={<InformationCompany />} />
 
 
+                <Route path='/manage-company' element={
+                    <ProtectedRoute>
+                        <ManageCompany />
+                    </ProtectedRoute>
 
-                <Route path='/manage-company' element={<ManageCompany />} >
+                } >
+
+
                     <Route index element={<ViewBooking />} />
                     <Route path='view-yacht/' element={<ViewYacht />} />
                     <Route path='bill' element={<Bill />} />
                     <Route path='profile' element={<ProfileCompany />} />
+
                 </Route>
 
                 <Route path='manage-yacht/:idYacht' element={<ManageYacht />} />
@@ -76,6 +85,8 @@ const Layout = () => {
                         </Route>
                     )
                 }
+
+                <Route path='*' element={<Page404 />} />
 
             </Routes>
 
