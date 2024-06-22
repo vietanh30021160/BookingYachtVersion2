@@ -12,19 +12,13 @@ const CompanyList = () => {
         axios.get('http://localhost:8080/api/customer/getAllCompany')
             .then(res => {
                 setCompanies(res.data.data.filter(c => c.exist === 1));
-                // setLoading(false);
             })
             .catch(error => {
-                // setLoading(false);
+                console.log(error)
                 
             });
     }, []);
 
-    // if (loading) {
-    //     return <Spinner animation="border" role="status">
-    //         <span className="sr-only">Loading...</span>
-    //     </Spinner>
-    // }
 
     // Chia mảng companies thành các mảng con với kích thước mỗi mảng con là 2.
     const chunkArray = (array, chunkSize) => {

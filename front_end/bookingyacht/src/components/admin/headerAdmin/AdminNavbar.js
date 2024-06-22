@@ -1,10 +1,18 @@
 import { Nav, NavLink, Navbar } from 'react-bootstrap';
 import { AiOutlineLogout } from "react-icons/ai";
 import { FaAddressBook, FaHome, FaUsers } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { logout } from '../../../redux/action/LoginAdminAction';
 import './Sidebar.scss';
-
 const AdminNavbar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = () =>{
+    dispatch(logout());
+    navigate('/admin');
+  }
+
   return (
     <div className="d-flex sidebar-open">
       <Navbar bg="dark" variant="dark" className="flex-column sidebar open">
@@ -33,7 +41,7 @@ const AdminNavbar = () => {
             <Nav.Link href="#contacts-info" as={Link} to="/dashboard/company">
               <FaAddressBook /> <span>Company Manager</span>
             </Nav.Link>
-            <NavLink>
+            <NavLink onClick={handleLogout}>
               <AiOutlineLogout/> <span>Logout</span>
             </NavLink>
           </div>
