@@ -31,7 +31,6 @@ public class CompanyController {
     IRoomImage iRoomImage;
     IRoomType iRoomType;
     IRoom iRoom;
-    IPayment iPayment;
     ISchedule iSchedule;
     IYachtSchedule iYachtSchedule;
     IYachtType iYachtType;

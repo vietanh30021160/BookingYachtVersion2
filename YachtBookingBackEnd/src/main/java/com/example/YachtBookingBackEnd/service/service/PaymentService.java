@@ -74,9 +74,14 @@ public class PaymentService implements IPayment {
             Optional<Room> optionalRoom = roomRepository.findById(roomId);
             Room room = optionalRoom.orElseThrow(() -> new RuntimeException("Invalid room ID: " + roomId));
 
-            boolean isRoomValid = bookingOrderRepository.existsByRoomAndSchedule(room, schedule);
-            if (isRoomValid) {
-                throw new RuntimeException("Room " + roomId + "is not available in schedule");
+            boolean isRoomInYachtInSchedule = roomRepository.isRoomAvailableInSchedule(roomId, idSchedule);
+            if (!isRoomInYachtInSchedule) {
+                throw new IllegalArgumentException("Room " + roomId + " is not available in schedule");
+            }
+
+            boolean isRoomAvailable = bookingOrderRepository.existsByRoomAndSchedule(room, schedule);
+            if (isRoomAvailable) {
+                throw new RuntimeException("Room " + roomId + " is already booked in schedule");
             }
             selectedRooms.add(room);
         }
