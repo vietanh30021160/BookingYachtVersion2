@@ -12,9 +12,11 @@ import com.example.YachtBookingBackEnd.repository.RoomImageRepository;
 import com.example.YachtBookingBackEnd.repository.RoomRepository;
 import com.example.YachtBookingBackEnd.repository.RoomTypeRepository;
 import com.example.YachtBookingBackEnd.repository.YachtRepository;
+import com.example.YachtBookingBackEnd.service.implement.IFile;
 import com.example.YachtBookingBackEnd.service.implement.IRoom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +26,14 @@ public class RoomService implements IRoom {
 
     @Autowired
     private RoomRepository roomRepository;
-
     @Autowired
     private RoomImageRepository roomImageRepository;
     @Autowired
     private YachtRepository yachtRepository;
     @Autowired
     private RoomTypeRepository roomTypeRepository;
+    @Autowired
+    private IFile iFile;
 
     @Override
     public List<RoomDTO> getAllRoom() {
@@ -71,7 +74,6 @@ public class RoomService implements IRoom {
             roomDTO.setName(room.getName());
             roomDTO.setDescription(room.getDescription());
             roomDTO.setArea(room.getArea());
-            roomDTO.setAvailable(room.getAvailable());
             RoomTypeDTO roomTypeDTO = new RoomTypeDTO();
             roomTypeDTO.setIdRoomType(room.getRoomType().getIdRoomType());
             roomTypeDTO.setType(room.getRoomType().getType());
@@ -104,12 +106,15 @@ public class RoomService implements IRoom {
                            double area,
                            String description,
                            String idRoomType,
-                           String idYacht) {
+                           String idYacht,
+                           MultipartFile avatar) {
         try{
             Room room = new Room();
             room.setName(roomName);
             room.setArea(area);
             room.setDescription(description);
+            iFile.save(avatar);
+            room.setAvatar(avatar.getOriginalFilename());
 
             RoomType  roomType = roomTypeRepository.findById(idRoomType)
                     .orElseThrow(()-> new RuntimeException("Not found!!!!"));
@@ -118,7 +123,6 @@ public class RoomService implements IRoom {
             Yacht yacht = yachtRepository.findById(idYacht)
                     .orElseThrow(()-> new RuntimeException("Not found yacht!"));
             room.setYacht(yacht);
-            room.setAvailable(1);
             roomRepository.save(room);
         }catch (Exception e){
             System.out.println("Can't insert room: "+e);
@@ -127,7 +131,7 @@ public class RoomService implements IRoom {
     }
 
     @Override
-    public boolean updateRoom(String roomId, String description,  int available) {
+    public boolean updateRoom(String roomId, String description,  int available, MultipartFile avatar) {
         try {
             Room room = roomRepository.findById(roomId)
                     .orElseThrow(()-> new RuntimeException("Not found room!!"));
@@ -139,8 +143,9 @@ public class RoomService implements IRoom {
             }else {
                 room.setDescription(room.getDescription());
             }
+            iFile.save(avatar);
+            room.setAvatar(avatar.getOriginalFilename());
 
-            room.setAvailable(available);
             roomRepository.save(room);
             return  true;
         }catch (Exception e){
@@ -153,6 +158,56 @@ public class RoomService implements IRoom {
     @Override
     public List<RoomScheduleDTO> getRoomAndSchedule(String idYacht, String idSchedule) {
         return roomRepository.findAllRoomsWithSchedulesByYachtId(idYacht, idSchedule);
+    }
+
+    @Override
+    public List<RoomDTO> getRoomByYacht(String idYacht) {
+        List<RoomDTO> roomDTOList = new ArrayList<>();
+        try{
+            List<Room> roomList = roomRepository.findAllByYachtId(idYacht);
+            for (Room room : roomList) {
+                RoomDTO roomDTO = new RoomDTO();
+                roomDTO.setIdRoom(room.getIdRoom());
+                roomDTO.setName(room.getName());
+                roomDTO.setArea(room.getArea());
+                roomDTO.setDescription(room.getDescription());
+                roomDTO.setAvatar(room.getAvatar());
+
+
+                RoomTypeDTO roomTypeDTO = new RoomTypeDTO();
+                roomTypeDTO.setIdRoomType(room.getRoomType().getIdRoomType());
+                roomTypeDTO.setType(room.getRoomType().getType());
+                roomTypeDTO.setPrice(room.getRoomType().getPrice());
+                roomTypeDTO.setUtilities(room.getRoomType().getUtilities());
+                roomDTO.setRoomType(roomTypeDTO);
+
+                roomDTOList.add(roomDTO);
+            }
+        }catch (Exception e){
+            System.out.println("Error by: "+e);
+        }
+        return roomDTOList;
+    }
+
+    @Override
+    public List<RoomDTO> getRoomByRoomType(String idRoomType) {
+        List<Room> roomList = roomRepository.findAllByRoomTypeId(idRoomType);
+        if (roomList != null){
+            return roomList
+                    .stream()
+                    .map(room -> {
+                        RoomDTO roomDTO = new RoomDTO();
+                        roomDTO.setIdRoom(room.getIdRoom());
+                        roomDTO.setName(room.getName());
+                        roomDTO.setArea(room.getArea());
+                        roomDTO.setDescription(room.getDescription());
+                        roomDTO.setAvatar(room.getAvatar());
+
+                        return roomDTO;
+                    })
+                    .toList();
+        }
+        return List.of();
     }
 
 

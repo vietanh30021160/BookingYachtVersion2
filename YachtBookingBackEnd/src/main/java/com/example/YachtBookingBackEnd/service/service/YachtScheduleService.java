@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 
@@ -25,7 +27,7 @@ public class YachtScheduleService implements IYachtSchedule {
     private YachtRepository yachtRepository;
 
     @Override
-    public boolean addYachtSchedule(String yachtId, Instant startDate,  Instant endDate) {
+    public boolean addYachtSchedule(String yachtId, LocalDateTime startDate,  LocalDateTime endDate) {
         try{
             Optional<Yacht> yacht = yachtRepository.findById(yachtId);
             if(yacht.isPresent()) {
@@ -71,7 +73,7 @@ public class YachtScheduleService implements IYachtSchedule {
     }
 
     @Override
-    public boolean updateYachtSchedule(String yachtId, String scheduleId, Instant newStartDate,  Instant newEndDate) {
+    public boolean updateYachtSchedule(String yachtId, String scheduleId, LocalDateTime newStartDate, LocalDateTime newEndDate) {
         try{
             KeysYachtSchedule key = new KeysYachtSchedule(yachtId, scheduleId);
             Optional<YachtSchedule> yachtSchedule = yachtScheduleRepository.findByKeys(key);

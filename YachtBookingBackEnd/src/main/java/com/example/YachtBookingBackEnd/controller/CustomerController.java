@@ -13,9 +13,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 @CrossOrigin("*")
 @RestController
@@ -32,6 +35,8 @@ public class CustomerController {
     private IService iService;
     private IYachtService iYachtService;
     private ISchedule iSchedule;
+    private IRoom iRoom;
+    private IRoomType iRoomType;
     private IYachtType iYachtType;
 
 
@@ -40,7 +45,14 @@ public class CustomerController {
     ResponseEntity<?> register(@RequestParam String username,
                                @RequestParam String password) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iAccount.createAccountCustomer(username, password));
+        String message = iAccount.createAccountCustomer(username, password);
+        dataResponse.setDesc(message);
+        if(!message.equalsIgnoreCase("Account customer creation failed")){
+            dataResponse.setData(true);
+        }
+        else {
+            dataResponse.setData(false);
+        }
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
@@ -70,10 +82,9 @@ public class CustomerController {
     }
 
     @GetMapping("/payment-callback")
-    public ResponseEntity<?> handlePaymentCallback(HttpServletResponse response,
-                                                   HttpServletRequest request) {
+    public ResponseEntity<?> handleVnpayReturn(HttpServletRequest request) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iPayment.paymentCallbackHandler(response, request));
+        dataResponse.setData(iPayment.handleReturn(request));
 
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
@@ -167,6 +178,49 @@ public class CustomerController {
     public ResponseEntity<?> getScheduleByYacht(@PathVariable String yachtId) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iSchedule.getAllScheduleByYacht(yachtId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping ("/room/getAllRoom")
+    public ResponseEntity<?> getAllRoom(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.getAllRoom());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/room/getRoom/{roomId}")
+    public ResponseEntity<?> getRoomByID(@PathVariable String roomId){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.getRoomByID(roomId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/roomType/getAllRoomType")
+    public ResponseEntity<?>getAllRoomType(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoomType.getAllRoomType());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getAllRoomSchedule/{idYacht}/{idSchedule}")
+    public ResponseEntity<?> getAllRoomSchedule(@PathVariable("idYacht") String idYacht,
+                                                @PathVariable("idSchedule") String idSchedule){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.getRoomAndSchedule(idYacht,idSchedule));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getRoomByYacht/{yachtId}")
+    public ResponseEntity<?> getRoomByYacht(@PathVariable String yachtId) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.getRoomByYacht(yachtId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getRoomById/{id}")
+    public ResponseEntity<?> getRoomById(@PathVariable String id) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.getRoomByID(id));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getRoomByRoomType/{idRoomType}")
+    public ResponseEntity<?> getRoomByRoomType(@PathVariable String idRoomType) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.getRoomByRoomType(idRoomType));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

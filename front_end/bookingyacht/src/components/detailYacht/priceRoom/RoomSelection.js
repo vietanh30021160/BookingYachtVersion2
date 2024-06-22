@@ -5,19 +5,19 @@ import BookNowModal from './BookNowModal';
 import './FormRoom.scss';
 import RoomDetailModal from './RoomDetailModal';
 import RoomItem from './RoomItem';
+import { getRoomByYacht } from '../../../services/ApiServices';
+
+
+
 const services = [
     { id: 1, name: 'Bữa sáng', price: 200000 },
     { id: 2, name: 'Đưa đón sân bay', price: 500000 },
     { id: 3, name: 'Gói spa', price: 700000 },
 ];
-const rooms = [
-    { id: 1, name: 'Phòng Delta Suite', size: '33 m²', price: 3550000, maxGuests: 2, image: 'image1.png' },
-    { id: 2, name: 'Phòng Ocean Suite', size: '33 m²', price: 3700000, maxGuests: 2, image: 'image2.png' },
-    { id: 3, name: 'Phòng Captain Suite', size: '38 m²', price: 3950000, maxGuests: 2, image: 'image3.png' },
-    { id: 4, name: 'Phòng Regal Suite', size: '46 m²', price: 4200000, maxGuests: 2, image: 'image4.png' }
-];
 
-const RoomSelection = () => {
+
+const RoomSelection = ({ yacht }) => {
+    const [rooms, setRooms] = useState([]);
     const [quantities, setQuantities] = useState(rooms.reduce((acc, room) => ({ ...acc, [room.id]: 0 }), {}));
     const [showDetailRom, setShowDetailRom] = useState(false);
     const [selectedRoom, setSelectedRoom] = useState(null);
@@ -25,6 +25,17 @@ const RoomSelection = () => {
     const [selectedRooms, setSelectedRooms] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [selectedServices, setSelectedServices] = useState(rooms.reduce((acc, room) => ({ ...acc, [room.id]: [] }), {}));
+
+    const getRoomList = async (yachtId) => {
+        let res = await getRoomByYacht(yachtId)
+        setRooms(res.data.data)
+        console.log(res.data.data)
+    }
+
+    useEffect(() => {
+        getRoomList(yacht.idYacht)
+    }, [yacht.idYacht])
+
     useEffect(() => {
         const newSelectedRooms = rooms.filter(room => quantities[room.id] > 0);
         setSelectedRooms(newSelectedRooms);
@@ -38,15 +49,17 @@ const RoomSelection = () => {
             return acc + (roomServicePrice * quantities[room.id]);
         }, 0)
         setTotalPrice(totalRoomPrice + totalServicePrice);
-        // setTotalPrice(newSelectedRooms.reduce((acc, room) => acc + (room.price * quantities[room.id]), 0));
+        setTotalPrice(newSelectedRooms.reduce((acc, room) => acc + (room.price * quantities[room.id]), 0));
     }, [quantities, selectedServices]);
 
-    const handleQuantityChange = (id, delta) => {
-        setQuantities(prevQuantities => ({
-            ...prevQuantities,
-            [id]: Math.max(0, prevQuantities[id] + delta)
-        }));
-    };
+
+
+    // const handleQuantityChange = (id, delta) => {
+    //     setQuantities(prevQuantities => ({
+    //         ...prevQuantities,
+    //         [id]: Math.max(0, prevQuantities[id] + delta)
+    //     }));
+    // };
     const handleServiceChange = (roomId, serviceId) => {
         setSelectedServices(prevServices => {
             const roomServices = prevServices[roomId] || [];
@@ -57,7 +70,7 @@ const RoomSelection = () => {
         });
     };
     const handleReset = () => {
-        setQuantities(rooms.reduce((acc, room) => ({ ...acc, [room.id]: 0 }), {}));
+        // setQuantities(rooms.reduce((acc, room) => ({ ...acc, [room.id]: 0 }), {}));
         setSelectedServices(rooms.reduce((acc, room) => ({ ...acc, [room.id]: [] }), {}));
     };
 
@@ -73,13 +86,13 @@ const RoomSelection = () => {
     return (
         <Container>
             <h2 className='mb-4' style={{ fontWeight: 'bold' }}>Các loại phòng & giá</h2>
+
             <div className='form-select'>
-                <Button variant="outline-danger" onClick={handleReset}>Xóa lựa chọn</Button>
+
                 {rooms.map(room => (
                     <RoomItem
-                        key={room.id}
+                        key={room.idRoom}
                         room={room}
-                        handleQuantityChange={handleQuantityChange}
                         quantity={quantities[room.id]}
                         handleDetail={handleDetail}
                         services={services}
@@ -87,9 +100,11 @@ const RoomSelection = () => {
                         handleServiceChange={handleServiceChange}
                     />
                 ))}
+
                 <div className='my-3'>
                     <div className="row">
                         <div className="col-md-6 col-12">
+                            <Button className='mb-3' variant="outline-danger">Xóa lựa chọn</Button>
                             <h5>Tổng tiền: {totalPrice.toLocaleString()} đ</h5>
                         </div>
                         <div className="col-md-6 col-12 text-end">
@@ -99,18 +114,18 @@ const RoomSelection = () => {
                     </div>
                 </div>
             </div>
-            <RoomDetailModal
+            {/* <RoomDetailModal
                 room={selectedRoom}
                 show={showDetailRom}
                 handleClose={() => setShowDetailRom(false)}
-            />
+            /> */}
             <BookNowModal
                 selectedRooms={selectedRooms}
-                quantities={quantities}
-                selectedServices={selectedServices}
+                // quantities={quantities}
+                // selectedServices={selectedServices}
                 services={services}
-                handleQuantityChange={handleQuantityChange}
-                handleServiceChange={handleServiceChange}
+                // handleQuantityChange={handleQuantityChange}
+                // handleServiceChange={handleServiceChange}
                 totalPrice={totalPrice}
                 show={showBookNow}
                 handleClose={() => setShowBookNow(false)}

@@ -28,20 +28,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CompanyService implements ICompany {
     CompanyRepository companyRepository;
-    AccountRepository accountRepository;
     IFile iFile;
-
-    public static final String ROLE_COMPANY = "COMPANY";
-
-    private boolean isValidEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        if (email == null) {
-            return false;
-        }
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
 
     @Override
     public List<CompanyDTO> searchCompanyByName(String name) {
@@ -127,13 +114,8 @@ public class CompanyService implements ICompany {
     }
 
     @Override
-    public boolean updateInfoCompany(String idCompany, String name, String address, MultipartFile logo, String email) {
+    public boolean updateInfoCompany(String idCompany, String name, String address, MultipartFile logo) {
         Company company = getCompanyById(idCompany);
-
-        if (!isValidEmail(email)) {
-            log.error("Invalid email format");
-            throw new IllegalArgumentException("Invalid email format");
-        }
 
         try{
             if (name != null) {
@@ -145,9 +127,6 @@ public class CompanyService implements ICompany {
             if (logo != null && !logo.isEmpty()) {
                 iFile.save(logo);
                 company.setLogo(logo.getOriginalFilename());
-            }
-            if (email != null) {
-                company.setEmail(email);
             }
             companyRepository.save(company);
             return true;

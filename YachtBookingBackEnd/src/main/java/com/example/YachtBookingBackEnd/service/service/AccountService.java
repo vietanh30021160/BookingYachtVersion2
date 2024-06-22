@@ -52,27 +52,11 @@ public class AccountService implements IAccount {
             // Lưu account vào db
             accountRepository.save(account);
 
-            //Thêm thông tin của công ty
-//            Company company = new Company();
-//            company.setName("company");
-//            company.setAddress("address");
-//            company.setEmail(generateRandomEmail());
-//            company.setExist(1);
-//            company.setAccount(account);
-
-//            companyRepository.save(company);
-
             return true;
         } catch (Exception e) {
             log.error("Account company creation failed - default error", e);
             return false;
         }
-    }
-
-    private String generateRandomEmail() {
-        Random random = new Random();
-        int randomNumber = random.nextInt(10000);
-        return "email" + randomNumber + "@gmail.com";
     }
 
     @Override

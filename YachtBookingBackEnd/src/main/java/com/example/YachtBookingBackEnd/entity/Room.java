@@ -1,11 +1,9 @@
 package com.example.YachtBookingBackEnd.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.util.Set;
 
 @Getter
@@ -28,8 +26,8 @@ public class Room {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "available")
-    private int available;
+    @Column(name = "avatar")
+    private String avatar;
 
     @ManyToOne()
     @JoinColumn(name = "id_room_type", nullable = false)
@@ -44,4 +42,6 @@ public class Room {
 
     @OneToMany(mappedBy = "room")
     private Set<BookingRoom> bookingRoomSet;
+
+
 }
