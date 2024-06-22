@@ -63,10 +63,6 @@ export const createYacht = (idCompany, name, image, launch, hullBody, descriptio
     data.append('idLocation', idLocation);
     return axios.post(`/api/companies/yacht/insertYacht/${idCompany}`, data);
 }
-export const getRoomByYacht = () => {
-    return axios.get('/api/customer/room');
-}
-
 export const getRoomByYacht = (yachtId) => {
     return axios.get(`/api/customer/getRoomByYacht/${yachtId}`)
 }
@@ -137,5 +133,31 @@ export const updateYacht = (idYacht, name, image, hullBody, description, rule, i
     data.append('idLocation', idLocation);
     return axios.put(`/api/companies/yacht/updateYacht/${idYacht}`, data)
 }
+export const getAllRoomByYacht = (idYacht) => {
+    return axios.get(`/api/companies/getRoomByYacht/${idYacht}`);
+}
+
+export const getAllRoomType = () => {
+    return axios.get(`/api/companies/roomType/getAllRoomType`);
+}
+
+export const createImageRoom = (image, idRoom) => {
+    const data = new FormData();
+    data.append('image', image);
+    return axios.post(`/api/companies/roomImage/insertImage/${idRoom}`, data);
+}
+
+
+// Ham Nay Chua Xong
+export const createRoom = (roomName, area, description, roomType, avatar, idYacht) => {
+    const data = new FormData();
+    data.append('roomName', roomName)
+    data.append('area', area)
+    data.append('description', description)
+    data.append('roomType', roomType)
+    data.append('avatar', avatar)
+    return axios.post(`/api/companies/room/addRoom/${idYacht}`, data);
+}
+
 
 

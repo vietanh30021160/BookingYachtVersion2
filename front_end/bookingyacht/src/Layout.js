@@ -29,8 +29,10 @@ import Profile from './components/home/Profile';
 import FindYacht from './components/yacht/FindYacht';
 import YachtQuestion from './components/yacht/YachtQuestion';
 import YachtRule from './components/yacht/YachtRule';
-import Page404 from './components/page404.js/Page404';
+
 import ProtectedRoute from './components/routers/ProtectedRoute';
+import Page404 from './components/page404/Page404';
+import ManageServiceYacht from './components/company/ManageServiceYacht';
 
 
 const Layout = () => {
@@ -63,8 +65,6 @@ const Layout = () => {
                     </ProtectedRoute>
 
                 } >
-
-
                     <Route index element={<ViewBooking />} />
                     <Route path='view-yacht/' element={<ViewYacht />} />
                     <Route path='bill' element={<Bill />} />
@@ -73,8 +73,8 @@ const Layout = () => {
                 </Route>
 
                 <Route path='manage-yacht/:idYacht' element={<ManageYacht />} />
-                <Route path='manage-room' element={<ManageRoom />} />
-
+                <Route path='manage-room/:idYacht' element={<ManageRoom />} />
+                <Route path='manage-services-yacht' element={<ManageServiceYacht />} />
                 <Route path='/admin' element={<LoginAdmin setIsLoggedIn={setIsLoggedIn} />} />
                 {
                     isLoggedIn && (

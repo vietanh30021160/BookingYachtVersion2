@@ -42,6 +42,8 @@ const ViewYacht = (props) => {
         if (res && res.data.data.length > 0 && res.data.success === true) {
             setYacht(res.data.data);
             setFilteredYachts(res.data.data);
+        } else {
+            toast.info('Please Adding New Yacht');
         }
     }
 
@@ -51,26 +53,18 @@ const ViewYacht = (props) => {
             if (res.data.data === true) {
                 toast.success('Delete Successfully');
                 listYacht();
-
+            } else {
+                toast.error('Delete Fail')
             }
         }
     }
-    // const handleCreateYacht = () => {
-    //     setIsShowModal(true);
-    //     console.log(yacht)
-    //     let company = _.chain(yacht)
-    //         // Group the elements of Array based on `color` property
-    //         .groupBy("company")
-    //         // `key` is group's name (color), `value` is the array of objects
-    //         .map((value, key) => ({ company: key, yachtt: value }))
-    //     //     .value()
-    //     console.log("check yacht modal", yacht[0].company)
-    //     setIdCompany(yacht[0].company.idCompany)
-    // }
+
     const getLocation = async () => {
         let res = await getAllLocation();
-        if (res && res.data.success === true && res.data.status === 200) {
+        if (res && res.data.data.length > 0) {
             setLocation(res.data.data);
+        } else {
+            setLocation('Not Found')
         }
     }
 
@@ -80,6 +74,8 @@ const ViewYacht = (props) => {
             if (newYacht && newYacht.length > 0) {
                 setYacht(newYacht);
                 setSearchYacht('');
+            } else {
+                toast.error('Not Found Yacht')
             }
         } else {
             setYacht(filteredYachts)
@@ -159,8 +155,9 @@ const ViewYacht = (props) => {
                                                         <p className="mb-0 text-dark text-dark pt-2"><span className="text-dark font-weight-bold"></span>
                                                         </p>
                                                         <div className="float-right">
+                                                            <Button className="btn btn-sm btn-infor" onClick={() => navigate(`/manage-services-yacht/${yacht.idYacht}`)}><i className="feather-check-circle" />Manage Services Yacht</Button>
                                                             <Button className="btn btn-sm btn-success" onClick={() => navigate(`/manage-yacht/${yacht.idYacht}`)}><i className="feather-check-circle" />Manage Yacht</Button>
-                                                            <Button className="btn btn-sm btn-warning" onClick={() => navigate('/manage-room')}><i className="feather-trash" /> Manage Room </Button>
+                                                            <Button className="btn btn-sm btn-warning" onClick={() => navigate(`/manage-room/${yacht.idYacht}`)}><i className="feather-trash" /> Manage Room </Button>
                                                             <Button className="btn btn-sm btn-danger" onClick={() => handleDeleteYacht(yacht.idYacht, yacht.name)}><i className="feather-trash" /> Delete Yacht </Button>
 
                                                         </div>
@@ -209,6 +206,7 @@ const ViewYacht = (props) => {
                 setShow={setIsShowModal}
                 idCompany={idCompany}
                 listYacht={listYacht}
+                location={location}
             />
 
         </div>

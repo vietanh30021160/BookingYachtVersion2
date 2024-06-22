@@ -29,7 +29,7 @@ const ManageYacht = () => {
         if (res && res.data.data.length > 0) {
             setListYachtImage(res.data.data);
         } else {
-            toast.error('Not Found');
+            toast.info('Not Found Image Yacht');
         }
     }
 

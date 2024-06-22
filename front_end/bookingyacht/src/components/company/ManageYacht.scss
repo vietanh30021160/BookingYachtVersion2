@@ -48,3 +48,10 @@ button {
         width: 200px;
     }
 }
+
+.room-name {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
