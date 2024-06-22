@@ -34,7 +34,6 @@ public class CompanyController {
     ISchedule iSchedule;
     IYachtSchedule iYachtSchedule;
     IYachtType iYachtType;
-    ILocation ilocation;
 
     @GetMapping("/allYacht")
     public ResponseEntity<?> viewYacht() {

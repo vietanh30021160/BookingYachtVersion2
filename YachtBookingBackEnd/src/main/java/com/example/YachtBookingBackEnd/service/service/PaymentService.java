@@ -35,6 +35,8 @@ public class PaymentService implements IPayment {
     IBookingRoom iBookingRoom;
     CustomerRepository customerRepository;
     ScheduleRepository scheduleRepository;
+    YachtServiceRepository yachtServiceRepository;
+    YachtRepository yachtRepository;
 
     public static final String DEFAULT_STATUS = "Pending";
 
@@ -92,6 +94,11 @@ public class PaymentService implements IPayment {
             Optional<com.example.YachtBookingBackEnd.entity.Service> optionalService = serviceRepository.findById(serviceId);
             com.example.YachtBookingBackEnd.entity.Service service = optionalService.orElseThrow(() -> new RuntimeException("Invalid service ID: " + serviceId));
 
+            String idYacht = yachtRepository.getIdByService(service);
+            boolean isServiceExistInYacht = yachtServiceRepository.isServiceExistInYacht(serviceId, idYacht);
+            if (!isServiceExistInYacht) {
+                throw new IllegalArgumentException("Service " + serviceId + " is not available");
+            }
             selectedServices.add(service);
         }
 
