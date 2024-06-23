@@ -11,7 +11,7 @@ public interface IBookingOrder {
 
     boolean confirmBooking(String idBookingOrder);
 
-    boolean cancelBooking(String idBookingOrder);
+    boolean cancelBooking(String idBookingOrder, String reason, String idCompany);
 
     List<BookingOrderDTO> getBookingOrderByPrice(String idCompany, Long min, Long max);
 }

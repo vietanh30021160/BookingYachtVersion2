@@ -2,9 +2,12 @@ package com.example.YachtBookingBackEnd.service.service;
 
 import com.example.YachtBookingBackEnd.dto.BookingOrderDTO;
 import com.example.YachtBookingBackEnd.entity.BookingOrder;
+import com.example.YachtBookingBackEnd.entity.Company;
 import com.example.YachtBookingBackEnd.mapper.BookingOrderMapper;
 import com.example.YachtBookingBackEnd.repository.BookingOrderRepository;
+import com.example.YachtBookingBackEnd.repository.CompanyRepository;
 import com.example.YachtBookingBackEnd.service.implement.IBookingOrder;
+import com.example.YachtBookingBackEnd.service.implement.IMailSender;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -24,6 +27,8 @@ import java.util.stream.Collectors;
 @Slf4j // Để sử dụng logging từ thư viện Lombok
 public class BookingOrderService implements IBookingOrder {
     BookingOrderRepository bookingOrderRepository;
+    IMailSender mailSender;
+    CompanyRepository companyRepository;
 
     public static final String DEFAULT_STATUS = "Pending";
 
@@ -55,7 +60,7 @@ public class BookingOrderService implements IBookingOrder {
 
     @Override
     @Transactional
-    public boolean cancelBooking(String idBookingOrder) {
+    public boolean cancelBooking(String idBookingOrder, String reason, String idCompany) {
         Optional<BookingOrder> bookingOrderOptional = bookingOrderRepository.findById(idBookingOrder);
 
         if (bookingOrderOptional.isPresent()) {
@@ -70,7 +75,16 @@ public class BookingOrderService implements IBookingOrder {
             if (isPending && (isOverdue || isTransactionFailed)) {
                 try {
                     bookingOrder.setStatus("Cancelled");
+                    bookingOrder.setReason(reason);
                     bookingOrderRepository.save(bookingOrder);
+
+                    // Send cancellation email
+                    String customerEmail = bookingOrder.getCustomer().getEmail();
+                    Company company = companyRepository.findByIdAndExist(idCompany)
+                            .orElseThrow(() -> new RuntimeException("Company not found! Try again"));
+                    String companyName = company.getName();
+                    mailSender.sendCancelMail(customerEmail, idBookingOrder, reason, companyName);
+
                     return true;
                 } catch (Exception e) {
                     log.error("Cancel Booking failed", e);

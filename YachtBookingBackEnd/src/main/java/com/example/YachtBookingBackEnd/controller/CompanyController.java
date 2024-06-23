@@ -159,18 +159,21 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/confirm/{idBookingOrder}")
-    public ResponseEntity<?> confirmVnPayPayment(@PathVariable String idBookingOrder) {
+    @PutMapping("/{idCompany}/confirm/{idBookingOrder}")
+    public ResponseEntity<?> confirmVnPayPayment(@PathVariable String idBookingOrder,
+                                                 @PathVariable String idCompany) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iBookingOrder.confirmBooking(idBookingOrder));
 
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/cancel/{idBookingOrder}")
-    public ResponseEntity<?> cancelVnPayPayment(@PathVariable String idBookingOrder) {
+    @PutMapping("/{idCompany}/cancel/{idBookingOrder}")
+    public ResponseEntity<?> cancelVnPayPayment(@PathVariable String idBookingOrder,
+                                                @PathVariable String idCompany,
+                                                @RequestParam String reason) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iBookingOrder.cancelBooking(idBookingOrder));
+        dataResponse.setData(iBookingOrder.cancelBooking(idBookingOrder, reason, idCompany));
 
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
