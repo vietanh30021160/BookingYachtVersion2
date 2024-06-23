@@ -3,11 +3,10 @@ import './ManageYacht.scss'
 import { AiFillHome } from "react-icons/ai";
 import { NavLink, useParams } from 'react-router-dom';
 import { Button, Col, Row } from 'react-bootstrap';
-import image from '../../assets/no53ab0y526yl825.webp';
 import ViewFeedback from './ViewFeedback';
 import ManageInforYacht from './ManageInforYacht';
 import { FaCirclePlus } from "react-icons/fa6";
-import { deleteYachtImage, getYachtImage, updateYachtImage } from '../../services/ApiServices';
+import { deleteYachtImage, getYachtImage } from '../../services/ApiServices';
 import ModalCreateImageYacht from './Modal/ModalCreateImageYacht';
 import { toast } from 'react-toastify';
 import ModalUpdateImageYacht from './Modal/ModalUpdateImageYacht';

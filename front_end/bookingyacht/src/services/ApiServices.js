@@ -147,6 +147,28 @@ export const createImageRoom = (image, idRoom) => {
     return axios.post(`/api/companies/roomImage/insertImage/${idRoom}`, data);
 }
 
+// export const getAllServices = () => {
+//     return axios.get(`/api/companies/getAllService`);
+// }
+
+export const getServicesByYacht = (idYacht) => {
+    return axios.get(`/api/companies/getServiceByYacht/${idYacht}`);
+}
+
+export const createServiceYacht = (idYacht, service, price) => {
+    const data = new FormData();
+    data.append('service', service);
+    data.append('price', price);
+    return axios.post(`/api/companies/addServiceForYacht/${idYacht}`, data)
+}
+
+export const upadteServiceYacht = (idYacht, idService, service, price) => {
+    const data = new FormData();
+    data.append('price', price);
+    data.append('service', service);
+    return axios.put(`/api/companies/updateYachtService/${idYacht}/${idService}`, data)
+}
+
 
 // Ham Nay Chua Xong
 export const createRoom = (roomName, area, description, roomType, avatar, idYacht) => {

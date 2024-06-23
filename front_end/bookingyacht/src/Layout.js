@@ -74,7 +74,9 @@ const Layout = () => {
 
                 <Route path='manage-yacht/:idYacht' element={<ManageYacht />} />
                 <Route path='manage-room/:idYacht' element={<ManageRoom />} />
-                <Route path='manage-services-yacht' element={<ManageServiceYacht />} />
+                <Route path='manage-services-yacht/:idYacht' element={<ManageServiceYacht />} />
+                <Route path='manage-schedule/:idYacht' element={<ManageYacht />} />
+
                 <Route path='/admin' element={<LoginAdmin setIsLoggedIn={setIsLoggedIn} />} />
                 {
                     isLoggedIn && (

@@ -7,13 +7,13 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 const ModalUpdateRoom = (props) => {
-    const { show, handleClose } = props;
+    const { show, handleClose, idRoom } = props;
 
     return (
         <div>
             <Modal size='xl' show={show} onHide={handleClose} autoFocus>
                 <Modal.Header closeButton>
-                    <Modal.Title>Update Profile</Modal.Title>
+                    <Modal.Title>Update Room</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>

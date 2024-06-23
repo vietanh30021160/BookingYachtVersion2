@@ -43,6 +43,7 @@ const ManageRoom = () => {
         setIdRoom(idRoom);
     }
 
+
     useEffect(() => {
         getAllRoom();
     }, [])
@@ -74,18 +75,17 @@ const ManageRoom = () => {
                 listRoom && listRoom.length > 0 && listRoom.map((room) =>
                     <div key={room.idRoom} className='d-flex my-5 room p-3' style={{ gap: 50 }}>
                         <img width={170} src={`http://localhost:8080/api/customer/file/${room.avatar}`} />
-                        <div>
-                            <p className='room-name'>{room.name}</p>
-                            <p>{room.area} <TbMeterSquare size={25} className='pb-1' /></p>
+                        <div className='d-flex' style={{ gap: 20 }}>
+                            <div className='room-name'>{room.name}</div>
+                            <div>{room.area} <TbMeterSquare size={25} className='pb-1' /></div>
 
+                            <div>{room.roomType.price} đ/KHÁCH</div>
                         </div>
-                        <p>{room.roomType.price} đ/KHÁCH</p>
 
-                        <div className='d-flex' style={{ gap: 30 }}>
+                        <div className='d-flex' style={{ gap: 10 }}>
                             <Button onClick={() => handlManageImageRoom(room.idRoom)} style={{ width: 180 }} className='btn btn-light'>Manage Room Image </Button>
                             <Button onClick={() => setIsShowModalRoomService(true)} style={{ width: 173 }} className='btn btn-warning'>Manage Services</Button>
-                            <Button onClick={() => setIsShowModalUpdateRoom(true)} className='btn btn-primary'>Update</Button>
-                            <Button className='btn btn-danger'>Delete</Button>
+                            <Button onClick={() => setIsShowModalUpdateRoom(room.idRoom)} className='btn btn-primary'>Update</Button>
                         </div>
 
                     </div>
@@ -101,11 +101,13 @@ const ManageRoom = () => {
             <ModalManageRoomService
                 show={isShowModalRoomService}
                 handleClose={handleCloseService}
+                idRoom={idRoom}
             />
 
             <ModalUpdateRoom
                 show={isShowModalUpdateRoom}
                 handleClose={handleCloseUpdate}
+                idRoom={idRoom}
             />
             <ModalCreateRoom
                 show={isShowModalCreateRoom}
