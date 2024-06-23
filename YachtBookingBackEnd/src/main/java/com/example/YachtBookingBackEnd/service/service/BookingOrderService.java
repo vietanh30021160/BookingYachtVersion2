@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -55,16 +56,28 @@ public class BookingOrderService implements IBookingOrder {
     @Override
     @Transactional
     public boolean cancelBooking(String idBookingOrder) {
-        Optional<BookingOrder> bookingOrder = bookingOrderRepository.findById(idBookingOrder);
-        try {
-            if (bookingOrder.isPresent() && bookingOrder.get().getStatus().equals(DEFAULT_STATUS)) {
-                bookingOrder.get().setStatus("Cancelled");
-                bookingOrderRepository.save(bookingOrder.get());
-                return true;
+        Optional<BookingOrder> bookingOrderOptional = bookingOrderRepository.findById(idBookingOrder);
+
+        if (bookingOrderOptional.isPresent()) {
+            BookingOrder bookingOrder = bookingOrderOptional.get();
+            LocalDateTime bookingTime = bookingOrder.getBookingTime();
+            LocalDateTime now = LocalDateTime.now();
+            boolean isOverdue = now.isAfter(bookingTime.plusHours(24));
+            boolean isPending = DEFAULT_STATUS.equals(bookingOrder.getStatus());
+            boolean isTransactionFailed = bookingOrder.getTransaction() != null
+                    && "Failure".equals(bookingOrder.getTransaction().getStatus());
+
+            if (isPending && (isOverdue || isTransactionFailed)) {
+                try {
+                    bookingOrder.setStatus("Cancelled");
+                    bookingOrderRepository.save(bookingOrder);
+                    return true;
+                } catch (Exception e) {
+                    log.error("Cancel Booking failed", e);
+                }
             }
-        } catch (Exception e) {
-            log.error("Cancel Booking failed", e);
         }
+
         return false;
     }
 

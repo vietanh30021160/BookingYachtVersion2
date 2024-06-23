@@ -281,6 +281,9 @@ public class PaymentService implements IPayment {
                                 response.put("RspCode", "00");
                                 response.put("Message", "Confirm Success");
                             } else {
+                                bookingOrder.setStatus("Failure");
+                                bookingOrderRepository.save(bookingOrder);
+
                                 response.put("RspCode", "01");
                                 response.put("Message", "Transaction Failed");
                             }
