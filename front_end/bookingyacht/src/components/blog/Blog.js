@@ -1,30 +1,22 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
+import i_content from '../../assets/image_1.webp';
 import './Blog.scss';
-
+import blogData from './DataBlog';
 const HeaderComponent = () =>{
-  const [users, setUsers] = useState([]);
+  const [blog, setBlog] = useState([]);
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('https://reqres.in/api/users');
-        setUsers(response.data.data || []);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    setBlog(blogData);
+  }, [blogData]);
 
-    fetchData();
-  }, []);
+
   return (
     <div className='headerBlog'>
       {renderTitle()}
       {renderSubtitle()}
       <div className='blogCart'>
-        {users.map(renderUser)}
+        {blog.map(renderBlog)}
       </div>
     </div>
   );
@@ -49,26 +41,28 @@ const renderSubtitle = () =>{
         <br />
         nhật những tin tức hấp dẫn từ điểm đến tuyệt vời này.
       </label>
+      <br/>
+      <img src={i_content} className='lg'/>
     </div>
   );
 }
 
-const renderUser = (user) => {
+const renderBlog = (blog) => {
   return (
     <Col md={3} className='cart'>
       <Card style={{ width: '23rem' }} className='cart-1'>
       <div className='img-cart'>
         <div className='img-cart-1'>
-          <Card.Img className='ima img-fluid w-100' variant="top" src={`${user.avatar}`} />
+          <Card.Img className='ima img-fluid w-100' variant="top" src={`${blog.image}`}/>
         </div>
       </div>
       <div className='body-cart'>
         <Card.Body>
-          <Card.Title>{user.first_name} {user.last_name}</Card.Title>
-          <Card.Text>
-            Email: {user.email}
+          <Card.Title className='title-blog'>{blog.title}</Card.Title>
+          <Card.Text className='text-card'>
+           {blog.description}
           </Card.Text>
-          <Button variant="primary">{user.id}</Button>
+          <Card.Text>{blog.date}</Card.Text>
         </Card.Body>
       </div>
       </Card>
