@@ -14,6 +14,15 @@ spring:
   h2:
     console:
       enabled: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    email: minhnvhe172822@fpt.edu.vn
+    password: hvix tosj plvo rfqk
+    protocol: smtp
+    isSSL: false
+
+
 
 logging:
   level:
@@ -38,3 +47,5 @@ payment:
     version: 2.1.0
     command: pay
     orderType: other
+
+

@@ -2,6 +2,7 @@ package com.example.YachtBookingBackEnd.controller;
 
 import com.example.YachtBookingBackEnd.payload.response.DataResponse;
 import com.example.YachtBookingBackEnd.service.implement.IAccount;
+import com.example.YachtBookingBackEnd.service.implement.IClient;
 import com.example.YachtBookingBackEnd.service.implement.ICompany;
 import com.example.YachtBookingBackEnd.service.implement.ICustomer;
 import lombok.AccessLevel;
@@ -20,6 +21,8 @@ public class AdminController {
     ICustomer iCustomer;
     ICompany iCompany;
     IAccount iAccount;
+    IClient iClient;
+
 
     @PostMapping("/accounts")
     public ResponseEntity<?> createAccountCompany(@RequestParam String username,
@@ -96,6 +99,16 @@ public class AdminController {
     ResponseEntity<?> getAllListCompany(){
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iCompany.getAllCompany());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("createMail")
+    public ResponseEntity<?> create(@RequestParam String name,
+                                          @RequestParam String username,
+                                          @RequestParam String email
+    ) {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iClient.create(name,username, email));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
