@@ -10,8 +10,11 @@ import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { createImageRoom } from '../../../services/ApiServices';
 const ModalManageRoomImage = (props) => {
-    const { show, handleClose, idRoom } = props;
+    const { show, setIsShowModalRoomImage, idRoom } = props;
     const [image, setImage] = useState('');
+    const handleClose = () => {
+        setIsShowModalRoomImage(false);
+    }
 
     const handelUploadImage = async (event) => {
         if (event.target.files[0] && event.target && event.target.files) {

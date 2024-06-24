@@ -7,6 +7,7 @@ export const doLogin = (data, role, idCompany) => {
         payload: { data, role, idCompany }
     }
 }
+
 export const doLogout = () => {
     return {
         type: USER_LOGOUT,

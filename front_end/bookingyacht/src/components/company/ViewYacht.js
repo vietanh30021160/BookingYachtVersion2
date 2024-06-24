@@ -155,8 +155,8 @@ const ViewYacht = (props) => {
                                                         <p className="mb-0 text-dark text-dark pt-2"><span className="text-dark font-weight-bold"></span>
                                                         </p>
                                                         <div className="float-right">
-                                                            <Button className="btn btn-sm btn-light" onClick={() => navigate(`/manage-schedule/${yacht.idYacht}`)}><i className="feather-trash" /> Manage Schedule </Button>
                                                             <Button className="btn btn-sm btn-infor" onClick={() => navigate(`/manage-services-yacht/${yacht.idYacht}`)}><i className="feather-check-circle" />Manage Services Yacht</Button>
+                                                            <Button className="btn btn-sm btn-light" onClick={() => navigate(`/manage-schedule/${yacht.idYacht}`)}><i className="feather-trash" /> Manage Schedule </Button>
                                                             <Button className="btn btn-sm btn-success" onClick={() => navigate(`/manage-yacht/${yacht.idYacht}`)}><i className="feather-check-circle" />Manage Yacht</Button>
                                                             <Button className="btn btn-sm btn-warning" onClick={() => navigate(`/manage-room/${yacht.idYacht}`)}><i className="feather-trash" /> Manage Room </Button>
                                                             <Button className="btn btn-sm btn-danger" onClick={() => handleDeleteYacht(yacht.idYacht, yacht.name)}><i className="feather-trash" /> Delete Yacht </Button>

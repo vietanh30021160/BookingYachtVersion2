@@ -12,7 +12,7 @@ const RootReducer = combineReducers({
     YachtReducer,
     YachtImagesReducer,
     YachtServiceReducer,
-    ServiceByYachtReducer
+    ServiceByYachtReducer,
 });
 
 export default RootReducer;

@@ -9,8 +9,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { doLogout } from '../../redux/action/UserAction';
 const Header = () => {
     const isAuthenticated = useSelector(state => state.account.isAuthenticated);
-    const role = useSelector(state => state.account.account.role);
-    console.log(role);
     const dispatch = useDispatch();
     const handleLogout = () => {
         dispatch(doLogout());
@@ -47,7 +45,7 @@ const Header = () => {
 
                                     <>
                                         <NavDropdown.Item>
-                                            <NavLink className='nav-link'>Profile</NavLink>
+                                            <NavLink to='/profile' className='nav-link'>Profile</NavLink>
                                         </NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item>

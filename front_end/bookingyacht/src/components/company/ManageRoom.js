@@ -25,18 +25,6 @@ const ManageRoom = () => {
 
     const [listRoom, setListRoom] = useState([]);
 
-    const handleCloseImage = () => {
-        setIsShowModalRoomImage(false);
-    }
-    const handleCloseService = () => {
-        setIsShowModalRoomService(false);
-    }
-    const handleCloseUpdate = () => {
-        setIsShowModalUpdateRoom(false);
-    }
-    const handleCloseCreateRoom = () => {
-        setIsShowModalCreateRoom(false);
-    }
 
     const handlManageImageRoom = (idRoom) => {
         setIsShowModalRoomImage(true);
@@ -58,6 +46,12 @@ const ManageRoom = () => {
         }
     }
     console.log("check room", listRoom)
+
+    const [dataUpdateRoom, setDataUpdateRoom] = useState('')
+    const handleUpdateRoom = (room) => {
+        setIsShowModalUpdateRoom(true);
+        setDataUpdateRoom(room)
+    }
 
 
     return (
@@ -85,7 +79,7 @@ const ManageRoom = () => {
                         <div className='d-flex' style={{ gap: 10 }}>
                             <Button onClick={() => handlManageImageRoom(room.idRoom)} style={{ width: 180 }} className='btn btn-light'>Manage Room Image </Button>
                             <Button onClick={() => setIsShowModalRoomService(true)} style={{ width: 173 }} className='btn btn-warning'>Manage Services</Button>
-                            <Button onClick={() => setIsShowModalUpdateRoom(room.idRoom)} className='btn btn-primary'>Update</Button>
+                            <Button onClick={() => handleUpdateRoom(room)} className='btn btn-primary'>Update</Button>
                         </div>
 
                     </div>
@@ -94,24 +88,25 @@ const ManageRoom = () => {
 
             <ModalManageRoomImage
                 show={isShowModalRoomImage}
-                handleClose={handleCloseImage}
+                setIsShowModalRoomImage={setIsShowModalRoomImage}
                 idRoom={idRoom}
             />
 
             <ModalManageRoomService
                 show={isShowModalRoomService}
-                handleClose={handleCloseService}
+                setIsShowModalRoomService={setIsShowModalRoomService}
                 idRoom={idRoom}
             />
 
             <ModalUpdateRoom
                 show={isShowModalUpdateRoom}
-                handleClose={handleCloseUpdate}
+                setIsShowModalUpdateRoom={setIsShowModalUpdateRoom}
                 idRoom={idRoom}
+                dataUpdateRoom={dataUpdateRoom}
             />
             <ModalCreateRoom
                 show={isShowModalCreateRoom}
-                handleClose={handleCloseCreateRoom}
+                setIsShowModalCreateRoom={setIsShowModalCreateRoom}
                 idYacht={idYacht}
             />
         </div>

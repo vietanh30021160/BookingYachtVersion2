@@ -4,10 +4,15 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import './Auth.scss'
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { FaHome } from "react-icons/fa";
 import { fillInformationCustomer } from '../../services/ApiServices';
+import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 const Information = () => {
+
+    const navigate = useNavigate();
+
     const [email, setEmail] = useState('');
     const [fullName, setFullName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -15,8 +20,21 @@ const Information = () => {
 
     const { idCustomer } = useParams()
     const handleFillInformation = async () => {
-        let res = await fillInformationCustomer(idCustomer, email, fullName, phoneNumber, address);
-        console.log("chek fill", res)
+        if (!email || !fullName || !phoneNumber || !address) {
+            toast.error('Input Not Empty!')
+        } else {
+            let res = await fillInformationCustomer(idCustomer, fullName, email, phoneNumber, address);
+            if (res && res.data.data === true) {
+                toast.success('Fill Information Successfully');
+                setEmail('');
+                setAddress('');
+                setFullName('');
+                setPhoneNumber('');
+                navigate('/signin')
+            } else {
+                toast.error('Fill Information Fail')
+            }
+        }
     }
 
 
@@ -77,7 +95,6 @@ const Information = () => {
                 <div>
                     <Button
                         variant="primary"
-                        type="submit"
                         onClick={() => handleFillInformation()}>
                         Submit
 

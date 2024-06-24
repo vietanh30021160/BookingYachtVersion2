@@ -5,10 +5,14 @@ import { FaHome } from "react-icons/fa";
 import ModalUpdateProfileUser from './ModalUpdateProfileUser';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import { useSelector } from 'react-redux';
 
 const Profile = () => {
     const [isShowModal, setIsShowModal] = useState(false);
 
+    const id = useSelector(state => state.idCustomer);
+
+    console.log("checkid cus", id)
     const handleClose = () => {
         setIsShowModal(false);
     }

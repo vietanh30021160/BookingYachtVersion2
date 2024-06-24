@@ -10,7 +10,7 @@ import { createRoom, getAllRoomType } from '../../../services/ApiServices';
 import { toast } from 'react-toastify';
 
 const ModalCreateRoom = (props) => {
-    const { show, handleClose, idYacht } = props;
+    const { show, setIsShowModalCreateRoom, idYacht } = props;
     const [image, setImage] = useState("");
     const [previewImage, setPreviewImage] = useState("");
     const [roomName, setRoomName] = useState('');
@@ -21,6 +21,16 @@ const ModalCreateRoom = (props) => {
     useEffect(() => {
         getRoomType()
     }, []);
+
+    const handleClose = () => {
+        setIsShowModalCreateRoom(false);
+        setRoomName('');
+        setArea('');
+        setDescription('');
+        setRoomType('1');
+        setPreviewImage('');
+        setImage('');
+    }
 
 
     const handelUploadImage = (event) => {
@@ -36,12 +46,6 @@ const ModalCreateRoom = (props) => {
             let res = await createRoom(roomName, area, description, roomType, image, idYacht)
             if (res && res.data.data === true) {
                 toast.success('Create Successfully');
-                setRoomName('');
-                setArea('');
-                setDescription('');
-                setRoomType('1');
-                setPreviewImage('');
-                setImage('');
                 handleClose();
                 getRoomType();
             } else {

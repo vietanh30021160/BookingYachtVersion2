@@ -76,7 +76,7 @@ export const fillInformationCustomer = (idCustomer, fullName, email, phoneNumber
     data.append('phoneNumber', phoneNumber);
     data.append('address', address);
 
-    return axios.put(`/api/customer/profile/${idCustomer}`, data);
+    return axios.post(`/api/customer/profile/${idCustomer}`, data);
 }
 
 export const fillInformationCompany = (idCompany, name, address, logo, email) => {

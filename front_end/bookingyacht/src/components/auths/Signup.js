@@ -11,8 +11,8 @@ const Signup = () => {
     const [password, setPassword] = useState('');
     const [confrimPassword, setConfirmpassword] = useState('')
 
+
     const navigate = useNavigate();
-    const { idCustomer } = useParams();
 
     const handleRegister = async () => {
         let res = await registerCustomer(userName, password);
@@ -20,12 +20,11 @@ const Signup = () => {
             toast.error('Input not empty')
         }
         else if (password !== confrimPassword) {
-            toast.error('Confirm Passwod fail');
+            toast.error('Confirm Passwod Fail');
         }
-        else if (res && res.data.status === 200 && res.data.success === true) {
+        else if (res && res.data.data === true) {
             toast.success('register success')
-            console.log(res);
-            navigate(`/information/${res.data.idAccount}`)
+            navigate(`/information/${res.data.desc}`)
         } else {
             toast.error('create fail')
         }

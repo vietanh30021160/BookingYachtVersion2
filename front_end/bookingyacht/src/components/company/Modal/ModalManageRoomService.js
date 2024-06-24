@@ -10,8 +10,11 @@ import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import ModalCreateRoomService from './ModalCreateRoomService';
 const ModalManageRoomService = (props) => {
-    const { show, handleClose } = props;
+    const { show, setIsShowModalRoomService } = props;
     const [isShowModal, setIsShowModal] = useState(false);
+    const handleClose = () => {
+        setIsShowModalRoomService(false);
+    }
     const handleCloseCreate = () => {
         setIsShowModal(false);
     }
