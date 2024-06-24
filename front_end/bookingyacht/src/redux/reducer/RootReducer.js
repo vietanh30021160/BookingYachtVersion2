@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import AdminReducer from './AdminReducer';
 import loginAdminReducer from './LoginAdminReducer';
 import { ServiceByYachtReducer } from './ServiceByYachtReducer';
 import userReducer from './UserReducer';
@@ -15,6 +16,7 @@ const RootReducer = combineReducers({
     YachtServiceReducer,
     ServiceByYachtReducer,
     loginAdmin: loginAdminReducer,
+    admin : AdminReducer,
 });
 
 export default RootReducer;

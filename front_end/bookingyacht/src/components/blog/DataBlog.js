@@ -39,7 +39,7 @@ const blogData = [
         title :"Top 3 nhà hàng ngon và nổi tiếng ở Hạ Long",
         description: "Hạ Long không chỉ được biết đến với những điểm tham quan đẹp với nắng vàng, cát trắng, biển xanh hay những hang động nổi tiếng. Nơi đây còn mang trong mình vẻ đẹp của nền ẩm thực đa dạng và phong phú. Dưới đây là 3 nhà hàng được đánh giá “chất lượng” cho bạn tham khảo nhé!",
         image: "https://minio.fares.vn/mixivivu-dev/tour/blog/images/5dfe8gnuuju6em60.webp",
-        date: "1/1/2024",
+        date: "01/1/2024",
     },
 ]
 

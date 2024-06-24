@@ -18,13 +18,13 @@ const AdminNavbar = () => {
       <Navbar bg="dark" variant="dark" className="flex-column sidebar open">
         <Navbar.Brand className="text-center">
           <img
-            src="https://via.placeholder.com/50"
+            src="https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2023/02/Hinh-anh-avatar-Facebook.jpg?ssl=1"
             alt="Profile"
             className="profile-pic"
           />
           <div className="profile-info">
-            <h5>Ed Roh</h5>
-            <small>VP Fancy Admin</small>
+            <h5>Eran Roh</h5>
+            <small>Welcome to Admin</small>
           </div>
         </Navbar.Brand>
         <Nav className="flex-column">

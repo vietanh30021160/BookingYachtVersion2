@@ -24,7 +24,7 @@ const LoginAdmin = ({ setIsLoggedIn }) => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        dispatch(login(email, password));
+        dispatch(login(email.trim(), password.trim()));
     };
 
     return (

@@ -1,6 +1,6 @@
 import axios from "axios";
 import NProgress from 'nprogress';
-import { store } from '../redux/Store'
+import { store } from '../redux/Store';
 
 
 const instance = axios.create({
