@@ -45,6 +45,7 @@ public class CustomJwtFilter extends OncePerRequestFilter {
 
             String username = claims.getSubject(); // Lấy tên người dùng từ token
             String role = claims.get("role", String.class); // Lấy role tu token
+            System.out.println("lay role tu token: " + role);
 
             if(username != null && role != null) {
                 //Tạo đối tượng UsernamePasswordAuthenticationToken để đại diện cho thông tin xác thực của người dùng

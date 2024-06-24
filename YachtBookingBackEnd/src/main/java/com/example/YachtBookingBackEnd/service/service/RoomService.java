@@ -73,7 +73,7 @@ public class RoomService implements IRoom {
             roomDTO.setName(room.getName());
             roomDTO.setDescription(room.getDescription());
             roomDTO.setArea(room.getArea());
-//            roomDTO.setAvailable(room.getAvailable());
+
             RoomTypeDTO roomTypeDTO = new RoomTypeDTO();
             roomTypeDTO.setIdRoomType(room.getRoomType().getIdRoomType());
             roomTypeDTO.setType(room.getRoomType().getType());
@@ -123,7 +123,6 @@ public class RoomService implements IRoom {
             Yacht yacht = yachtRepository.findById(idYacht)
                     .orElseThrow(()-> new RuntimeException("Not found yacht!"));
             room.setYacht(yacht);
-//            room.setAvailable(1);
             roomRepository.save(room);
         }catch (Exception e){
             System.out.println("Can't insert room: "+e);
@@ -137,8 +136,6 @@ public class RoomService implements IRoom {
             Room room = roomRepository.findById(roomId)
                     .orElseThrow(()-> new RuntimeException("Not found room!!"));
 
-
-
             if(description!= null){
                 room.setDescription(description);
             }else {
@@ -146,7 +143,6 @@ public class RoomService implements IRoom {
             }
             iFile.save(avatar);
             room.setAvatar(avatar.getOriginalFilename());
-//            room.setAvailable(available);
             roomRepository.save(room);
             return  true;
         }catch (Exception e){
@@ -173,7 +169,6 @@ public class RoomService implements IRoom {
                 roomDTO.setArea(room.getArea());
                 roomDTO.setDescription(room.getDescription());
                 roomDTO.setAvatar(room.getAvatar());
-//                roomDTO.setAvailable(room.getAvailable());
 
                 RoomTypeDTO roomTypeDTO = new RoomTypeDTO();
                 roomTypeDTO.setIdRoomType(room.getRoomType().getIdRoomType());
@@ -203,7 +198,7 @@ public class RoomService implements IRoom {
                         roomDTO.setArea(room.getArea());
                         roomDTO.setDescription(room.getDescription());
                         roomDTO.setAvatar(room.getAvatar());
-//                        roomDTO.setAvailable(room.getAvailable());
+
                         return roomDTO;
                     })
                     .toList();

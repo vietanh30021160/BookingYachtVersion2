@@ -25,4 +25,5 @@ public interface ICustomer {
     List<FeedbackDTO> getFeedbackByYachtId(String yachtId);
 
     List<CompanyDTO> getAllCompanies();
+
 }

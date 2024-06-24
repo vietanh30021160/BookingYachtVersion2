@@ -2,6 +2,7 @@ package com.example.YachtBookingBackEnd.controller;
 
 import com.example.YachtBookingBackEnd.payload.response.DataResponse;
 import com.example.YachtBookingBackEnd.repository.CompanyRepository;
+import com.example.YachtBookingBackEnd.repository.CustomerRepository;
 import com.example.YachtBookingBackEnd.security.JwtHelper;
 import com.example.YachtBookingBackEnd.service.implement.IAccount;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class LoginController {
     IAccount iAccount;
     @Autowired
     private CompanyRepository companyRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestParam String username, @RequestParam String password ) {
@@ -43,9 +46,19 @@ public class LoginController {
                         .findFirst()// moi user chi co 1 quyen nen lay cai dau tien
                         .orElse(null);
                 String token = jwtHelper.generateToken(username, role);
+                System.out.println(role);
+
                 String idAccount = iAccount.getIdAccountByUserName(username);
-                String idCompany = companyRepository.findIdCompanyByIdAccount(idAccount);
-                dataResponse.setIdCompany(idCompany);
+
+                if("COMPANY".equalsIgnoreCase(role)){
+                    String idCompany = companyRepository.findIdCompanyByIdAccount(idAccount);
+                    dataResponse.setIdCompany(idCompany);
+                    System.out.println(idCompany);
+                }else if("CUSTOMER".equalsIgnoreCase(role)){
+                    String idCustomer = customerRepository.findIdCustomerByIdAccount(idAccount);
+                    System.out.println(idCustomer);
+                    dataResponse.setIdCustomer(idCustomer);
+                }
                 dataResponse.setData(token);
                 dataResponse.setSuccess(true);
                 return new ResponseEntity<>(dataResponse, HttpStatus.OK);

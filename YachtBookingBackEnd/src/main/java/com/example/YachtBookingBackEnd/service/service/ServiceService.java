@@ -61,5 +61,27 @@ public class ServiceService implements IService {
         return serviceDTOList;
     }
 
+    @Override
+    public List<ServiceDTO> getAddingService(String yachtId) {
+        List<ServiceDTO> serviceDTOList = new ArrayList<>();
+        try{
+            List<YachtService> yachtServiceList = yachtServiceRepository.findServicesByYachtId(yachtId);
+            if(!yachtServiceList.isEmpty()){
+                for(YachtService yachtService: yachtServiceList){
+                    if(yachtService.getService().getPrice() > 0){
+                        ServiceDTO serviceDTO = new ServiceDTO();
+                        serviceDTO.setIdService(yachtService.getService().getIdService());
+                        serviceDTO.setService(yachtService.getService().getService());
+                        serviceDTO.setPrice(yachtService.getService().getPrice());
+                        serviceDTOList.add(serviceDTO);
+                    }
+                }
+            }
+        }catch (Exception e){
+            System.out.println("error in findServiceByYachtId "+e.getMessage());
+        }
+        return serviceDTOList;
+    }
+
 
 }
