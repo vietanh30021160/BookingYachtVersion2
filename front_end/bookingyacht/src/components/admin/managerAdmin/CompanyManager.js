@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import './Manager.scss';
 const CompanyManager = () => {
 
-    const getImageApi = `http://localhost:8080/api/companies/file/`
+    const getImageApi = `http://localhost:8080/api/customer/file/`
 
     const [companies, setCompanies] = useState([]);
     const [filteredCompanies, setFilteredCompanies] = useState([]);
@@ -179,7 +179,7 @@ const CompanyManager = () => {
         try {
             const config = {
                 method: 'post',
-                url: `http://localhost:8080/api/admins/insertInfoCompanyByIdAccount/${newAccountId}`,
+                url: `http://localhost:8080/api/admins/accounts/${newAccountId}`,
                 headers: {
                     'Authorization': getAuthHeader(),
                     'Content-Type': 'multipart/form-data'
