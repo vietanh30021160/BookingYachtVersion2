@@ -1,3 +1,4 @@
+import { add } from 'lodash';
 import axios from '../utils/CustomizeApi';
 
 
@@ -40,6 +41,19 @@ export const registerCustomer = (username, password) => {
     return axios.post('/api/customer/accounts', data)
 }
 
+export const getProfileCustomer = (customerId) => {
+    return axios.get(`/api/customer/getProfileCustomerById/${customerId}`)
+}
+
+export const updateProfileCustomer = (customerId, email, fullName, phoneNumber, address) => {
+    const data = new FormData();
+    data.append('email', email);
+    data.append('fullName', fullName);
+    data.append('phoneNumber', phoneNumber);
+    data.append('address', address);
+    return axios.put(`/api/customer/profile/updateCustomer/${customerId}`, data)
+}
+
 export const getAllYachtCompany = () => {
     return axios.get('/api/companies/allYacht');
 }
@@ -63,9 +77,11 @@ export const createYacht = (idCompany, name, image, launch, hullBody, descriptio
     data.append('idLocation', idLocation);
     return axios.post(`/api/companies/yacht/insertYacht/${idCompany}`, data);
 }
-export const getRoomByYacht = (yachtId) => {
-    return axios.get(`/api/customer/getRoomByYacht/${yachtId}`)
+export const getRoomByYacht = () => {
+    return axios.get('/api/customer/room');
 }
+
+
 export const getRoomById = (roomId) => {
     return axios.get(`/api/customer/getRoomById/${roomId}`)
 }
@@ -116,7 +132,6 @@ export const updateYachtImage = (idImage, image) => {
 export const getFeedbackCompany = (idCompany) => {
     return axios.get(`/api/companies/feedBackByIdCompany/${idCompany}`)
 }
-
 export const getYachtType = () => {
     return axios.get('/api/companies/getYachtType')
 }
@@ -183,5 +198,24 @@ export const createRoom = (roomName, area, description, roomType, avatar, idYach
     return axios.post(`/api/companies/room/addRoom/${idYacht}`, data);
 }
 
+export const createRoomType = (price, type, utilities) => {
+    const data = new FormData();
+    data.append('price', price);
+    data.append('type', type);
+    data.append('utilities', utilities);
+    return axios.post('/api/companies/roomType/addRoomType', data);
+}
+
+export const updateRoomType = (roomTypeId, price, type, utilities) => {
+    const data = new FormData();
+    data.append('price', price);
+    data.append('type', type);
+    data.append('utilities', utilities);
+    return axios.put(`/api/companies/roomType/updateRoomType/${roomTypeId}`, data);
+}
+
+export const deleteRoomType = (roomTypeId) => {
+    return axios.delete(`/api/companies/roomType/deleteRoomType/${roomTypeId}`);
+}
 
 

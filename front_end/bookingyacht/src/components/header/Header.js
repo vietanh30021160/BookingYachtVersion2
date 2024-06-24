@@ -7,11 +7,13 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { IoCall } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
 import { doLogout } from '../../redux/action/UserAction';
+import { toast } from 'react-toastify';
 const Header = () => {
     const isAuthenticated = useSelector(state => state.account.isAuthenticated);
     const dispatch = useDispatch();
     const handleLogout = () => {
         dispatch(doLogout());
+        toast.success('Logout Successfully')
     }
     return (
         <Navbar expand="lg" className="bg-body-tertiary header">

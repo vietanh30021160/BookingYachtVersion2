@@ -33,6 +33,7 @@ import YachtRule from './components/yacht/YachtRule';
 import ProtectedRoute from './components/routers/ProtectedRoute';
 import Page404 from './components/page404/Page404';
 import ManageServiceYacht from './components/company/ManageServiceYacht';
+import ManageRoomType from './components/company/ManageRoomType';
 
 
 const Layout = () => {
@@ -52,7 +53,12 @@ const Layout = () => {
                 </Route>
 
                 <Route path='/signin' element={<Signin />} />
-                <Route path='/signup' element={<Signup />} />
+                <Route path='/signup' element={
+
+                    <Signup />
+
+                }
+                />
                 <Route path='/profile' element={<Profile />} />
                 <Route path='/forgotpassowd' element={<ForgotPassword />}></Route>
                 <Route path='/information/:idCustomer' element={<Information />} />
@@ -69,6 +75,7 @@ const Layout = () => {
                     <Route path='view-yacht/' element={<ViewYacht />} />
                     <Route path='bill' element={<Bill />} />
                     <Route path='profile' element={<ProfileCompany />} />
+                    <Route path='room-type' element={<ManageRoomType />} />
 
                 </Route>
 

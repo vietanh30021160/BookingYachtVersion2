@@ -44,18 +44,17 @@ const Signin = () => {
             setLoading(false);
         } else if (res && res.data.data !== '') {
             const role = jwtDecode(res.data.data);
-            dispatch(doLogin(res.data.data, role.role, res.data.idCompany))
+            dispatch(doLogin(res.data.data, role.role, res.data.idCompany ? res.data.idCompany : "", res.data.idCustomer ? res.data.idCustomer : ""))
             console.log("login", res);
             if (role && role.role === 'ROLE_COMPANY') {
                 toast.success("Login Successful");
                 setLoading(false);
                 navigate(`/manage-company`);
-            } else {
+            } else if (role && role.role === 'ROLE_CUSTOMER') {
                 toast.success("Login Successful");
                 setLoading(false);
                 navigate(`/`);
             }
-
         } else {
             toast.error('User Name Or Password Invalid')
             setLoading(false);

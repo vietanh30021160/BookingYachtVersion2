@@ -3,6 +3,8 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 import ModalUpdateProfile from './Modal/ModalUpdateProfile';
 const ProfileCompany = (props) => {
 
+
+
     const [isShowModal, setIsShowModal] = useState(false);
 
     const handleClose = () => {

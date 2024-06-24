@@ -4,14 +4,16 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import './Auth.scss'
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { FaHome } from "react-icons/fa";
+import { useNavigate, useParams } from 'react-router-dom';
 import { fillInformationCustomer } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { add } from 'lodash';
+import { information } from '../../redux/action/InformationAction';
 const Information = () => {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [email, setEmail] = useState('');
     const [fullName, setFullName] = useState('');
@@ -26,6 +28,7 @@ const Information = () => {
             let res = await fillInformationCustomer(idCustomer, fullName, email, phoneNumber, address);
             if (res && res.data.data === true) {
                 toast.success('Fill Information Successfully');
+                dispatch(information(email, fullName, phoneNumber, address));
                 setEmail('');
                 setAddress('');
                 setFullName('');
@@ -36,7 +39,6 @@ const Information = () => {
             }
         }
     }
-
 
 
     return (
@@ -63,7 +65,6 @@ const Information = () => {
                             onChange={event => setFullName(event.target.value)}
                         />
 
-
                     </Form.Group>
                 </Row>
 
@@ -73,9 +74,8 @@ const Information = () => {
                         <Form.Label>PhoneNumber</Form.Label>
                         <Form.Control
                             type='text'
-                            placeholder='Phone'
+                            placeholder='Start With 0 and 9 Number'
                             onChange={event => setPhoneNumber(event.target.value)}
-
                         />
                     </Form.Group>
 
@@ -97,9 +97,7 @@ const Information = () => {
                         variant="primary"
                         onClick={() => handleFillInformation()}>
                         Submit
-
                     </Button>
-                    <Link to='/signup' className='mx-5 my-0 btn btn-light' style={{ textDecoration: "none" }}><FaHome style={{ marginBottom: 4 }} /> Home</Link>
                 </div>
 
             </Form>

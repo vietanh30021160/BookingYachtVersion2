@@ -6,13 +6,15 @@ import { Link, NavLink, useNavigate, useParams } from 'react-router-dom';
 
 import { IoChevronBackSharp } from "react-icons/io5";
 
+
+
 const Signup = () => {
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [confrimPassword, setConfirmpassword] = useState('')
 
-
     const navigate = useNavigate();
+
 
     const handleRegister = async () => {
         let res = await registerCustomer(userName, password);

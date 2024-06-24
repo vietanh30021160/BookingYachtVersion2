@@ -118,7 +118,7 @@ const ManageServiceYacht = () => {
                                     <Form.Group as={Col} controlId="formGridCity">
                                         <Form.Label>Price</Form.Label>
                                         <Form.Control
-                                            type='text'
+                                            type='number'
                                             placeholder='Price Service'
                                             value={price}
                                             onChange={e => setPrice(e.target.value)}
