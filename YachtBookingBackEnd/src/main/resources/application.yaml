@@ -17,8 +17,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    email: minhnvhe172822@fpt.edu.vn
-    password: hvix tosj plvo rfqk
+    email: mailsender.bookingyacht@gmail.com
+    password: joyf msta mkfa verf
     protocol: smtp
     isSSL: false
 
