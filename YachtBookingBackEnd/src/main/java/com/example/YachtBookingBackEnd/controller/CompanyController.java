@@ -97,11 +97,20 @@ public class CompanyController {
 
     @PutMapping("/room/updateRoom/{roomId}")
     public ResponseEntity<?> updateRoom(@PathVariable String roomId,
+                                        @RequestParam String roomName,
                                         @RequestParam String description,
-                                        @RequestParam MultipartFile avatar,
-                                        @RequestParam int available){
+                                        @RequestParam MultipartFile avatar){
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iRoom.updateRoom(roomId, description, available, avatar));
+        dataResponse.setData(iRoom.updateRoom(roomId,roomName, description, avatar));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+
+
+    }
+
+    @GetMapping("roomImage/getAllImageByIdRoom/{roomId}")
+    public ResponseEntity<?> getAllImageByIdRoom(@PathVariable("roomId") String roomId){
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iRoomImage.getAllImageByIdRoom(roomId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

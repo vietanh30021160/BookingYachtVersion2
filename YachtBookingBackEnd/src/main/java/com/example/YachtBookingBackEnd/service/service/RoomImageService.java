@@ -1,5 +1,6 @@
 package com.example.YachtBookingBackEnd.service.service;
 
+import com.example.YachtBookingBackEnd.dto.RoomImageDTO;
 import com.example.YachtBookingBackEnd.entity.Room;
 import com.example.YachtBookingBackEnd.entity.RoomImage;
 import com.example.YachtBookingBackEnd.repository.RoomImageRepository;
@@ -8,6 +9,9 @@ import com.example.YachtBookingBackEnd.service.implement.IRoomImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class RoomImageService implements IRoomImage {
@@ -58,5 +62,24 @@ public class RoomImageService implements IRoomImage {
             System.out.println("Error by: "+ e);
         }
         return false;
+    }
+
+    @Override
+    public List<RoomImageDTO> getAllImageByIdRoom(String roomId) {
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new RuntimeException("Not found"));
+
+        List<RoomImageDTO> roomImageDTOList = new ArrayList<>();
+
+        List<RoomImage> roomImages = roomImageRepository.findAllByRoom(room);
+        for (RoomImage roomImage : roomImages
+        ) {
+            RoomImageDTO roomImageDTO = new RoomImageDTO();
+            roomImageDTO.setIdRoomImage(roomImage.getIdRoomImage());
+            roomImageDTO.setImageRoom(roomImage.getImageRoom());
+            roomImageDTOList.add(roomImageDTO);
+        }
+
+        return roomImageDTOList;
     }
 }

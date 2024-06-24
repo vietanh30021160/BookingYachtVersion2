@@ -134,7 +134,7 @@ public class RoomService implements IRoom {
     }
 
     @Override
-    public boolean updateRoom(String roomId, String description,  int available, MultipartFile avatar) {
+    public boolean updateRoom(String roomId, String description, String roomName, MultipartFile avatar) {
         try {
             Room room = roomRepository.findById(roomId)
                     .orElseThrow(()-> new RuntimeException("Not found room!!"));
@@ -148,7 +148,7 @@ public class RoomService implements IRoom {
             }
             iFile.save(avatar);
             room.setAvatar(avatar.getOriginalFilename());
-            //room.setAvailable(available);
+            room.setName(roomName);
             roomRepository.save(room);
             return  true;
         }catch (Exception e){
