@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import RoomSelection from '../priceRoom/RoomSelection';
 import Rating from '../rating/Rating';
-import Schedule from '../scheduleDetail/Schedule';
+import Map from '../scheduleDetail/Map';
 import SectionHeader from '../sectionHeader/SectionHeade';
 import SimpleSlider from '../sliderPage/SliderImg';
 import './MainPage.scss';
@@ -10,23 +10,23 @@ import { getYachtByYachtId } from '../../../services/ApiServices';
 import { Col } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { getYachtByYachtIdApi } from '../../../redux/action/YachtAction';
+import { getScheduleByYachtApi } from '../../../redux/action/ScheduleAction';
+
 
 
 const MainPage = () => {
   const { yachtId } = useParams();
   const { yacht } = useSelector(state => state.YachtReducer);
+  const { schedules } = useSelector(state => state.ScheduleReducer)
   const dispatch = useDispatch();
   const [currentSection, setCurrentSection] = useState('');
-
-  const getYachtById = (yachtId) => {
-    dispatch(getYachtByYachtIdApi(yachtId))
-  }
+  const [selectedSchedule, setSelectedSchedule] = useState('');
 
   useEffect(() => {
     if (yachtId) {
-      getYachtById(yachtId)
+      dispatch(getYachtByYachtIdApi(yachtId))
     }
-  }, [yachtId])
+  }, [dispatch, yachtId])
 
 
   useEffect(() => {
@@ -48,6 +48,49 @@ const MainPage = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (yacht && yacht.idYacht) {
+      dispatch(getScheduleByYachtApi(yacht.idYacht))
+    }
+
+  }, [yacht, dispatch])
+
+  const renderSchedule = () => {
+    if (!schedules || schedules.length === 0) {
+      return <option value="">No schedules available</option>;
+    }
+    return schedules.map((schedule) => (
+      <option key={schedule.idSchedule} value={schedule.idSchedule}>
+        {formatDate(schedule.startDate)} - {formatDate(schedule.endDate)}
+      </option>
+    ));
+  }
+
+  const hanleScheduleChange = (event) => {
+    setSelectedSchedule(event.target.value);
+  }
+
+  useEffect(() => {
+    // Set default selected schedule as the first schedule in the list
+    if (schedules && schedules.length > 0) {
+      setSelectedSchedule(schedules[0].idSchedule);
+    }
+  }, [schedules]);
+
+  const formatDate = (dateTimeString) => {
+    const dateTime = new Date(dateTimeString);
+    const hours = dateTime.getHours();
+    const minutes = dateTime.getMinutes();
+    const day = dateTime.getDate();
+    const month = dateTime.getMonth() + 1; // Months are 0-indexed
+    const year = dateTime.getFullYear();
+
+    // Pad single digit minutes with leading zero
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+    return `${hours}:${formattedMinutes} ${day}/${month}/${year}`;
+  };
+
   return (
     <div className="container">
       <nav className="navbar-sticky StickyNav">
@@ -67,17 +110,22 @@ const MainPage = () => {
       </div>
 
       <Col md={8}>
-        <div id="rooms" className="content-section-sticky3">
-          <RoomSelection yacht={yacht} />
+        <h2 className='mb-4' style={{ fontWeight: 'bold' }}>Các loại phòng & giá</h2>
+
+        <div id="schedule" className="content-section-sticky3 mb-3 ml-2 container" style={{ display: 'flex', alignItems: 'center' }}>
+          <h5 style={{ marginRight: '10px' }}>Lịch trình hiện có</h5>
+          <select onChange={hanleScheduleChange} value={selectedSchedule} className="form-select border border-info selectpicker btn-info" aria-label="Default select example" style={{ width: '300px' }}>
+            <option value={""} style={{ color: '#0E4F4F', fontWeight: 'bold' }}>Select a schedule</option>
+            {renderSchedule()}
+          </select>
         </div>
 
-        <div id="about" className="content-section-sticky4 mt-5">
-          <h4>Giới thiệu</h4>
-          <p>Nội dung cho Giới thiệu...</p>
+        <div id="rooms" className="content-section">
+          <RoomSelection yacht={yacht} selectedSchedule={selectedSchedule} />
         </div>
 
-        <div id="rules" className="content-section-sticky5">
-          <Schedule />
+        <div id="rules" className="content-section-sticky5 mt-5">
+          <Map />
         </div>
 
         <div id="reviews" className="content-section-sticky6 mt-5 mb-5">

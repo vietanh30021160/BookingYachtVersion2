@@ -5,6 +5,8 @@ import Carousel from './Carousel';
 import { getRoomById } from '../../../services/ApiServices';
 
 const RoomDetailModal = ({ room, show, handleClose }) => {
+    console.log(room)
+
     const [roomSelection, setRoomSelection] = useState();
     const getRoomByRoomId = async (roomId) => {
         const res = await getRoomById(roomId);

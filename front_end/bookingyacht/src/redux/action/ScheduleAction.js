@@ -1,15 +1,15 @@
-import { GET_SERVICE_BY_YACHT } from "../type/Type";
-import { getServiceByYacht } from "../../services/ApiServices";
-export const getServiceByYachtApi = (yachtId) => {
+import { getScheduleByYacht } from "../../services/ApiServices";
+import { GET_SCHEDULE_BY_YACHT } from "../type/Type";
+
+export const getScheduleByYachtApi = (idYacht) => {
     return async dispatch => {
         try {
-            const res = await getServiceByYacht(yachtId);
+            const res = await getScheduleByYacht(idYacht);
             if (res && res.data && res.data.data) {
                 dispatch({
-                    type: GET_SERVICE_BY_YACHT,
+                    type: GET_SCHEDULE_BY_YACHT,
                     payload: res.data.data,
                 });
-                console.log(res.data.data);
             } else {
                 console.error("Unexpected response structure:", res);
             }

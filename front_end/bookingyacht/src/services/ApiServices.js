@@ -63,9 +63,6 @@ export const createYacht = (idCompany, name, image, launch, hullBody, descriptio
     data.append('idLocation', idLocation);
     return axios.post(`/api/companies/yacht/insertYacht/${idCompany}`, data);
 }
-export const getRoomByYacht = () => {
-    return axios.get('/api/customer/room');
-}
 
 export const getRoomByYacht = (yachtId) => {
     return axios.get(`/api/customer/getRoomByYacht/${yachtId}`)
@@ -121,5 +118,12 @@ export const getFeedbackCompany = (idCompany) => {
     return axios.get(`/api/companies/feedBackByIdCompany/${idCompany}`)
 }
 
+export const getScheduleByYacht = (yachtId) => {
+    return axios.get(`/api/customer/getScheduleByYacht/${yachtId}`)
+}
+
+export const getUnbookedRoomsByYachtAndSchedule = (yachtId, scheduleId) => {
+    return axios.get(`/api/customer/getUnbookedRoomsByYachtAndSchedule/${yachtId}/${scheduleId}`)
+}
 
 

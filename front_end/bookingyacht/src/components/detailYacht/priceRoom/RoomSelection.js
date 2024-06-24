@@ -5,9 +5,7 @@ import BookNowModal from './BookNowModal';
 import './FormRoom.scss';
 import RoomDetailModal from './RoomDetailModal';
 import RoomItem from './RoomItem';
-import { getRoomByYacht } from '../../../services/ApiServices';
-
-
+import { getUnbookedRoomsByYachtAndSchedule } from '../../../services/ApiServices';
 
 const services = [
     { id: 1, name: 'Bữa sáng', price: 200000 },
@@ -15,51 +13,52 @@ const services = [
     { id: 3, name: 'Gói spa', price: 700000 },
 ];
 
-
-const RoomSelection = ({ yacht }) => {
-    const [rooms, setRooms] = useState([]);
-    const [quantities, setQuantities] = useState(rooms.reduce((acc, room) => ({ ...acc, [room.id]: 0 }), {}));
-    const [showDetailRom, setShowDetailRom] = useState(false);
-    const [selectedRoom, setSelectedRoom] = useState(null);
-    const [showBookNow, setShowBookNow] = useState(false);
+const RoomSelection = ({ yacht, selectedSchedule }) => {
+    const [originalRooms, setOriginalRooms] = useState([]);
+    const [filteredRooms, setFilteredRooms] = useState([]);
     const [selectedRooms, setSelectedRooms] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
-    const [selectedServices, setSelectedServices] = useState(rooms.reduce((acc, room) => ({ ...acc, [room.id]: [] }), {}));
+    const [selectedServices, setSelectedServices] = useState({});
+    const [showBookNow, setShowBookNow] = useState(false);
+    const [selectedRoom, setSelectedRoom] = useState(null);
+    const [showDetailRoom, setShowDetailRoom] = useState(false);
+    const [selectedRoomType, setSelectedRoomType] = useState(null);
+    const [rooms, setRooms] = useState([]);
 
-    const getRoomList = async (yachtId) => {
-        let res = await getRoomByYacht(yachtId)
-        setRooms(res.data.data)
-        console.log(res.data.data)
-    }
-
-    useEffect(() => {
-        getRoomList(yacht.idYacht)
-    }, [yacht.idYacht])
 
     useEffect(() => {
-        const newSelectedRooms = rooms.filter(room => quantities[room.id] > 0);
-        setSelectedRooms(newSelectedRooms);
-        const totalRoomPrice = newSelectedRooms.reduce((acc, room) => acc + (room.price * quantities[room.id]), 0);
-        const totalServicePrice = newSelectedRooms.reduce((acc, room) => {
+        const getUnBookedRoomList = async () => {
+            try {
+                const response = await getUnbookedRoomsByYachtAndSchedule(yacht.idYacht, selectedSchedule);
+                const roomsData = response.data.data;
+                setOriginalRooms(roomsData);
+                const initialRoomType = roomsData.length > 0 ? roomsData[0].roomType.type : null;
+                setSelectedRoomType(initialRoomType);
+                setFilteredRooms(roomsData.filter(room => room.roomType.type === initialRoomType));
+                // Initialize selected services state for each room
+                setSelectedServices(response.data.data.reduce((acc, room) => ({ ...acc, [room.id]: [] }), {}));
+            } catch (error) {
+                console.error('Error fetching unbooked rooms:', error);
+            }
+        };
+
+        if (yacht && selectedSchedule) {
+            getUnBookedRoomList();
+        }
+    }, [yacht, selectedSchedule]);
+
+    useEffect(() => {
+        const totalServicePrice = selectedRooms.reduce((acc, room) => {
             const roomServices = selectedServices[room.id] || [];
             const roomServicePrice = roomServices.reduce((serviceAcc, serviceId) => {
                 const service = services.find(s => s.id === serviceId);
                 return serviceAcc + (service ? service.price : 0);
             }, 0);
-            return acc + (roomServicePrice * quantities[room.id]);
-        }, 0)
-        setTotalPrice(totalRoomPrice + totalServicePrice);
-        setTotalPrice(newSelectedRooms.reduce((acc, room) => acc + (room.price * quantities[room.id]), 0));
-    }, [quantities, selectedServices]);
+            return acc + roomServicePrice;
+        }, 0);
+        setTotalPrice(totalServicePrice);
+    }, [selectedRooms, selectedServices]);
 
-
-
-    // const handleQuantityChange = (id, delta) => {
-    //     setQuantities(prevQuantities => ({
-    //         ...prevQuantities,
-    //         [id]: Math.max(0, prevQuantities[id] + delta)
-    //     }));
-    // };
     const handleServiceChange = (roomId, serviceId) => {
         setSelectedServices(prevServices => {
             const roomServices = prevServices[roomId] || [];
@@ -69,67 +68,99 @@ const RoomSelection = ({ yacht }) => {
             return { ...prevServices, [roomId]: newRoomServices };
         });
     };
-    const handleReset = () => {
-        // setQuantities(rooms.reduce((acc, room) => ({ ...acc, [room.id]: 0 }), {}));
-        setSelectedServices(rooms.reduce((acc, room) => ({ ...acc, [room.id]: [] }), {}));
+
+    const hanldeRoomSelect = (room, isChecked) => {
+        if (isChecked) {
+            setSelectedRooms([...selectedRooms, room]);
+        } else {
+            setSelectedRooms(selectedRooms.filter(selectedRoom => selectedRoom !== room));
+        }
     };
 
+    const handleReset = () => {
+        setSelectedRooms([]);
+        setSelectedServices(rooms.reduce((acc, room) => ({ ...acc, [room.id]: [] }), {}));
+    };
     const handleDetail = (room) => {
         setSelectedRoom(room);
-        setShowDetailRom(true);
+        setShowDetailRoom(true);
     };
 
     const handleBookNow = () => {
         setShowBookNow(true);
     };
+    const cssButtonClicked = {
+        backgroundColor: 'orange',
+        color: 'balck'
+    }
+    const renderRoomType = () => {
+        const uniqueRoomTypes = [...new Set(originalRooms.map(room => room.roomType.type))];
+        return uniqueRoomTypes.map(roomType => (
+            <button
+                key={roomType}
+                className="btn btn-outline-info mx-2 "
+                style={{
+                    width: '100px',
+                    ...(selectedRoomType === roomType ? cssButtonClicked : {})
+                }}
+                onClick={() => filterByRoomType(roomType)}
+                disabled={selectedRoomType === roomType}
+            >
+                {roomType}
+            </button>
+        ));
+    }
+
+    const filterByRoomType = (roomType) => {
+        setSelectedRoomType(roomType);
+        const filtered = originalRooms.filter(room => room.roomType.type === roomType);
+        setFilteredRooms(filtered);
+    }
+
 
     return (
         <Container>
-            <h2 className='mb-4' style={{ fontWeight: 'bold' }}>Các loại phòng & giá</h2>
-
-            <div className='form-select'>
-
-                {rooms.map(room => (
+            <h5 className='mb-3'>Phòng trống:</h5>
+            {renderRoomType()}
+            <div className='form-select mt-3'>
+                {filteredRooms.map(room => (
                     <RoomItem
                         key={room.idRoom}
                         room={room}
-                        quantity={quantities[room.id]}
+                        isSelected={selectedRooms.includes(room)}
                         handleDetail={handleDetail}
                         services={services}
                         selectedServices={selectedServices[room.id] || []}
                         handleServiceChange={handleServiceChange}
+                        handleRoomSelect={hanldeRoomSelect}
                     />
                 ))}
 
                 <div className='my-3'>
                     <div className="row">
                         <div className="col-md-6 col-12">
-                            <Button className='mb-3' variant="outline-danger">Xóa lựa chọn</Button>
+                            <Button className='mb-3' variant="outline-danger" onClick={handleReset}>Xóa lựa chọn</Button>
                             <h5>Tổng tiền: {totalPrice.toLocaleString()} đ</h5>
                         </div>
                         <div className="col-md-6 col-12 text-end">
-                            <Button variant="secondary" className='rent'>Thuê trọn tàu</Button>
-                            <Button variant="custom" className='ms-2' onClick={handleBookNow}>Đặt ngay <FaArrowRightLong /></Button>
+                            <Button variant="secondary" className='rent' onClick={handleBookNow}>Thuê trọn tàu</Button>
+                            <Button variant="custom ms-2" onClick={handleBookNow}>Đặt ngay <FaArrowRightLong /></Button>
                         </div>
                     </div>
                 </div>
             </div>
-            {/* <RoomDetailModal
-                room={selectedRoom}
-                show={showDetailRom}
-                handleClose={() => setShowDetailRom(false)}
-            /> */}
-            <BookNowModal
+            {/* <BookNowModal
                 selectedRooms={selectedRooms}
-                // quantities={quantities}
-                // selectedServices={selectedServices}
                 services={services}
-                // handleQuantityChange={handleQuantityChange}
-                // handleServiceChange={handleServiceChange}
                 totalPrice={totalPrice}
                 show={showBookNow}
                 handleClose={() => setShowBookNow(false)}
-            />
+            /> */}
+            {/* <RoomDetailModal
+                room={selectedRoom}
+                show={showDetailRoom}
+                handleClose={() => setShowDetailRoom(false)}
+            /> */}
         </Container>
     );
 };

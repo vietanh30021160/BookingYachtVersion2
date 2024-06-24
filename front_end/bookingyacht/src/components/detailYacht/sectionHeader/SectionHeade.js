@@ -23,6 +23,7 @@ const SectionHeader = ({ yacht }) => {
     }, [yacht.idYacht])
 
     // const { services } = useSelector(state => state.ServiceByYachtReducer);
+    // console.log(services)
     // const dispatch = useDispatch();
 
     // useEffect(() => {
