@@ -299,7 +299,7 @@ public class CompanyController {
 
     @PutMapping("/roomType/updateRoomType/{roomTypeId}")
     public ResponseEntity<?> updateRoomType(@PathVariable ("roomTypeId")String roomTypeId
-            ,@RequestParam long price,
+                                        ,@RequestParam long price,
                                          @RequestParam String type,
                                          @RequestParam String utilities){
         DataResponse dataResponse = new DataResponse();

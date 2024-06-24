@@ -237,4 +237,11 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/getUnbookedRoomsByYachtAndSchedule/{yachtId}/{scheduleId}")
+    public ResponseEntity<?> getUnbookedRoomsByYachtAndSchedule(@PathVariable String yachtId, @PathVariable String scheduleId){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iRoom.getUnbookedRoomsByYachtAndSchedule(yachtId,scheduleId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
 }
