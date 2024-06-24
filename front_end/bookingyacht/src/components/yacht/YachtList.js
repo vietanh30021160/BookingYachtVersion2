@@ -4,18 +4,17 @@ import { FaLocationDot } from "react-icons/fa6";
 import { RiShipLine } from "react-icons/ri";
 import './FindYacht.scss';
 // import { img_yacht } from '../../assets/no53ab0y526yl825.webp';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getAllYachtHome } from '../../services/ApiServices';
-import { useSelector, useDispatch } from 'react-redux';
-import { getYachtListApi } from '../../redux/action/YachtListAction'
-const YachtList = () => {
+import { getYachtListApi } from '../../redux/action/YachtListAction';
+import { getYachtByIdCompany } from '../../services/ApiServices';
+const YachtList = (companyId) => {
 
     const [pagging, setPagging] = useState([]); // page 1, 2, 3, ...
     const [paggingYacht, setPaggingYacht] = useState([]); // yachts in a page
     const [currentPage, setCurrentPage] = useState(1);
 
     const dispatch = useDispatch();
-
     const { yachtList } = useSelector((state) => state.YachtListReducer);
     const getYachtList = () => {
         dispatch(getYachtListApi())
@@ -23,6 +22,16 @@ const YachtList = () => {
     useEffect(() => {
         getYachtList();
     }, [dispatch])
+
+    useEffect(() =>{
+        getYachtByIdCompany(companyId)
+        .then(res =>{
+            setPaggingYacht(res.data.data)
+        })
+        .catch(error =>{
+            console.log(error)
+        })
+    }, [companyId]);
 
     useEffect(() => {
         if (yachtList.length) {

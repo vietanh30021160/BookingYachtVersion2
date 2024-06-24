@@ -117,7 +117,9 @@ export const updateYachtImage = (idImage, image) => {
 export const getFeedbackCompany = (idCompany) => {
     return axios.get(`/api/companies/feedBackByIdCompany/${idCompany}`)
 }
-
+export const getYachtByIdCompany = (idCompany) =>{
+    return axios.get(`/api/customer/yacht/findByCompany/${idCompany}`)
+}
 
 
 

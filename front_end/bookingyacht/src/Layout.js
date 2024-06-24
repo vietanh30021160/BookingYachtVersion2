@@ -40,7 +40,7 @@ const Layout = () => {
                 <Route path="/" element={<App />}>
                     <Route index element={<HomePage />} />
                     <Route path='/blog' element={<Blog />} />
-                    <Route path='/duthuyen' element={<FindYacht />} />
+                    <Route path='/duthuyen/:companyId' element={<FindYacht />} />
                     <Route path='/doanhnhiep' element={<Enterprise />} />
                     <Route path='/mainpage/:yachtId' element={<MainPage />} />
                     <Route path='/yacht-rule' element={<YachtRule />} />

@@ -5,6 +5,7 @@ import { fetchCustomers } from '../../../redux/action/AdminAction';
 import './Manager.scss';
 
 const CustomerManager = () => {
+
     const dispatch = useDispatch();
     const customers = useSelector(state => state.admin.customers);
     const [filteredCustomers, setFilteredCustomers] = useState([]);

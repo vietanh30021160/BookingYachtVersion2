@@ -1,17 +1,18 @@
+import { useEffect } from "react";
+import Form from 'react-bootstrap/Form';
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import i_content from '../../assets/image_1.webp';
+import { getAllServiceApi } from "../../redux/action/YachtServiceAction";
 import FormSearch from "../home/FormSearch";
 import './FindYacht.scss';
-import i_content from '../../assets/image_1.webp';
-import Form from 'react-bootstrap/Form';
 import YachtList from "./YachtList";
-import { useState, useEffect } from "react";
-import { getYachtService } from "../../services/ApiServices";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllServiceApi } from "../../redux/action/YachtServiceAction";
 
 const FindYacht = () => {
     const { services } = useSelector(state => state.YachtServiceReducer)
     const dispatch = useDispatch();
-
+    const {companyId} = useParams;
+    
     useEffect(() => {
         dispatch(getAllServiceApi())
     }, [dispatch])
@@ -77,7 +78,9 @@ const FindYacht = () => {
                     <div className="col-1"></div>
 
                     <div className="col-8 infor">
-                        <YachtList />
+                        <YachtList 
+                            companyId = {companyId}
+                        />
                     </div>
                 </div>
             </div>

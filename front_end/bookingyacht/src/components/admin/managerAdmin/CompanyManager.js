@@ -1,13 +1,15 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Dropdown, DropdownButton, Form, Modal, Table } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { fetchCompanies } from '../../../redux/action/AdminAction';
 import './Manager.scss';
 const CompanyManager = () => {
-
     const getImageApi = `http://localhost:8080/api/companies/file/`
+    const dispatch = useDispatch();
+    const companies = useSelector(state => state.admin.companies);
 
-    const [companies, setCompanies] = useState([]);
     const [filteredCompanies, setFilteredCompanies] = useState([]);
     const [selectedCompany, setSelectedCompany] = useState(null);
 
@@ -44,11 +46,10 @@ const CompanyManager = () => {
         }
     };
 
-    const [searchName, setSearchName] = useState("");
-    const [searchEmail, setSearchEmail] = useState("");
+    const [searchName, setSearchName] = useState('');
+    const [searchEmail, setSearchEmail] = useState('');
+    const [searchId, setSearchId] = useState('');
 
-
-    const [sortOption, setSortOption] = useState({ key: 'idCompany', direction: 'asc' });
     const [currentPage, setCurrentPage] = useState(1);
     const [paging, setPaging] = useState([]);
     const [pagedCompany, setPagedCompanys] = useState([]);
@@ -59,13 +60,17 @@ const CompanyManager = () => {
 
     // Lấy khách hàng khi thành phần được tải
     useEffect(() => {
-        fetchCompanies();
-    }, []);
+        dispatch(fetchCompanies())
+    }, [dispatch]);
+
+    useEffect(() =>{
+        setFilteredCompanies(companies);
+    }, [companies])
 
     // Cập nhật phân trang mỗi khi danh sách khách hàng được lọc thay đổi
     useEffect(() => {
         updatePaging();
-    }, [filteredCompanies]);
+    }, [filteredCompanies, currentPage]);
 
     // Hàm lấy tiêu đề xác thực từ localstorage
     const getAuthHeader = () => {
@@ -73,25 +78,6 @@ const CompanyManager = () => {
         return token ? `Bearer ${token}` : '';
     };
 
-    // Hàm lấy khách hàng từ API
-    const fetchCompanies = async () => {
-        try {
-            const config = {
-                method: 'get',
-                url: 'http://localhost:8080/api/admins/getAllCompany',
-                headers: {
-                    'Authorization': getAuthHeader()
-                }
-            };
-            const response = await axios(config);
-            // Đặt tất cả khách hàng
-            setCompanies(response.data.data);
-            // Đặt danh sách khách hàng đã lọc
-            setFilteredCompanies(response.data.data);
-        } catch (error) {
-            console.error('Error fetching companies:', error);
-        }
-    };
     // Hàm cập nhật phân trang
     const updatePaging = () => {
         // Tính tổng số trang
@@ -103,23 +89,26 @@ const CompanyManager = () => {
     };
 
     const handleSearchByName = value => {
-        setSearchName(value);
-        const filtered = companies.filter(company =>
-            company.name.toLowerCase().includes(value.toLowerCase())
-        );
-        setFilteredCompanies(filtered);
+       setSearchName(value);
+       filterCompanies(value, searchEmail, searchId)
+
+       setCurrentPage(1);
     };
 
     // Hàm tìm kiếm khách hàng theo tên
     const handleSearchByEmail = value => {
-        setSearchEmail(value);
-        const filtered = companies.filter(company =>
-            company.email.toLowerCase().includes(value.toLowerCase())
-        );
-        setFilteredCompanies(filtered);
-        // Đặt lại trang đầu tiên
+       setSearchEmail(value);
+       filterCompanies(searchName, value, searchId)
+
+       setCurrentPage(1);
+    };
+
+    const handleSearchById = value => {
+        setSearchId(value);
+        filterCompanies(searchName, searchEmail, value);
         setCurrentPage(1);
     };
+    
 
     //Hàm tạo tài khoản cho company
     const handleCreateCompany = async event => {
@@ -154,7 +143,8 @@ const CompanyManager = () => {
                 setNewAccountId(response.data.idAccount)
                 setShowInfoDetailModal(true)
             } else {
-                setCreatetAccountMessage('Failed to create company. Please try again.');
+                // setCreatetAccountMessage('Failed to create company. Please try again.');
+                toast.error("Tạo tài khoản không thành công, tài khoản này có thể đã tồn tại.")
             }
         } catch (error) {
             if (error.response && error.response.status === 409) {
@@ -179,7 +169,7 @@ const CompanyManager = () => {
         try {
             const config = {
                 method: 'post',
-                url: `http://localhost:8080/api/admins/insertInfoCompanyByIdAccount/${newAccountId}`,
+                url: `http://localhost:8080/api/admins/accounts/${newAccountId}`,
                 headers: {
                     'Authorization': getAuthHeader(),
                     'Content-Type': 'multipart/form-data'
@@ -205,8 +195,17 @@ const CompanyManager = () => {
         }
     }
 
-    const handleDeleteCompany = companyId => {
-        // Add delete company logic here
+    
+    const filterCompanies = (name, email, id) =>{
+        const filtered = companies.filter(companies =>
+            companies.name.toLowerCase().includes(name.toLowerCase()) &&
+            companies.email.toLowerCase().includes(email.toLowerCase()) &&
+            companies.idCompany.toLowerCase().includes(id.toLowerCase())
+        )
+        setFilteredCompanies(filtered)
+    }
+    const handleHideCompany = companyId => {
+       
     };
 
 
@@ -221,7 +220,6 @@ const CompanyManager = () => {
 
     // Hàm thay đổi tùy chọn sắp xếp
     const handleSortChange = (key, direction) => {
-        setSortOption({ key, direction });
         sortCompanys(key, direction);
     }
 
@@ -260,25 +258,40 @@ const CompanyManager = () => {
     return (
         <div className="container mt-5">
             <h1>Admin Manager</h1>
-
             <h2>Company Accounts</h2>
-            <div className="d-flex mb-3">
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Search company by name"
-                    value={searchName}
-                    onChange={e => handleSearchByName(e.target.value)}
-                />
+           <div className="d-flex mb-3">
+                <div style={{ marginRight: '50px' }}>
+                <label>Tìm kiếm theo Id</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Search companies by ID"
+                        value={searchId}
+                        onChange={e => handleSearchById(e.target.value)}
+                    />
+                </div>
             </div>
-            <div className='d-flex mb-3'>
-                <input
-                    type='text'
-                    className='form-control'
-                    placeholder='Search company by email'
-                    value={searchEmail}
-                    onChange={e => handleSearchByEmail(e.target.value)}
-                />
+            <div className="d-flex mb-3">
+                <div style={{ marginRight: '50px' }}>
+                <label>Tìm kiếm theo tên</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Search companies name"
+                        value={searchName}
+                        onChange={e => handleSearchByName(e.target.value)}
+                    />
+                </div>
+                <div>
+                <label>Tìm kiếm theo email</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Search companies by email"
+                        value={searchEmail}
+                        onChange={e => handleSearchByEmail(e.target.value)}
+                    />
+                </div>
             </div>
             <div className='mb-3'>
                 <div className='row'>
@@ -325,7 +338,7 @@ const CompanyManager = () => {
                             </td>
                             <td className='button_mana'>
                                 <Button variant="info" onClick={() => handleShowDetailModal(company)}>View Detail</Button>
-                                <Button variant="danger" onClick={() => handleDeleteCompany(company.id)}>Hidden</Button>
+                                <Button variant="danger" onClick={() => handleHideCompany(company.id)}>Hidden</Button>
                             </td>
                         </tr>
                     ))}
