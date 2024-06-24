@@ -17,7 +17,7 @@ const ModalCreateRoom = (props) => {
     const [area, setArea] = useState(0);
     const [listRoomType, setListRoomType] = useState('');
     const [description, setDescription] = useState('');
-    const [roomType, setRoomType] = useState('3');
+    const [roomType, setRoomType] = useState('');
     useEffect(() => {
         getRoomType()
     }, []);
@@ -29,13 +29,24 @@ const ModalCreateRoom = (props) => {
             setImage(event.target.files[0]);
         }
     }
-
     const handleCreateRoom = async () => {
         if (!roomName || !area || !description || !roomType || !previewImage || !image) {
             toast.error('Input Not Empty')
         } else {
             let res = await createRoom(roomName, area, description, roomType, image, idYacht)
-            console.log("check create", res)
+            if (res && res.data.data === true) {
+                toast.success('Create Successfully');
+                setRoomName('');
+                setArea('');
+                setDescription('');
+                setRoomType('1');
+                setPreviewImage('');
+                setImage('');
+                handleClose();
+                getRoomType();
+            } else {
+                toast.error('Create Fail')
+            }
         }
     }
 
@@ -48,7 +59,6 @@ const ModalCreateRoom = (props) => {
             toast.info('Not Found Room Type');
         }
     }
-    console.log("list room", listRoomType);
     return (
         <div>
             <Modal size='xl'

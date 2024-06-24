@@ -164,19 +164,21 @@ export const createServiceYacht = (idYacht, service, price) => {
 
 export const upadteServiceYacht = (idYacht, idService, service, price) => {
     const data = new FormData();
-    data.append('price', price);
     data.append('service', service);
+    data.append('price', price);
     return axios.put(`/api/companies/updateYachtService/${idYacht}/${idService}`, data)
 }
 
+export const deleteServiceYacht = (idYacht, idService) => {
+    return axios.delete(`/api/companies/deleteYachtService/${idYacht}/${idService}`);
+}
 
-// Ham Nay Chua Xong
 export const createRoom = (roomName, area, description, roomType, avatar, idYacht) => {
     const data = new FormData();
     data.append('roomName', roomName)
     data.append('area', area)
     data.append('description', description)
-    data.append('roomType', roomType)
+    data.append('idRoomType', roomType)
     data.append('avatar', avatar)
     return axios.post(`/api/companies/room/addRoom/${idYacht}`, data);
 }

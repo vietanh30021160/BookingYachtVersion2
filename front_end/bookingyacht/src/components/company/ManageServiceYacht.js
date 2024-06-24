@@ -6,11 +6,13 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import { createServiceYacht, getAllServices, getServiceByYacht, upadteServiceYacht } from '../../services/ApiServices';
+import { createServiceYacht, deleteServiceYacht, getAllServices, getServiceByYacht, upadteServiceYacht } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
 import { BiSolidEditAlt } from "react-icons/bi";
 import { FaDeleteLeft } from "react-icons/fa6";
 import ModalUpdateServiceYacht from './Modal/ModalUpdateServiceYacht';
+import { GoArrowDown } from "react-icons/go";
+import { GoArrowUp } from "react-icons/go";
 
 
 
@@ -62,8 +64,6 @@ const ManageServiceYacht = () => {
         } else {
             if (res && res.data.data === true) {
                 toast.success('Create Service Yacht Successfully')
-                setPrice('');
-                setSurvice('');
                 getServiceYacht();
             } else {
                 toast.error('Create Fail')
@@ -76,6 +76,29 @@ const ManageServiceYacht = () => {
         setServiceUpdate(Service)
     }
 
+    const handleDeleteServiceYacht = async (service) => {
+        if (window.confirm(`You Want To Delete service ${service.service}`)) {
+            let res = await deleteServiceYacht(idYacht, service.idService)
+            console.log('dele', res)
+            if (res && res.data.data === true) {
+                toast.success('Delete Successfully')
+                getServiceYacht();
+            } else {
+                toast.error('Delete Fail')
+            }
+        }
+    }
+    const handleSortByPriceDown = () => {
+        const newList = [...yachtServices].sort((a, b) => a.price - b.price);
+        setYachtServices(newList);
+    }
+
+
+    const handleSortByPriceUp = () => {
+        const newList = [...yachtServices].sort((a, b) => b.price - a.price);
+        setYachtServices(newList);
+    }
+
     return (
         <div>
             <div>
@@ -85,8 +108,8 @@ const ManageServiceYacht = () => {
             </div>
             <hr />
             <div className='container'>
-                <Accordion>
-                    <Accordion.Item eventKey="1">
+                <Accordion defaultActiveKey="0">
+                    <Accordion.Item eventKey="0">
                         <Accordion.Header>Create Service Yacht</Accordion.Header>
                         <Accordion.Body>
                             <Form>
@@ -142,9 +165,12 @@ const ManageServiceYacht = () => {
                                 List Services
                             </caption>
                             <tr>
-                                <th>ID</th>
                                 <th>Service</th>
-                                <th>Price</th>
+                                <th>
+                                    Price
+                                    <GoArrowDown onClick={handleSortByPriceDown} style={{ cursor: 'pointer' }} />
+                                    <GoArrowUp onClick={handleSortByPriceUp} style={{ cursor: 'pointer' }} />
+                                </th>
                                 <th className='text-center'>Action</th>
 
                             </tr>
@@ -156,16 +182,15 @@ const ManageServiceYacht = () => {
                                     <tr key={service.idService}
                                         className="table-primary"
                                     >
-                                        <td>{service.idService}</td>
                                         <td>{service.service}</td>
                                         <td>{service.price}</td>
                                         <td>
                                             <div className='d-flex' style={{ gap: 50, justifyContent: 'center' }}>
-                                                <div style={{ cursor: 'pointer', color: 'blue' }}>
-                                                    <BiSolidEditAlt onClick={() => handleUpdateServiceYacht(service)} size={25} />
+                                                <div onClick={() => handleUpdateServiceYacht(service)} style={{ cursor: 'pointer', color: 'blue' }}>
+                                                    <BiSolidEditAlt size={25} />
                                                     <label className='mx-2'>Edit</label>
                                                 </div>
-                                                <div style={{ cursor: 'pointer', color: 'red' }}>
+                                                <div onClick={() => handleDeleteServiceYacht(service)} style={{ cursor: 'pointer', color: 'red' }}>
                                                     <FaDeleteLeft size={25} />
                                                     <label className='mx-2'>Delete</label>
                                                 </div>
@@ -186,6 +211,7 @@ const ManageServiceYacht = () => {
                 serviceUpdate={serviceUpdate}
                 handleClose={handleClose}
                 idYacht={idYacht}
+                getServiceYacht={getServiceYacht}
             />
 
         </div >

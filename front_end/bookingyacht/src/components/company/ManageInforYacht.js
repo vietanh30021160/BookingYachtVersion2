@@ -127,7 +127,6 @@ const ManageInforYacht = (props) => {
                                     <Form.Control
                                         name='name'
                                         type="text"
-                                        placeholder="Name Yacht"
                                         onChange={handleChange}
                                         value={dataUpdate.name}
                                     />
@@ -138,7 +137,6 @@ const ManageInforYacht = (props) => {
                                     <Form.Control
                                         name='hullBody'
                                         type="text"
-                                        placeholder="Hull-Body"
                                         onChange={handleChange}
                                         value={dataUpdate.hullBody}
                                     />
@@ -150,7 +148,6 @@ const ManageInforYacht = (props) => {
                                     <Form.Control
                                         name='itinerary'
                                         type="text"
-                                        placeholder="Itinerary"
                                         onChange={handleChange}
                                         value={dataUpdate.itinerary}
                                     />
@@ -162,7 +159,6 @@ const ManageInforYacht = (props) => {
                                     <Form.Control
                                         name='rule'
                                         type="text"
-                                        placeholder="Rule"
                                         onChange={handleChange}
                                         value={dataUpdate.rule}
                                     />
@@ -196,7 +192,6 @@ const ManageInforYacht = (props) => {
                                 <Form.Control
                                     name='description'
                                     as="textarea"
-                                    placeholder="Description"
                                     style={{ height: '100px' }}
                                     onChange={handleChange}
                                     value={dataUpdate.description}

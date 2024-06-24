@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { upadteServiceYacht } from '../../../services/ApiServices';
 import _ from 'lodash';
+import { toast } from 'react-toastify';
 const ModalUpdateServiceYacht = (props) => {
     const { show, handleClose, serviceUpdate, idYacht } = props;
     const [price, setPrice] = useState('');
@@ -19,8 +20,21 @@ const ModalUpdateServiceYacht = (props) => {
     }, [serviceUpdate])
 
     const handleUpdateServiceYacht = async () => {
-        let res = await upadteServiceYacht(serviceUpdate.idService, idYacht, price, service);
-        console.log("check update", res)
+        let res = await upadteServiceYacht(idYacht, serviceUpdate.idService, service, price);
+        if (!service || !price) {
+            toast.error('Input Not Empty')
+            return;
+        } else {
+            if (res && res.data.data === true) {
+                toast.success('Update Successfully');
+                setPrice('');
+                setService('');
+                handleClose();
+                await props.getServiceYacht();
+            } else {
+                toast.error('Update Fail');
+            }
+        }
     }
     return (
         <div>
@@ -36,7 +50,7 @@ const ModalUpdateServiceYacht = (props) => {
                                 <Form.Control
                                     type="text"
                                     value={service}
-                                    onChange={event => setPrice(event.target.value)}
+                                    onChange={(event) => setService(event.target.value)}
                                 />
                             </Form.Group>
 
@@ -45,7 +59,7 @@ const ModalUpdateServiceYacht = (props) => {
                                 <Form.Control
                                     type="text"
                                     value={price}
-                                    onChange={event => setService(event.target.value)}
+                                    onChange={(event) => setPrice(event.target.value)}
                                 />
                             </Form.Group>
                         </Row>
