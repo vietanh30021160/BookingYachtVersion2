@@ -126,4 +126,7 @@ export const getUnbookedRoomsByYachtAndSchedule = (yachtId, scheduleId) => {
     return axios.get(`/api/customer/getUnbookedRoomsByYachtAndSchedule/${yachtId}/${scheduleId}`)
 }
 
+export const getAddingServiceByYacht = (yachtId) => {
+    return axios.get(`/api/customer/getAddingServiceByYacht/${yachtId}`)
+}
 

@@ -4,7 +4,7 @@ import { MdOutlineBedroomParent, MdOutlinePerson } from "react-icons/md";
 import ServiceSelection from './ServiceSelection';
 import './form-sel.scss';
 
-const RoomItem = ({ room, handleDetail, handleRoomSelect, isSelected }) => {
+const RoomItem = ({ room, handleDetail, handleRoomSelect, isSelected, services, selectedServices, handleServiceChange }) => {
     const [isChecked, setIsChecked] = useState(isSelected);
     useEffect(() => {
         setIsChecked(isSelected);
@@ -29,6 +29,7 @@ const RoomItem = ({ room, handleDetail, handleRoomSelect, isSelected }) => {
                     </h5>
                     <p><MdOutlineBedroomParent /> {room.area} m<sup>2</sup> <MdOutlinePerson /></p>
                 </div>
+
                 <div className="col-md-2 col-6 text-end">
                     <h5>{room.roomType ? room.roomType.price.toLocaleString() : 'N/A'} đ</h5>
                 </div>
@@ -38,19 +39,25 @@ const RoomItem = ({ room, handleDetail, handleRoomSelect, isSelected }) => {
                         checked={isChecked}
                         onChange={toggleCheckbox}
                         style={{ width: 20, height: 20 }}
+                    /* //checked: Được sử dụng để xác định trạng thái của checkbox (được chọn hay không).
+                        //onChange: Là một callback function để xử lý sự kiện khi checkbox thay đổi trạng thái. */
                     />
                 </div>
+
+            </div >
+            <div className='service-selection'>
+                <p style={{ fontWeight: 'bold', fontSize: '14px', marginTop: '7px', marginBottom: '0px' }}>Chọn dịch vụ: </p>
+                {services.map(service => (
+                    <ServiceSelection
+                        key={service.idService}
+                        service={service}
+                        roomId={room.idRoom}
+                        selectedServices={selectedServices}
+                        handleServiceChange={handleServiceChange}
+                    />
+                ))}
             </div>
-            {/* //checked: Được sử dụng để xác định trạng thái của checkbox (được chọn hay không).
-            //onChange: Là một callback function để xử lý sự kiện khi checkbox thay đổi trạng thái. */}
-
-
-            {/* <ServiceSelection
-                    services={services}
-                    selectedServices={selectedServices}
-                    handleServiceChange={(servicesId) => handleServiceChange(room.idRoom, servicesId)}
-                /> */}
-        </div >
+        </div>
     );
 };
 

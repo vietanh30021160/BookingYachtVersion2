@@ -4,7 +4,8 @@ const INITIAL_STATE = {
     account: {
         data: '',
         role: '',
-        idCompany: ''
+        idCompany: '',
+        idCustomer: ''
     },
     isAuthenticated: false
 };
@@ -16,7 +17,8 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 account: {
                     data: action.payload.data,
                     role: action.payload.role,
-                    idCompany: action.payload.idCompany
+                    idCompany: action.payload.idCompany,
+                    idCustomer: action.payload.idCustomer
                 },
                 isAuthenticated: true
             };

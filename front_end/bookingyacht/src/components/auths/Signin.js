@@ -49,10 +49,10 @@ const Signin = () => {
                 toast.success("Login Successful");
                 setLoading(false);
                 navigate(`/manage-company`);
-            } else {
+            } else if (role && role.role === 'ROLE_CUSTOMER') {
                 toast.success("Login Successful");
                 setLoading(false);
-                navigate(`/`);
+                navigate(-1);
             }
 
         } else {

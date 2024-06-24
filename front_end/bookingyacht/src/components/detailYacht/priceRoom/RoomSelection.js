@@ -5,43 +5,46 @@ import BookNowModal from './BookNowModal';
 import './FormRoom.scss';
 import RoomDetailModal from './RoomDetailModal';
 import RoomItem from './RoomItem';
-import { getUnbookedRoomsByYachtAndSchedule } from '../../../services/ApiServices';
-
-const services = [
-    { id: 1, name: 'Bữa sáng', price: 200000 },
-    { id: 2, name: 'Đưa đón sân bay', price: 500000 },
-    { id: 3, name: 'Gói spa', price: 700000 },
-];
+import { getAddingServiceByYacht, getUnbookedRoomsByYachtAndSchedule } from '../../../services/ApiServices';
+import { useSelector, useDispatch } from 'react-redux';
+import { addRoomAction, removeRoomAction, resetSelectionAction, setTotalPrice } from '../../../redux/action/OrderAction';
+import OrderReducer from './../../../redux/reducer/OrderReducer';
 
 const RoomSelection = ({ yacht, selectedSchedule }) => {
-    const [rooms, setRooms] = useState([]);
     const [originalRooms, setOriginalRooms] = useState([]);
     const [filteredRooms, setFilteredRooms] = useState([]);
     const [selectedRoomType, setSelectedRoomType] = useState(null);
-    const [selectedRooms, setSelectedRooms] = useState([]);
-    const [totalPrice, setTotalPrice] = useState(0);
     const [selectedServices, setSelectedServices] = useState({});
     const [showBookNow, setShowBookNow] = useState(false);
     const [selectedRoom, setSelectedRoom] = useState(null);
     const [showDetailRoom, setShowDetailRoom] = useState(false);
+    const [services, setServices] = useState([]);
 
-    console.log('selectedRooms', selectedRooms)
+    const dispatch = useDispatch()
+
+    const selectedRooms = useSelector(state => state.OrderReducer.selectedRooms);
+    const totalPrice = useSelector(state => state.OrderReducer.totalPrice);
+
+    console.log(selectedServices)
+
+    console.log(services)
 
     useEffect(() => {
         const getUnBookedRoomList = async () => {
             try {
-                const response = await getUnbookedRoomsByYachtAndSchedule(yacht.idYacht, selectedSchedule);
-                const roomsData = response.data.data;
+                const responseRoom = await getUnbookedRoomsByYachtAndSchedule(yacht.idYacht, selectedSchedule);
+                const roomsData = responseRoom.data.data;
                 setOriginalRooms(roomsData);
                 const initialRoomType = roomsData.length > 0 ? roomsData[0].roomType.type : null;
                 setSelectedRoomType(initialRoomType);
                 setFilteredRooms(roomsData.filter(room => room.roomType.type === initialRoomType));
-
-                //Initialize selected services state for each room
-                // setSelectedServices(response.data.data.reduce((acc, room) => (
-                //     { ...acc, [room.id]: [] }
-                // ), {}));
-
+                const responseServices = await getAddingServiceByYacht(yacht.idYacht);
+                setServices(responseServices.data.data);
+                //Đoạn mã này tạo ra một đối tượng mà mỗi phòng trong roomsData có một mảng rỗng riêng để lưu trữ các dịch vụ đã chọn.
+                setSelectedServices(roomsData.reduce((acc, room) => ({
+                    ...acc,
+                    [room.idRoom]: []
+                }), {}));
             } catch (error) {
                 console.error('Error fetching unbooked rooms:', error);
             }
@@ -54,24 +57,28 @@ const RoomSelection = ({ yacht, selectedSchedule }) => {
 
     useEffect(() => {
         const calculateTotalPrice = () => {
-            const totalRoomPrice = selectedRooms.reduce((acc, room) => {
-                const roomPrice = room.roomType ? room.roomType.price : 0;
+            const totalRoomPrice = selectedRooms.reduce((total, room) => {
+                const roomPrice = room.roomType.price;
+                //room 5 co id_service 6 8 thi se la: {5:[6, 8]}
                 const roomServices = selectedServices[room.idRoom] || [];
-                const roomServicePrice = roomServices.reduce((serviceAcc, serviceId) => {
-                    const service = services.find(s => s.id === serviceId);
-                    return serviceAcc + (service ? service.price : 0);
+                //serviceId la cac service id trong roomServices 6, 8
+                const servicePrice = roomServices.reduce((serviceTotal, serviceId) => {
+                    const service = services.find(service => service.idService === serviceId);
+                    return serviceTotal + (service ? service.price : 0);
                 }, 0);
-                return acc + roomPrice + roomServicePrice;
+                return total + roomPrice + servicePrice;
             }, 0);
-            setTotalPrice(totalRoomPrice);
+            dispatch(setTotalPrice(totalRoomPrice));
         };
 
         calculateTotalPrice();
-    }, [selectedRooms, selectedServices]);
-
+    }, [selectedRooms, selectedServices, services, dispatch]);
     const handleServiceChange = (roomId, serviceId) => {
+        //prevServices là giá trị trạng thái trước đó của selectedServices.
         setSelectedServices(prevServices => {
+            //Lấy mảng các ID dịch vụ đã chọn cho phòng với roomId từ trạng thái trước đó.
             const roomServices = prevServices[roomId] || [];
+            //kiem tra xem mang cu da co service do hay chua, neu chua thi them vao, co roi thi loai bo ra
             const newRoomServices = roomServices.includes(serviceId)
                 ? roomServices.filter(id => id !== serviceId)
                 : [...roomServices, serviceId];
@@ -81,19 +88,14 @@ const RoomSelection = ({ yacht, selectedSchedule }) => {
 
     const hanldeRoomSelect = (room, isSelected) => {
         if (isSelected) {
-            setSelectedRooms([...selectedRooms, room]);
+            dispatch(addRoomAction(room))
         } else {
-            //creates a new array by including only those rooms,
-            //whose idRoom does not match the idRoom of the room being deselected.
-            setSelectedRooms(selectedRooms.filter(selectedRoom => selectedRoom !== room));
+            dispatch(removeRoomAction(room))
         }
     };
 
     const handleReset = () => {
-        setSelectedRooms([]);
-        setSelectedServices(rooms.reduce((acc, room) => ({
-            ...acc, [room.id]: []
-        }), {}));
+        dispatch(resetSelectionAction())
     };
     const handleDetail = (room) => {
         setSelectedRoom(room);
@@ -147,7 +149,7 @@ const RoomSelection = ({ yacht, selectedSchedule }) => {
                         handleDetail={handleDetail}
                         services={services}
                         selectedServices={selectedServices[room.id] || []}
-                        // handleServiceChange={handleServiceChange}
+                        handleServiceChange={handleServiceChange}
                         handleRoomSelect={hanldeRoomSelect}
                     />
                 ))}
