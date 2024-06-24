@@ -64,6 +64,7 @@ public class BookingOrderService implements IBookingOrder {
         Optional<BookingOrder> bookingOrderOptional = bookingOrderRepository.findById(idBookingOrder);
 
         if (bookingOrderOptional.isPresent()) {
+            log.error("Booking order is present");
             BookingOrder bookingOrder = bookingOrderOptional.get();
             LocalDateTime bookingTime = bookingOrder.getBookingTime();
             LocalDateTime now = LocalDateTime.now();
@@ -72,7 +73,12 @@ public class BookingOrderService implements IBookingOrder {
             boolean isTransactionFailed = bookingOrder.getTransaction() != null
                     && "Failure".equals(bookingOrder.getTransaction().getStatus());
 
+            log.error("isOverdue: " + isOverdue);
+            log.error("isPending: " + isPending);
+            log.error("isTransactionFailed: " + isTransactionFailed);
+
             if (isPending && (isOverdue || isTransactionFailed)) {
+                log.error("start if and change status inn bookingOrder table ");
                 try {
                     bookingOrder.setStatus("Cancelled");
                     bookingOrder.setReason(reason);
@@ -89,7 +95,11 @@ public class BookingOrderService implements IBookingOrder {
                 } catch (Exception e) {
                     log.error("Cancel Booking failed", e);
                 }
+            } else {
+                log.error("Conditions for cancellation not met");
             }
+        } else {
+            log.error("Booking Order not present");
         }
 
         return false;

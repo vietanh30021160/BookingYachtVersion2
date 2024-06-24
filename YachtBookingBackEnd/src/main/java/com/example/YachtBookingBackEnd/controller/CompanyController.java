@@ -171,9 +171,9 @@ public class CompanyController {
     @PutMapping("/{idCompany}/cancel/{idBookingOrder}")
     public ResponseEntity<?> cancelVnPayPayment(@PathVariable String idBookingOrder,
                                                 @PathVariable String idCompany,
-                                                @RequestParam String reason) {
+                                                @RequestParam(required = false) String reason) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iBookingOrder.cancelBooking(idBookingOrder, reason, idCompany));
+        dataResponse.setData(iBookingOrder.cancelBooking(idBookingOrder, reason != null ? reason : "No reason provided", idCompany));
 
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }

@@ -14,6 +14,20 @@ spring:
   h2:
     console:
       enabled: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: viettqhe170804@fpt.edu.vn
+    password: fwes yhmk ndbo xlmg
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+        transport:
+          protocol: smtp
 
 logging:
   level:
@@ -33,7 +47,7 @@ payment:
     payUrl: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
     tmnCode: OCFL0E29
     secretKey: IOMD65I4028IUX9GDIKR3NO583UOKRNW
-    returnUrl: http://localhost:3000/
+    returnUrl: http://localhost:8080/api/payment/payment-callback
     apiUrl: https://sandbox.vnpayment.vn/merchant_webapi/api/transaction
     version: 2.1.0
     command: pay

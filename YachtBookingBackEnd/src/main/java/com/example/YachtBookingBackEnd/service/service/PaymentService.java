@@ -18,6 +18,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -44,7 +45,6 @@ public class PaymentService implements IPayment {
      * @param selectedRoomIds List of selected room IDs
      * @param selectedServiceIds List of selected service IDs
      * @param requirement Special requirements
-     * @param bankCode Bank code (optional)
      * @param request HTTP request
      * @param idCustomer Customer ID
      * @param idSchedule Schedule ID
@@ -52,7 +52,7 @@ public class PaymentService implements IPayment {
      */
     @Override
     @Transactional
-    public String createVnPayPayment(List<String> selectedRoomIds, List<String> selectedServiceIds, String requirement, String bankCode, HttpServletRequest request,
+    public String createVnPayPayment(List<String> selectedRoomIds, List<String> selectedServiceIds, String requirement, HttpServletRequest request,
                                      String idCustomer, String idSchedule) {
 
         // Create a new booking order
@@ -128,10 +128,6 @@ public class PaymentService implements IPayment {
         vnp_Params.put("vnp_Amount", String.valueOf(bookingOrder.getAmount()*100)); // Multiply by 100 to remove decimal places before send to VNPAY
         vnp_Params.put("vnp_CurrCode", "VND");
 
-//        if (bankCode != null && !bankCode.isEmpty()) {
-//            vnp_Params.put("vnp_BankCode", bankCode);
-//        }
-
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
         vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
         vnp_Params.put("vnp_OrderType", vnpayConfig.vnp_OrderType);
@@ -176,6 +172,21 @@ public class PaymentService implements IPayment {
         String queryUrl = query.toString();
         String vnp_SecureHash = vnpayConfig.hmacSHA512(vnpayConfig.vnp_SecretKey, hashData.toString());
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
+
+        //Save transaction to database
+        Transaction transaction = new Transaction();
+        transaction.setAmount(bookingOrder.getAmount());
+
+        // Parse vnp_PayDate using DateTimeFormatter
+        String vnpPayDateStr = vnp_CreateDate;
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        LocalDateTime vnpPayDateFormat = LocalDateTime.parse(vnpPayDateStr, dateTimeFormatter);
+
+        transaction.setTransactionDate(vnpPayDateFormat);
+        transaction.setStatus("Pending");
+        transaction.setBookingOrder(bookingOrder);
+
+        transactionRepository.save(transaction);
 
         return vnpayConfig.vnp_PayUrl + "?" + queryUrl;
     }
@@ -229,7 +240,7 @@ public class PaymentService implements IPayment {
             Map<String, String> fields = new HashMap<>();
 
             // Retrieve parameters from request and encode them
-            for (Enumeration<String> paramsEnum = request.getHeaderNames(); paramsEnum.hasMoreElements(); ) {
+            for (Enumeration<String> paramsEnum = request.getParameterNames(); paramsEnum.hasMoreElements(); ) {
                 String fieldName = paramsEnum.nextElement();
                 String fieldValue = request.getParameter(fieldName);
                 if ((fieldValue != null) && (!fieldValue.isEmpty())) {
@@ -239,17 +250,23 @@ public class PaymentService implements IPayment {
             }
 
             String vnp_SecureHash = request.getParameter("vnp_SecureHash");
-            fields.remove("vnp_SecureHashType");
-            fields.remove("vnp_SecureHash");
+            if (fields.containsKey("vnp_SecureHashType")) {
+                fields.remove("vnp_SecureHashType");
+            }
+            if (fields.containsKey("vnp_SecureHash")) {
+                fields.remove("vnp_SecureHash");
+            }
 
+            // Check checksum
             String signValue = vnpayConfig.hashAllFields(fields);
 
+            log.info("Received vnp_SecureHash: " + vnp_SecureHash);
+            log.info("Calculated signValue: " + signValue);
             if (signValue.equals(vnp_SecureHash)) {
-                // Lấy thông tin từ request
+                // Get data from request
                 String sender = request.getParameter("vnp_BankTranNo");
                 String vnpTxnRef = request.getParameter("vnp_TxnRef");
                 String vnpResponseCode = request.getParameter("vnp_ResponseCode");
-                String vnpTransactionNo = request.getParameter("vnp_TransactionNo");
                 long vnpAmount = Long.parseLong(request.getParameter("vnp_Amount")) / 100; // Divide by 100 to get the correct value
                 LocalDateTime vnpPayDate = LocalDateTime.parse(request.getParameter("vnp_PayDate"));
                 Optional<BookingOrder> bookingOrderOpt = bookingOrderRepository.findByTxnRef(vnpTxnRef);
@@ -262,13 +279,8 @@ public class PaymentService implements IPayment {
                     if (checkAmount) {
                         if (checkOrderStatus) {
                             if ("00".equals(vnpResponseCode)) {
-//                                // Cập nhật trạng thái đặt phòng
-//                                bookingOrder.setStatus("Paid");
-//                                bookingOrderRepository.save(bookingOrder);
 
-                                Transaction transaction = new Transaction();
-                                transaction.setIdTransaction(vnpTransactionNo);
-                                transaction.setAmount(vnpAmount);
+                                Transaction transaction = transactionRepository.getTransactionByBooking(bookingOrder);
                                 transaction.setTransactionDate(vnpPayDate);
                                 transaction.setStatus("Success");
                                 transaction.setReceiverBankTranNo("Receiver_Id");
@@ -308,49 +320,9 @@ public class PaymentService implements IPayment {
             response.put("Message", "Unknown error");
         }
 
-        return response;
-    }
-
-    /**
-     * Handle callbacks from VNPAY when users return after completing a transaction
-     * @param request contains the parameters returned from VNPAY
-     * @return Map contains response codes and notifications
-     */
-    public Map<String, String> handleReturn(HttpServletRequest request) {
-        Map<String, String> response = new HashMap<>();
-        try {
-            Map<String, String> fields = new HashMap<>();
-
-            // Iterate through the parameters from the request and save to the map fields
-            for (Enumeration<String> paramsEnum = request.getParameterNames(); paramsEnum.hasMoreElements();) {
-                String fieldName = paramsEnum.nextElement();
-                String fieldValue = request.getParameter(fieldName);
-                if ((fieldValue != null) && (!fieldValue.isEmpty())) {
-                    // Encode values for handling safety
-                    fields.put(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII),
-                            URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII));
-                }
-            }
-
-            String vnp_SecureHash = request.getParameter("vnp_SecureHash");
-            fields.remove("vnp_SecureHashType");
-            fields.remove("vnp_SecureHash");
-
-            String signValue = vnpayConfig.hashAllFields(fields);
-
-            if (signValue.equals(vnp_SecureHash)) {
-                response.put("RspCode", "00");
-                response.put("Message", "Transaction Successful");
-            } else {
-                response.put("RspCode", "97");
-                response.put("Message", "Invalid Checksum");
-            }
-        } catch (Exception e) {
-            log.error("Lỗi xử lý callback thanh toán: ", e);
-            response.put("RspCode", "99");
-            response.put("Message", "Unknown error");
-        }
+        response.put("redirectUrl", "http://localhost:3000");
 
         return response;
     }
+
 }
