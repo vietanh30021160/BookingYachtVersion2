@@ -56,14 +56,19 @@ const MainPage = () => {
   }, [yacht, dispatch])
 
   const renderSchedule = () => {
-    if (!schedules || schedules.length === 0) {
+    const filteredSchedule = filterSchedule(schedules);
+    if (!filteredSchedule || filteredSchedule.length === 0) {
       return <option value="">No schedules available</option>;
     }
-    return schedules.map((schedule) => (
+    return filteredSchedule.map((schedule) => (
       <option key={schedule.idSchedule} value={schedule.idSchedule}>
         {formatDate(schedule.startDate)} - {formatDate(schedule.endDate)}
       </option>
     ));
+  }
+  const filterSchedule = (schedules) => {
+    const today = new Date();
+    return schedules.filter(schedule => new Date(schedule.startDate) >= today);
   }
 
   const hanleScheduleChange = (event) => {
@@ -73,7 +78,12 @@ const MainPage = () => {
   useEffect(() => {
     // Set default selected schedule as the first schedule in the list
     if (schedules && schedules.length > 0) {
-      setSelectedSchedule(schedules[0].idSchedule);
+      const filteredSchedules = filterSchedule(schedules);
+      if (filteredSchedules && filteredSchedules.length > 0) {
+        setSelectedSchedule(filteredSchedules[0].idSchedule);
+      } else {
+        setSelectedSchedule('');
+      }
     }
   }, [schedules]);
 
