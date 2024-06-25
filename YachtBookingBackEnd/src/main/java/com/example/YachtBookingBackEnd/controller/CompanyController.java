@@ -34,14 +34,18 @@ public class CompanyController {
     ISchedule iSchedule;
     IYachtSchedule iYachtSchedule;
     IYachtType iYachtType;
-    ILocation ilocation;
+    ILocation iLocation;
+
+    @GetMapping("/profiles/{idCompany}")
+    public ResponseEntity<?> getDetailCompanyByID(@PathVariable String idCompany) {
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iCompany.getCompanyById(idCompany));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 
     // Done
     @GetMapping("/allYacht")
     public ResponseEntity<?> viewYacht() {
-//        SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-//        String enscrypted = Encoders.BASE64.encode(secretKey.getEncoded());
-//        System.out.println(enscrypted);
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYacht.getAllYacht());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
@@ -174,18 +178,21 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/confirm")
-    public ResponseEntity<?> confirmVnPayPayment(@RequestParam String idBookingOrder) {
+    @PutMapping("/{idCompany}/confirm/{idBookingOrder}")
+    public ResponseEntity<?> confirmVnPayPayment(@PathVariable String idBookingOrder,
+                                                 @PathVariable String idCompany) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iBookingOrder.confirmBooking(idBookingOrder));
+        dataResponse.setData(iBookingOrder.confirmBooking(idBookingOrder, idCompany));
 
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/cancel")
-    public ResponseEntity<?> cancelVnPayPayment(@RequestParam String idBookingOrder) {
+    @PutMapping("/{idCompany}/cancel/{idBookingOrder}")
+    public ResponseEntity<?> cancelVnPayPayment(@PathVariable String idBookingOrder,
+                                                @PathVariable String idCompany,
+                                                @RequestParam(required = false) String reason) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iBookingOrder.cancelBooking(idBookingOrder));
+        dataResponse.setData(iBookingOrder.cancelBooking(idBookingOrder, reason != null ? reason : "No reason provided", idCompany));
 
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
@@ -394,7 +401,7 @@ public class CompanyController {
     @GetMapping("/getAllLocation")
     public ResponseEntity<?> getAllLocation(){
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(ilocation.getAllLocation());
+        dataResponse.setData(iLocation.getAllLocation());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

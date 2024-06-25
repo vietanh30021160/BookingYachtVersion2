@@ -3,7 +3,6 @@ package com.example.YachtBookingBackEnd.controller;
 import com.example.YachtBookingBackEnd.payload.response.DataResponse;
 import com.example.YachtBookingBackEnd.service.implement.*;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -13,12 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
 
-import java.time.LocalDate;
-import java.util.Map;
 
 @CrossOrigin("*")
 @RestController
@@ -33,7 +28,6 @@ public class CustomerController {
     private IFile iFile;
     private IYachtImage iYachtImage;
     private IService iService;
-    private IYachtService iYachtService;
     private ISchedule iSchedule;
     private IRoom iRoom;
     private IRoomType iRoomType;
@@ -74,24 +68,15 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/payment")
-    public ResponseEntity<?> createVnPayPayment(@RequestParam String bankCode,
-                                                @RequestParam List<String> selectedRoomIds,
+    @GetMapping("/payment")
+    public ResponseEntity<?> createVnPayPayment(@RequestParam List<String> selectedRoomIds,
                                                 @RequestParam List<String> selectedServiceIds,
                                                 @RequestParam String requirement,
                                                 @RequestParam String idCustomer,
                                                 @RequestParam String idSchedule,
                                                 HttpServletRequest request) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iPayment.createVnPayPayment(selectedRoomIds, selectedServiceIds, requirement, bankCode, request, idCustomer, idSchedule));
-
-        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-    }
-
-    @GetMapping("/payment-callback")
-    public ResponseEntity<?> handleVnpayReturn(HttpServletRequest request) {
-        DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iPayment.handleReturn(request));
+        dataResponse.setData(iPayment.createVnPayPayment(selectedRoomIds, selectedServiceIds, requirement, request, idCustomer, idSchedule));
 
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }

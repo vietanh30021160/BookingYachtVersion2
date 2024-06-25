@@ -26,7 +26,8 @@ public interface BookingOrderRepository extends JpaRepository<BookingOrder, Stri
     @Query("SELECT COUNT(b) > 0 " +
             "FROM  BookingOrder b " +
             "JOIN b.bookingRoomSet br " +
-            "WHERE br.room = :room AND  b.schedule = :schedule")
+            "WHERE br.room = :room AND b.schedule = :schedule " +
+            "AND b.status != 'Cancelled'")
     boolean existsByRoomAndSchedule(@Param("room") Room room, @Param("schedule") Schedule schedule);
 
     @Query("SELECT bo FROM BookingOrder bo WHERE bo.idBooking = :idBooking AND bo.customer.idCustomer = :idCustomer AND bo.status = 'completed'")
@@ -41,4 +42,9 @@ public interface BookingOrderRepository extends JpaRepository<BookingOrder, Stri
             "AND (b.amount <= :max OR :max IS NULL) " +
             "ORDER BY b.amount ASC ")
     List<BookingOrder> findPriceByRange(@Param("idCompany") String idCompany, @Param("min") Long min, @Param("max") Long max);
+
+    @Query("SELECT b " +
+            "FROM BookingOrder b " +
+            "WHERE b.status = :status")
+    List<BookingOrder> findAllByStatus(@Param("status") String status);
 }
