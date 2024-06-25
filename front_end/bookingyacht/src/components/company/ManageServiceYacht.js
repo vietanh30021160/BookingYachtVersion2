@@ -58,7 +58,7 @@ const ManageServiceYacht = () => {
     }
 
     const handleCreateYachtSurvice = async () => {
-        let res = await createServiceYacht(idYacht, service, price);
+        let res = await createServiceYacht(idYacht.trim(), service.trim(), price.trim());
         if (!service || !price) {
             toast.error('Input Not Empty');
         } else {

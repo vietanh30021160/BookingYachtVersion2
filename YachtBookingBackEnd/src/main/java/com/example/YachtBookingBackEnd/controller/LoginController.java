@@ -2,6 +2,7 @@ package com.example.YachtBookingBackEnd.controller;
 
 import com.example.YachtBookingBackEnd.payload.response.DataResponse;
 import com.example.YachtBookingBackEnd.repository.CompanyRepository;
+import com.example.YachtBookingBackEnd.repository.CustomerRepository;
 import com.example.YachtBookingBackEnd.security.JwtHelper;
 import com.example.YachtBookingBackEnd.service.implement.IAccount;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class LoginController {
     IAccount iAccount;
     @Autowired
     private CompanyRepository companyRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestParam String username, @RequestParam String password ) {
@@ -44,8 +47,16 @@ public class LoginController {
                         .orElse(null);
                 String token = jwtHelper.generateToken(username, role);
                 String idAccount = iAccount.getIdAccountByUserName(username);
-                String idCompany = companyRepository.findIdCompanyByIdAccount(idAccount);
-                dataResponse.setIdCompany(idCompany);
+                if("ROLE_COMPANY".equalsIgnoreCase(role)){
+                    String idCompany = companyRepository.findIdCompanyByIdAccount(idAccount);
+                    dataResponse.setIdCompany(idCompany);
+                }
+                else if("ROLE_CUSTOMER".equalsIgnoreCase(role)){
+                    String idCustomer = customerRepository.findIdCustomerByIdAccount(idAccount);
+                    System.out.println(idCustomer);
+                    dataResponse.setIdCustomer(idCustomer);
+                }
+
                 dataResponse.setData(token);
                 dataResponse.setSuccess(true);
                 return new ResponseEntity<>(dataResponse, HttpStatus.OK);

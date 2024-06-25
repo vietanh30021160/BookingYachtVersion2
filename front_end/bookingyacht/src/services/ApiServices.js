@@ -218,4 +218,7 @@ export const deleteRoomType = (roomTypeId) => {
     return axios.delete(`/api/companies/roomType/deleteRoomType/${roomTypeId}`);
 }
 
+export const getScheduleYacht = (yachtId) => {
+    return axios.get(`/api/companies/getScheduleByYacht/${yachtId}`);
+}
 

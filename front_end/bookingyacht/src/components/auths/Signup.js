@@ -28,9 +28,8 @@ const Signup = () => {
             toast.success('register success')
             navigate(`/information/${res.data.desc}`)
         } else {
-            toast.error('create fail')
+            toast.error('User Name Exits')
         }
-        console.log(res);
     }
     return (
         <div >

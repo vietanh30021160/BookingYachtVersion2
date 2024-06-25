@@ -69,18 +69,18 @@ const ManageRoom = () => {
 
             {
                 listRoom && listRoom.length > 0 && listRoom.map((room) =>
-                    <div key={room.idRoom} className='d-flex my-5 room p-3' style={{ gap: 50 }}>
-                        <img width={170} src={`http://localhost:8080/api/customer/file/${room.avatar}`} />
-                        <div className='d-flex' style={{ gap: 20 }}>
+                    <div key={room.idRoom} className='d-flex my-5 room p-3 row ' style={{ gap: 50 }}>
+                        <img className='col-md-2' width={170} src={`http://localhost:8080/api/customer/file/${room.avatar}`} />
+                        <div className=' col-md-3' >
                             <div className='room-name'>{room.name}</div>
                             <div>{room.area} <TbMeterSquare size={25} className='pb-1' /></div>
 
                             <div>{room.roomType.price} đ/KHÁCH</div>
                         </div>
 
-                        <div className='d-flex' style={{ gap: 10 }}>
-                            <Button onClick={() => handlManageImageRoom(room.idRoom)} style={{ width: 180 }} className='btn btn-light'>Manage Room Image </Button>
-                            <Button onClick={() => setIsShowModalRoomService(true)} style={{ width: 173 }} className='btn btn-warning'>Manage Services</Button>
+                        <div className='col-md-5'>
+                            <Button onClick={() => handlManageImageRoom(room.idRoom)} className='btn btn-light'>Manage Room Image </Button>
+                            <Button onClick={() => setIsShowModalRoomService(true)} className='btn btn-warning mx-2'>Manage Services</Button>
                             <Button onClick={() => handleUpdateRoom(room)} className='btn btn-primary'>Update</Button>
                         </div>
 

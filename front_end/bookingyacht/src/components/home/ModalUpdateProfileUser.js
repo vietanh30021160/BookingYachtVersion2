@@ -24,11 +24,24 @@ const ModalUpdateProfileUser = (props) => {
         }
     }, [profile])
 
+    // const phonenumber = (inputtxt) => {
+    //     var phoneno = "^0[0-9]{9}$";
+    //     if (inputtxt.value.match(phoneno)) {
+    //         return true;
+    //     }
+    //     else {
+    //         return false;
+    //     }
+    // }
+
     const handleUpodateProfile = async () => {
         if (!email || !fullName || !phoneNumber || !address) {
             toast.error('Input Not Empty');
         } else {
-            let res = await updateProfileCustomer(profile.idCustomer, email, fullName, phoneNumber, address);
+            // if (phonenumber(phoneNumber.trim()) === false) {
+            //     toast.error('Phone Number Start 0 And 10 Number')
+            // } else {
+            let res = await updateProfileCustomer(profile.idCustomer, email.trim(), fullName.trim(), phoneNumber.trim(), address.trim());
             console.log("update p", res)
             if (res && res.data.data === true) {
                 toast.success('Update Successfully')
@@ -37,6 +50,7 @@ const ModalUpdateProfileUser = (props) => {
             } else {
                 toast.error('Update Fail')
             }
+            // }
         }
     }
 

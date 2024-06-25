@@ -34,6 +34,7 @@ import ProtectedRoute from './components/routers/ProtectedRoute';
 import Page404 from './components/page404/Page404';
 import ManageServiceYacht from './components/company/ManageServiceYacht';
 import ManageRoomType from './components/company/ManageRoomType';
+import ManageSchedule from './components/company/ManageSchedule';
 
 
 const Layout = () => {
@@ -62,7 +63,7 @@ const Layout = () => {
                 <Route path='/profile' element={<Profile />} />
                 <Route path='/forgotpassowd' element={<ForgotPassword />}></Route>
                 <Route path='/information/:idCustomer' element={<Information />} />
-                <Route path='/information-company' element={<InformationCompany />} />
+                {/* <Route path='/information-company' element={<InformationCompany />} /> */}
 
 
                 <Route path='/manage-company' element={
@@ -82,7 +83,7 @@ const Layout = () => {
                 <Route path='manage-yacht/:idYacht' element={<ManageYacht />} />
                 <Route path='manage-room/:idYacht' element={<ManageRoom />} />
                 <Route path='manage-services-yacht/:idYacht' element={<ManageServiceYacht />} />
-                <Route path='manage-schedule/:idYacht' element={<ManageYacht />} />
+                <Route path='manage-schedule/:idYacht' element={<ManageSchedule />} />
 
                 <Route path='/admin' element={<LoginAdmin setIsLoggedIn={setIsLoggedIn} />} />
                 {

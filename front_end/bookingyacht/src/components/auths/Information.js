@@ -8,8 +8,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { fillInformationCustomer } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
-import { add } from 'lodash';
 import { information } from '../../redux/action/InformationAction';
+import { dark } from '@mui/material/styles/createPalette';
 const Information = () => {
 
     const navigate = useNavigate();
@@ -21,12 +21,32 @@ const Information = () => {
     const [address, setAddress] = useState('');
 
     const { idCustomer } = useParams()
+
+    // const phonenumber = (inputtxt) => {
+    //     var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+    //     if (inputtxt.value.match(phoneno)) {
+    //         return true;
+    //     }
+    //     else {
+    //         return false;
+    //     }
+    // }
+
     const handleFillInformation = async () => {
         if (!email || !fullName || !phoneNumber || !address) {
             toast.error('Input Not Empty!')
         } else {
+            // if (phonenumber(phoneNumber) === false) {
+            //     toast.error('Phone Number Start 0 And 10 Number')
+            // } else {
             let res = await fillInformationCustomer(idCustomer, fullName, email, phoneNumber, address);
-            if (res && res.data.data === true) {
+            console.log('cheecjk', res)
+            if (res && res.data.data === '1') {
+                toast.error('Invalid Form Email')
+            } else if (res && res.data.data === '2') {
+                toast.error('Invalid Phone Number')
+            } else if (res && res.data.data === '0') {
+
                 toast.success('Fill Information Successfully');
                 dispatch(information(email, fullName, phoneNumber, address));
                 setEmail('');
@@ -34,6 +54,7 @@ const Information = () => {
                 setFullName('');
                 setPhoneNumber('');
                 navigate('/signin')
+
             } else {
                 toast.error('Fill Information Fail')
             }

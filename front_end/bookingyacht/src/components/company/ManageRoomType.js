@@ -5,6 +5,8 @@ import { deleteRoomType, getAllRoomType } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
 import ModalCreateRoomType from './Modal/ModalCreateRoomType';
 import ModalUpdateRoomType from './Modal/ModalUpdateRoomType';
+import { GoArrowDown } from "react-icons/go";
+import { GoArrowUp } from "react-icons/go";
 
 const ManageRoomType = () => {
     const [isShowModalCreateRoomType, setIsShowModalCreateRoomType] = useState(false);
@@ -44,6 +46,16 @@ const ManageRoomType = () => {
         }
 
     }
+    const handleSortByPriceDown = () => {
+        const newList = [...roomType].sort((a, b) => a.price - b.price);
+        setRoomType(newList);
+    }
+
+
+    const handleSortByPriceUp = () => {
+        const newList = [...roomType].sort((a, b) => b.price - a.price);
+        setRoomType(newList);
+    }
 
     return (
         <div className='container'>
@@ -54,7 +66,11 @@ const ManageRoomType = () => {
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col">Price</th>
+                        <th scope="col">
+                            Price
+                            <GoArrowDown onClick={handleSortByPriceDown} style={{ cursor: 'pointer' }} />
+                            <GoArrowUp onClick={handleSortByPriceUp} style={{ cursor: 'pointer' }} />
+                        </th>
                         <th scope="col">Type</th>
                         <th scope="col">Utilities</th>
                         <th className='text-center' scope="col">Action</th>
