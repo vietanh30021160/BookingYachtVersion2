@@ -16,10 +16,10 @@ public class RoomTypeService implements IRoomType {
     @Autowired
     private RoomTypeRepository roomTypeRepository;
     @Override
-    public List<RoomTypeDTO> getAllRoomType() {
+    public List<RoomTypeDTO> getAllRoomType(String  yachtId) {
         List<RoomTypeDTO> roomTypeDTOList  =new ArrayList<>();
         try {
-            List<RoomType> roomTypeList = roomTypeRepository.findAll();
+            List<RoomType> roomTypeList = roomTypeRepository.findAllRoomTypeByYachtId(yachtId);
             for (RoomType roomType: roomTypeList
                  ) {
                 RoomTypeDTO roomTypeDTO = new RoomTypeDTO();
