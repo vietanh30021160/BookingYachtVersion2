@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { fetchCompanies } from '../../../redux/action/AdminAction';
 import './Manager.scss';
 const CompanyManager = () => {
-    const getImageApi = `http://localhost:8080/api/companies/file/`
+    const getImageApi = `http://localhost:8080/api/customer/file/`
     const dispatch = useDispatch();
     const companies = useSelector(state => state.admin.companies);
 
@@ -131,7 +131,7 @@ const CompanyManager = () => {
                 url: 'http://localhost:8080/api/admins/accounts',
                 headers: {
                     'Authorization': getAuthHeader(),
-                    // 'Content-Type': 'application/json'
+                    // 'Content-Type': 'multipart/form-data'
                 },
                 data: data
             };
@@ -141,6 +141,7 @@ const CompanyManager = () => {
                 toast.success('Company created successfully.')
                 fetchCompanies();
                 setNewAccountId(response.data.idAccount)
+                console.log(newAccountId);
                 setShowInfoDetailModal(true)
             } else {
                 // setCreatetAccountMessage('Failed to create company. Please try again.');
@@ -172,7 +173,7 @@ const CompanyManager = () => {
                 url: `http://localhost:8080/api/admins/accounts/${newAccountId}`,
                 headers: {
                     'Authorization': getAuthHeader(),
-                    'Content-Type': 'multipart/form-data'
+                    // 'Content-Type': 'multipart/form-data'
                 },
                 data: data
             };

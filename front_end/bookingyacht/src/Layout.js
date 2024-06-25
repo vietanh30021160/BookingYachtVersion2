@@ -23,13 +23,13 @@ import ProfileCompany from './components/company/Profile';
 import ViewBooking from './components/company/ViewBooking';
 import ViewYacht from './components/company/ViewYacht';
 import MainPage from './components/detailYacht/mainDetailPage/MainPage';
+import DetailEnterprise from './components/enterprise/DetailEnterprise';
 import Enterprise from './components/enterprise/Enterprise';
 import HomePage from './components/home/HomePage';
 import Profile from './components/home/Profile';
 import FindYacht from './components/yacht/FindYacht';
 import YachtQuestion from './components/yacht/YachtQuestion';
 import YachtRule from './components/yacht/YachtRule';
-
 
 const Layout = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -40,7 +40,7 @@ const Layout = () => {
                 <Route path="/" element={<App />}>
                     <Route index element={<HomePage />} />
                     <Route path='/blog' element={<Blog />} />
-                    <Route path='/duthuyen/:companyId' element={<FindYacht />} />
+                    <Route path='/duthuyen' element={<FindYacht />} />
                     <Route path='/doanhnhiep' element={<Enterprise />} />
                     <Route path='/mainpage/:yachtId' element={<MainPage />} />
                     <Route path='/yacht-rule' element={<YachtRule />} />
@@ -76,7 +76,7 @@ const Layout = () => {
                         </Route>
                     )
                 }
-
+                <Route path='/deltailInfo/:idCompany' element={<DetailEnterprise/>}/>
             </Routes>
 
             <ToastContainer

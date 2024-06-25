@@ -6,9 +6,9 @@ import './Enterprise.scss';
 
 const CompanyList = () => {
     const [companies, setCompanies] = useState([]);
+    const navigate = useNavigate();
     // const [loading, setLoading] = useState(true);
     const getImageApi = `http://localhost:8080/api/customer/file/`
-    const navigate = useNavigate();
     useEffect(() => {
         axios.get('http://localhost:8080/api/customer/getAllCompany')
             .then(res => {
@@ -21,7 +21,7 @@ const CompanyList = () => {
     }, []);
 
     const handleCompanyClick = (companyId) =>{
-        navigate(`/duthuyen/${companyId}`);
+        navigate(`/deltailInfo/${companyId}`)
     }
 
     // Chia mảng companies thành các mảng con với kích thước mỗi mảng con là 2.
