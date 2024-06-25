@@ -33,6 +33,6 @@ public class CustomUserDetailService implements UserDetailsService {
                 account.getPassword(),
                 //Đây là danh sách các quyền (authorities) của người dùng. Mỗi quyền là một đối tượng GrantedAuthority.
                 // Danh sách này chứa một đối tượng SimpleGrantedAuthority được tạo từ role của người dùng với tiền tố "ROLE_".
-                Collections.singletonList(new SimpleGrantedAuthority(role)));
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role)));
     }
 }

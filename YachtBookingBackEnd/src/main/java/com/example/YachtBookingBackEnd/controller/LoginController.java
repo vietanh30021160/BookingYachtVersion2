@@ -50,11 +50,11 @@ public class LoginController {
 
                 String idAccount = iAccount.getIdAccountByUserName(username);
 
-                if("COMPANY".equalsIgnoreCase(role)){
+                if("ROLE_COMPANY".equalsIgnoreCase(role)){
                     String idCompany = companyRepository.findIdCompanyByIdAccount(idAccount);
                     dataResponse.setIdCompany(idCompany);
                     System.out.println(idCompany);
-                }else if("CUSTOMER".equalsIgnoreCase(role)){
+                }else if("ROLE_CUSTOMER".equalsIgnoreCase(role)){
                     String idCustomer = customerRepository.findIdCustomerByIdAccount(idAccount);
                     System.out.println(idCustomer);
                     dataResponse.setIdCustomer(idCustomer);
