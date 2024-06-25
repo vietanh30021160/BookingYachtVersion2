@@ -8,9 +8,10 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface RoomTypeRepository extends JpaRepository<RoomType, String> {
-    @Query("SELECT rt from RoomType rt " +
+    @Query("SELECT rt FROM RoomType rt " +
             "JOIN rt.roomSet r " +
-            "Join Yacht y " +
-            "WHERE y.idYacht =: yachtId")
+            "JOIN r.yacht y " +
+            "WHERE y.idYacht = :yachtId")
     List<RoomType> findAllRoomTypeByYachtId(@Param("yachtId") String yachtId);
+
 }
