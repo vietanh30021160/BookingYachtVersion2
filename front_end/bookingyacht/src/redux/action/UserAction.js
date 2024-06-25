@@ -1,4 +1,4 @@
-import { FETCH_USER_LOGIN_SUCCES, USER_LOGOUT } from "../type/Type"
+import { CUSTOMER_REGISTER, FETCH_USER_LOGIN_SUCCES, USER_LOGOUT } from "../type/Type"
 
 
 export const doLogin = (data, role, idCompany, idCustomer) => {
@@ -7,6 +7,12 @@ export const doLogin = (data, role, idCompany, idCustomer) => {
         payload: { data, role, idCompany, idCustomer }
     }
 }
+export const doRegister = () => {
+    return {
+        type: CUSTOMER_REGISTER
+    }
+}
+
 export const doLogout = () => {
     return {
         type: USER_LOGOUT,

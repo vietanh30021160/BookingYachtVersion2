@@ -46,19 +46,17 @@ public class LoginController {
                         .findFirst()// moi user chi co 1 quyen nen lay cai dau tien
                         .orElse(null);
                 String token = jwtHelper.generateToken(username, role);
-                System.out.println(role);
-
                 String idAccount = iAccount.getIdAccountByUserName(username);
-
                 if("ROLE_COMPANY".equalsIgnoreCase(role)){
                     String idCompany = companyRepository.findIdCompanyByIdAccount(idAccount);
                     dataResponse.setIdCompany(idCompany);
-                    System.out.println(idCompany);
-                }else if("ROLE_CUSTOMER".equalsIgnoreCase(role)){
+                }
+                else if("ROLE_CUSTOMER".equalsIgnoreCase(role)){
                     String idCustomer = customerRepository.findIdCustomerByIdAccount(idAccount);
                     System.out.println(idCustomer);
                     dataResponse.setIdCustomer(idCustomer);
                 }
+
                 dataResponse.setData(token);
                 dataResponse.setSuccess(true);
                 return new ResponseEntity<>(dataResponse, HttpStatus.OK);

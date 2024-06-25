@@ -42,9 +42,10 @@ const Signin = () => {
         if (userName === '' || password === '') {
             toast.error('Input Not Empty');
             setLoading(false);
-        } else if (res && res.data.status === 200 && res.data.success === true) {
+        } else if (res && res.data.data !== '') {
             const role = jwtDecode(res.data.data);
-            dispatch(doLogin(res.data.data, role.role, res.data.idCompany, res.data.idCustomer));
+            dispatch(doLogin(res.data.data, role.role, res.data.idCompany ? res.data.idCompany : "", res.data.idCustomer ? res.data.idCustomer : ""))
+            console.log("login", res);
             if (role && role.role === 'ROLE_COMPANY') {
                 toast.success("Login Successful");
                 setLoading(false);
@@ -55,7 +56,7 @@ const Signin = () => {
                 navigate(-1);
             }
         } else {
-            toast.error('username invalid')
+            toast.error('User Name Or Password Invalid')
             setLoading(false);
 
         }

@@ -94,14 +94,12 @@ public class CompanyService implements ICompany {
     }
 
     public boolean hideCompany(String idCompany) {
-        // Tìm công ty theo ID
         Company company = companyRepository.findByIdAndExist(idCompany)
                 .orElseThrow(() -> new RuntimeException("Company not found! Try again"));
 
         // Cập nhật trạng thái của công ty thành ẩn (exist = 0)
         company.setExist(0);
 
-        // Lưu thay đổi vào cơ sở dữ liệu
         companyRepository.save(company);
 
         return true;

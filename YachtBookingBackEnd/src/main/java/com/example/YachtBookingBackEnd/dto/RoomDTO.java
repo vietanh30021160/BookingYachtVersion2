@@ -16,8 +16,8 @@ public class RoomDTO {
     private double area;
     private String description;
     private String name;
-    private String avatar;
     private long price;
+    private String avatar;
     private RoomTypeDTO roomType;
     private List<RoomImageDTO> roomImageSet;
 

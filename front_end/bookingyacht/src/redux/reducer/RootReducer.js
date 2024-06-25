@@ -8,9 +8,11 @@ import { ServiceByYachtReducer } from './ServiceByYachtReducer';
 import { ScheduleReducer } from './ScheduleReducer';
 import OrderReducer from './OrderReducer';
 import RoomImageReducer from './RoomImageReducer';
+import CustomerReducer from './CustomerReducer';
 
 const RootReducer = combineReducers({
     account: userReducer,
+    customer: CustomerReducer,
     YachtListReducer,
     YachtReducer,
     YachtImagesReducer,
