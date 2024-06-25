@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import ModalUpdateProfile from './Modal/ModalUpdateProfile';
+import { useSelector } from 'react-redux';
+import { getProfileCompany } from '../../services/ApiServices';
 const ProfileCompany = (props) => {
 
-
+    const idCompany = useSelector(state => state.account.account.idCompany);
 
     const [isShowModal, setIsShowModal] = useState(false);
 
     const handleClose = () => {
         setIsShowModal(false);
+    }
+
+    useEffect(() => {
+        getProfile();
+    }, [])
+
+    const getProfile = async () => {
+        let res = await getProfileCompany(idCompany);
+        console.log('id', res)
     }
 
     return (

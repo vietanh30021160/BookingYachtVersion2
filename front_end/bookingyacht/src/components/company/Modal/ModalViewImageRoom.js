@@ -1,6 +1,7 @@
 import React from 'react';
 
 const ModalViewImageRoom = () => {
+
     return (
         <div>
             Room
