@@ -17,10 +17,17 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    email: mailsender.bookingyacht@gmail.com
-    password: joyf msta mkfa verf
-    protocol: smtp
-    isSSL: false
+    username: mailsender.bookingyacht@gmail.com
+    password: yfhb uobe emec hnnt
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+        transport:
+          protocol: smtp
 
 
 

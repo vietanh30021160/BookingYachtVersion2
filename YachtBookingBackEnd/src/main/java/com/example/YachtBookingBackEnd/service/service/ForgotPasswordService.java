@@ -11,6 +11,7 @@ import com.example.YachtBookingBackEnd.service.implement.IForgotPassword;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -24,19 +25,16 @@ import java.util.Random;
 
 @Service
 public class ForgotPasswordService implements IForgotPassword {
-
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
     private ForgotPasswordRepository forgotPasswordRepository;
-    MailService mailService;
     @Autowired
     JavaMailSender mailSender;
     @Autowired
     private SpringTemplateEngine templateEngine;
-
     @Override
     public String verifyEmail(String email) {
         try {
@@ -45,28 +43,21 @@ public class ForgotPasswordService implements IForgotPassword {
 
             int otp = generateOTP();
 
-            Map<String, Object> props = new HashMap<>();
-            props.put("name", customer.getFullName());
-            props.put("username", customer.getAccount().getUsername());
-            props.put("password", otp);
-
             ForgotPassword forgotPassword = new ForgotPassword();
 
             forgotPassword.setOtp(otp);
             forgotPassword.setExpirationTime(new Date(System.currentTimeMillis() + 70 * 1000));
             forgotPassword.setAccount(account);
-            System.out.println(forgotPassword);
 
-
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
-            Context context = new Context();
-            context.setVariables(props);
-            String html = templateEngine.process("ThymeleafTemplate", context);
-
-            helper.setTo(email);
-            helper.setSubject("OTP for Forgot Password request.");
-            helper.setText(html, true);
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(email);
+            message.setSubject("OTP for Forgot Password request!");
+            message.setText("Xin chào: "+ customer.getFullName()+
+                    "\n Chúng tôi gửi thông tin truy cập hệ thống của bạn: \n"+
+                    "- Tên truy cập: "+ customer.getAccount().getUsername()+
+                    "\n Mã OTP để đổi mật khẩu: " +otp+
+                    "\n Bạn vui lòng đổi lại để đảm bảo an toàn thông tin.\n" +
+                    "Đây là email tự động vui lòng không trả lời.");
 
             mailSender.send(message);
             forgotPasswordRepository.save(forgotPassword);

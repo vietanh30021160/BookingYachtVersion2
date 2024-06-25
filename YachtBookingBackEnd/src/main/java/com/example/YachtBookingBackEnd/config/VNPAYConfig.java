@@ -1,4 +1,4 @@
-package com.example.YachtBookingBackEnd.security.payment;
+package com.example.YachtBookingBackEnd.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;

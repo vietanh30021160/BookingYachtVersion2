@@ -3,7 +3,7 @@ package com.example.YachtBookingBackEnd.service.service;
 import com.example.YachtBookingBackEnd.dto.PaymentDTO;
 import com.example.YachtBookingBackEnd.entity.*;
 import com.example.YachtBookingBackEnd.repository.*;
-import com.example.YachtBookingBackEnd.security.payment.VNPAYConfig;
+import com.example.YachtBookingBackEnd.config.VNPAYConfig;
 import com.example.YachtBookingBackEnd.service.implement.IBookingRoom;
 import com.example.YachtBookingBackEnd.service.implement.IBookingService;
 import com.example.YachtBookingBackEnd.service.implement.IPayment;
