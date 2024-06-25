@@ -1,54 +1,74 @@
 import React from 'react';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import { removeRoomAction } from '../../../redux/action/OrderAction';
+import { useNavigate } from 'react-router-dom';
+import { GoCheckCircle } from "react-icons/go";
 
-const BookNowModal = ({ selectedRooms, quantities, selectedServices, services, handleQuantityChange, handleServiceChange, totalPrice, show, handleClose  }) => {
+const BookNowModal = ({
+    selectedRooms,
+    selectedServices,
+    handleServiceChange,
+    totalPrice,
+    services,
+    show,
+    handleClose }) => {
     const today = new Date();
     const todayString = today.toISOString().split('T')[0];
+    const getAvatarApi = `http://localhost:8080/api/customer/file/`
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
+    const handleRoveRoom = (room) => {
+        dispatch(removeRoomAction(room));
+    }
+    const isLogged = useSelector(state => state.account.isAuthenticated);
+    const handleLoginOrNot = () => {
+        if (isLogged) {
+            handleClose();
+        } else {
+            navigate('/signin')
+        }
+    }
+    console.log(selectedServices)
     return (
-        <Modal show={show} onHide={handleClose} size='xl'>
-            <Modal.Header closeButton>
-                <Modal.Title>Đặt Phòng</Modal.Title>
+        <Modal show={show} onHide={handleClose} size='lg'>
+            <Modal.Header closeButton style={{ backgroundColor: 'orange' }}>
+                <Modal.Title className='fw-bold'>Đặt Phòng</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {selectedRooms.map(room => (
-                    <Row key={room.id} className="my-3 p-3 border">
+                    <Row key={room.id} className="my-3 p-3 border rounded border-warning align-items-center">
                         <Col md={2}>
-                            <img src={room.image} alt={room.name} className="img-fluid rounded" />
+                            <img src={`${getAvatarApi}${room.avatar}`} alt={room.name} className="img-fluid rounded" />
                         </Col>
-                        <Col md={6}>
-                            <h5>{room.name}</h5>
-                            <p>{room.size} - Tối đa: {room.maxGuests}</p>
+                        <Col md={5}>
+                            <h5 className='fw-bold'>{room.name}</h5>
                             <div>
-                                <h6>Dịch vụ đã chọn</h6>
-                                {selectedServices[room.id] && selectedServices[room.id].map(serviceId => {
-                                    const service = services.find(s => s.id === serviceId);
+                                {selectedServices[room.idRoom] && selectedServices[room.idRoom].map(serviceId => {
+                                    console.log(selectedServices[room.idRoom])
+
+                                    const service = services.find(s => s.idService === serviceId);
+                                    console.log('service', services)
                                     return (
                                         <div key={serviceId} className="d-flex justify-content-between align-items-center mb-2">
-                                            <span>{service.name}</span>
-                                            <Button variant="danger" size="sm" onClick={() => handleServiceChange(room.id, serviceId)}>Bỏ</Button>
+                                            <span style={{ color: 'black', fontSize: '14px' }}>{service ? service.service : ''} {service.price.toLocaleString()} đ</span>
+                                            <Button variant="danger" size="sm" onClick={() => handleServiceChange(room.idRoom, serviceId)}>Xóa</Button>
                                         </div>
                                     );
                                 })}
                             </div>
                         </Col>
-                        <Col md={2} className="text-end">
-                            <h5>{room.price.toLocaleString()} đ</h5>
+                        <Col md={3} className="">
+                            <h6 className='fw-bold'>Giá Phòng</h6>
+                            <h5>{room.roomType.price.toLocaleString()} đ</h5>
                         </Col>
-                        {/* <Col md={2} className="d-flex align-items-center justify-content-end">
-                            <span className="mx-2">x {quantities[room.id]}</span>
-                        </Col> */}
                         <Col md={2} className="d-flex align-items-center justify-content-end">
-                            <Button variant="outline-primary" onClick={() => handleQuantityChange(room.id, -1)}>-</Button>
-                            <span className="mx-2">{quantities[room.id]}</span>
-                            <Button variant="outline-primary" onClick={() => handleQuantityChange(room.id, 1)}>+</Button>
+                            <button onClick={() => handleRoveRoom(room)} className='btn btn-danger'>Hủy</button>
                         </Col>
                     </Row>
                 ))}
                 <Form>
-                    <Form.Group controlId="formCheckInDate" className="mb-3">
-                        <Form.Label>Ngày nhận phòng</Form.Label>
-                        <Form.Control type="date" min={todayString}/>
-                    </Form.Group>
                     <Form.Group controlId="formName" className="mb-3">
                         <Form.Label>Họ và tên</Form.Label>
                         <Form.Control type="text" placeholder="Nhập họ và tên" />
@@ -70,7 +90,8 @@ const BookNowModal = ({ selectedRooms, quantities, selectedServices, services, h
             <Modal.Footer>
                 <h5 className="me-auto">Tổng tiền: {totalPrice.toLocaleString()} đ</h5>
                 <Button variant="secondary" onClick={handleClose}>Đóng</Button>
-                <Button variant="primary" onClick={handleClose}>Đặt ngay</Button>
+
+                <Button variant='warning' onClick={() => { handleLoginOrNot() }}><GoCheckCircle style={{ marginRight: '5px' }} />Đặt ngay</Button>
             </Modal.Footer>
         </Modal>
     );

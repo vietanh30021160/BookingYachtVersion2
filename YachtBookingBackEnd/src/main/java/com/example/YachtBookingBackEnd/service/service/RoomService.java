@@ -8,10 +8,7 @@ import com.example.YachtBookingBackEnd.entity.Room;
 import com.example.YachtBookingBackEnd.entity.RoomImage;
 import com.example.YachtBookingBackEnd.entity.RoomType;
 import com.example.YachtBookingBackEnd.entity.Yacht;
-import com.example.YachtBookingBackEnd.repository.RoomImageRepository;
-import com.example.YachtBookingBackEnd.repository.RoomRepository;
-import com.example.YachtBookingBackEnd.repository.RoomTypeRepository;
-import com.example.YachtBookingBackEnd.repository.YachtRepository;
+import com.example.YachtBookingBackEnd.repository.*;
 import com.example.YachtBookingBackEnd.service.implement.IFile;
 import com.example.YachtBookingBackEnd.service.implement.IRoom;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +31,8 @@ public class RoomService implements IRoom {
     private RoomTypeRepository roomTypeRepository;
     @Autowired
     private IFile iFile;
+    @Autowired
+    private BookingRoomRepository bookingRoomRepository;
 
     @Override
     public List<RoomDTO> getAllRoom() {
@@ -74,7 +73,7 @@ public class RoomService implements IRoom {
             roomDTO.setName(room.getName());
             roomDTO.setDescription(room.getDescription());
             roomDTO.setArea(room.getArea());
-            //roomDTO.setAvailable(room.getAvailable());
+
             RoomTypeDTO roomTypeDTO = new RoomTypeDTO();
             roomTypeDTO.setIdRoomType(room.getRoomType().getIdRoomType());
             roomTypeDTO.setType(room.getRoomType().getType());
@@ -124,9 +123,7 @@ public class RoomService implements IRoom {
             Yacht yacht = yachtRepository.findById(idYacht)
                     .orElseThrow(()-> new RuntimeException("Not found yacht!"));
             room.setYacht(yacht);
-            //room.setAvailable(1);
             roomRepository.save(room);
-            return true;
         }catch (Exception e){
             System.out.println("Can't insert room: "+e);
         }
@@ -139,8 +136,6 @@ public class RoomService implements IRoom {
             Room room = roomRepository.findById(roomId)
                     .orElseThrow(()-> new RuntimeException("Not found room!!"));
 
-
-
             if(description!= null){
                 room.setDescription(description);
             }else {
@@ -148,7 +143,6 @@ public class RoomService implements IRoom {
             }
             iFile.save(avatar);
             room.setAvatar(avatar.getOriginalFilename());
-            room.setName(roomName);
             roomRepository.save(room);
             return  true;
         }catch (Exception e){
@@ -175,7 +169,6 @@ public class RoomService implements IRoom {
                 roomDTO.setArea(room.getArea());
                 roomDTO.setDescription(room.getDescription());
                 roomDTO.setAvatar(room.getAvatar());
-                //roomDTO.setAvailable(room.getAvailable());
 
                 RoomTypeDTO roomTypeDTO = new RoomTypeDTO();
                 roomTypeDTO.setIdRoomType(room.getRoomType().getIdRoomType());
@@ -205,7 +198,7 @@ public class RoomService implements IRoom {
                         roomDTO.setArea(room.getArea());
                         roomDTO.setDescription(room.getDescription());
                         roomDTO.setAvatar(room.getAvatar());
-                        //roomDTO.setAvailable(room.getAvailable());
+
                         return roomDTO;
                     })
                     .toList();
@@ -213,5 +206,43 @@ public class RoomService implements IRoom {
         return List.of();
     }
 
+    @Override
+    public List<RoomDTO> getUnbookedRoomsByYachtAndSchedule(String yachtId, String scheduleId) {
+        List<RoomDTO> roomDTOList = new ArrayList<>();
+        List<String> bookedRoomsIds = bookingRoomRepository.findBookedRoomIdsByScheduleId(scheduleId);
+        List<Room> unBookedRooms = roomRepository.findUnbookedRoomsByYachtAndSchedule(yachtId, bookedRoomsIds);
+        if (unBookedRooms != null) {
+            for (Room room : unBookedRooms) {
+                RoomDTO roomDTO = new RoomDTO();
+
+                roomDTO.setIdRoom(room.getIdRoom());
+                roomDTO.setName(room.getName());
+                roomDTO.setArea(room.getArea());
+                roomDTO.setDescription(room.getDescription());
+                roomDTO.setAvatar(room.getAvatar());
+
+                RoomTypeDTO roomTypeDTO = new RoomTypeDTO();
+                roomTypeDTO.setIdRoomType(room.getRoomType().getIdRoomType());
+                roomTypeDTO.setType(room.getRoomType().getType());
+                roomTypeDTO.setPrice(room.getRoomType().getPrice());
+                roomTypeDTO.setUtilities(room.getRoomType().getUtilities());
+
+                roomDTO.setRoomType(roomTypeDTO);
+
+                List<RoomImageDTO> roomImageDTOList = new ArrayList<>();
+                List<RoomImage> roomImages = roomImageRepository.findAllByRoom(room);
+                for (RoomImage roomImage : roomImages) {
+                    RoomImageDTO roomImageDTO = new RoomImageDTO();
+                    roomImageDTO.setIdRoomImage(roomImage.getIdRoomImage());
+                    roomImageDTO.setImageRoom(roomImage.getImageRoom());
+                    roomImageDTOList.add(roomImageDTO);
+                }
+                roomDTO.setRoomImageSet(roomImageDTOList);
+
+                roomDTOList.add(roomDTO);
+            }
+        }
+        return roomDTOList;
+    }
 
 }

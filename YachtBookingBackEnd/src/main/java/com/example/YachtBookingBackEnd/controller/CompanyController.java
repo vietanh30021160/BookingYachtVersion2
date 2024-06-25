@@ -31,26 +31,33 @@ public class CompanyController {
     IRoomImage iRoomImage;
     IRoomType iRoomType;
     IRoom iRoom;
-    IPayment iPayment;
     ISchedule iSchedule;
     IYachtSchedule iYachtSchedule;
     IYachtType iYachtType;
-    ILocation ilocation;
+    ILocation iLocation;
 
+    @GetMapping("/profiles/{idCompany}")
+    public ResponseEntity<?> getDetailCompanyByID(@PathVariable String idCompany) {
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iCompany.getCompanyById(idCompany));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    // Done
     @GetMapping("/allYacht")
     public ResponseEntity<?> viewYacht() {
-//        SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-//        String enscrypted = Encoders.BASE64.encode(secretKey.getEncoded());
-//        System.out.println(enscrypted);
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYacht.getAllYacht());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
+    //Done
     @GetMapping("/file/{filename:.+}")
     public ResponseEntity<?> getFile(@PathVariable String filename) {
         Resource resource = iFile.load(filename);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
     }
+    //Done
     @PostMapping("/yacht/insertYacht/{idCompany}")
     public ResponseEntity<?> insertYacht(@RequestParam String name,
                                          @RequestParam MultipartFile image,
@@ -68,18 +75,19 @@ public class CompanyController {
     }
 
 
-    @PostMapping("/room/addRoom")
+    @PostMapping("/room/addRoom/{idYacht}")
     public ResponseEntity<?> addRoom(@RequestParam String roomName,
                                      @RequestParam double area,
                                      @RequestParam String description,
                                      @RequestParam String idRoomType,
                                      @RequestParam MultipartFile avatar,
-                                     @RequestParam String idYacht
+                                     @PathVariable String idYacht
                                      ){
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iRoom.addRoom(roomName, area, description, idRoomType, idYacht, avatar));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+    //Done
     @PutMapping("/yacht/updateYacht/{yachtId}")
     public ResponseEntity<?> updateYacht(@PathVariable String yachtId,
                                          @RequestParam String name,
@@ -113,28 +121,28 @@ public class CompanyController {
         dataResponse.setData(iRoomImage.getAllImageByIdRoom(roomId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
+    //Done
     @DeleteMapping("/yacht/delete/{id}")
     public ResponseEntity<?> deleteYacht(@PathVariable String id) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYacht.deleteYacht(id));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
+    //Done
     @GetMapping("/yacht/findByCompany/{companyId}")
     public ResponseEntity<?> findYachtByCompany(@PathVariable String companyId) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYacht.findYachtByCompanyId(companyId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
+    //Done
     @GetMapping("/yacht/image/{yachtId}")
     public ResponseEntity<?> getImageByYacht(@PathVariable String yachtId) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYachtImage.getImageByYacht(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
+    //Done
     @PostMapping("/yacht/addImage/{yachtId}")
     public ResponseEntity<?> insertImageForYacht(@PathVariable String yachtId, @RequestParam MultipartFile image) {
         DataResponse dataResponse = new DataResponse();
@@ -142,7 +150,7 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-
+    //Done
     @DeleteMapping("/yacht/deleteImage/{imageId}")
     public ResponseEntity<?> deleteYachtImageById(@PathVariable String imageId) {
         DataResponse dataResponse = new DataResponse();
@@ -170,18 +178,21 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/confirm")
-    public ResponseEntity<?> confirmVnPayPayment(@RequestParam String idBookingOrder) {
+    @PutMapping("/{idCompany}/confirm/{idBookingOrder}")
+    public ResponseEntity<?> confirmVnPayPayment(@PathVariable String idBookingOrder,
+                                                 @PathVariable String idCompany) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iBookingOrder.confirmBooking(idBookingOrder));
+        dataResponse.setData(iBookingOrder.confirmBooking(idBookingOrder, idCompany));
 
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/cancel")
-    public ResponseEntity<?> cancelVnPayPayment(@RequestParam String idBookingOrder) {
+    @PutMapping("/{idCompany}/cancel/{idBookingOrder}")
+    public ResponseEntity<?> cancelVnPayPayment(@PathVariable String idBookingOrder,
+                                                @PathVariable String idCompany,
+                                                @RequestParam(required = false) String reason) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iBookingOrder.cancelBooking(idBookingOrder));
+        dataResponse.setData(iBookingOrder.cancelBooking(idBookingOrder, reason != null ? reason : "No reason provided", idCompany));
 
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
@@ -197,7 +208,7 @@ public class CompanyController {
     }
 
     /* ===End BookingOrder management=== */
-
+    //Done
     @PutMapping("/yacht/updateImage/{imageId}")
     public ResponseEntity<?>updateYachtImage(@PathVariable String imageId, @RequestParam MultipartFile image){
         DataResponse dataResponse = new DataResponse();
@@ -211,14 +222,14 @@ public class CompanyController {
         dataResponse.setData(iService.getAllService());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
+    //Done
     @GetMapping("/getServiceByYacht/{yachtId}")
     public ResponseEntity<?> getServiceByYacht(@PathVariable String yachtId) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iService.getAllServiceByYacht(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
+    //Done
     @PostMapping("/addServiceForYacht/{yachtId}")
     public ResponseEntity<?> addServiceForYacht(@PathVariable String yachtId,
                                                 @RequestParam String service,
@@ -227,7 +238,7 @@ public class CompanyController {
         dataResponse.setData(iYachtService.addYachtService(yachtId, service, price));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
+    //Done
     @DeleteMapping("/deleteYachtService/{yachtId}/{serviceId}")
     public ResponseEntity<?> deleteYachtService(@PathVariable String yachtId,
                                                 @PathVariable String serviceId) {
@@ -235,7 +246,7 @@ public class CompanyController {
         dataResponse.setData(iYachtService.deleteYachtService(yachtId, serviceId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
+    //Done
     @PutMapping("/updateYachtService/{yachtId}/{serviceId}")
     public ResponseEntity<?> updateYachtService(@PathVariable String yachtId,
                                                 @PathVariable String serviceId,
@@ -322,7 +333,7 @@ public class CompanyController {
         dataResponse.setData(iRoomType.deleteRoomType(roomTypeId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
+    //Done
     @GetMapping("/feedBackByIdCompany/{companyId}")
     public ResponseEntity<?> getFeedbackByIdCompany(@PathVariable String companyId) {
         DataResponse dataResponse = new DataResponse();
@@ -371,17 +382,26 @@ public class CompanyController {
         dataResponse.setData(iRoom.getRoomAndSchedule(idYacht,idSchedule));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
+    //Done
     @GetMapping("/getRoomByYacht/{yachtId}")
     public ResponseEntity<?> getRoomByYacht(@PathVariable String yachtId) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iRoom.getRoomByYacht(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
+    //Done
     @GetMapping("/getYachtType")
     public ResponseEntity<?> getYachtType(){
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYachtType.getYachtTypes());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    //Done
+    @GetMapping("/getAllLocation")
+    public ResponseEntity<?> getAllLocation(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iLocation.getAllLocation());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

@@ -13,17 +13,18 @@ import java.time.LocalDateTime;
 @Table(name = "transaction")
 public class Transaction {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_transaction", nullable = false)
     private String idTransaction;
 
     @Column(name = "amount")
-    private double amount;
+    private long amount;
 
     @Column(name = "transaction_date")
     private LocalDateTime transactionDate;
 
     @Column(name = "status")
-    private String status; // PENDING, SUCCESS, FAILED
+    private String status; // Pending, Success, Failure
 
     @Column(name = "receiver_bank_tran_no")
     private String receiverBankTranNo;

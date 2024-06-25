@@ -1,7 +1,6 @@
 package com.example.YachtBookingBackEnd.service.service;
 
 import com.example.YachtBookingBackEnd.dto.AccountDTO;
-import com.example.YachtBookingBackEnd.dto.CompanyDTO;
 import com.example.YachtBookingBackEnd.entity.Account;
 import com.example.YachtBookingBackEnd.entity.Company;
 import com.example.YachtBookingBackEnd.repository.AccountRepository;
@@ -17,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -147,6 +145,7 @@ public class AccountService implements IAccount {
     public void deleteAccount(String id){
         accountRepository.deleteById(id);
     }
+
     public Account getAccount2(String id){
         return accountRepository.findById(id)
                 . orElseThrow(() -> new RuntimeException("Can not found id: " + id));

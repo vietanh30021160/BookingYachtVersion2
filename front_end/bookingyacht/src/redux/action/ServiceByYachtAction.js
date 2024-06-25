@@ -9,6 +9,7 @@ export const getServiceByYachtApi = (yachtId) => {
                     type: GET_SERVICE_BY_YACHT,
                     payload: res.data.data,
                 });
+                console.log(res.data.data);
             } else {
                 console.error("Unexpected response structure:", res);
             }

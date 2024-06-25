@@ -1,65 +1,37 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Dropdown, DropdownButton, Modal, Table } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCustomers } from '../../../redux/action/AdminAction';
 import './Manager.scss';
 
 const CustomerManager = () => {
-    // Các biến trạng thái để quản lý dữ liệu khách hàng và trạng thái giao diện người dùng
-    const [customers, setCustomers] = useState([]);
+
+    const dispatch = useDispatch();
+    const customers = useSelector(state => state.admin.customers);
     const [filteredCustomers, setFilteredCustomers] = useState([]);
-
     const [selectedCustomer, setSelectedCustomer] = useState(null);
-
     const [showModal, setShowModal] = useState(false);
-
     const [searchName, setSearchName] = useState("");
     const [searchEmail, setSearchEmail] = useState("");
-
-
-    const [sortOption, setSortOption] = useState({ key: 'idCustomer', direction: 'asc' });
+    const [searchId, setSearchId] = useState(""); 
+    const [searchPhone, setSearchPhone] = useState(""); 
     const [currentPage, setCurrentPage] = useState(1);
     const [paging, setPaging] = useState([]);
     const [pagedCustomers, setPagedCustomers] = useState([]);
 
-
     // Lấy khách hàng khi thành phần được tải
     useEffect(() => {
-        fetchCustomers();
-    }, []);
+        dispatch(fetchCustomers())
+    }, [dispatch]);
 
+    useEffect(() =>{
+        setFilteredCustomers(customers);
+    }, [customers])
 
     // Cập nhật phân trang mỗi khi danh sách khách hàng được lọc thay đổi
     useEffect(() => {
         updatePaging();
-    }, [filteredCustomers]);
-
-
-    // Hàm lấy tiêu đề xác thực
-    const getAuthHeader = () => {
-        const token = localStorage.getItem('token');
-        return token ? `Bearer ${token}` : '';
-    };
-
-    // Hàm lấy khách hàng từ API
-    const fetchCustomers = async () => {
-        try {
-            const config = {
-                method: 'get',
-                url: 'http://localhost:8080/api/admins/getAllCustomer',
-                headers: {
-                    'Authorization': getAuthHeader()
-                }
-            };
-            const response = await axios(config);
-            const data = response.data.data;
-            // Đặt tất cả khách hàng
-            setCustomers(data);
-            // Đặt danh sách khách hàng đã lọc
-            setFilteredCustomers(data);
-        } catch (error) {
-            console.error('Error fetching customers:', error);
-        }
-    };
+    }, [filteredCustomers, currentPage]);
 
     // Hàm cập nhật phân trang
     const updatePaging = () => {
@@ -70,13 +42,11 @@ const CustomerManager = () => {
         // Đặt khách hàng cho trang hiện tại
         setPagedCustomers(filteredCustomers.slice((currentPage - 1) * 10, currentPage * 10));
     };
+
     // Hàm tìm kiếm khách hàng theo tên
     const handleSearchByName = value => {
         setSearchName(value);
-        const filtered = customers.filter(customer =>
-            customer.fullName.toLowerCase().includes(value.toLowerCase())
-        );
-        setFilteredCustomers(filtered);
+        filterCustomers(value, searchEmail, searchId, searchPhone);
         // Đặt lại trang đầu tiên
         setCurrentPage(1);
     };
@@ -84,12 +54,36 @@ const CustomerManager = () => {
     // Hàm tìm kiếm khách hàng theo email
     const handleSearchByEmail = value => {
         setSearchEmail(value);
-        const filtered = customers.filter(customer =>
-            customer.email.toLowerCase().includes(value.toLowerCase())
-        );
-        setFilteredCustomers(filtered);
+        filterCustomers(searchName, value, searchId, searchPhone);
         // Đặt lại trang đầu tiên
         setCurrentPage(1);
+    };
+
+    // Hàm tìm kiếm khách hàng theo ID
+    const handleSearchById = value => {
+        setSearchId(value);
+        filterCustomers(searchName, searchEmail, value, searchPhone);
+        // Đặt lại trang đầu tiên
+        setCurrentPage(1);
+    };
+
+    // Hàm tìm kiếm khách hàng theo Phone
+    const handleSearchByPhone = value => {
+        setSearchPhone(value);
+        filterCustomers(searchName, searchEmail, searchId, value);
+        // Đặt lại trang đầu tiên
+        setCurrentPage(1);
+    };
+
+    // Hàm chính để lọc danh sách khách hàng
+    const filterCustomers = (name, email, id, phone) => {
+        const filtered = customers.filter(customer =>
+            customer.fullName.toLowerCase().includes(name.toLowerCase()) &&
+            customer.email.toLowerCase().includes(email.toLowerCase()) &&
+            customer.idCustomer.toString().includes(id) &&
+            customer.phone.includes(phone)
+        );
+        setFilteredCustomers(filtered);
     };
 
     // Hàm xóa khách hàng
@@ -109,7 +103,7 @@ const CustomerManager = () => {
 
     // Hàm thay đổi tùy chọn sắp xếp
     const handleSortChange = (key, direction) => {
-        setSortOption({ key, direction });
+        // setSortOption({ key, direction });
         sortCustomers(key, direction);
     };
 
@@ -148,26 +142,53 @@ const CustomerManager = () => {
 
     return (
         <div className="container mt-5">
-            <h1>Admin Manager</h1>
-            <h2>Customer Accounts</h2>
-            <div className="d-flex mb-3">
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Search customer by username"
-                    value={searchName}
-                    onChange={e => handleSearchByName(e.target.value)}
-                />
+            <div>
+                <h1>Admin Manager</h1>
+                <h2>Customer Accounts</h2>
             </div>
-
             <div className="d-flex mb-3">
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Search customer by email"
-                    value={searchEmail}
-                    onChange={e => handleSearchByEmail(e.target.value)}
-                />
+                <div style={{ marginRight: '50px' }}>
+                <label>Tìm kiếm theo Id</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Search customer by ID"
+                        value={searchId}
+                        onChange={e => handleSearchById(e.target.value)}
+                    />
+                </div>
+                <div>
+                <label>Tìm kiếm theo phone</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Search customer by phone"
+                        value={searchPhone}
+                        onChange={e => handleSearchByPhone(e.target.value)}
+                    />
+                </div>
+            </div>
+            <div className="d-flex mb-3">
+                <div style={{ marginRight: '50px' }}>
+                <label>Tìm kiếm theo tên</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Search customer by name"
+                        value={searchName}
+                        onChange={e => handleSearchByName(e.target.value)}
+                    />
+                </div>
+                <div>
+                <label>Tìm kiếm theo email</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Search customer by email"
+                        value={searchEmail}
+                        onChange={e => handleSearchByEmail(e.target.value)}
+                    />
+                </div>
             </div>
 
             <div className="d-flex mb-3">
@@ -180,7 +201,6 @@ const CustomerManager = () => {
             </div>
 
             <Table striped bordered hover>
-
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -191,7 +211,6 @@ const CustomerManager = () => {
                         <th>Action</th>
                     </tr>
                 </thead>
-
                 <tbody>
                     {pagedCustomers.map(customer => (
                         <tr key={customer.idCustomer}>
@@ -207,7 +226,6 @@ const CustomerManager = () => {
                         </tr>
                     ))}
                 </tbody>
-
             </Table>
 
             <div style={{ display: 'flex', justifyContent: 'center' }}>

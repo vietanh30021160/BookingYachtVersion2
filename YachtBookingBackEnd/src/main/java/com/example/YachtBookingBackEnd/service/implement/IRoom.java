@@ -23,4 +23,6 @@ public interface IRoom {
 
     List<RoomDTO> getRoomByYacht(String idYacht);
     List<RoomDTO> getRoomByRoomType(String idRoomType);
+
+    List<RoomDTO> getUnbookedRoomsByYachtAndSchedule(String yachtId, String scheduleId);
 }

@@ -29,7 +29,6 @@
         margin-top: 50px;
 
         .cart {
-            // width: fit-content;
             display: flex;
             flex-direction: column;
             gap: 20px;
@@ -43,13 +42,6 @@
             background-color: #fff;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 
-            img {
-                width: 100%;
-                height: 100%;
-                overflow-clip-margin: content-box;
-                overflow: clip;
-            }
-
             .img-cart {
                 padding: 16px 16px 0;
                 max-width: 100%;
@@ -62,6 +54,12 @@
                 }
             }
 
+            .ima {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+            }
+
             .body-cart {
                 display: flex;
                 padding: 0 24px;
@@ -69,6 +67,22 @@
                 justify-content: center;
                 align-items: flex-start;
                 gap: 8px;
+
+                .text-card {
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 2;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    line-clamp: 2;
+                    max-height: 3em;
+                }
+
+                .title-blog {
+                    font-size: 18px;
+                    line-height: 28px;
+                    font-weight: 700;
+                }
             }
         }
     }
@@ -78,5 +92,4 @@
             gap: 16px;
         }
     }
-
 }

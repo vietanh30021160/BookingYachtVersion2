@@ -1,8 +1,8 @@
 import React from 'react';
 import { Alert } from 'react-bootstrap';
 import { FaArrowRightLong } from "react-icons/fa6";
-import './Schedule.scss';
-const Schedule = () => {
+
+const Map = () => {
     return (
         <div>
             <h4>Quy định chung và lưu ý</h4>
@@ -19,7 +19,7 @@ const Schedule = () => {
                             Du thuyền Du thuyền Heritage Bình Chuẩn Cát Bà xuất phát từ Lux Cruises, Lô 28 Cảng Quốc Tế Tuần Châu
                         </li>
                         <li>
-                            Bạn có thể xem chi tiết lịch trình 2 ngày 1 đêm. <a href="https://docs.google.com/document/d/1mEUXbaHQZmmjGfAuyuYHpRQimyt0y0YJRWjLZnvCa7U/edit">tại đây</a>.
+                            Bạn có thể xem chi tiết lịch trình 2 ngày 1 đêm. <a href="https://docs.google.com/document/d/1mEUXbaHQZmmjGfAuyuYHpRQimyt0y0YJRWjLZnvCa7U/edit" target='_blank'>tại đây</a>.
                         </li>
                     </ul>
                 </div>
@@ -43,4 +43,4 @@ const Schedule = () => {
     )
 };
 
-export default Schedule;
+export default Map;

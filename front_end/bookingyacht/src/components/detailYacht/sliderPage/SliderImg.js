@@ -44,11 +44,10 @@ const SimpleSlider = ({ yacht }) => {
   );
 
   return (
-
     <div className="custom-slider">
       <div className='title_page mb-4' style={{ justifyContent: 'space-between', alignItems: 'center' }}>
         <h1 style={{ fontWeight: 'bold', color: '#0E4F4F' }}><span><LuShip color='gold' size={80}></LuShip></span> {yacht.name}</h1>
-        <h3 style={{ color: '#0E4F4F', fontWeight: 'normal' }}>3,550,000 đ/phòng</h3>
+        <h3 style={{ color: '#0E4F4F', fontWeight: 'normal' }}>3,500,000 đ/phòng</h3>
       </div>
 
       <div className='slider_page'>
