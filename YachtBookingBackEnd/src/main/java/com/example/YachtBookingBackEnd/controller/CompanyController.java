@@ -97,13 +97,14 @@ public class CompanyController {
 
     @PutMapping("/room/updateRoom/{roomId}")
     public ResponseEntity<?> updateRoom(@PathVariable String roomId,
+                                        @RequestParam String roomName,
                                         @RequestParam String description,
-                                        @RequestParam MultipartFile avatar,
-                                        @RequestParam int available){
+                                        @RequestParam MultipartFile avatar){
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iRoom.updateRoom(roomId, description, available, avatar));
+        dataResponse.setData(iRoom.updateRoom(roomId,roomName, description, avatar));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
 
     @DeleteMapping("/yacht/delete/{id}")
     public ResponseEntity<?> deleteYacht(@PathVariable String id) {
