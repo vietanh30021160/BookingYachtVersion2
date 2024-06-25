@@ -43,7 +43,7 @@ public class ForgotPasswordService implements IForgotPassword {
             ForgotPassword forgotPassword = new ForgotPassword();
 
             forgotPassword.setOtp(otp);
-            forgotPassword.setExpirationTime(new Date(System.currentTimeMillis() + 30 * 1000));
+            forgotPassword.setExpirationTime(new Date(System.currentTimeMillis() + 60 * 1000));
             forgotPassword.setAccount(account);
 
             SimpleMailMessage message = new SimpleMailMessage();
@@ -76,6 +76,7 @@ public class ForgotPasswordService implements IForgotPassword {
                 forgotPasswordRepository.delete(forgotPassword);
                 return "OTP has expired! ";
             }else{
+                forgotPasswordRepository.delete(forgotPassword);
                 return "OTP verified!";
             }
 
