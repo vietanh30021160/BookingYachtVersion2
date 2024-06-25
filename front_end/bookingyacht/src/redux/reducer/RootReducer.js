@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
+import AdminReducer from './AdminReducer';
+import loginAdminReducer from './LoginAdminReducer';
+import { ServiceByYachtReducer } from './ServiceByYachtReducer';
 import userReducer from './UserReducer';
+import { YachtImagesReducer } from './YachtImagesReducer';
 import { YachtListReducer } from './YachtListReducer';
 import { YachtReducer } from './YachtReducer';
-import { YachtImagesReducer } from './YachtImagesReducer';
 import { YachtServiceReducer } from './YachtServiceReducer';
-import { ServiceByYachtReducer } from './ServiceByYachtReducer';
 
 const RootReducer = combineReducers({
     account: userReducer,
@@ -12,7 +14,9 @@ const RootReducer = combineReducers({
     YachtReducer,
     YachtImagesReducer,
     YachtServiceReducer,
-    ServiceByYachtReducer
+    ServiceByYachtReducer,
+    loginAdmin: loginAdminReducer,
+    admin : AdminReducer,
 });
 
 export default RootReducer;

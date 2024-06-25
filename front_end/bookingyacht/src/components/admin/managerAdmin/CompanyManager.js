@@ -1,13 +1,15 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Dropdown, DropdownButton, Form, Modal, Table } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { fetchCompanies } from '../../../redux/action/AdminAction';
 import './Manager.scss';
 const CompanyManager = () => {
-
     const getImageApi = `http://localhost:8080/api/customer/file/`
+    const dispatch = useDispatch();
+    const companies = useSelector(state => state.admin.companies);
 
-    const [companies, setCompanies] = useState([]);
     const [filteredCompanies, setFilteredCompanies] = useState([]);
     const [selectedCompany, setSelectedCompany] = useState(null);
 
@@ -179,7 +181,7 @@ const CompanyManager = () => {
         try {
             const config = {
                 method: 'post',
-                url: `http://localhost:8080/api/admins/accounts/${newAccountId}`,
+                url: `http://localhost:8080/api/admins/insertInfoCompanyByIdAccount/${newAccountId}`,
                 headers: {
                     'Authorization': getAuthHeader(),
                     'Content-Type': 'multipart/form-data'

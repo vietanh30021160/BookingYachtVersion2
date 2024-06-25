@@ -7,7 +7,6 @@ import './Homepage.scss';
 const AdminStats = () =>{
     const [customerCount, setCustomerCount] = useState(0);
     const [companyCount, setCompanyCount] = useState(0);
-    const [error, setError] = useState(null);
     
   useEffect(() => {
     fetchCompanies();
@@ -25,9 +24,9 @@ const AdminStats = () =>{
         setCompanyCount(response.data.data.length);
     } catch (error) {
         if (error.response.status === 403) {
-            setError('Access forbidden. Please check your permissions.');
+            console.log('Access forbidden. Please check your permissions.');
         } else {
-            setError('Error fetching companies: ' + error.message);
+            console.log('Error fetching companies: ' + error.message);
         }
     }
 };
@@ -43,9 +42,9 @@ const fetchCustomers = async () => {
       setCustomerCount(response.data.data.length); 
   } catch (error) {
       if (error.response.status === 403) {
-          setError('Access forbidden. Please check your permissions.');
+          console.log('Access forbidden. Please check your permissions.');
       } else {
-          setError('Error fetching customers: ' + error.message);
+          console.log('Error fetching customers: ' + error.message);
       }
   }
 };

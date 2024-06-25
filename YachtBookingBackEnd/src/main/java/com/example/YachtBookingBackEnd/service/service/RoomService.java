@@ -173,7 +173,7 @@ public class RoomService implements IRoom {
                 roomDTO.setName(room.getName());
                 roomDTO.setArea(room.getArea());
                 roomDTO.setDescription(room.getDescription());
-                roomDTO.setAvatar(room.getAvatar());
+//                roomDTO.setAvatar(room.getAvatar());
 //                roomDTO.setAvailable(room.getAvailable());
 
                 RoomTypeDTO roomTypeDTO = new RoomTypeDTO();
@@ -203,7 +203,7 @@ public class RoomService implements IRoom {
                         roomDTO.setName(room.getName());
                         roomDTO.setArea(room.getArea());
                         roomDTO.setDescription(room.getDescription());
-                        roomDTO.setAvatar(room.getAvatar());
+//                        roomDTO.setAvatar(room.getAvatar());
 //                        roomDTO.setAvailable(room.getAvailable());
                         return roomDTO;
                     })

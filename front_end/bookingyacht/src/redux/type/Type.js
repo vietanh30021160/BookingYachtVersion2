@@ -5,3 +5,16 @@ export const GET_YACHT_BY_ID = 'GET_YACHT_BY_ID';
 export const GET_YACHT_IMAGE = 'GET_YACHT_IMAGE';
 export const GET_ALL_SERVICE = 'GET_ALL_SERVICE';
 export const GET_SERVICE_BY_YACHT = 'GET_SERVICE_BY_YACHT';
+
+
+//loginAdmin type
+export const LOGIN_REQUEST = 'LOGIN_REQUEST';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const LOGOUT = 'LOGOUT';
+
+export const GET_ALL_CUSTOMERS = 'GET_ALL_CUSTOMER';
+export const GET_ALL_COMPANIES = 'GET_ALL_COMPANIES';
+
+export const CREATE_COMPANY_ACCOUNT = 'CREATE_COMPANY_ACCOUNT';
+export const ADD_COMPANY_INFO = 'ADD_COMPANY_INFO';
