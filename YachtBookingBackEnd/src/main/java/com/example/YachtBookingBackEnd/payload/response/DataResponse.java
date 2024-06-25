@@ -18,7 +18,6 @@ public class DataResponse<T> {
     private String idAccount;
     private String idCompany;
     private String idCustomer;
-    private String idAccount;
     String desc;
     T data;
 }
