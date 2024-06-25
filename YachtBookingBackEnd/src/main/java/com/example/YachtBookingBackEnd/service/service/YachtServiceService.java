@@ -60,7 +60,7 @@ public class YachtServiceService implements IYachtService {
             KeysYachtService key = new KeysYachtService(yachtId, serviceId);
             Optional<YachtService> yachtService = yachtServiceRepository.findByKeys(key);
             if(yachtService.isPresent()) {
-                System.out.println("tim tahy");
+                System.out.println("tim thay");
                 yachtServiceRepository.delete(yachtService.get());
                 return true;
             }

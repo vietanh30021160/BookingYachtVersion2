@@ -74,7 +74,6 @@ public class RoomService implements IRoom {
             roomDTO.setName(room.getName());
             roomDTO.setDescription(room.getDescription());
             roomDTO.setArea(room.getArea());
-            //roomDTO.setAvailable(room.getAvailable());
             RoomTypeDTO roomTypeDTO = new RoomTypeDTO();
             roomTypeDTO.setIdRoomType(room.getRoomType().getIdRoomType());
             roomTypeDTO.setType(room.getRoomType().getType());
@@ -124,7 +123,6 @@ public class RoomService implements IRoom {
             Yacht yacht = yachtRepository.findById(idYacht)
                     .orElseThrow(()-> new RuntimeException("Not found yacht!"));
             room.setYacht(yacht);
-            //room.setAvailable(1);
             roomRepository.save(room);
             return true;
         }catch (Exception e){
@@ -134,7 +132,7 @@ public class RoomService implements IRoom {
     }
 
     @Override
-    public boolean updateRoom(String roomId, String description, String roomName, MultipartFile avatar) {
+    public boolean updateRoom(String roomId, String description,  int available, MultipartFile avatar) {
         try {
             Room room = roomRepository.findById(roomId)
                     .orElseThrow(()-> new RuntimeException("Not found room!!"));
@@ -148,7 +146,7 @@ public class RoomService implements IRoom {
             }
             iFile.save(avatar);
             room.setAvatar(avatar.getOriginalFilename());
-            room.setName(roomName);
+
             roomRepository.save(room);
             return  true;
         }catch (Exception e){
@@ -175,7 +173,6 @@ public class RoomService implements IRoom {
                 roomDTO.setArea(room.getArea());
                 roomDTO.setDescription(room.getDescription());
                 roomDTO.setAvatar(room.getAvatar());
-                //roomDTO.setAvailable(room.getAvailable());
 
                 RoomTypeDTO roomTypeDTO = new RoomTypeDTO();
                 roomTypeDTO.setIdRoomType(room.getRoomType().getIdRoomType());
@@ -205,7 +202,7 @@ public class RoomService implements IRoom {
                         roomDTO.setArea(room.getArea());
                         roomDTO.setDescription(room.getDescription());
                         roomDTO.setAvatar(room.getAvatar());
-                        //roomDTO.setAvailable(room.getAvailable());
+
                         return roomDTO;
                     })
                     .toList();

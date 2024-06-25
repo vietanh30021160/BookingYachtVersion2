@@ -1,6 +1,7 @@
 import axios from "axios";
 import NProgress from 'nprogress';
 import { store } from '../redux/Store'
+import { toast } from "react-toastify";
 
 
 const instance = axios.create({
@@ -42,6 +43,14 @@ instance.interceptors.response.use(function (response) {
     // Do something with response error
     //return Promise.reject(error);
     NProgress.done();
-    return error;
+    if (error.response.status === 401) {
+        //(`unauthorized :)`);
+        //localStorage.removeItem("persist:root");
+        //removeLocalStorageToken
+        // window.location.href = "/login";
+        // toast.error('User Name Or Password Not Correct')
+        return;
+    }
+    return Promise.reject(error);
 });
 export default instance;

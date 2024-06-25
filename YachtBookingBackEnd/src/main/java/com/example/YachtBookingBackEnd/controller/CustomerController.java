@@ -67,6 +67,13 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/getProfileCustomerById/{customerId}")
+    ResponseEntity<?> getProfileCustomerById(@PathVariable("customerId") String customerId){
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iCustomer.getCustomer(customerId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
     @PostMapping("/payment")
     public ResponseEntity<?> createVnPayPayment(@RequestParam String bankCode,
                                                 @RequestParam List<String> selectedRoomIds,

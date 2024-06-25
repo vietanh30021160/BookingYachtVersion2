@@ -18,6 +18,7 @@ import { Link, NavLink, useNavigate, useParams } from 'react-router-dom';
 import { ImProfile } from "react-icons/im";
 import { useDispatch, useSelector } from 'react-redux';
 import { doLogout } from '../../redux/action/UserAction';
+import { FaStar } from "react-icons/fa";
 // import logo from '../../assets/logo_swp.png'
 const Sidebar = (props) => {
     const { image, collapsed, toggled, handleToggleSidebar } = props;
@@ -96,6 +97,15 @@ const Sidebar = (props) => {
                         >
                             Profile
                             <Link to='/manage-company/profile' />
+                        </MenuItem>
+
+                    </Menu>
+                    <Menu iconShape="circle">
+                        <MenuItem
+                            icon={<FaStar />}
+                        >
+                            Manage Room Type
+                            <Link to='/manage-company/room-type' />
                         </MenuItem>
 
                     </Menu>

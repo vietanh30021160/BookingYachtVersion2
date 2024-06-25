@@ -1,11 +1,59 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+import _, { add } from 'lodash';
+import { updateProfileCustomer } from '../../services/ApiServices';
+import { toast } from 'react-toastify';
+import { Today } from '@mui/icons-material';
 const ModalUpdateProfileUser = (props) => {
-    const { show, handleClose } = props;
+    const { show, handleClose, profile } = props;
+    const [email, setEmail] = useState('');
+    const [fullName, setFullName] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [address, setAddress] = useState('');
+
+    useEffect(() => {
+        if (!_.isEmpty(profile)) {
+            setEmail(profile.email);
+            setFullName(profile.fullName);
+            setAddress(profile.address);
+            setPhoneNumber(profile.phone);
+        }
+    }, [profile])
+
+    // const phonenumber = (inputtxt) => {
+    //     var phoneno = "^0[0-9]{9}$";
+    //     if (inputtxt.value.match(phoneno)) {
+    //         return true;
+    //     }
+    //     else {
+    //         return false;
+    //     }
+    // }
+
+    const handleUpodateProfile = async () => {
+        if (!email || !fullName || !phoneNumber || !address) {
+            toast.error('Input Not Empty');
+        } else {
+            // if (phonenumber(phoneNumber.trim()) === false) {
+            //     toast.error('Phone Number Start 0 And 10 Number')
+            // } else {
+            let res = await updateProfileCustomer(profile.idCustomer, email.trim(), fullName.trim(), phoneNumber.trim(), address.trim());
+            console.log("update p", res)
+            if (res && res.data.data === true) {
+                toast.success('Update Successfully')
+                handleClose();
+                await props.getProfile();
+            } else {
+                toast.error('Update Fail')
+            }
+            // }
+        }
+    }
+
     return (
         <div>
             <Modal size='xl' show={show} onHide={handleClose}>
@@ -17,44 +65,44 @@ const ModalUpdateProfileUser = (props) => {
                         <Row className="mb-3">
                             <Form.Group as={Col} controlId="formGridEmail">
                                 <Form.Label>Email</Form.Label>
-                                <Form.Control type="email" placeholder="Enter email" />
+                                <Form.Control
+                                    type="email"
+                                    value={email}
+                                    onChange={event => setEmail(event.target.value)}
+                                />
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="formGridPassword">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" placeholder="Password" />
+                                <Form.Label>FullName</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={fullName}
+                                    onChange={event => setFullName(event.target.value)}
+
+                                />
                             </Form.Group>
                         </Row>
-
-                        <Form.Group className="mb-3" controlId="formGridAddress1">
-                            <Form.Label>Address</Form.Label>
-                            <Form.Control placeholder="1234 Main St" />
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="formGridAddress2">
-                            <Form.Label>Address 2</Form.Label>
-                            <Form.Control placeholder="Apartment, studio, or floor" />
-                        </Form.Group>
-
                         <Row className="mb-3">
-                            <Form.Group as={Col} controlId="formGridCity">
-                                <Form.Label>City</Form.Label>
-                                <Form.Control />
+                            <Form.Group as={Col} controlId="formGridEmail">
+                                <Form.Label>PhoneNumber</Form.Label>
+                                <Form.Control
+                                    type="email"
+                                    placeholder='Start With 0 and 9 Number'
+                                    value={phoneNumber}
+                                    onChange={event => setPhoneNumber(event.target.value)}
+                                />
                             </Form.Group>
 
-                            <Form.Group as={Col} controlId="formGridState">
-                                <Form.Label>State</Form.Label>
-                                <Form.Select defaultValue="Choose...">
-                                    <option>Choose...</option>
-                                    <option>...</option>
-                                </Form.Select>
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridZip">
-                                <Form.Label>Zip</Form.Label>
-                                <Form.Control />
+                            <Form.Group as={Col} controlId="formGridPassword">
+                                <Form.Label>Address</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={address}
+                                    onChange={event => setAddress(event.target.value)}
+                                />
                             </Form.Group>
                         </Row>
+
 
                     </Form>
                 </Modal.Body>
@@ -62,7 +110,7 @@ const ModalUpdateProfileUser = (props) => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
+                    <Button variant="primary" onClick={handleUpodateProfile}>
                         Save
                     </Button>
                 </Modal.Footer>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Button, ButtonGroup, FormControl } from 'react-bootstrap'
 import Table from 'react-bootstrap/Table';
@@ -8,8 +8,22 @@ import image from '../../../assets/no53ab0y526yl825.webp'
 import { Link } from 'react-router-dom';
 import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { createImageRoom } from '../../../services/ApiServices';
 const ModalManageRoomImage = (props) => {
-    const { show, handleClose } = props;
+    const { show, setIsShowModalRoomImage, idRoom } = props;
+    const [image, setImage] = useState('');
+    const handleClose = () => {
+        setIsShowModalRoomImage(false);
+    }
+
+    const handelUploadImage = async (event) => {
+        if (event.target.files[0] && event.target && event.target.files) {
+            setImage(event.target.files[0]);
+            let res = createImageRoom(image, idRoom)
+            console.log("check image rom", res)
+        }
+    }
+
 
     return (
         <div>
@@ -29,7 +43,7 @@ const ModalManageRoomImage = (props) => {
                     <input
                         type='file'
                         hidden id='labelUpload'
-
+                        onChange={(event) => handelUploadImage(event)}
                     />
                     <Table striped bordered hover variant="light">
                         <thead>
