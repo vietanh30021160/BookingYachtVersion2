@@ -103,8 +103,16 @@ public class CompanyController {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iRoom.updateRoom(roomId,roomName, description, avatar));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+
+
     }
 
+    @GetMapping("roomImage/getAllImageByIdRoom/{roomId}")
+    public ResponseEntity<?> getAllImageByIdRoom(@PathVariable("roomId") String roomId){
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iRoomImage.getAllImageByIdRoom(roomId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 
     @DeleteMapping("/yacht/delete/{id}")
     public ResponseEntity<?> deleteYacht(@PathVariable String id) {
@@ -300,7 +308,7 @@ public class CompanyController {
 
     @PutMapping("/roomType/updateRoomType/{roomTypeId}")
     public ResponseEntity<?> updateRoomType(@PathVariable ("roomTypeId")String roomTypeId
-                                        ,@RequestParam long price,
+            ,@RequestParam long price,
                                          @RequestParam String type,
                                          @RequestParam String utilities){
         DataResponse dataResponse = new DataResponse();

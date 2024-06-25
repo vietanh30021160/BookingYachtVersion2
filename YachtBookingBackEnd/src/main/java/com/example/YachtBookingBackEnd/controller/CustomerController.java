@@ -38,6 +38,7 @@ public class CustomerController {
     private IRoom iRoom;
     private IRoomType iRoomType;
     private IYachtType iYachtType;
+    private IRoomImage iRoomImage;
 
 
 
@@ -247,6 +248,12 @@ public class CustomerController {
     public ResponseEntity<?> getAddingServiceByYacht(@PathVariable String yachtId){
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iService.getAddingService(yachtId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/roomImage/getAllImageByIdRoom/{roomId}")
+    public ResponseEntity<?> getAllImageByIdRoom(@PathVariable String roomId){
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iRoomImage.getAllImageByIdRoom(roomId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

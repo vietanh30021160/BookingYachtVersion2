@@ -17,6 +17,7 @@ public class DataResponse<T> {
     boolean success = true;
     private String idCompany;
     private String idCustomer;
+    private String idAccount;
     String desc;
     T data;
 }

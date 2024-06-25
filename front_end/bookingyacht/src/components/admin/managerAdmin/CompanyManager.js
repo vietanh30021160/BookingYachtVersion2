@@ -179,7 +179,7 @@ const CompanyManager = () => {
         try {
             const config = {
                 method: 'post',
-                url: `http://localhost:8080/api/admins/insertInfoCompanyByIdAccount/${newAccountId}`,
+                url: `http://localhost:8080/api/admins/accounts/${newAccountId}`,
                 headers: {
                     'Authorization': getAuthHeader(),
                     'Content-Type': 'multipart/form-data'
