@@ -1,6 +1,5 @@
 package com.example.YachtBookingBackEnd.service.service;
 
-import com.example.YachtBookingBackEnd.dto.DataMailDTO;
 import com.example.YachtBookingBackEnd.entity.Account;
 import com.example.YachtBookingBackEnd.entity.Customer;
 import com.example.YachtBookingBackEnd.entity.ForgotPassword;
@@ -8,19 +7,15 @@ import com.example.YachtBookingBackEnd.repository.AccountRepository;
 import com.example.YachtBookingBackEnd.repository.CustomerRepository;
 import com.example.YachtBookingBackEnd.repository.ForgotPasswordRepository;
 import com.example.YachtBookingBackEnd.service.implement.IForgotPassword;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import java.time.Instant;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 @Service
@@ -34,6 +29,8 @@ public class ForgotPasswordService implements IForgotPassword {
     @Autowired
     JavaMailSender mailSender;
     @Autowired
+    PasswordEncoder passwordEncoder;
+    @Autowired
     private SpringTemplateEngine templateEngine;
     @Override
     public String verifyEmail(String email) {
@@ -46,7 +43,7 @@ public class ForgotPasswordService implements IForgotPassword {
             ForgotPassword forgotPassword = new ForgotPassword();
 
             forgotPassword.setOtp(otp);
-            forgotPassword.setExpirationTime(new Date(System.currentTimeMillis() + 70 * 1000));
+            forgotPassword.setExpirationTime(new Date(System.currentTimeMillis() + 30 * 1000));
             forgotPassword.setAccount(account);
 
             SimpleMailMessage message = new SimpleMailMessage();
@@ -68,6 +65,41 @@ public class ForgotPasswordService implements IForgotPassword {
         }
         return null;
     }
+
+    @Override
+    public String  veryfiOTP(Integer otp, String email) {
+        try {
+
+            ForgotPassword forgotPassword = forgotPasswordRepository.findByOtpAndEmail(otp,email);
+
+            if(forgotPassword.getExpirationTime().before(Date.from(Instant.now()))){
+                forgotPasswordRepository.delete(forgotPassword);
+                return "OTP has expired! ";
+            }else{
+                return "OTP verified!";
+            }
+
+        }catch (Exception e){
+            return "Email or OTP invalid!";
+        }
+    }
+
+    @Override
+    public boolean changePassword(String email, String password) {
+        try{
+            Customer customer = customerRepository.findCustomerByEmail(email);
+            Account account = accountRepository.findAccountByCustomer(customer);
+
+            account.setPassword(passwordEncoder.encode(password));
+            accountRepository.save(account);
+            return true;
+        }catch (Exception e){
+            System.out.println();
+        }
+        return false;
+    }
+
+
 
     private int generateOTP() {
         Random random= new Random();

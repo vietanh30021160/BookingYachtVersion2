@@ -16,7 +16,7 @@ public interface IAccount {
 
     void deleteAccount(String id);
 
-    boolean updateAccount(String customerId, String   password);
+    boolean updateAccount(String customerId, String password);
 
     String getIdAccountByUserName(String username);
 }

@@ -85,12 +85,7 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/profile/changePassword/{customerAccountId}")
-    ResponseEntity<?> changePassword(@PathVariable String customerAccountId,@RequestParam String password){
-        DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iAccount.updateAccount(customerAccountId, password));
-        return new ResponseEntity<>(dataResponse,HttpStatus.OK);
-    }
+
 
     @PutMapping("/profile/updateCustomer/{customerId}")
     ResponseEntity<?> updateCustomer(@PathVariable String customerId,@RequestParam String fullName,
@@ -172,5 +167,28 @@ public class CustomerController {
         dataResponse.setData(iForgotPassword.verifyEmail(email));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
+    @PostMapping("/forgotPassword/verifyOTP/{otp}/{email}")
+    public ResponseEntity<?> verifyOTP(@PathVariable("otp") Integer otp, @PathVariable String email){
+        DataResponse  dataResponse = new DataResponse<>();
+        dataResponse.setData(iForgotPassword.veryfiOTP(otp, email));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/forgotPassword/changePasswordByEmail/{email}")
+    public ResponseEntity<?> changePasswordByEmail(@PathVariable("email")String email,@RequestParam String password){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iForgotPassword.changePassword(email, password));
+        return new ResponseEntity<>(dataResponse,HttpStatus.OK);
+    }
+
+    @PutMapping("/profile/changePasswordByIdAccount/{customerAccountId}")
+    public ResponseEntity<?> changePasswordByIdAccount(@PathVariable String customerAccountId,@RequestParam String password){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iAccount.updateAccount(customerAccountId, password));
+        return new ResponseEntity<>(dataResponse,HttpStatus.OK);
+    }
+
+
 
 }

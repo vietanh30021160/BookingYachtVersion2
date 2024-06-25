@@ -1,7 +1,9 @@
 package com.example.YachtBookingBackEnd.service.implement;
 
-import jakarta.mail.MessagingException;
-
 public interface IForgotPassword {
     String  verifyEmail(String email) ;
+
+    String  veryfiOTP(Integer otp, String email);
+
+    boolean changePassword(String email, String password);
 }
