@@ -10,6 +10,8 @@ import './Section.scss';
 import { getServiceByYacht } from '../../../services/ApiServices';
 import { useSelector, useDispatch } from 'react-redux';
 import { getServiceByYachtApi } from '../../../redux/action/ServiceByYachtAction';
+import { FcBookmark } from "react-icons/fc";
+
 
 const SectionHeader = ({ yacht }) => {
     const [services, setServices] = useState([]);
@@ -49,7 +51,7 @@ const SectionHeader = ({ yacht }) => {
                 <div className='flex flex-col gap-24 mt-4'>
                     {description.map((des, index) => (
                         <div key={index} className="flex align-center gap-8 mb-4">
-                            <p><FcApproval size={25} /> {des}</p>
+                            <p><FcBookmark color='green' size={25} /> {des}</p>
                         </div>
                     ))}
                 </div>

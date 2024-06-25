@@ -7,6 +7,7 @@ import { YachtServiceReducer } from './YachtServiceReducer';
 import { ServiceByYachtReducer } from './ServiceByYachtReducer';
 import { ScheduleReducer } from './ScheduleReducer';
 import OrderReducer from './OrderReducer';
+import RoomImageReducer from './RoomImageReducer';
 
 const RootReducer = combineReducers({
     account: userReducer,
@@ -16,7 +17,8 @@ const RootReducer = combineReducers({
     YachtServiceReducer,
     ServiceByYachtReducer,
     ScheduleReducer,
-    OrderReducer
+    OrderReducer,
+    RoomImageReducer
 });
 
 export default RootReducer;

@@ -10,3 +10,5 @@ export const ADD_ROOM = 'ADD_ROOM';
 export const REMOVE_ROOM = 'REMOVE_ROOM';
 export const RESET_SELECTION = 'RESET_SELECTION'
 export const SET_TOTAL_PRICE = 'SET_TOTAL_PRICE'
+export const GET_ALL_ROOM_TYPE = 'GET_ALL_ROOM_TYPE';
+export const GET_ROOM_IMAGES = 'GET_ROOM_IMAGES'

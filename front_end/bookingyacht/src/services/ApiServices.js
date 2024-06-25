@@ -130,3 +130,11 @@ export const getAddingServiceByYacht = (yachtId) => {
     return axios.get(`/api/customer/getAddingServiceByYacht/${yachtId}`)
 }
 
+export const getAllRoomType = (yachtId) => {
+    return axios.get(`/api/customer/roomType/getAllRoomType/${yachtId}`)
+}
+
+export const getAllRoomImages = (roomId) => {
+    return axios.get(`/api/customer/roomImage/getAllImageByIdRoom/${roomId}`)
+}
+
