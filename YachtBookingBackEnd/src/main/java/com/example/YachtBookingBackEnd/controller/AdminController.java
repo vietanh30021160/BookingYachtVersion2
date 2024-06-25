@@ -1,9 +1,8 @@
 package com.example.YachtBookingBackEnd.controller;
 
 import com.example.YachtBookingBackEnd.payload.response.DataResponse;
-import com.example.YachtBookingBackEnd.service.implement.IAccount;
-import com.example.YachtBookingBackEnd.service.implement.ICompany;
-import com.example.YachtBookingBackEnd.service.implement.ICustomer;
+import com.example.YachtBookingBackEnd.service.implement.*;
+import jakarta.mail.MessagingException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,6 +20,8 @@ public class AdminController {
     ICustomer iCustomer;
     ICompany iCompany;
     IAccount iAccount;
+
+    IForgotPassword iForgotPassword;
 
     @PostMapping("/accounts")
     public ResponseEntity<?> createAccountCompany(@RequestParam String username,
@@ -111,5 +112,7 @@ public class AdminController {
         dataResponse.setData(iCompany.getAllCompany());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
+
 
 }

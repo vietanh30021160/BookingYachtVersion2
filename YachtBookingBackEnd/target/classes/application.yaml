@@ -21,8 +21,13 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
+<<<<<<< HEAD
     username: viettqhe170804@fpt.edu.vn
     password: fwes yhmk ndbo xlmg
+=======
+    username: mailsender.bookingyacht@gmail.com
+    password: yfhb uobe emec hnnt
+>>>>>>> sendMail
     properties:
       mail:
         smtp:
@@ -32,6 +37,11 @@ spring:
             required: true
         transport:
           protocol: smtp
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> sendMail
 
 logging:
   level:
@@ -56,3 +66,5 @@ payment:
     version: 2.1.0
     command: pay
     orderType: other
+
+

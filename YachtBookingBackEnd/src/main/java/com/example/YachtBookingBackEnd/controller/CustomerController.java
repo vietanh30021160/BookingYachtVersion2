@@ -2,6 +2,7 @@ package com.example.YachtBookingBackEnd.controller;
 
 import com.example.YachtBookingBackEnd.payload.response.DataResponse;
 import com.example.YachtBookingBackEnd.service.implement.*;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CustomerController {
+<<<<<<< HEAD
     private IAccount iAccount;
     private ICustomer iCustomer;
     private IPayment iPayment;
@@ -33,6 +35,17 @@ public class CustomerController {
     private IRoomType iRoomType;
     private IYachtType iYachtType;
     private IRoomImage iRoomImage;
+=======
+    IForgotPassword iForgotPassword;
+    IAccount iAccount;
+    ICustomer iCustomer;
+    IPayment iPayment;
+    IYacht iYacht;
+    IFile iFile;
+    IYachtImage iYachtImage;
+    IService iService;
+    IYachtService iYachtService;
+>>>>>>> sendMail
 
 
 
@@ -246,6 +259,14 @@ public class CustomerController {
     public ResponseEntity<?> getAllImageByIdRoom(@PathVariable String roomId){
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setData(iRoomImage.getAllImageByIdRoom(roomId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    //send mail for mail verification
+    @PostMapping("/forgotPassword/verifyEmail/{email}")
+    public ResponseEntity<?> verifyEmail(@PathVariable("email")String  email) {
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iForgotPassword.verifyEmail(email));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
