@@ -147,6 +147,7 @@ public class AccountService implements IAccount {
     public void deleteAccount(String id){
         accountRepository.deleteById(id);
     }
+
     public Account getAccount2(String id){
         return accountRepository.findById(id)
                 . orElseThrow(() -> new RuntimeException("Can not found id: " + id));

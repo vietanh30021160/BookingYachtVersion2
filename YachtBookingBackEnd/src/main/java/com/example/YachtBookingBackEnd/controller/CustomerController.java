@@ -136,7 +136,7 @@ public class CustomerController {
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
     }
 
-    @GetMapping("/yacht/findByCompany/{companyId}tai")
+    @GetMapping("/yacht/findByCompany/{companyId}")
     public ResponseEntity<?> findByCompany(@PathVariable String companyId) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYacht.findYachtByCompanyId(companyId));
