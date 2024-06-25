@@ -19,7 +19,7 @@ public class AdminController {
     ICustomer iCustomer;
     ICompany iCompany;
     IAccount iAccount;
-    IClient iClient;
+
     IForgotPassword iForgotPassword;
 
     @PostMapping("/accounts")
@@ -100,21 +100,6 @@ public class AdminController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PostMapping("createMail")
-    public ResponseEntity<?> create(@RequestParam String name,
-                                          @RequestParam String username,
-                                          @RequestParam String email
-    ) {
-        DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iClient.create(name,username, email));
-        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-    }
-    //send mail for mail verification
-    @PostMapping("/forgotPassword/verifyEmail/{email}")
-    public ResponseEntity<?> verifyEmail(@PathVariable("email")String  email) throws MessagingException {
-        DataResponse dataResponse = new DataResponse<>();
-        dataResponse.setData(iForgotPassword.verifyEmail(email));
-        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-    }
+
 
 }

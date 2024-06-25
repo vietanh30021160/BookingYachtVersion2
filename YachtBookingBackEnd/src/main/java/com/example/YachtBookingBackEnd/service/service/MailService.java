@@ -26,7 +26,7 @@ public class MailService implements IMail {
     @Override
     public void sendHtmlMail(DataMailDTO dataMail, String templateName) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
-
+        System.out.println(dataMail+"CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
 
         Context context = new Context();

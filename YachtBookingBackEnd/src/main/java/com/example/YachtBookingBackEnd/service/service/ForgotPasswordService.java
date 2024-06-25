@@ -9,8 +9,13 @@ import com.example.YachtBookingBackEnd.repository.CustomerRepository;
 import com.example.YachtBookingBackEnd.repository.ForgotPasswordRepository;
 import com.example.YachtBookingBackEnd.service.implement.IForgotPassword;
 import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -27,36 +32,50 @@ public class ForgotPasswordService implements IForgotPassword {
     @Autowired
     private ForgotPasswordRepository forgotPasswordRepository;
     MailService mailService;
+    @Autowired
+    JavaMailSender mailSender;
+    @Autowired
+    private SpringTemplateEngine templateEngine;
 
     @Override
-    public String verifyEmail(String email) throws MessagingException {
+    public String verifyEmail(String email) {
+        try {
+            Customer customer = customerRepository.findCustomerByEmail(email);
+            Account account = accountRepository.findAccountByCustomer(customer);
 
-        Customer customer = customerRepository.findCustomerByEmail(email);
-        Account account = accountRepository.findAccountByCustomer(customer);
+            int otp = generateOTP();
 
-        int otp  = generateOTP();
+            Map<String, Object> props = new HashMap<>();
+            props.put("name", customer.getFullName());
+            props.put("username", customer.getAccount().getUsername());
+            props.put("password", otp);
 
-        Map<String, Object> props = new HashMap<>();
-        props.put("name", customer.getFullName());
-        props.put("username", account.getUsername());
-        props.put("password", otp);
+            ForgotPassword forgotPassword = new ForgotPassword();
 
-        DataMailDTO dataMailDTO = DataMailDTO.builder()
-                .to(email)
-                .content("This is for your Forgot Password request: "+otp)
-                .subject("OTP for Forgot Password request.")
-                .props(props)
-                .build();
+            forgotPassword.setOtp(otp);
+            forgotPassword.setExpirationTime(new Date(System.currentTimeMillis() + 70 * 1000));
+            forgotPassword.setAccount(account);
+            System.out.println(forgotPassword);
 
-        ForgotPassword forgotPassword = new ForgotPassword();
 
-        forgotPassword.setOtp(otp);
-        forgotPassword.setExpirationTime(new Date(System.currentTimeMillis()+70*1000));
-        forgotPassword.setAccount(account);
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+            Context context = new Context();
+            context.setVariables(props);
+            String html = templateEngine.process("ThymeleafTemplate", context);
 
-        mailService.sendHtmlMail(dataMailDTO, "ThymeleafTemplate");
+            helper.setTo(email);
+            helper.setSubject("OTP for Forgot Password request.");
+            helper.setText(html, true);
 
-        return "Email sent for verification.";
+            mailSender.send(message);
+            forgotPasswordRepository.save(forgotPassword);
+
+            return "Email sent for verification.";
+        }catch (Exception e){
+            System.out.println("Email k ton tai.");
+        }
+        return null;
     }
 
     private int generateOTP() {
