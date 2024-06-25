@@ -5,4 +5,6 @@ import jakarta.mail.MessagingException;
 
 public interface IMail {
     void sendHtmlMail(DataMailDTO dataMail, String templateName) throws MessagingException;
+
+
 }

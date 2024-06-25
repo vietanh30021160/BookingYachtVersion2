@@ -1,10 +1,8 @@
 package com.example.YachtBookingBackEnd.controller;
 
 import com.example.YachtBookingBackEnd.payload.response.DataResponse;
-import com.example.YachtBookingBackEnd.service.implement.IAccount;
-import com.example.YachtBookingBackEnd.service.implement.IClient;
-import com.example.YachtBookingBackEnd.service.implement.ICompany;
-import com.example.YachtBookingBackEnd.service.implement.ICustomer;
+import com.example.YachtBookingBackEnd.service.implement.*;
+import jakarta.mail.MessagingException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,7 +20,7 @@ public class AdminController {
     ICompany iCompany;
     IAccount iAccount;
     IClient iClient;
-
+    IForgotPassword iForgotPassword;
 
     @PostMapping("/accounts")
     public ResponseEntity<?> createAccountCompany(@RequestParam String username,
@@ -109,6 +107,13 @@ public class AdminController {
     ) {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iClient.create(name,username, email));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    //send mail for mail verification
+    @PostMapping("/forgotPassword/verifyEmail/{email}")
+    public ResponseEntity<?> verifyEmail(@PathVariable("email")String  email) throws MessagingException {
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iForgotPassword.verifyEmail(email));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
