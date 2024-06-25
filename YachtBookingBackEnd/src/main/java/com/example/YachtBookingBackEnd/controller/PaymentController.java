@@ -36,11 +36,4 @@ public class PaymentController {
         }
     }
 
-//    @GetMapping("/payment-callback")
-//    public ResponseEntity<?> handleVnpayReturn(HttpServletRequest request) {
-//        DataResponse dataResponse = new DataResponse();
-//        dataResponse.setData(iPayment.handleReturn(request));
-//
-//        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
-//    }
 }

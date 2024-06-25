@@ -178,11 +178,11 @@ public class PaymentService implements IPayment {
         transaction.setAmount(bookingOrder.getAmount());
 
         // Parse vnp_PayDate using DateTimeFormatter
-        String vnpPayDateStr = vnp_CreateDate;
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-        LocalDateTime vnpPayDateFormat = LocalDateTime.parse(vnpPayDateStr, dateTimeFormatter);
-
-        transaction.setTransactionDate(vnpPayDateFormat);
+//        String vnpPayDateStr = vnp_CreateDate;
+//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+//        LocalDateTime vnpPayDateFormat = LocalDateTime.parse(vnpPayDateStr, dateTimeFormatter);
+//
+//        transaction.setTransactionDate(vnpPayDateFormat);
         transaction.setStatus("Pending");
         transaction.setBookingOrder(bookingOrder);
 
@@ -268,19 +268,23 @@ public class PaymentService implements IPayment {
                 String vnpTxnRef = request.getParameter("vnp_TxnRef");
                 String vnpResponseCode = request.getParameter("vnp_ResponseCode");
                 long vnpAmount = Long.parseLong(request.getParameter("vnp_Amount")) / 100; // Divide by 100 to get the correct value
-                LocalDateTime vnpPayDate = LocalDateTime.parse(request.getParameter("vnp_PayDate"));
+
+                String vnpPayDateStr = request.getParameter("vnp_PayDate");
+                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+                LocalDateTime vnpPayDate = LocalDateTime.parse(vnpPayDateStr, dateTimeFormatter);
+
                 Optional<BookingOrder> bookingOrderOpt = bookingOrderRepository.findByTxnRef(vnpTxnRef);
 
                 if (bookingOrderOpt.isPresent()) {
                     BookingOrder bookingOrder = bookingOrderOpt.get();
                     boolean checkAmount = (vnpAmount == bookingOrder.getAmount());
                     boolean checkOrderStatus = ("Pending".equals(bookingOrder.getStatus()));
+                    Transaction transaction = transactionRepository.getTransactionByBooking(bookingOrder);
 
                     if (checkAmount) {
                         if (checkOrderStatus) {
                             if ("00".equals(vnpResponseCode)) {
 
-                                Transaction transaction = transactionRepository.getTransactionByBooking(bookingOrder);
                                 transaction.setTransactionDate(vnpPayDate);
                                 transaction.setStatus("Success");
                                 transaction.setReceiverBankTranNo("Receiver_Id");
@@ -292,8 +296,8 @@ public class PaymentService implements IPayment {
                                 response.put("RspCode", "00");
                                 response.put("Message", "Confirm Success");
                             } else {
-                                bookingOrder.setStatus("Failure");
-                                bookingOrderRepository.save(bookingOrder);
+                                transaction.setStatus("Failure");
+                                transactionRepository.save(transaction);
 
                                 response.put("RspCode", "01");
                                 response.put("Message", "Transaction Failed");

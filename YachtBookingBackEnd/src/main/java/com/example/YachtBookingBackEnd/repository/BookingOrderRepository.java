@@ -42,4 +42,9 @@ public interface BookingOrderRepository extends JpaRepository<BookingOrder, Stri
             "AND (b.amount <= :max OR :max IS NULL) " +
             "ORDER BY b.amount ASC ")
     List<BookingOrder> findPriceByRange(@Param("idCompany") String idCompany, @Param("min") Long min, @Param("max") Long max);
+
+    @Query("SELECT b " +
+            "FROM BookingOrder b " +
+            "WHERE b.status = :status")
+    List<BookingOrder> findAllByStatus(@Param("status") String status);
 }

@@ -163,7 +163,7 @@ public class CompanyController {
     public ResponseEntity<?> confirmVnPayPayment(@PathVariable String idBookingOrder,
                                                  @PathVariable String idCompany) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iBookingOrder.confirmBooking(idBookingOrder));
+        dataResponse.setData(iBookingOrder.confirmBooking(idBookingOrder, idCompany));
 
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }

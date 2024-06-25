@@ -25,12 +25,23 @@ public class MailSenderService implements IMailSender {
         mailSender.send(message);
     }
 
+    @Override
     public void sendCancelMail(String to, String idBooking, String reason, String companyName) {
         String subject = "Yacht Booking Cancellation Notice";
         String body = "Dear Customer,\n\n" +
                 "We regret to inform you that your booking with ID " + idBooking + " has been cancelled.\n" +
                 "Reason: " + reason + "\n\n" +
                 "Thank you for you understanding.\n\n" +
+                "Best regards,\n" + companyName;
+        sendNewMail(to, subject, body);
+    }
+
+    @Override
+    public void senConfirmMail(String to, String idBooking, String companyName) {
+        String subject = "Yacht Booking Confirmation Notice";
+        String body = "Dear Customer,\n\n" +
+                "We are pleased to inform you that your booking with ID " + idBooking + " has been confirmed.\n\n" +
+                "Thank you for booking with us.\n\n" +
                 "Best regards,\n" + companyName;
         sendNewMail(to, subject, body);
     }
