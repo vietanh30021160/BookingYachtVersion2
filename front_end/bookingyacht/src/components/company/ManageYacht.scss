@@ -11,8 +11,12 @@
 }
 
 .room {
-    border: 2px solid grey;
+    border: 2px solid rgb(174, 205, 202);
     border-radius: 25px;
+
+    img {
+        border-radius: 20px;
+    }
 }
 
 button {
@@ -47,4 +51,11 @@ button {
     img {
         width: 200px;
     }
+}
+
+.room-name {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

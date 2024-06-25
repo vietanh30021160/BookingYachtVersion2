@@ -11,7 +11,6 @@ import CustomerManager from './components/admin/managerAdmin/CustomerManager';
 import AdminHome from './components/admin/pageAdmin/AdminHome';
 import ForgotPassword from './components/auths/ForgotPassword';
 import Information from './components/auths/Information';
-import InformationCompany from './components/auths/InformationCompany';
 import Signin from './components/auths/Signin';
 import Signup from './components/auths/Signup';
 import Blog from './components/blog/Blog';
@@ -31,6 +30,13 @@ import FindYacht from './components/yacht/FindYacht';
 import YachtQuestion from './components/yacht/YachtQuestion';
 import YachtRule from './components/yacht/YachtRule';
 
+import ManageRoomType from './components/company/ManageRoomType';
+import ManageSchedule from './components/company/ManageSchedule';
+import ManageServiceYacht from './components/company/ManageServiceYacht';
+import Page404 from './components/page404/Page404';
+import ProtectedRoute from './components/routers/ProtectedRoute';
+
+
 const Layout = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -48,23 +54,36 @@ const Layout = () => {
                 </Route>
 
                 <Route path='/signin' element={<Signin />} />
-                <Route path='/signup' element={<Signup />} />
+                <Route path='/signup' element={
+
+                    <Signup />
+
+                }
+                />
                 <Route path='/profile' element={<Profile />} />
                 <Route path='/forgotpassowd' element={<ForgotPassword />}></Route>
                 <Route path='/information/:idCustomer' element={<Information />} />
-                <Route path='/information-company' element={<InformationCompany />} />
+                {/* <Route path='/information-company' element={<InformationCompany />} /> */}
 
 
+                <Route path='/manage-company' element={
+                    <ProtectedRoute>
+                        <ManageCompany />
+                    </ProtectedRoute>
 
-                <Route path='/manage-company' element={<ManageCompany />} >
+                } >
                     <Route index element={<ViewBooking />} />
                     <Route path='view-yacht/' element={<ViewYacht />} />
                     <Route path='bill' element={<Bill />} />
                     <Route path='profile' element={<ProfileCompany />} />
+                    <Route path='room-type' element={<ManageRoomType />} />
+
                 </Route>
 
                 <Route path='manage-yacht/:idYacht' element={<ManageYacht />} />
-                <Route path='manage-room' element={<ManageRoom />} />
+                <Route path='manage-room/:idYacht' element={<ManageRoom />} />
+                <Route path='manage-services-yacht/:idYacht' element={<ManageServiceYacht />} />
+                <Route path='manage-schedule/:idYacht' element={<ManageSchedule />} />
 
                 <Route path='/admin' element={<LoginAdmin setIsLoggedIn={setIsLoggedIn} />} />
                 {
@@ -77,6 +96,9 @@ const Layout = () => {
                     )
                 }
                 <Route path='/deltailInfo/:idCompany' element={<DetailEnterprise/>}/>
+
+                <Route path='*' element={<Page404 />} />
+
             </Routes>
 
             <ToastContainer

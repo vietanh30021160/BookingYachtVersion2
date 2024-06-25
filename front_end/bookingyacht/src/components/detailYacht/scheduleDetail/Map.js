@@ -1,8 +1,8 @@
 import React from 'react';
 import { Alert } from 'react-bootstrap';
 import { FaArrowRightLong } from "react-icons/fa6";
-import './Schedule.scss';
-const Schedule = () => {
+
+const Map = () => {
     return (
         <div>
             <h4>Quy định chung và lưu ý</h4>
@@ -43,4 +43,4 @@ const Schedule = () => {
     )
 };
 
-export default Schedule;
+export default Map;

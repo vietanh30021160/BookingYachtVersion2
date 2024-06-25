@@ -33,6 +33,9 @@ public class BookingOrder {
     @Column(name = "status")
     private String status;  //Pending, Confirmed, Cancelled
 
+    @Column(name = "reason")
+    private String reason; //Can be null
+
     @ManyToOne()
     @JoinColumn(name = "id_schedule",  nullable = false)
     private Schedule schedule;

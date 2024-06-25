@@ -4,21 +4,62 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import './Auth.scss'
-import { Link, useParams } from 'react-router-dom';
-import { FaHome } from "react-icons/fa";
+import { useNavigate, useParams } from 'react-router-dom';
 import { fillInformationCustomer } from '../../services/ApiServices';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { information } from '../../redux/action/InformationAction';
+import { dark } from '@mui/material/styles/createPalette';
 const Information = () => {
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     const [email, setEmail] = useState('');
     const [fullName, setFullName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [address, setAddress] = useState('');
 
     const { idCustomer } = useParams()
-    const handleFillInformation = async () => {
-        let res = await fillInformationCustomer(idCustomer, email, fullName, phoneNumber, address);
-        console.log("chek fill", res)
-    }
 
+    // const phonenumber = (inputtxt) => {
+    //     var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+    //     if (inputtxt.value.match(phoneno)) {
+    //         return true;
+    //     }
+    //     else {
+    //         return false;
+    //     }
+    // }
+
+    const handleFillInformation = async () => {
+        if (!email || !fullName || !phoneNumber || !address) {
+            toast.error('Input Not Empty!')
+        } else {
+            // if (phonenumber(phoneNumber) === false) {
+            //     toast.error('Phone Number Start 0 And 10 Number')
+            // } else {
+            let res = await fillInformationCustomer(idCustomer, fullName, email, phoneNumber, address);
+            console.log('cheecjk', res)
+            if (res && res.data.data === '1') {
+                toast.error('Invalid Form Email')
+            } else if (res && res.data.data === '2') {
+                toast.error('Invalid Phone Number')
+            } else if (res && res.data.data === '0') {
+
+                toast.success('Fill Information Successfully');
+                dispatch(information(email, fullName, phoneNumber, address));
+                setEmail('');
+                setAddress('');
+                setFullName('');
+                setPhoneNumber('');
+                navigate('/signin')
+
+            } else {
+                toast.error('Fill Information Fail')
+            }
+        }
+    }
 
 
     return (
@@ -45,7 +86,6 @@ const Information = () => {
                             onChange={event => setFullName(event.target.value)}
                         />
 
-
                     </Form.Group>
                 </Row>
 
@@ -55,9 +95,8 @@ const Information = () => {
                         <Form.Label>PhoneNumber</Form.Label>
                         <Form.Control
                             type='text'
-                            placeholder='Phone'
+                            placeholder='Start With 0 and 9 Number'
                             onChange={event => setPhoneNumber(event.target.value)}
-
                         />
                     </Form.Group>
 
@@ -77,12 +116,9 @@ const Information = () => {
                 <div>
                     <Button
                         variant="primary"
-                        type="submit"
                         onClick={() => handleFillInformation()}>
                         Submit
-
                     </Button>
-                    <Link to='/signup' className='mx-5 my-0 btn btn-light' style={{ textDecoration: "none" }}><FaHome style={{ marginBottom: 4 }} /> Home</Link>
                 </div>
 
             </Form>

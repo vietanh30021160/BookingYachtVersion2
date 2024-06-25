@@ -23,7 +23,6 @@ const AdminNavbar = () => {
             className="profile-pic"
           />
           <div className="profile-info">
-            <h5>Eran Roh</h5>
             <small>Welcome to Admin</small>
           </div>
         </Navbar.Brand>

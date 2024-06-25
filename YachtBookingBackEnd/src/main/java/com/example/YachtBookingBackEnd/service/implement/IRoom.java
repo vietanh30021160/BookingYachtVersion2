@@ -16,11 +16,13 @@ public interface IRoom {
     boolean addRoom(String roomName, double area, String description, String idRoomType, String idYacht, MultipartFile avatar);
 
 
-    boolean updateRoom(String roomId, String description, int available, MultipartFile avatar);
+    boolean updateRoom(String roomId, String description, String roomName, MultipartFile avatar);
 
 
     List<RoomScheduleDTO> getRoomAndSchedule(String idYacht, String idSchedule);
 
     List<RoomDTO> getRoomByYacht(String idYacht);
     List<RoomDTO> getRoomByRoomType(String idRoomType);
+
+    List<RoomDTO> getUnbookedRoomsByYachtAndSchedule(String yachtId, String scheduleId);
 }

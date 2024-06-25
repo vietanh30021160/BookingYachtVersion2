@@ -8,6 +8,8 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL) // Không hiển thị những field null ở JSON
 public class DataResponse<T> {
@@ -15,6 +17,7 @@ public class DataResponse<T> {
     boolean success = true;
     private String idAccount;
     private String idCompany;
+    private String idCustomer;
     private String idAccount;
     String desc;
     T data;

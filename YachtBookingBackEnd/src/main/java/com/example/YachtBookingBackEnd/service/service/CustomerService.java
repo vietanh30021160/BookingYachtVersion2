@@ -35,15 +35,15 @@ public class CustomerService implements ICustomer {
     public static final String ROLE_CUSTOMER = "CUSTOMER";
 
     @Override
-    public boolean addCustomer(String idAccount, String fullName, String email, String phoneNumber, String address) {
+    public String addCustomer(String idAccount, String fullName, String email, String phoneNumber, String address) {
         try {
             if (!isValidEmail(email)) {
                 log.error("Invalid email format");
-                throw new IllegalArgumentException("Invalid email format");
+                return ("1");
             }
             if (!isValidPhoneNumber(phoneNumber)) {
                 log.error("Invalid phone number format");
-                throw new IllegalArgumentException("Invalid phone number format");
+                return ("2");
             }
 
             // Check if the account exists
@@ -61,10 +61,10 @@ public class CustomerService implements ICustomer {
             customer.setAddress(address);
             customer.setAccount(account);
             customerRepository.save(customer);
-            return true;
+            return "0";
         } catch (Exception e) {
             log.error("Error occurred while adding customer: {}", e.getMessage());
-            return false;
+            return "Error occurred while adding customer: " + e.getMessage();
         }
     }
 
@@ -271,6 +271,7 @@ public class CustomerService implements ICustomer {
         }
         return companyDTOList;
     }
+
 
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";

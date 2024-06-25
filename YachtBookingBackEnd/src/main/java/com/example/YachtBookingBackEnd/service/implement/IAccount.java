@@ -25,4 +25,5 @@ public interface IAccount {
     String getIdAccountByUserName(String username);
 
     boolean insertInfoCompanyByIdAccount(String address, String email, MultipartFile logo, String name, String idAccount);
+
 }

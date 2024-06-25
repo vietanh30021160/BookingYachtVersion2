@@ -11,9 +11,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface YachtServiceRepository extends JpaRepository<YachtService, String> {
+public interface YachtServiceRepository extends JpaRepository<YachtService, KeysYachtService> {
     @Query("SELECT ys FROM YachtService ys WHERE ys.yacht.idYacht = :idYacht")
     List<YachtService> findServicesByYachtId(@Param("idYacht") String idYacht);
 
     Optional<YachtService> findByKeys(KeysYachtService keys);
+
+    @Query("SELECT COUNT(ys) > 0 " +
+            "FROM YachtService ys " +
+            "WHERE ys.service.idService = :idService " +
+            "AND ys.yacht.idYacht = :idYacht")
+    boolean isServiceExistInYacht(@Param("idService") String idService, @Param("idYacht") String idYacht);
 }

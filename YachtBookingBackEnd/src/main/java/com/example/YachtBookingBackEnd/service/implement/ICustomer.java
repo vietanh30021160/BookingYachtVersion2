@@ -10,7 +10,7 @@ import java.util.List;
 
 
 public interface ICustomer {
-    boolean addCustomer(String idAccount, String fullName, String email, String phoneNumber, String address);
+    String addCustomer(String idAccount, String fullName, String email, String phoneNumber, String address);
 
     List<CustomerDTO> getAllCustomer();
 
@@ -25,4 +25,5 @@ public interface ICustomer {
     List<FeedbackDTO> getFeedbackByYachtId(String yachtId);
 
     List<CompanyDTO> getAllCompanies();
+
 }
