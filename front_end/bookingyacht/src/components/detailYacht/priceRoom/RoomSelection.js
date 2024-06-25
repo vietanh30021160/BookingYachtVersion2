@@ -176,11 +176,11 @@ const RoomSelection = ({ yacht, selectedSchedule }) => {
                 handleClose={() => setShowBookNow(false)}
                 handleServiceChange={handleServiceChange}
             />
-            {/* <RoomDetailModal
-                room={selectedRoom}
+            <RoomDetailModal
+                selectedRoom={selectedRoom}
                 show={showDetailRoom}
                 handleClose={() => setShowDetailRoom(false)}
-            /> */}
+            />
         </Container>
     );
 };

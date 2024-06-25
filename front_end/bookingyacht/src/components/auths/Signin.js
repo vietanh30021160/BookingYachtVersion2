@@ -44,7 +44,7 @@ const Signin = () => {
             setLoading(false);
         } else if (res && res.data.status === 200 && res.data.success === true) {
             const role = jwtDecode(res.data.data);
-            dispatch(doLogin(res.data.data, role.role, res.data.idCompany));
+            dispatch(doLogin(res.data.data, role.role, res.data.idCompany, res.data.idCustomer));
             if (role && role.role === 'ROLE_COMPANY') {
                 toast.success("Login Successful");
                 setLoading(false);
@@ -54,7 +54,6 @@ const Signin = () => {
                 setLoading(false);
                 navigate(-1);
             }
-
         } else {
             toast.error('username invalid')
             setLoading(false);

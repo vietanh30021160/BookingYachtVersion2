@@ -1,10 +1,10 @@
 import { FETCH_USER_LOGIN_SUCCES, USER_LOGOUT } from "../type/Type"
 
 
-export const doLogin = (data, role, idCompany) => {
+export const doLogin = (data, role, idCompany, idCustomer) => {
     return {
         type: FETCH_USER_LOGIN_SUCCES,
-        payload: { data, role, idCompany }
+        payload: { data, role, idCompany, idCustomer }
     }
 }
 export const doLogout = () => {

@@ -4,23 +4,23 @@ import { FaCheck } from 'react-icons/fa';
 import Carousel from './Carousel';
 import { getRoomById } from '../../../services/ApiServices';
 
-const RoomDetailModal = ({ room, show, handleClose }) => {
-    console.log(room)
+const RoomDetailModal = ({ selectedRoom, show, handleClose }) => {
+    console.log(selectedRoom)
 
-    const [roomSelection, setRoomSelection] = useState();
-    const getRoomByRoomId = async (roomId) => {
-        const res = await getRoomById(roomId);
-        setRoomSelection(res.data.data)
-        console.log(res.data.data)
-    }
+    // const [roomSelection, setRoomSelection] = useState();
+    // const getRoomByRoomId = async (roomId) => {
+    //     const res = await getRoomById(roomId);
+    //     setRoomSelection(res.data.data)
+    //     console.log(res.data.data)
+    // }
 
-    useEffect(() => {
-        getRoomByRoomId(room.idRoom)
-    }, [room.idRoom])
+    // useEffect(() => {
+    //     getRoomByRoomId(selectedRoom.idRoom)
+    // }, [selectedRoom])
 
-    if (!room) return null; // Return null if no room is selected
+    if (!selectedRoom) return null; // Return null if no room is selected
     const getImageApi = `http://localhost:8080/api/customer/file/`
-    const utilities = room.roomType.utilities ? room.roomType.utilities.split('.').filter(sentence => sentence.trim()) : [];
+    const utilities = selectedRoom.roomType.utilities ? selectedRoom.roomType.utilities.split('.').filter(sentence => sentence.trim()) : [];
     const renderUtilities = () => {
         return utilities.map((util, index) => {
             return (
@@ -33,10 +33,10 @@ const RoomDetailModal = ({ room, show, handleClose }) => {
             <Modal.Body>
                 <Row>
                     <Col md={6}>
-                        <Carousel images={[room.image]} />
+                        <Carousel images={selectedRoom.roomImageSet} />
                     </Col>
                     <Col md={6}>
-                        <h5 style={{ fontWeight: 'bold' }}>{roomSelection.name}</h5>
+                        <h5 style={{ fontWeight: 'bold' }}>{selectedRoom.name}</h5>
 
                         <ListGroup variant="flush">
                             {renderUtilities()}
