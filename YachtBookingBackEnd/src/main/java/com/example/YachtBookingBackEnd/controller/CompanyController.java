@@ -35,11 +35,15 @@ public class CompanyController {
     IYachtSchedule iYachtSchedule;
     IYachtType iYachtType;
 
+    @GetMapping("/profiles/{idCompany}")
+    public ResponseEntity<?> getDetailCompanyByID(@PathVariable String idCompany) {
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iCompany.getCompanyById(idCompany));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
     @GetMapping("/allYacht")
     public ResponseEntity<?> viewYacht() {
-//        SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-//        String enscrypted = Encoders.BASE64.encode(secretKey.getEncoded());
-//        System.out.println(enscrypted);
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYacht.getAllYacht());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
