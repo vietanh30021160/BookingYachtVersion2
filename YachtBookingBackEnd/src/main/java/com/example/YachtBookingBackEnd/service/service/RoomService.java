@@ -130,6 +130,7 @@ public class RoomService implements IRoom {
         return false;
     }
 
+
     @Override
     public boolean updateRoom(String roomId, String description, String roomName, MultipartFile avatar) {
         try {

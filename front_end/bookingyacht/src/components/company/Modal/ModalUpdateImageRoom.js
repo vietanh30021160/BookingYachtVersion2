@@ -3,33 +3,32 @@ import Modal from 'react-bootstrap/Modal';
 import { Button } from 'react-bootstrap'
 import { FcPlus } from "react-icons/fc";
 import { toast } from 'react-toastify';
-import { updateYachtImage } from '../../../services/ApiServices';
-const ModalUpdateImageYacht = (props) => {
-    const { show, setShow, dataUpdate } = props
+import { updateImageRoom } from '../../../services/ApiServices';
+const ModalUpdateImageRoom = (props) => {
+    const { show, setIsShowModalUpdateImage, imageUpdate } = props;
     const [image, setImage] = useState("");
     const [previewImage, setPreviewImage] = useState("");
 
     const handleClose = () => {
-        setShow(false);
+        setIsShowModalUpdateImage(false);
         setImage('');
         setPreviewImage('');
     }
 
-    const handelUploadImage = (event) => {
+    const handelUpdateImageRoom = (event) => {
         if (event.target.files[0] && event.target && event.target.files) {
             setPreviewImage(URL.createObjectURL(event.target.files[0]));
             setImage(event.target.files[0]);
         }
     }
-    const handleUpdateYachtImage = async () => {
-        console.log("data", dataUpdate)
-        let res = await updateYachtImage(dataUpdate.idYachtImage, image);
+    const handleUpdateImageRoom = async () => {
+        let res = await updateImageRoom(imageUpdate, image);
         if (res && res.data.data === true) {
             toast.success("Update Image Successfully");
             handleClose();
-            await props.getAllImagesYacht();
+            await props.getImageRoomById();
         } else {
-            toast.error('Update Image Yacht Fail')
+            toast.error('Update ImageRoom Fail')
         }
     }
     return (
@@ -47,12 +46,12 @@ const ModalUpdateImageYacht = (props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <div className='col-mad-12'>
-                        <label className='form-label label-upload' htmlFor='labelCreateImage'> <FcPlus /> Upload File IMAGE</label>
+                        <label className='form-label label-upload' htmlFor='labelUpdateImageRoom'> <FcPlus /> Upload File IMAGE</label>
                         <input
                             type='file'
-                            hidden id='labelCreateImage'
+                            hidden id='labelUpdateImageRoom'
                             name='image'
-                            onChange={(event) => handelUploadImage(event)}
+                            onChange={(event) => handelUpdateImageRoom(event)}
                         />
                     </div>
                     <div className='col-md-12 img-preview'>
@@ -67,7 +66,7 @@ const ModalUpdateImageYacht = (props) => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleUpdateYachtImage}>
+                    <Button variant="primary" onClick={handleUpdateImageRoom}>
                         Save
                     </Button>
                 </Modal.Footer>
@@ -76,4 +75,4 @@ const ModalUpdateImageYacht = (props) => {
     );
 };
 
-export default ModalUpdateImageYacht;
+export default ModalUpdateImageRoom;

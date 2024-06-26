@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import RoomSelection from '../priceRoom/RoomSelection';
 import Rating from '../rating/Rating';
 import Map from '../scheduleDetail/Map';
 import SectionHeader from '../sectionHeader/SectionHeade';
@@ -11,6 +10,7 @@ import { Col } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { getYachtByYachtIdApi } from '../../../redux/action/YachtAction';
 import { getScheduleByYachtApi } from '../../../redux/action/ScheduleAction';
+import RoomSelection from '../priceRoom/RoomSelection';
 
 
 

@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import { Button } from 'react-bootstrap'
 import { FcPlus } from "react-icons/fc";
 import { every } from 'lodash';
-import { createRoom, getAllRoomType } from '../../../services/ApiServices';
+import { createRoom, getAllRoomTypeCompany } from '../../../services/ApiServices';
 import { toast } from 'react-toastify';
 
 const ModalCreateRoom = (props) => {
@@ -56,7 +56,7 @@ const ModalCreateRoom = (props) => {
 
 
     const getRoomType = async () => {
-        let res = await getAllRoomType();
+        let res = await getAllRoomTypeCompany();
         if (res && res.data.data.length > 0) {
             setListRoomType(res.data.data);
         } else {
