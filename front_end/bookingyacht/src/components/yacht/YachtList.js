@@ -17,6 +17,7 @@ const YachtList = () => {
     const dispatch = useDispatch();
 
     const { yachtList } = useSelector((state) => state.YachtListReducer);
+
     const getYachtList = () => {
         dispatch(getYachtListApi())
     }
@@ -26,7 +27,7 @@ const YachtList = () => {
     }, [dispatch])
 
     useEffect(() => {
-        if (yachtList.length) {
+        if (yachtList.length > 0) {
             const startIndex = (currentPage - 1) * 5;
             const endIndex = startIndex + 5;
             setPaggingYacht(yachtList.slice(startIndex, endIndex));

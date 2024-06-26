@@ -238,3 +238,17 @@ export const getScheduleYacht = (yachtId) => {
     return axios.get(`/api/companies/getScheduleByYacht/${yachtId}`);
 }
 
+export const getCustomerById = (customerId) => {
+    return axios.get(`/api/customer/profile/getProfileCustomerById/${customerId}`);
+}
+
+export const getPayment = (selectedRoomIds, selectedServiceIds, requirement, idCustomer, idSchedule) => {
+    const params = new URLSearchParams();
+    selectedRoomIds.forEach(id => params.append('selectedRoomIds', id));
+    selectedServiceIds.forEach(id => params.append('selectedServiceIds', id));
+    params.append('requirement', requirement);
+    params.append('idCustomer', idCustomer);
+    params.append('idSchedule', idSchedule);
+
+    return axios.get(`/api/customer/payment`, { params });
+};

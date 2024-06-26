@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Home.scss';
 import { Button, Col, FormControl, FormGroup, Row, Container } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { SEARCH_YACHT } from '../../redux/type/Type';
 
 const FormSearch = () => {
     const init = {
@@ -8,23 +11,27 @@ const FormSearch = () => {
         location: '',
         price: ''
     }
+
+    const [searchTerm, setSearchTerm] = useState('');
+    const dispatch = useDispatch();
     const [searchData, setSearchData] = useState(init);
+    console.log("check search", searchData)
     const handleChange = (e) => {
-        setSearchData(
-            {
-                ...searchData,
-                [e.target.name]: e.target.value
-            }
-        )
+        setSearchTerm(e.target.value)
+        dispatch({
+            type: SEARCH_YACHT,
+            payload: searchTerm.trim().toLowerCase()
+        })
+
     }
-    const handleSearch = () => {
-        console.log("check search", searchData)
+    const hanldeSubmit = (e) => {
+        e.preventDefault();
     }
 
     return (
         <div>
             <div className='homepage-content container '>
-                <form className='mb-3 serach-yacht p-4'>
+                <form className='mb-3 serach-yacht p-4' onSubmit={hanldeSubmit}>
                     <div className='text-center'>
                         <h3 style={{ fontWeight: 'bold' }}>Bạn lựa chọn du thuyền Hạ Long nào ?</h3>
                         <p>Có rất nhiều du thuyền dành cho bạn</p>

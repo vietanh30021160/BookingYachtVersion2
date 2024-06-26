@@ -3,16 +3,9 @@ import { ADD_ROOM, REMOVE_ROOM, RESET_SELECTION, SET_TOTAL_PRICE } from "../type
 const initialOrderState = {
     selectedRooms: [],
     addingService: [],
-    bookingInfo: {
-        schedule: {
-            startDate: '',
-            endDate: ''
-        },
-        fullName: '',
-        phoneNumber: '',
-        email: '',
-        requirements: ''
-    },
+    requirement: '',
+    idCustomer: '',
+    idSchedule: '',
     totalPrice: 0,
 }
 

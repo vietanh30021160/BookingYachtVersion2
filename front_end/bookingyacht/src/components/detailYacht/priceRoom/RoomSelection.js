@@ -25,10 +25,6 @@ const RoomSelection = ({ yacht, selectedSchedule }) => {
     const selectedRooms = useSelector(state => state.OrderReducer.selectedRooms);
     const totalPrice = useSelector(state => state.OrderReducer.totalPrice);
 
-    console.log(selectedServices)
-
-    console.log(services)
-
     useEffect(() => {
         const getUnBookedRoomList = async () => {
             try {
@@ -167,7 +163,10 @@ const RoomSelection = ({ yacht, selectedSchedule }) => {
                     </div>
                 </div>
             </div>
+            {console.log('selectedServices', selectedServices)}
+            {console.log('selectedRoom', selectedRoom)}
             <BookNowModal
+                selectedSchedule={selectedSchedule}
                 selectedRooms={selectedRooms}
                 selectedServices={selectedServices}
                 services={services}

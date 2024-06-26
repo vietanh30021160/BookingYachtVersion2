@@ -16,6 +16,7 @@ const ShowYacht = () => {
     const dispatch = useDispatch();
 
     const { yachtList } = useSelector((state) => state.YachtReducer);
+
     const getYachtList = () => {
         dispatch(getYachtListApi())
     }

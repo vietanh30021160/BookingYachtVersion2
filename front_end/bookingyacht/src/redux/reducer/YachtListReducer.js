@@ -1,7 +1,8 @@
-import { GET_ALL_YACHT } from "../type/Type"
+import { GET_ALL_YACHT, SEARCH_YACHT } from "../type/Type"
 
 const initYachtListState = {
-    yachtList: []
+    yachtList: [],
+    filteredYachtList: []
 }
 
 export const YachtListReducer = (state = initYachtListState, action) => {
@@ -11,6 +12,15 @@ export const YachtListReducer = (state = initYachtListState, action) => {
                 ...state,
                 yachtList: action.payload
             }
+        case SEARCH_YACHT:
+            const searchTerm = action.payload.toLowerCase();
+            const filteredYachtList = state.yachtList.filter(yacht =>
+                yacht.name.toLowerCase().startsWith(searchTerm)
+            );
+            return {
+                ...state,
+                yachtList: filteredYachtList
+            };
         default:
             return state
     }

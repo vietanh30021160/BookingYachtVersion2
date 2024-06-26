@@ -44,11 +44,13 @@ instance.interceptors.response.use(function (response) {
     //return Promise.reject(error);
     NProgress.done();
     if (error.response.status === 401) {
-        //(`unauthorized :)`);
-        //localStorage.removeItem("persist:root");
-        //removeLocalStorageToken
+        toast.error('Unauthorized: Please log in again');
+        // Optionally redirect to login page
         // window.location.href = "/login";
-        // toast.error('User Name Or Password Not Correct')
+        return;
+    }
+    if (error.response.status === 403) {
+        toast.error('Forbidden: You do not have permission to access this resource');
         return;
     }
     return Promise.reject(error);
