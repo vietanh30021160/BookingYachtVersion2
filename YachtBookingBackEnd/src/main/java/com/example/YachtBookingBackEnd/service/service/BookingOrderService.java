@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,6 +48,15 @@ public class BookingOrderService implements IBookingOrder {
     @Transactional
     public List<BookingOrderDTO> getBookingOrderByPrice(String idCompany, Long min, Long max) {
         List<BookingOrder> bookingOrderList = bookingOrderRepository.findPriceByRange(idCompany, min, max);
+        return bookingOrderList.stream()
+                .map(BookingOrderMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public List<BookingOrderDTO> getBookingByCustomerID(String idCustomer) {
+        List<BookingOrder> bookingOrderList = bookingOrderRepository.findBookingOrdersByCustomer(idCustomer);
         return bookingOrderList.stream()
                 .map(BookingOrderMapper::toDTO)
                 .collect(Collectors.toList());

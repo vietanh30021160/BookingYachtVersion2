@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class ScheduledTasks {
     IBookingOrder iBookingOrder;
 
-    @Scheduled(fixedRate = 3600000)
+    @Scheduled(fixedRate = 3600000) //3600000 milliseconds (which is equivalent to 1 hour)
     public void checkAndProcessBookings() {
         iBookingOrder.autoConfirmAndCancelBookings();
     }

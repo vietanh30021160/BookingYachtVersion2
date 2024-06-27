@@ -8,15 +8,14 @@ import com.example.YachtBookingBackEnd.repository.ScheduleRepository;
 import com.example.YachtBookingBackEnd.repository.YachtRepository;
 import com.example.YachtBookingBackEnd.repository.YachtScheduleRepository;
 import com.example.YachtBookingBackEnd.service.implement.IYachtSchedule;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class YachtScheduleService implements IYachtSchedule {
     @Autowired
@@ -28,11 +27,20 @@ public class YachtScheduleService implements IYachtSchedule {
 
     @Override
     public boolean addYachtSchedule(String yachtId, LocalDateTime startDate,  LocalDateTime endDate) {
+        if (startDate.isAfter(endDate)) {
+            log.warn("Invalid date range : startDate {} is after endDate {}", startDate, endDate);
+            return false;
+        } else if (startDate.isBefore(LocalDateTime.now())) {
+            log.warn("Invalid startDate: startDate {} is before the current time", startDate);
+            return false;
+        }
+
         try{
             Optional<Yacht> yacht = yachtRepository.findById(yachtId);
             if(yacht.isPresent()) {
                 Optional<Schedule> schedule = scheduleRepository.findByStartDateAndEndDate(startDate, endDate);
                 if(schedule.isPresent()) {
+                    log.warn("Schedule already exists with startDate: {}, endDate: {}", startDate, endDate);
                     return false;
                 }else{
                     Schedule newSchedule = new Schedule();
@@ -48,8 +56,11 @@ public class YachtScheduleService implements IYachtSchedule {
                     yachtSchedule.setKeys(key);
 
                     yachtScheduleRepository.save(yachtSchedule);
+                    log.info("Successfully added new schedule for yachtId: {} with startDate: {}, endDate: {}", yachtId, startDate, endDate);
                     return true;
                 }
+            } else {
+                log.warn("Yacht with id: {} not found", yachtId);
             }
         }catch (Exception e){
             System.out.println("error add yacht schedule "+e.getMessage());

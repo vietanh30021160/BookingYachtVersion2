@@ -23,6 +23,11 @@ public interface BookingOrderRepository extends JpaRepository<BookingOrder, Stri
             "WHERE  y.company.idCompany = :idCompany ")
     List<BookingOrder> findBookingOrdersByCompany(@Param("idCompany") String idCompany);
 
+    @Query("SELECT b " +
+            "FROM BookingOrder b " +
+            "WHERE b.customer.idCustomer = :idCustomer")
+    List<BookingOrder> findBookingOrdersByCustomer(@Param("idCustomer") String idCustomer);
+
     @Query("SELECT COUNT(b) > 0 " +
             "FROM  BookingOrder b " +
             "JOIN b.bookingRoomSet br " +
