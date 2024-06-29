@@ -188,10 +188,15 @@ public class AccountService implements IAccount {
             log.error("Invalid email format");
             throw new IllegalArgumentException("Invalid email format");
         }
+
         try{
             Company company = new Company();
             company.setAddress(address);
-            company.setEmail(email);
+            if (companyRepository.checkEmailExist(email)) {
+                log.error("Email already exists");
+            } else {
+                company.setEmail(email);
+            }
             company.setExist(1);
             company.setName(name);
             company.setLogo(logo.getOriginalFilename());

@@ -39,7 +39,7 @@ public class CompanyController {
     @GetMapping("/profiles/{idCompany}")
     public ResponseEntity<?> getDetailCompanyByID(@PathVariable String idCompany) {
         DataResponse dataResponse = new DataResponse<>();
-        dataResponse.setData(iCompany.getCompanyById(idCompany));
+        dataResponse.setData(iCompany.getCompanyDTOById(idCompany));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
