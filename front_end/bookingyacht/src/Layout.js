@@ -73,7 +73,7 @@ const Layout = () => {
 
                 } >
                     <Route index element={<ViewBooking />} />
-                    <Route path='view-yacht/' element={<ViewYacht />} />
+                    <Route path='view-yacht' element={<ViewYacht />} />
                     <Route path='bill' element={<Bill />} />
                     <Route path='profile' element={<ProfileCompany />} />
                     <Route path='room-type' element={<ManageRoomType />} />
@@ -95,7 +95,7 @@ const Layout = () => {
                         </Route>
                     )
                 }
-                <Route path='/deltailInfo/:idCompany' element={<DetailEnterprise/>}/>
+                <Route path='/deltailInfo/:idCompany' element={<DetailEnterprise />} />
 
                 <Route path='*' element={<Page404 />} />
 

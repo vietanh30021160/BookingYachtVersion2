@@ -8,6 +8,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import { useSelector } from 'react-redux';
 import { getProfileCustomer } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
+import BookingHistory from './BookingHistory';
 
 const Profile = () => {
     const [isShowModal, setIsShowModal] = useState(false);
@@ -100,7 +101,8 @@ const Profile = () => {
                     </form>
                 </Tab>
                 <Tab eventKey="Booking History" title="Booking History" >
-                    Booking History
+                    {/* Booking History */}
+                    <BookingHistory />
                 </Tab>
             </Tabs>
 

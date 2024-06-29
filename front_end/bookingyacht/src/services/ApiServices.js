@@ -266,4 +266,24 @@ export const getProfileCompany = (idCompany) => {
     return axios.get(`/api/companies/profiles/${idCompany}`);
 }
 
+export const updateProfileCompany = (idCompany, name, address, logo) => {
+    const data = new FormData();
+    data.append('name', name)
+    data.append('address', address)
+    data.append('logo', logo)
+    return axios.put(`/api/companies/profile/${idCompany}`, data)
+}
+
+export const getBookingOrder = (idCompany) => {
+    return axios.get(`/api/companies/bookingOrders/${idCompany}`);
+}
+
+export const confirmBooking = (idCompany, idBookingOrder) => {
+    return axios.put(`/api/companies/${idCompany}/confirm/${idBookingOrder}`)
+}
+
+export const canelBooking = (idCompany, idBookingOrder) => {
+    return axios.put(`/api/companies/${idCompany}/confirm/${idBookingOrder}`)
+}
+
 

@@ -71,34 +71,7 @@ const ViewYacht = (props) => {
         }
     }
 
-    const handleSearchYacht = () => {
-        if (searchYacht) {
-            const newYacht = yacht.filter((yacht) => yacht.name.toLowerCase().includes(searchYacht.toLocaleLowerCase().trim()))
-            if (newYacht && newYacht.length > 0) {
-                setYacht(newYacht);
-                setSearchYacht('');
-            } else {
-                toast.error('Not Found Yacht')
-            }
-        } else {
-            setYacht(filteredYachts)
-        }
 
-    }
-    const handleFilterLocation = () => {
-        if (filterLocation) {
-            const newYacht = yacht.filter((yacht) =>
-                yacht.location.idLocation.includes(filterLocation)
-            );
-            if (newYacht.length > 0) {
-                setFilteredYachts(newYacht);
-            } else {
-                toast.error('No yacht found for this location');
-            }
-        } else {
-            setFilteredYachts(yacht);
-        }
-    };
 
     return (
         <div className='view-yacht-container'>
@@ -110,7 +83,7 @@ const ViewYacht = (props) => {
                 <FormGroup className='col-2'>
 
                     <Form.Select onChange={event => setFilterLocation(event.target.value)}>
-                        <option value=''>All Location</option>
+                        <option value='0'>All Location</option>
                         {
                             location && location.length > 0 && location.map((location) =>
                                 <option key={location.idLocation} value={location.idLocation}>{location.name}</option>
@@ -119,7 +92,6 @@ const ViewYacht = (props) => {
                     </Form.Select>
 
                 </FormGroup>
-                <Button onClick={handleFilterLocation} className='col-2 btn btn-warning'>Search</Button>
                 <FormGroup className='col-6 d-flex'>
                     <FormControl
                         placeholder='Search'
@@ -127,7 +99,6 @@ const ViewYacht = (props) => {
                         value={searchYacht}
                         onChange={(event) => setSearchYacht(event.target.value)}
                     />
-                    <Button onClick={handleSearchYacht} className='btn btn-primary mx-3'>Search</Button>
                 </FormGroup>
 
 
@@ -136,42 +107,41 @@ const ViewYacht = (props) => {
             <div className='row container'>
                 <div className="col-xl-12">
                     {
-                        filteredYachts && filteredYachts.length > 0 && filteredYachts.filter(y => y.exist === 1).map((yacht) =>
+                        filteredYachts
+                            .filter(yacht => yacht.name.toLowerCase().includes(searchYacht.toLowerCase().trim()))
+                            .filter(yacht => filterLocation === '0' ? yacht : yacht.location.idLocation.includes(filterLocation))
+                            .filter(y => y.exist === 1).map((yacht) =>
+                                <div key={yacht.idYacht} className="card mb-4 order-list">
+                                    <div className="gold-members p-4">
 
-                            <div key={yacht.idYacht} className="card mb-4 order-list">
-                                <div className="gold-members p-4">
+                                        <div className="media">
 
-                                    <div className="media">
+                                            <img className="mr-4" src={`http://localhost:8080/api/customer/file/${yacht.image}`} alt="Generic placeholder image" />
 
-                                        <img className="mr-4" src={`http://localhost:8080/api/customer/file/${yacht.image}`} alt="Generic placeholder image" />
+                                            <div className="media-body">
+                                                <div className='card-content'>
+                                                    <div className='location'><FaLocationDot />{yacht.location.name}</div>
+                                                    <div className='name'>{yacht.name}</div>
+                                                    <div> <RiShipLine /> Hạ Thủy {yacht.launch} - Tàu Vỏ {yacht.hullBody}  </div>
 
-                                        <div className="media-body">
-                                            <div className='card-content'>
-                                                <div className='location'><FaLocationDot />{yacht.location.name}</div>
-                                                <div className='name'>{yacht.name}</div>
-                                                <div> <RiShipLine /> Hạ Thủy {yacht.launch} - Tàu Vỏ {yacht.hullBody}  </div>
+                                                </div>
+                                                <div className='action d-flex'>
+                                                    <p className="mb-0 text-dark text-dark pt-2"><span className="text-dark font-weight-bold"></span>
+                                                    </p>
+                                                    <div className="float-right">
+                                                        <Button className="btn btn-sm btn-infor" onClick={() => navigate(`/manage-services-yacht/${yacht.idYacht}`)}><i className="feather-check-circle" />Manage Services Yacht</Button>
+                                                        <Button className="btn btn-sm btn-light" onClick={() => navigate(`/manage-schedule/${yacht.idYacht}`)}><i className="feather-trash" /> Manage Schedule </Button>
+                                                        <Button className="btn btn-sm btn-success" onClick={() => navigate(`/manage-yacht/${yacht.idYacht}`)}><i className="feather-check-circle" />Manage Yacht</Button>
+                                                        <Button className="btn btn-sm btn-warning" onClick={() => navigate(`/manage-room/${yacht.idYacht}`)}><i className="feather-trash" /> Manage Room </Button>
+                                                        <Button className="btn btn-sm btn-danger" onClick={() => handleDeleteYacht(yacht.idYacht, yacht.name)}><i className="feather-trash" /> Delete Yacht </Button>
 
-                                                <div>{yacht.exist}</div>
-                                            </div>
-                                            <div className='action d-flex'>
-                                                <p className="mb-0 text-dark text-dark pt-2"><span className="text-dark font-weight-bold"></span>
-                                                </p>
-                                                <div className="float-right">
-                                                    <Button className="btn btn-sm btn-infor" onClick={() => navigate(`/manage-services-yacht/${yacht.idYacht}`)}><i className="feather-check-circle" />Manage Services Yacht</Button>
-                                                    <Button className="btn btn-sm btn-light" onClick={() => navigate(`/manage-schedule/${yacht.idYacht}`)}><i className="feather-trash" /> Manage Schedule </Button>
-                                                    <Button className="btn btn-sm btn-success" onClick={() => navigate(`/manage-yacht/${yacht.idYacht}`)}><i className="feather-check-circle" />Manage Yacht</Button>
-                                                    <Button className="btn btn-sm btn-warning" onClick={() => navigate(`/manage-room/${yacht.idYacht}`)}><i className="feather-trash" /> Manage Room </Button>
-                                                    <Button className="btn btn-sm btn-danger" onClick={() => handleDeleteYacht(yacht.idYacht, yacht.name)}><i className="feather-trash" /> Delete Yacht </Button>
-
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                        )
-
+                            )
                     }
 
                 </div>

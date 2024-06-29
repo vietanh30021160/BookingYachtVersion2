@@ -3,11 +3,12 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 import ModalUpdateProfile from './Modal/ModalUpdateProfile';
 import { useSelector } from 'react-redux';
 import { getProfileCompany } from '../../services/ApiServices';
-const ProfileCompany = (props) => {
+const ProfileCompany = () => {
 
     const idCompany = useSelector(state => state.account.account.idCompany);
 
     const [isShowModal, setIsShowModal] = useState(false);
+    const [profile, setProfile] = useState({});
 
     const handleClose = () => {
         setIsShowModal(false);
@@ -19,7 +20,9 @@ const ProfileCompany = (props) => {
 
     const getProfile = async () => {
         let res = await getProfileCompany(idCompany);
-        console.log('id', res)
+        if (res && res.data && res.data.data) {
+            setProfile(res.data.data);
+        }
     }
 
     return (
@@ -31,11 +34,9 @@ const ProfileCompany = (props) => {
                         <div className="col col-lg-6 mb-4 mb-lg-0">
                             <div className="card mb-3" style={{ borderRadius: '.5rem' }}>
                                 <div className="row g-0">
-                                    <div className="col-md-4 gradient-custom text-center text-white" style={{ borderTopLeftRadius: '.5rem', borderBottomLeftRadius: '.5rem' }}>
-                                        <img src="" alt="Avatar" className="img-fluid my-5" style={{ width: 80 }} />
-                                        <h5>Marie Horwitz</h5>
-                                        <p>Web Designer</p>
-                                        <i className="far fa-edit mb-5" />
+                                    <div className="col-md-4 gradient-custom text-center" style={{ borderTopLeftRadius: '.3rem', borderBottomLeftRadius: '.3rem' }}>
+                                        <img src={`http://localhost:8080/api/customer/file/${profile.logo}`} alt='logo' className="img-fluid my-5" style={{ width: 80 }} />
+
                                     </div>
                                     <div className="col-md-8">
                                         <div className="card-body p-4">
@@ -44,23 +45,22 @@ const ProfileCompany = (props) => {
                                             <div className="row pt-1">
                                                 <div className="col-6 mb-3">
                                                     <h6>Email</h6>
-                                                    <p className="text-muted">info@example.com</p>
+                                                    <p className="text-muted">{profile.email}</p>
                                                 </div>
                                                 <div className="col-6 mb-3">
-                                                    <h6>Phone</h6>
-                                                    <p className="text-muted">123 456 789</p>
+                                                    <h6>Address</h6>
+                                                    <p className="text-muted">{profile.address}</p>
                                                 </div>
+
                                             </div>
-                                            <h6>Projects</h6>
+                                            <h6>Name</h6>
                                             <hr className="mt-0 mb-4" />
                                             <div className="row pt-1">
-                                                <div className="col-6 mb-3">
-                                                    <h6>Recent</h6>
-                                                    <p className="text-muted">Lorem ipsum</p>
+                                                <div className="col-9 mb-2">
+                                                    {profile.name}
                                                 </div>
-                                                <div className="col-6 mb-3">
-                                                    <h6>Most Viewed</h6>
-                                                    <p className="text-muted">Dolor sit amet</p>
+                                                <div className="col-3 mb-3">
+
                                                 </div>
                                             </div>
                                             <ButtonGroup>
@@ -77,6 +77,8 @@ const ProfileCompany = (props) => {
             <ModalUpdateProfile
                 show={isShowModal}
                 handleClose={handleClose}
+                profile={profile}
+                getProfile={getProfile}
             />
 
         </div>
