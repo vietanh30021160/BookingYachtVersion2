@@ -178,11 +178,11 @@ public class PaymentService implements IPayment {
         transaction.setAmount(bookingOrder.getAmount());
 
         // Parse vnp_PayDate using DateTimeFormatter
-//        String vnpPayDateStr = vnp_CreateDate;
-//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-//        LocalDateTime vnpPayDateFormat = LocalDateTime.parse(vnpPayDateStr, dateTimeFormatter);
-//
-//        transaction.setTransactionDate(vnpPayDateFormat);
+        String vnpPayDateStr = vnp_CreateDate;
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        LocalDateTime vnpPayDateFormat = LocalDateTime.parse(vnpPayDateStr, dateTimeFormatter);
+
+        transaction.setTransactionDate(vnpPayDateFormat);
         transaction.setStatus("Pending");
         transaction.setBookingOrder(bookingOrder);
 
@@ -281,6 +281,10 @@ public class PaymentService implements IPayment {
                     boolean checkOrderStatus = ("Pending".equals(bookingOrder.getStatus()));
                     Transaction transaction = transactionRepository.getTransactionByBooking(bookingOrder);
 
+                    LocalDateTime now = LocalDateTime.now();
+                    boolean checkTimeOut = now.isAfter(transaction.getTransactionDate().plusMinutes(15));
+                    boolean checkTransactionStatus = ("Pending".equals(transaction.getStatus()));
+
                     if (checkAmount) {
                         if (checkOrderStatus) {
                             if ("00".equals(vnpResponseCode)) {
@@ -289,7 +293,6 @@ public class PaymentService implements IPayment {
                                 transaction.setStatus("Success");
                                 transaction.setReceiverBankTranNo("Receiver_Id");
                                 transaction.setSenderBankTranNo(sender);
-                                transaction.setBookingOrder(bookingOrder);
 
                                 transactionRepository.save(transaction);
 
@@ -297,18 +300,39 @@ public class PaymentService implements IPayment {
                                 response.put("Message", "Confirm Success");
                             } else {
                                 transaction.setStatus("Failure");
+                                transaction.setReceiverBankTranNo("Receiver_Id");
+                                transaction.setSenderBankTranNo(sender);
                                 transactionRepository.save(transaction);
 
                                 response.put("RspCode", "01");
                                 response.put("Message", "Transaction Failed");
                             }
                         } else {
+                            transaction.setStatus("Failure");
+                            transaction.setReceiverBankTranNo("Receiver_Id");
+                            transaction.setSenderBankTranNo(sender);
+                            transactionRepository.save(transaction);
+
                             response.put("RspCode", "02");
                             response.put("Message", "Order already confirmed or Cancelled");
                         }
                     } else {
+                        transaction.setStatus("Failure");
+                        transaction.setReceiverBankTranNo("Receiver_Id");
+                        transaction.setSenderBankTranNo(sender);
+                        transactionRepository.save(transaction);
+
                         response.put("RspCode", "04");
                         response.put("Message", "Invalid Amount");
+                    }
+                    if (checkTimeOut && checkTransactionStatus) {
+                        transaction.setStatus("Failure");
+                        transaction.setReceiverBankTranNo("Receiver_Id");
+                        transaction.setSenderBankTranNo(sender);
+                        transactionRepository.save(transaction);
+
+                        response.put("RspCode", "10");
+                        response.put("Message", "Transaction timeout");
                     }
                 } else {
                     response.put("RspCode", "01");

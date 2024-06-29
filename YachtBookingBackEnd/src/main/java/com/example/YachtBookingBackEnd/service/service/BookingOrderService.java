@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,29 +55,49 @@ public class BookingOrderService implements IBookingOrder {
 
     @Override
     @Transactional
+    public List<BookingOrderDTO> getBookingByCustomerID(String idCustomer) {
+        List<BookingOrder> bookingOrderList = bookingOrderRepository.findBookingOrdersByCustomer(idCustomer);
+        return bookingOrderList.stream()
+                .map(BookingOrderMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
     public boolean confirmBooking(String idBookingOrder, String idCompany) {
-        Optional<BookingOrder> bookingOrder = bookingOrderRepository.findById(idBookingOrder);
-        try {
-            if (bookingOrder.isPresent() && bookingOrder.get().getStatus().equals(DEFAULT_STATUS)) {
-                bookingOrder.get().setStatus("Confirmed");
-                bookingOrderRepository.save(bookingOrder.get());
+        Optional<BookingOrder> bookingOrderOptional = bookingOrderRepository.findById(idBookingOrder);
+        if (bookingOrderOptional.isPresent()) {
+            BookingOrder bookingOrder = bookingOrderOptional.get();
+            boolean isPending = DEFAULT_STATUS.equals(bookingOrder.getStatus());
+            boolean isTransactionSuccess = bookingOrder.getTransaction() != null
+                    && "Success".equals(bookingOrder.getTransaction().getStatus());
 
-                Bill bill = new Bill();
-                bill.setBookingOrder(bookingOrder.get());
-                bill.setTransaction(bookingOrder.get().getTransaction());
-                billRepository.save(bill);
+            if (isPending && isTransactionSuccess) {
+                try {
+                    bookingOrder.setStatus("Confirmed");
+                    bookingOrderRepository.save(bookingOrder);
 
-                // Send cancellation email
-                String customerEmail = bookingOrder.get().getCustomer().getEmail();
-                Company company = companyRepository.findByIdAndExist(idCompany)
-                        .orElseThrow(() -> new RuntimeException("Company not found! Try again"));
-                String companyName = company.getName();
-                mailSender.senConfirmMail(customerEmail, idBookingOrder, companyName);
+                    Bill bill = new Bill();
+                    bill.setBookingOrder(bookingOrder);
+                    bill.setTransaction(bookingOrder.getTransaction());
+                    billRepository.save(bill);
 
-                return true;
+                    // Send cancellation email
+                    String customerEmail = bookingOrder.getCustomer().getEmail();
+                    Company company = companyRepository.findByIdAndExist(idCompany)
+                            .orElseThrow(() -> new RuntimeException("Company not found! Try again"));
+                    String companyName = company.getName();
+                    mailSender.senConfirmMail(customerEmail, idBookingOrder, companyName);
+
+                    return true;
+                } catch (Exception e) {
+                    log.error("Confirm Booking failed", e);
+                }
+            } else {
+                log.error("Conditions for success not met");
             }
-        } catch (Exception e) {
-            log.error("Confirm Booking failed", e);
+        } else {
+            log.error("Booking Order not present");
         }
         return false;
     }
@@ -134,7 +153,7 @@ public class BookingOrderService implements IBookingOrder {
 
         for (BookingOrder bookingOrder : pendingOrders) {
             LocalDateTime bookingTime = bookingOrder.getBookingTime();
-            boolean isOverdue = bookingTime.isAfter(bookingTime.plusHours(24));
+            boolean isOverdue = now.isAfter(bookingTime.plusHours(24));
             boolean isTransactionSuccess = bookingOrder.getTransaction() != null
                     && "Success".equals(bookingOrder.getTransaction().getStatus());
             boolean isTransactionFailed = bookingOrder.getTransaction() != null
@@ -142,6 +161,8 @@ public class BookingOrderService implements IBookingOrder {
             if (isTransactionSuccess && isOverdue) {
                 bookingOrder.setStatus("Confirmed");
                 bookingOrderRepository.save(bookingOrder);
+                log.info("booking order is auto success");
+
 
                 // Send confirm email
                 String customerEmail = bookingOrder.getCustomer().getEmail();
@@ -151,6 +172,7 @@ public class BookingOrderService implements IBookingOrder {
                 String reason = "Transaction failed after 24 hours";
                 bookingOrder.setReason(reason);
                 bookingOrderRepository.save(bookingOrder);
+                log.info("booking order is auto cancel");
 
                 // Send cancel email
                 String customerEmail = bookingOrder.getCustomer().getEmail();

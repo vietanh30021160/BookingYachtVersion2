@@ -13,9 +13,11 @@ public interface ICompany {
 
     CompanyDTO getDetailCompanyByAccountID(String idAccount);
 
-    boolean hideCompany(String idCompany);
+    boolean changeExistCompany(String idCompany);
 
     Company getCompanyById(String idCompany);
+
+    CompanyDTO getCompanyDTOById(String idCompany);
 
     boolean updateInfoCompany(String idCompany, String name,String address, MultipartFile logo);
 

@@ -14,5 +14,4 @@ public interface IPayment {
 
     Map<String, String> handleIPN(HttpServletRequest request);
 
-//    Map<String, String> handleReturn(HttpServletRequest request);
 }

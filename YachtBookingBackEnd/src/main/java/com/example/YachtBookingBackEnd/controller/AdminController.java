@@ -25,7 +25,7 @@ public class AdminController {
 
     @PostMapping("/accounts")
     public ResponseEntity<?> createAccountCompany(@RequestParam String username,
-                                                  @RequestParam String password) throws Exception {
+                                                  @RequestParam String password) {
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setData(iAccount.createAccountCompany(username, password));
         dataResponse.setIdAccount(iAccount.getIdAccountByUserName(username));
@@ -67,7 +67,7 @@ public class AdminController {
     @PutMapping("/companies/{idCompany}")
     public ResponseEntity<?> hideCompany(@PathVariable String idCompany) {
         DataResponse dataResponse = new DataResponse<>();
-        dataResponse.setData(iCompany.hideCompany(idCompany));
+        dataResponse.setData(iCompany.changeExistCompany(idCompany));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
