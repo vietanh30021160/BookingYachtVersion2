@@ -9,6 +9,7 @@ import { ScheduleReducer } from './ScheduleReducer';
 import OrderReducer from './OrderReducer';
 import RoomImageReducer from './RoomImageReducer';
 import CustomerReducer from './CustomerReducer';
+import { RoomReducer } from './RoomReducer';
 
 const RootReducer = combineReducers({
     account: userReducer,
@@ -20,7 +21,8 @@ const RootReducer = combineReducers({
     ServiceByYachtReducer,
     ScheduleReducer,
     OrderReducer,
-    RoomImageReducer
+    RoomImageReducer,
+    RoomReducer
 });
 
 export default RootReducer;

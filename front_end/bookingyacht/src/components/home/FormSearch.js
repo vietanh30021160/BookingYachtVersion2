@@ -4,26 +4,33 @@ import { Button, Col, FormControl, FormGroup, Row, Container } from 'react-boots
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { SEARCH_YACHT } from '../../redux/type/Type';
+import { login } from './../../services/ApiServices';
 
 const FormSearch = () => {
-    const init = {
-        nameYacht: '',
-        location: '',
-        price: ''
-    }
-
-    const [searchTerm, setSearchTerm] = useState('');
     const dispatch = useDispatch();
-    const [searchData, setSearchData] = useState(init);
-    console.log("check search", searchData)
+
+    const [searchData, setSearchData] = useState({
+        name: '',
+        location: 'all',
+        price: 'all',
+    });
+
+    console.log(searchData)
     const handleChange = (e) => {
-        setSearchTerm(e.target.value)
-        dispatch({
-            type: SEARCH_YACHT,
-            payload: searchTerm.trim().toLowerCase()
+        const { name, value } = e.target;
+        setSearchData({
+            ...searchData,
+            [name]: value
         })
 
-    }
+    };
+    useEffect(() => {
+        dispatch({
+            type: SEARCH_YACHT,
+            payload: searchData
+        });
+    }, [searchData]);
+
     const hanldeSubmit = (e) => {
         e.preventDefault();
     }
@@ -43,7 +50,7 @@ const FormSearch = () => {
                                     <FormControl
                                         placeholder='Search Yacht'
                                         type='text'
-                                        name='nameYacht'
+                                        name='name'
                                         onChange={handleChange}
                                     />
                                 </FormGroup>
@@ -51,9 +58,9 @@ const FormSearch = () => {
                             <Col>
                                 <select className='select p-2' name='location' onChange={handleChange} style={{ color: '#595C5F' }}>
                                     <option value='all'>Tất cả các địa điểm</option>
-                                    <option value='Vịnh Hạ Long'>Vịnh Hạ Long</option>
-                                    <option value='Vịnh Lan Hạ'>Vịnh Lan Hạ</option>
-                                    <option value='Đảo Cát Bà'>Đảo Cát Bà</option>
+                                    <option value='Hạ Long'>Vịnh Hạ Long</option>
+                                    <option value='Lan Hạ'>Vịnh Lan Hạ</option>
+                                    <option value='Cát Bà'>Đảo Cát Bà</option>
 
                                 </select>
 

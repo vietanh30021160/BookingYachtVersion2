@@ -252,3 +252,7 @@ export const getPayment = (selectedRoomIds, selectedServiceIds, requirement, idC
 
     return axios.get(`/api/customer/payment`, { params });
 };
+
+export const getAllRoomByYachtCustomer = (idYacht) => {
+    return axios.get(`/api/customer/getRoomByYacht/${idYacht}`);
+}

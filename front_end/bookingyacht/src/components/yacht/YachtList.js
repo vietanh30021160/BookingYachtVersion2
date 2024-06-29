@@ -24,7 +24,7 @@ const YachtList = () => {
 
     useEffect(() => {
         getYachtList();
-    }, [dispatch])
+    }, [])
 
     useEffect(() => {
         if (yachtList.length > 0) {
