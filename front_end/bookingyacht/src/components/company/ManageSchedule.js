@@ -6,19 +6,21 @@ import Row from "react-bootstrap/Row";
 import { AiFillHome } from "react-icons/ai";
 import { NavLink, useParams } from 'react-router-dom';
 import { Form, FormControl } from 'react-bootstrap';
-import { createScheduleYacht, getScheduleYacht } from "../../services/ApiServices";
+import { createScheduleYacht, deleteScheduleYacht, getScheduleYacht } from "../../services/ApiServices";
 import { toast } from "react-toastify";
-import { get } from "lodash";
+import ModalUpdateScheduleYacht from "./Modal/ModalUpdateScheduleYacht";
 
 
 
 const ManageSchedule = () => {
 
     const yachtId = useParams(); //get yachtId from URL parameters
+    const [getShowModalUpdateScheduleYacht, setShowModalUpdateScheduleYacht] = useState(false);
 
     const [getSchedule, setSchedule] = useState([]);
     const [getStartDate, setStartDate] = useState('');
     const [getEndDate, setEndDate] = useState('');
+    const [getScheduleUpdate, setScheduleUpdate] = useState({});
 
 
 
@@ -27,8 +29,12 @@ const ManageSchedule = () => {
     }, [])
     console.log("day la yacht id", yachtId)
 
+    const handleClose = () => {
+        setShowModalUpdateScheduleYacht(false)
+    }
+
     const fetchScheduleYacht = async () => {
-        let res = await getScheduleYacht(yachtId.yachtId)
+        let res = await getScheduleYacht(yachtId.idYacht)
         //check data empty or not
         if (res && res.data.data) {
             setSchedule(res.data.data)
@@ -44,20 +50,46 @@ const ManageSchedule = () => {
             return;
         }
 
+        const now = Date.now();
+        if (new Date(getStartDate).getTime() <= now) {
+            toast.error('Start date must be in the future');
+            return;
+        }
+
         //check start date is before end date 
-        if (getStartDate >= getEndDate) {
+        if (new Date(getStartDate).getTime() >= new Date(getEndDate).getTime()) {
             toast.error('Start date must be before end date');
             return;
         }
 
         //call API and wait results
-        let res = await createScheduleYacht(yachtId.yachtId, getStartDate.trim(), getEndDate.trim());
+        let res = await createScheduleYacht(yachtId.idYacht, getStartDate, getEndDate);
+        console.log('create', res)
 
-        if (res && res.data.data.length > 0) {
+        if (res && res.data.data === true) {
             toast.success("Create schedule successfully");
-            getScheduleYacht();
+            fetchScheduleYacht();
         } else {
             toast.error("Create fail");
+        }
+    }
+
+    const handleUpdateScheduleYacht = async (schedule) => {
+        setShowModalUpdateScheduleYacht(true);
+        setScheduleUpdate(schedule)
+    }
+
+    const handleDeleteScheduleYacht = async (schedule) => {
+        if (window.confirm(`You Want To Delete Schedule`)) {
+            let res = await deleteScheduleYacht(yachtId.idYacht, schedule.idSchedule)
+            console.log('Delete', res)
+
+            if (res && res.data.data === true) {
+                toast.success("Delete Successfully");
+                fetchScheduleYacht();
+            } else {
+                toast.error("Delete Fail");
+            }
         }
     }
 
@@ -76,7 +108,7 @@ const ManageSchedule = () => {
                         <Accordion.Body>
                             <Form>
                                 <Row className="mb-3">
-                                    <Form.Group as={Col} controlId="formGridStartDate">
+                                    <Form.Group as={Col}>
                                         <Form.Label>Start Date</Form.Label>
                                         <FormControl
                                             type="datetime-local"
@@ -85,7 +117,7 @@ const ManageSchedule = () => {
                                         />
                                     </Form.Group>
 
-                                    <Form.Group as={Col} controlId="formGridEndDate">
+                                    <Form.Group as={Col}>
                                         <Form.Label>End Date</Form.Label>
                                         <FormControl
                                             type="datetime-local"
@@ -94,9 +126,14 @@ const ManageSchedule = () => {
                                         />
                                     </Form.Group>
                                 </Row>
-                                <Button onClick={handleCreateYachtSchedule} variant="success" type="submit">
-                                    Create
-                                </Button>
+                                <div className="d-flex" style={{justifyContent: 'center'}}>
+                                    <Button
+                                        onClick={handleCreateYachtSchedule}
+                                        variant="success"
+                                    >
+                                        Create
+                                    </Button>
+                                </div>
                             </Form>
                         </Accordion.Body>
                     </Accordion.Item>
@@ -114,16 +151,25 @@ const ManageSchedule = () => {
                         <tbody className="table-light">
 
                             {
-                                getSchedule && getSchedule.length > 0 && getSchedule.map((Schedule) =>
-                                    <tr key={Schedule.idSchedule}>
-                                        <td>{Schedule.startDate}</td>
-                                        <td>{Schedule.endDate}</td>
-                                        <td>
-                                            <div className="d-flex" style={{ justifyContent: 'center' }}>
-                                                <div>
-
-                                                </div>
-                                            </div>
+                                getSchedule && getSchedule.length > 0 && getSchedule.map((schedule) =>
+                                    <tr key={schedule.idSchedule}>
+                                        <td>{schedule.startDate}</td>
+                                        <td>{schedule.endDate}</td>
+                                        <td className="d-flex" style={{ gap: 50, justifyContent: 'center' }}>
+                                            <Button
+                                                variant="primary"
+                                                className="mx-2"
+                                                onClick={() => handleUpdateScheduleYacht(schedule)}
+                                            >
+                                                Edit
+                                            </Button>
+                                            <Button
+                                                variant="danger"
+                                                className="mx-2"
+                                                onClick={() => handleDeleteScheduleYacht(schedule)}
+                                            >
+                                                Delete
+                                            </Button>
                                         </td>
                                     </tr>
                                 )
@@ -133,6 +179,13 @@ const ManageSchedule = () => {
                     </table>
                 </div>
             </div>
+            <ModalUpdateScheduleYacht
+                show={getShowModalUpdateScheduleYacht}
+                scheduleUpdate={getScheduleUpdate}
+                handleClose={handleClose}
+                yachtId={yachtId}
+                getScheduleYacht={fetchScheduleYacht}
+            />
         </div>
     );
 };

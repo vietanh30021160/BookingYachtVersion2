@@ -223,7 +223,7 @@ export const createScheduleYacht = (yachtId, startDate, endDate) => {
     const data = new FormData();
     data.append('startDate', startDate);
     data.append('endDate', endDate);
-    return axios.post(`/api/companies/addSchedule/${yachtId}/`, data)
+    return axios.post(`/api/companies/addSchedule/${yachtId}`, data)
 }
 
 export const updateScheduleYacht = (yachtId, scheduleId, startDate, endDate) => {
