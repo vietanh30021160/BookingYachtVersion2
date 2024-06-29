@@ -21,18 +21,19 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CustomerController {
-    private IAccount iAccount;
-    private ICustomer iCustomer;
-    private IPayment iPayment;
-    private IYacht iYacht;
-    private IFile iFile;
-    private IYachtImage iYachtImage;
-    private IService iService;
-    private ISchedule iSchedule;
-    private IRoom iRoom;
-    private IRoomType iRoomType;
-    private IYachtType iYachtType;
-
+    IAccount iAccount;
+    ICustomer iCustomer;
+    IPayment iPayment;
+    IYacht iYacht;
+    IFile iFile;
+    IYachtImage iYachtImage;
+    IService iService;
+    ISchedule iSchedule;
+    IRoom iRoom;
+    IRoomType iRoomType;
+    IYachtType iYachtType;
+    IBookingOrder iBookingOrder;
+    IBill iBill;
 
 
     @PostMapping("/accounts")
@@ -222,10 +223,27 @@ public class CustomerController {
         dataResponse.setData(iCustomer.getAllCompanies());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
     @GetMapping("/getYachtType")
     public ResponseEntity<?> getYachtType(){
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYachtType.getYachtTypes());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/bookingOrders/{idCustomer}")
+    public ResponseEntity<?> GetBookingOrderByCustomer(@PathVariable String idCustomer){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iBookingOrder.getBookingByCustomerID(idCustomer));
+
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/bills/{idCustomer}")
+    public ResponseEntity<?> GetBillsByCustomer(@PathVariable String idCustomer){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iBill.getAllBillsByCustomer(idCustomer));
+
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

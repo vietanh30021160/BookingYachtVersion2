@@ -66,7 +66,7 @@ public class AdminController {
     @PutMapping("/companies/{idCompany}")
     public ResponseEntity<?> hideCompany(@PathVariable String idCompany) {
         DataResponse dataResponse = new DataResponse<>();
-        dataResponse.setData(iCompany.hideCompany(idCompany));
+        dataResponse.setData(iCompany.changeExistCompany(idCompany));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

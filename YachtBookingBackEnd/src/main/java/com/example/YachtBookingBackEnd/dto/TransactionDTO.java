@@ -18,4 +18,5 @@ public class TransactionDTO {
     private String status;
     private String receiverBankTranNo;
     private String senderBankTranNo;
+//    private BookingOrderDTO bookingOrderDTO;
 }

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
 public interface BookingOrderRepository extends JpaRepository<BookingOrder, String> {
@@ -52,4 +51,7 @@ public interface BookingOrderRepository extends JpaRepository<BookingOrder, Stri
             "FROM BookingOrder b " +
             "WHERE b.status = :status")
     List<BookingOrder> findAllByStatus(@Param("status") String status);
+
+    @Query("SELECT bo FROM BookingOrder bo WHERE bo.idBooking = :id")
+    Optional<BookingOrder> findById(@Param("id") String id);
 }

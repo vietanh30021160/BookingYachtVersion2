@@ -19,5 +19,6 @@ public class ScheduledTasks {
     @Scheduled(fixedRate = 3600000) //3600000 milliseconds (which is equivalent to 1 hour)
     public void checkAndProcessBookings() {
         iBookingOrder.autoConfirmAndCancelBookings();
+        log.info("AutoConfirmAndCancelBookings executed");
     }
 }

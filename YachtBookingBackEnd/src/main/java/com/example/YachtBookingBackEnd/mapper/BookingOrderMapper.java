@@ -3,7 +3,6 @@ package com.example.YachtBookingBackEnd.mapper;
 import com.example.YachtBookingBackEnd.dto.*;
 import com.example.YachtBookingBackEnd.entity.*;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,7 +33,7 @@ public class BookingOrderMapper {
                     Room room = bookingRoom.getRoom();
                     roomDTO.setIdRoom(room.getIdRoom());
                     roomDTO.setName(room.getName());
-//                    roomDTO.setPrice(room.getRoomType().getPrice());
+                    roomDTO.setPrice(room.getRoomType().getPrice());
                     roomDTO.setArea(room.getArea());
                     return roomDTO;
                 }).collect(Collectors.toSet());
