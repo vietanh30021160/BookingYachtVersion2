@@ -32,7 +32,11 @@ public class BookingOrderService implements IBookingOrder {
     CompanyRepository companyRepository;
     BillRepository billRepository;
 
-    public static final String DEFAULT_STATUS = "Pending";
+    private static final String DEFAULT_STATUS = "Pending";
+    private static final String STATUS_CONFIRMED = "Confirmed";
+    private static final String STATUS_CANCELLED = "Cancelled";
+    private static final String TRANSACTION_SUCCESS = "Success";
+    private static final String TRANSACTION_FAILURE = "Failure";
 
     @Override
     // Sử dụng @Transactional để giữ phiên Hibernate mở trong suốt quá trình xử lý
@@ -70,11 +74,11 @@ public class BookingOrderService implements IBookingOrder {
             BookingOrder bookingOrder = bookingOrderOptional.get();
             boolean isPending = DEFAULT_STATUS.equals(bookingOrder.getStatus());
             boolean isTransactionSuccess = bookingOrder.getTransaction() != null
-                    && "Success".equals(bookingOrder.getTransaction().getStatus());
+                    && TRANSACTION_SUCCESS.equals(bookingOrder.getTransaction().getStatus());
 
             if (isPending && isTransactionSuccess) {
                 try {
-                    bookingOrder.setStatus("Confirmed");
+                    bookingOrder.setStatus(STATUS_CONFIRMED);
                     bookingOrderRepository.save(bookingOrder);
 
                     Bill bill = new Bill();
@@ -89,15 +93,15 @@ public class BookingOrderService implements IBookingOrder {
                     String companyName = company.getName();
                     mailSender.senConfirmMail(customerEmail, idBookingOrder, companyName);
 
+                    log.info("Booking order {} confirmed successfully for company {}", idBookingOrder, idCompany);
                     return true;
-                } catch (Exception e) {
-                    log.error("Confirm Booking failed", e);
+                } catch (Exception e) {log.error("Confirm Booking failed for booking order {}: {}", idBookingOrder, e.getMessage(), e);
                 }
             } else {
-                log.error("Conditions for success not met");
+                log.error("Conditions for confirmation not met for booking order {}", idBookingOrder);
             }
         } else {
-            log.error("Booking Order not present");
+            log.error("Booking order {} not found", idBookingOrder);
         }
         return false;
     }
@@ -112,7 +116,7 @@ public class BookingOrderService implements IBookingOrder {
             BookingOrder bookingOrder = bookingOrderOptional.get();
             boolean isPending = DEFAULT_STATUS.equals(bookingOrder.getStatus());
             boolean isTransactionFailed = bookingOrder.getTransaction() != null
-                    && "Failure".equals(bookingOrder.getTransaction().getStatus());
+                    && TRANSACTION_FAILURE.equals(bookingOrder.getTransaction().getStatus());
 
             log.info("isPending: {}", isPending);
             log.info("isTransactionFailed: {}", isTransactionFailed);
@@ -120,7 +124,7 @@ public class BookingOrderService implements IBookingOrder {
             if (isPending && isTransactionFailed) {
                 log.info("start if and change status inn bookingOrder table ");
                 try {
-                    bookingOrder.setStatus("Cancelled");
+                    bookingOrder.setStatus(STATUS_CANCELLED);
                     bookingOrder.setReason(reason);
                     bookingOrderRepository.save(bookingOrder);
 
@@ -131,15 +135,46 @@ public class BookingOrderService implements IBookingOrder {
                     String companyName = company.getName();
                     mailSender.sendCancelMail(customerEmail, idBookingOrder, reason, companyName);
 
+                    log.info("Booking order {} cancelled successfully for company {}", idBookingOrder, idCompany);
                     return true;
                 } catch (Exception e) {
-                    log.error("Cancel Booking failed", e);
+                    log.error("Cancel Booking failed for booking order {}: {}", idBookingOrder, e.getMessage(), e);
                 }
             } else {
-                log.error("Conditions for cancellation not met");
+                log.error("Conditions for cancellation not met for booking order {}", idBookingOrder);
             }
         } else {
-            log.error("Booking Order not present");
+            log.error("Booking order {} not found", idBookingOrder);
+        }
+
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public boolean cancelBookingByCustomer(String idCustomer, String idBooking, String reason) {
+        Optional<BookingOrder> bookingOrderOptional = bookingOrderRepository.findById(idBooking);
+        if (bookingOrderOptional.isPresent()) {
+            BookingOrder bookingOrder = bookingOrderOptional.get();
+            boolean isPending = DEFAULT_STATUS.equals(bookingOrder.getStatus());
+             if (isPending) {
+                 try {
+                     bookingOrder.setStatus(STATUS_CANCELLED);
+                     bookingOrder.setReason(reason);
+                     bookingOrderRepository.save(bookingOrder);
+
+                     String customerEmail = bookingOrder.getCustomer().getEmail();
+                     mailSender.sendCanelMailFromCustomer(customerEmail, idBooking, reason);
+
+                     return true;
+                 } catch (Exception e) {
+                     log.error("Failed to cancel booking order {} for customer {}", idBooking, idCustomer, e);
+                 }
+             } else {
+                 log.error("Booking order {} for customer {} cannot be cancelled as it is not in pending status", idBooking, idCustomer);
+             }
+        } else {
+            log.error("Booking order {} not found for customer {}", idBooking, idCustomer);
         }
 
         return false;

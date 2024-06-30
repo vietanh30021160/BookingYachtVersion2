@@ -15,5 +15,7 @@ public interface IBookingOrder {
 
     boolean cancelBooking(String idBookingOrder, String reason, String idCompany);
 
+    boolean cancelBookingByCustomer(String idCustomer, String idBooking, String reason);
+
     void autoConfirmAndCancelBookings();
 }

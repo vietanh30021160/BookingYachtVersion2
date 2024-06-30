@@ -71,11 +71,11 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/payment")
+    @GetMapping("/payment/{idCustomer}")
     public ResponseEntity<?> createVnPayPayment(@RequestParam List<String> selectedRoomIds,
                                                 @RequestParam List<String> selectedServiceIds,
                                                 @RequestParam String requirement,
-                                                @RequestParam String idCustomer,
+                                                @PathVariable String idCustomer,
                                                 @RequestParam String idSchedule,
                                                 HttpServletRequest request) {
         DataResponse dataResponse = new DataResponse();
@@ -236,6 +236,16 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
+    @PutMapping("/bookingOrders/{idCustomer}/cancel/{idBooking}")
+    public ResponseEntity<?> cancelBookingByCustomer(@PathVariable String idCustomer,
+                                                     @PathVariable String idBooking,
+                                                     @RequestParam String reason){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iBookingOrder.cancelBookingByCustomer(idCustomer, idBooking, reason));
+
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
     @GetMapping("/bills/{idCustomer}")
     public ResponseEntity<?> GetBillsByCustomer(@PathVariable String idCustomer){
         DataResponse dataResponse = new DataResponse();
@@ -291,7 +301,5 @@ public class CustomerController {
         dataResponse.setData(iAccount.updateAccount(customerAccountId, password));
         return new ResponseEntity<>(dataResponse,HttpStatus.OK);
     }
-
-
 
 }
