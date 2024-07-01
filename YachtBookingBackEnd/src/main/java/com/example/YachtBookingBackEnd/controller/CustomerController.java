@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -37,7 +39,7 @@ public class CustomerController {
     IBill iBill;
     IRoomImage iRoomImage;
     IForgotPassword iForgotPassword;
-
+    ICompany iCompany;
     @PostMapping("/accounts")
     ResponseEntity<?> register(@RequestParam String username,
                                @RequestParam String password) {
@@ -50,6 +52,12 @@ public class CustomerController {
         else {
             dataResponse.setData(false);
         }
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/profilesCompany/{idCompany}")
+    public ResponseEntity<?> getDetailCompanyByID(@PathVariable String idCompany) {
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iCompany.getCompanyDTOById(idCompany));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
@@ -101,9 +109,10 @@ public class CustomerController {
                                          @RequestParam String description,
                                          @PathVariable String idBooking,
                                          @PathVariable String idCustomer,
-                                         @PathVariable String idYacht) {
+                                         @PathVariable String idYacht,
+                                         @RequestParam LocalDate date) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iCustomer.addFeedback(starRating,description,idBooking,idCustomer,idYacht));
+        dataResponse.setData(iCustomer.addFeedback(starRating,description,idBooking,idCustomer,idYacht,date));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @GetMapping("/getFeedbackByYachtId/{yachtId}")
@@ -220,7 +229,6 @@ public class CustomerController {
         dataResponse.setData(iCustomer.getAllCompanies());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
     @GetMapping("/getYachtType")
     public ResponseEntity<?> getYachtType(){
         DataResponse dataResponse = new DataResponse();
@@ -260,6 +268,13 @@ public class CustomerController {
     public ResponseEntity<?> getAllImageByIdRoom(@PathVariable String roomId){
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setData(iRoomImage.getAllImageByIdRoom(roomId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/getIdBookingByIdCustomer/{idCustomer}")
+    public ResponseEntity<?> getAllIdBookingByIdCustomer(@PathVariable String idCustomer){
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iCustomer.findIdBookingByCustomerId(idCustomer));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

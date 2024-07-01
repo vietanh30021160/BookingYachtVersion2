@@ -5,6 +5,9 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Entity
@@ -21,6 +24,9 @@ public class Feedback {
     @Lob
     @Column(name = "description")
     private String description;
+
+    @Column(name = "date")
+    private LocalDate date;
 
     @Column(name = "id_booking", unique = true)
     private String idBooking;
