@@ -25,7 +25,7 @@ const ModalCreateRoomType = (props) => {
         if (!price && !type && !utilities) {
             toast.error('Input Not Empty')
         } else {
-            let res = await createRoomType(price, type, utilities);
+            let res = await createRoomType(price, type, utilities.trim());
             if (res && res.data.data === true) {
                 toast.success('Create Successfully')
                 await props.getRoomType();

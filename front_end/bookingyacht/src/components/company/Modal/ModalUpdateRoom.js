@@ -45,7 +45,7 @@ const ModalUpdateRoom = (props) => {
         if (!name || !description) {
             toast.error("Input Not Empty")
         } else {
-            let res = await updateRoom(dataUpdateRoom.idRoom, name, description, image)
+            let res = await updateRoom(dataUpdateRoom.idRoom, name.trim(), description.trim(), image)
             if (res && res.data.data === true) {
                 toast.success("Update Successfully")
                 handleClose();

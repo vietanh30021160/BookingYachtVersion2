@@ -101,9 +101,9 @@ const ManageInforYacht = (props) => {
 
     const handleUpdateYacht = async () => {
         if (!validateInput()) return;
-        let res = await updateYacht(idYacht, dataUpdate.name, image,
-            dataUpdate.hullBody, dataUpdate.description,
-            dataUpdate.rule, dataUpdate.itinerary,
+        let res = await updateYacht(idYacht, dataUpdate.name.trim(), image,
+            dataUpdate.hullBody.trim(), dataUpdate.description.trim(),
+            dataUpdate.rule.trim(), dataUpdate.itinerary.trim(),
             idYachtType, idLocation);
 
         if (res && res.data.data === true) {

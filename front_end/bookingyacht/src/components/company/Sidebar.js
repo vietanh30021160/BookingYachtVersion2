@@ -115,16 +115,15 @@ const Sidebar = (props) => {
 
                 <SidebarFooter style={{ textAlign: 'center' }}>
                     <div
-                        className="sidebar-btn-wrapper"
+                        className="sidebar-btn-wrapper d-flex justify-content-center"
                         style={{
                             padding: '20px 24px',
                         }}
                     >
-                        <NavLink onClick={handleLogout} className='nav-link' to='/signin'><TbLogout2 />Back</NavLink>
-                        {/* <FaGithub /> */}
-                        <span style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                        <NavLink onClick={handleLogout} className='nav-link ' to='/signin'><TbLogout2 />Logout</NavLink>
+                        {/* <span style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
 
-                        </span>
+                        </span> */}
                     </div>
                 </SidebarFooter>
             </ProSidebar>

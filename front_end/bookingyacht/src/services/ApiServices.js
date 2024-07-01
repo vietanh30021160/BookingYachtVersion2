@@ -286,4 +286,13 @@ export const canelBooking = (idCompany, idBookingOrder) => {
     return axios.put(`/api/companies/${idCompany}/confirm/${idBookingOrder}`)
 }
 
+export const getBookingByAmount = (idCompany, min, max) => {
+    return axios.get(`/api/companies/bookingOrders/range/${idCompany}`, {
+        params: {
+            min: min,
+            max: max
+        }
+    })
+}
+
 

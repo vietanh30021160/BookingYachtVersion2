@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { FaCirclePlus } from "react-icons/fa6";
-import { deleteRoomType, getAllRoomType } from '../../services/ApiServices';
+import { deleteRoomType, getAllRoomTypeCompany } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
 import ModalCreateRoomType from './Modal/ModalCreateRoomType';
 import ModalUpdateRoomType from './Modal/ModalUpdateRoomType';
 import { GoArrowDown } from "react-icons/go";
 import { GoArrowUp } from "react-icons/go";
+import ReactPaginate from 'react-paginate';
 
 const ManageRoomType = () => {
     const [isShowModalCreateRoomType, setIsShowModalCreateRoomType] = useState(false);
@@ -15,13 +16,16 @@ const ManageRoomType = () => {
 
     const [roomType, setRoomType] = useState('');
 
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 10;
+
     useEffect(() => {
         getRoomType();
     }, [])
 
 
     const getRoomType = async () => {
-        let res = await getAllRoomType();
+        let res = await getAllRoomTypeCompany();
         if (res && res.data.data.length > 0) {
             setRoomType(res.data.data);
         } else {
@@ -40,6 +44,10 @@ const ManageRoomType = () => {
             if (res && res.data.data === true) {
                 toast.success('Delete Successfully');
                 getRoomType();
+                setCurrentPage(prevPage => {
+                    const maxPage = Math.ceil((roomType.length - 1) / itemsPerPage) - 1;
+                    return prevPage > maxPage ? maxPage : prevPage;
+                });
             } else {
                 toast.error('Delete Fail');
             }
@@ -56,6 +64,12 @@ const ManageRoomType = () => {
         const newList = [...roomType].sort((a, b) => b.price - a.price);
         setRoomType(newList);
     }
+    const handlePageChange = (selectedItem) => {
+        setCurrentPage(selectedItem.selected);
+    }
+
+    const displayedRoomTypes = roomType.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+
 
     return (
         <div className='container'>
@@ -63,7 +77,7 @@ const ManageRoomType = () => {
                 <Button className='col-2 btn btn-success' onClick={() => setIsShowModalCreateRoomType(true)}><FaCirclePlus style={{ marginRight: 8, marginBottom: 5 }} />Add New Room Type</Button>
 
             </div>
-            <table class="table table-hover">
+            <table className="table table-hover">
                 <thead>
                     <tr>
                         <th scope="col">
@@ -78,7 +92,7 @@ const ManageRoomType = () => {
                 </thead>
                 <tbody>
                     {
-                        roomType && roomType.length > 0 && roomType.map((type) =>
+                        displayedRoomTypes && displayedRoomTypes.length > 0 && displayedRoomTypes.map((type) =>
                             <tr key={type.idRoomType}>
                                 <td>{type.price}</td>
                                 <td>{type.type}</td>
@@ -97,6 +111,28 @@ const ManageRoomType = () => {
 
                 </tbody>
             </table>
+            <div className='page'>
+                <ReactPaginate
+                    nextLabel="Next >"
+                    onPageChange={handlePageChange}
+                    pageRangeDisplayed={3}
+                    marginPagesDisplayed={2}
+                    pageCount={Math.ceil(roomType.length / itemsPerPage)}
+                    previousLabel="< Prev"
+                    pageClassName="page-item"
+                    pageLinkClassName="page-link"
+                    previousClassName="page-item"
+                    previousLinkClassName="page-link"
+                    nextClassName="page-item"
+                    nextLinkClassName="page-link"
+                    breakLabel="..."
+                    breakClassName="page-item"
+                    breakLinkClassName="page-link"
+                    containerClassName="pagination"
+                    activeClassName="active"
+                    renderOnZeroPageCount={null}
+                />
+            </div>
             <ModalCreateRoomType
                 show={isShowModalCreateRoomType}
                 setIsShowModalCreateRoomType={setIsShowModalCreateRoomType}

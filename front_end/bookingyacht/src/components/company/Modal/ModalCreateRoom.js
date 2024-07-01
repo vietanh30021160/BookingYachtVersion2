@@ -43,11 +43,11 @@ const ModalCreateRoom = (props) => {
         if (!roomName || !area || !description || !roomType || !previewImage || !image) {
             toast.error('Input Not Empty')
         } else {
-            let res = await createRoom(roomName.trim(), area.trim(), description.trim(), roomType.trim(), image, idYacht)
+            let res = await createRoom(roomName.trim(), area, description.trim(), roomType, image, idYacht)
             if (res && res.data.data === true) {
                 toast.success('Create Successfully');
                 handleClose();
-                getRoomType();
+                await props.getAllRoom()
             } else {
                 toast.error('Create Fail')
             }
