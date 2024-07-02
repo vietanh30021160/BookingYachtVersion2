@@ -1,30 +1,97 @@
-import { useEffect } from "react";
-import Form from 'react-bootstrap/Form';
-import { useDispatch, useSelector } from "react-redux";
-import i_content from '../../assets/image_1.webp';
-import { getAllServiceApi } from "../../redux/action/YachtServiceAction";
 import FormSearch from "../home/FormSearch";
 import './FindYacht.scss';
+import i_content from '../../assets/image_1.webp';
+import Form from 'react-bootstrap/Form';
 import YachtList from "./YachtList";
+import { useState, useEffect } from "react";
+import { getYachtService, getAllYachtServiceId } from "../../services/ApiServices";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllServiceApi } from "../../redux/action/YachtServiceAction";
+import { getAllYachtTypeApi } from './../../redux/action/YachtTypeAction';
+import { FILTER_YACHT } from "../../redux/type/Type";
+import { useParams } from "react-router-dom";
 
 const FindYacht = () => {
     const { services } = useSelector(state => state.YachtServiceReducer)
+    const { yachtTypes } = useSelector(state => state.YachtTypeReducer)
     const dispatch = useDispatch();
+
+    const [selectedServices, setSelectedServices] = useState([]);
+    const [selectedTypes, setSelectedTypes] = useState([]);
+    const [yachtServiceIds, setYachtServiceIds] = useState([]);
+
+    useEffect(() => {
+        const fetchYachtServiceIds = async () => {
+            const res = await getAllYachtServiceId();
+            setYachtServiceIds(res.data.data);
+        };
+        fetchYachtServiceIds();
+    }, [])
+
     useEffect(() => {
         dispatch(getAllServiceApi())
+        dispatch(getAllYachtTypeApi())
     }, [dispatch])
 
     //The useEffect will run once when the component mounts because:
     // The dispatch function does not change between renders.
     // The empty dependency array [dispatch] behaves similarly to [], meaning the effect runs once after the initial render.
+    const handleTypeChange = (event) => {
+        const { value, checked } = event.target;
+        setSelectedTypes(prevSelectedTypes =>
+            checked ? [...prevSelectedTypes, value] : prevSelectedTypes.filter(type => type !== value)
+        )
+    }
+    const handleServiceChange = (event) => {
+        const { value, checked } = event.target;
+        setSelectedServices(prevSelectedServices =>
+            checked ? [...prevSelectedServices, value] : prevSelectedServices.filter(service => service !== value)
+        )
+    }
+    useEffect(() => {
+        dispatch({
+            type: FILTER_YACHT,
+            //payload chi nhan object
+            payload: { selectedTypes, selectedServices, yachtServiceIds }
+        })
+    }, [selectedTypes, selectedServices, yachtServiceIds, dispatch])
 
-    const renderService = () => {
-        return services.map((service) => {
+    const renderYachtType = () => {
+        return yachtTypes.map((yachtType) => {
             return (
-                <Form.Check key={service.idService} label={service.service} />
+                <Form.Check
+                    type="checkbox"
+                    id={yachtType.idYachtType}
+                    name="yachtType"
+                    value={yachtType.starRanking}
+                    key={yachtType.idYachtType}
+                    label={`${yachtType.starRanking} sao`}
+                    onChange={handleTypeChange}
+                    checked={selectedTypes.includes(yachtType.starRanking.toString())}
+                />
             )
         })
     }
+    const renderService = () => {
+        return services.map((service) => {
+            return (
+                <Form.Check
+                    type="checkbox"
+                    id={service.idService}
+                    name="service"
+                    value={service.idService.toString()}
+                    key={service.idService}
+                    label={service.service}
+                    onChange={handleServiceChange}
+                    checked={selectedServices.includes(service.idService.toString())}
+                />
+            )
+        })
+    }
+    const handleResetFilters = () => {
+        setSelectedServices([]);
+        setSelectedTypes([]);
+    };
 
     return (
         <div className="find-yacht-body">
@@ -47,7 +114,7 @@ const FindYacht = () => {
                                 Lọc Kết Quả
                             </div>
                             <div>
-                                <button>
+                                <button onClick={() => { handleResetFilters() }}>
                                     Đặt Lại
                                 </button>
                             </div>
@@ -59,10 +126,7 @@ const FindYacht = () => {
                             <div className="star-body-content">
                                 Xếp hạng sao
                             </div>
-
-                            <Form.Check id="3sao" label='3 Sao' />
-                            <Form.Check id="4sao" label='4 Sao' />
-                            <Form.Check id="5sao" label='5 Sao' />
+                            {renderYachtType()}
                         </div>
                         <div className="filter-extention d-flex">
                             <div className="extention-body-content">

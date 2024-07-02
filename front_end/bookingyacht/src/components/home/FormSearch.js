@@ -1,30 +1,59 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Home.scss';
 import { Button, Col, FormControl, FormGroup, Row, Container } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { SEARCH_YACHT } from '../../redux/type/Type';
+import { login } from './../../services/ApiServices';
+import { YachtListReducer } from './../../redux/reducer/YachtListReducer';
 
 const FormSearch = () => {
-    const init = {
-        nameYacht: '',
-        location: '',
-        price: ''
-    }
-    const [searchData, setSearchData] = useState(init);
+    const dispatch = useDispatch();
+    const { selectedLocation } = useSelector(state => state.YachtListReducer);
+    console.log("selectedLocation:", selectedLocation)
+
+    const [searchData, setSearchData] = useState({
+        name: '',
+        location: selectedLocation || 'all',
+        price: 'all',
+    });
+
+    console.log(searchData)
     const handleChange = (e) => {
-        setSearchData(
-            {
-                ...searchData,
-                [e.target.name]: e.target.value
-            }
-        )
+        const { name, value } = e.target;
+        setSearchData({
+            ...searchData,
+            [name]: value
+        })
+    };
+
+    useEffect(() => {
+        dispatch({
+            type: SEARCH_YACHT,
+            payload: searchData
+        });
+    }, [searchData, dispatch]);
+
+    const hanldeSubmit = (e) => {
+        e.preventDefault();
+        dispatch({
+            type: SEARCH_YACHT,
+            payload: searchData
+        });
     }
-    const handleSearch = () => {
-        console.log("check search", searchData)
-    }
+
+    useEffect(() => {
+        dispatch({
+            type: SEARCH_YACHT,
+            payload: searchData
+        });
+    }, []);
+
 
     return (
         <div>
             <div className='homepage-content container '>
-                <form className='mb-3 serach-yacht p-4'>
+                <form className='mb-3 serach-yacht p-4' onSubmit={hanldeSubmit}>
                     <div className='text-center'>
                         <h3 style={{ fontWeight: 'bold' }}>Bạn lựa chọn du thuyền Hạ Long nào ?</h3>
                         <p>Có rất nhiều du thuyền dành cho bạn</p>
@@ -36,23 +65,22 @@ const FormSearch = () => {
                                     <FormControl
                                         placeholder='Search Yacht'
                                         type='text'
-                                        name='nameYacht'
+                                        name='name'
                                         onChange={handleChange}
                                     />
                                 </FormGroup>
                             </Col>
                             <Col>
-                                <select className='select p-2' name='location' onChange={handleChange} style={{ color: '#595C5F' }}>
+                                <select className='select p-2' name='location' onChange={handleChange} style={{ color: '#595C5F' }} value={searchData.location}>
                                     <option value='all'>Tất cả các địa điểm</option>
-                                    <option value='Vịnh Hạ Long'>Vịnh Hạ Long</option>
-                                    <option value='Vịnh Lan Hạ'>Vịnh Lan Hạ</option>
-                                    <option value='Đảo Cát Bà'>Đảo Cát Bà</option>
-
+                                    <option value='Hạ Long'>Vịnh Hạ Long</option>
+                                    <option value='Lan Hạ'>Vịnh Lan Hạ</option>
+                                    <option value='Cát Bà'>Đảo Cát Bà</option>
                                 </select>
 
                             </Col>
                             <Col>
-                                <select className='select p-2' name='price' onChange={handleChange} style={{ color: '#595C5F' }}>
+                                <select className='select p-2' name='price' onChange={handleChange} style={{ color: '#595C5F' }} value={searchData.price}>
                                     <option value='all'>Tất cả các mức giá</option>
                                     <option value='1 Đến 3 Triệu'>1 Đến 3 Triệu</option>
                                     <option value='3 Đến 6 Triệu'>3 Đến 6 Triệu</option>

@@ -10,19 +10,16 @@ import { Container } from 'react-bootstrap/Container';
 import { FaLocationDot } from "react-icons/fa6";
 import { useDispatch, useSelector } from 'react-redux';
 import { getYachtListApi } from '../../redux/action/YachtListAction';
+import { getAllRoomByYachtApi } from '../../redux/action/RoomAction';
 
 
 const ShowYacht = () => {
     const dispatch = useDispatch();
+    const { yachtList } = useSelector((state) => state.YachtListReducer);
 
-    const { yachtList } = useSelector((state) => state.YachtReducer);
-    const getYachtList = () => {
-        dispatch(getYachtListApi())
-    }
     useEffect(() => {
-        getYachtList();
+        dispatch(getYachtListApi())
     }, [dispatch])
-
 
     const avatarYachtApi = 'http://localhost:8080/api/customer/file/'
 
@@ -41,6 +38,7 @@ const ShowYacht = () => {
             </div>
             <div className='yacht-content'>
                 {yachtList && yachtList.length > 0 && (yachtList.length > 6 ? yachtList.slice(0, 6) : yachtList).map((item) => {
+
                     return (
                         <div className='col-12 col-sm-6 col-md-3 col-lg-3 mb-4'>
                             <NavLink key={item.idYacht} to={`/mainpage/${item.idYacht}`} className='nav-link'>
@@ -50,7 +48,7 @@ const ShowYacht = () => {
                                         <Card.Title style={{ fontWeight: 600, fontSize: 18, color: '#475467', marginBottom: 0 }}>{`${item.name}`}</Card.Title>
                                         <div style={{ padding: '5px' }} className='location'><FaLocationDot />{item.location.name}</div>
                                         <div className='row d-flex align-items-center mt-2'>
-                                            <p className='col-7' style={{ color: '#475467', fontWeight: '700', marginBottom: 0 }}>Price: 3.3350.000đ</p>
+                                            <p className='col-7' style={{ color: '#475467', fontWeight: '700', marginBottom: 0 }}>Price:</p>
                                             <button className='col-5 btn btn-warning' style={{ color: '#475467', borderRadius: 25, width: 100, fontSize: '14px' }}>Đặt ngay</button>
                                         </div>
                                     </Card.Body>

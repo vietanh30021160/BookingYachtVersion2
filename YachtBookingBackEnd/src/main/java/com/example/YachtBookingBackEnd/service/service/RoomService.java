@@ -178,6 +178,8 @@ public class RoomService implements IRoom {
                 roomTypeDTO.setUtilities(room.getRoomType().getUtilities());
                 roomDTO.setRoomType(roomTypeDTO);
 
+                roomDTO.setYachtId(idYacht);
+
                 roomDTOList.add(roomDTO);
             }
         }catch (Exception e){

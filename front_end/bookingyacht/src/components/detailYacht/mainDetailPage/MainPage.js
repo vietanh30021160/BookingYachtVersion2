@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import RoomSelection from '../priceRoom/RoomSelection';
 import Rating from '../rating/Rating';
 import Map from '../scheduleDetail/Map';
 import SectionHeader from '../sectionHeader/SectionHeade';
@@ -10,7 +11,8 @@ import { Col } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { getYachtByYachtIdApi } from '../../../redux/action/YachtAction';
 import { getScheduleByYachtApi } from '../../../redux/action/ScheduleAction';
-import RoomSelection from '../priceRoom/RoomSelection';
+import { CLEAR_SELECTION_WHEN_EXIT } from '../../../redux/type/Type';
+import { clearSelectionWhenExit } from '../../../redux/action/OrderAction';
 
 
 
@@ -21,6 +23,9 @@ const MainPage = () => {
   const dispatch = useDispatch();
   const [currentSection, setCurrentSection] = useState('');
   const [selectedSchedule, setSelectedSchedule] = useState('');
+
+  console.log(selectedSchedule)
+
 
   useEffect(() => {
     if (yachtId) {
@@ -72,6 +77,7 @@ const MainPage = () => {
   }
 
   const hanleScheduleChange = (event) => {
+    dispatch(clearSelectionWhenExit())
     setSelectedSchedule(event.target.value);
   }
 
@@ -87,6 +93,7 @@ const MainPage = () => {
     }
   }, [schedules]);
 
+
   const formatDate = (dateTimeString) => {
     const dateTime = new Date(dateTimeString);
     const hours = dateTime.getHours();
@@ -100,6 +107,14 @@ const MainPage = () => {
 
     return `${hours}:${formattedMinutes} ${day}/${month}/${year}`;
   };
+
+  useEffect(() => {
+    return () => {
+      //componentWillUnmount()
+      // Clean up the selected rooms state when component unmounts
+      dispatch(clearSelectionWhenExit());
+    };
+  }, [dispatch]);
 
   return (
     <div className="container">

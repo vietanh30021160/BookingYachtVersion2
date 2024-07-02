@@ -20,5 +20,5 @@ public class RoomDTO {
     private String avatar;
     private RoomTypeDTO roomType;
     private List<RoomImageDTO> roomImageSet;
-
+    private String yachtId;
 }
