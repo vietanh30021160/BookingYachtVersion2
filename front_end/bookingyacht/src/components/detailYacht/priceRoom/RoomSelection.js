@@ -25,6 +25,8 @@ const RoomSelection = ({ yacht, selectedSchedule }) => {
     const selectedRooms = useSelector(state => state.OrderReducer.selectedRooms);
     const totalPrice = useSelector(state => state.OrderReducer.totalPrice);
 
+    console.log(selectedRooms)
+
     useEffect(() => {
         const getUnBookedRoomList = async () => {
             try {
@@ -105,6 +107,13 @@ const RoomSelection = ({ yacht, selectedSchedule }) => {
         backgroundColor: 'orange',
         color: 'balck'
     }
+    const hanldeRentWhole = () => {
+        handleReset();
+        originalRooms.forEach(room => {
+            dispatch(addRoomAction(room))
+        })
+        handleBookNow()
+    }
     const renderRoomType = () => {
         const uniqueRoomTypes = [...new Set(originalRooms.map(room => room.roomType.type))];
         return uniqueRoomTypes.map(roomType => (
@@ -157,14 +166,14 @@ const RoomSelection = ({ yacht, selectedSchedule }) => {
                             <h5><span className='fw-bold'>Tổng tiền:</span> {totalPrice.toLocaleString()} đ</h5>
                         </div>
                         <div className="col-md-6 col-12 text-end">
-                            <Button variant="secondary" className='rent' onClick={handleBookNow}>Thuê trọn tàu</Button>
+                            <Button variant="secondary" className='rent' onClick={() => { hanldeRentWhole() }}>Thuê trọn tàu</Button>
                             <Button variant="custom ms-2" onClick={handleBookNow}>Đặt ngay <FaArrowRightLong /></Button>
                         </div>
                     </div>
                 </div>
             </div>
             {console.log('selectedServices', selectedServices)}
-            {console.log('selectedRoom', selectedRoom)}
+            {console.log('selectedRoom', selectedRooms)}
             <BookNowModal
                 selectedSchedule={selectedSchedule}
                 selectedRooms={selectedRooms}

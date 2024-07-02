@@ -26,6 +26,8 @@ instance.interceptors.request.use(function (config) {
     NProgress.start();
     const token = store?.getState()?.account?.account?.data;
     config.headers['Authorization'] = `Bearer ${token}`;
+    console.log('token', token)
+    console.log('config', config)
     return config;
 }, function (error) {
     // Do something with request error

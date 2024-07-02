@@ -4,7 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { removeRoomAction } from '../../../redux/action/OrderAction';
 import { useNavigate } from 'react-router-dom';
 import { GoCheckCircle } from "react-icons/go";
-import { getCustomerById, getPayment } from '../../../services/ApiServices';
+import { createPayment, getCustomerById, getPayment } from '../../../services/ApiServices';
+import { ScheduleReducer } from './../../../redux/reducer/ScheduleReducer';
+import { getScheduleByIdApi } from '../../../redux/action/ScheduleAction';
 
 const BookNowModal = ({
     selectedRooms,
@@ -18,25 +20,16 @@ const BookNowModal = ({
 }) => {
     const getAvatarApi = `http://localhost:8080/api/customer/file/`;
     const isLogged = useSelector(state => state.account.isAuthenticated);
-
+    console.log('isLogged', isLogged)
+    const [customer, setCustomer] = useState(null);
+    const { idCustomer } = useSelector(state => state.account.account);
     const [requirements, setRequirements] = useState('');
     const [urlPayment, setUrlPayment] = useState('');
+    const { schedule } = useSelector(state => state.ScheduleReducer)
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        if (isLogged) {
-            processPayment();
-        } else {
-            navigate('/signin');
-        }
-    };
-
-    const handleOnChange = (event) => {
-        setRequirements(event.target.value);
-    };
-
-    const { idCustomer } = useSelector(state => state.account.account);
-    const [customer, setCustomer] = useState();
+    console.log('schedule', schedule)
 
     useEffect(() => {
         const getCustomer = async () => {
@@ -52,8 +45,11 @@ const BookNowModal = ({
         }
     }, [idCustomer]);
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+
+
+    const handleOnChange = (event) => {
+        setRequirements(event.target.value);
+    };
 
     const handleRemoveRoom = (room) => {
         dispatch(removeRoomAction(room));
@@ -70,13 +66,30 @@ const BookNowModal = ({
         }
         return serviceIds;
     };
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (isLogged) {
+            processPayment();
+        } else {
+            navigate('/signin');
+        }
+    };
+
+    useEffect(() => {
+        if (selectedSchedule) {
+            dispatch(getScheduleByIdApi(selectedSchedule));
+        }
+    }, [selectedSchedule, dispatch])
+
+
 
     const processPayment = async () => {
-        const roomIds = getSelectedRoomIds();
-        const serviceIds = getSelectedServiceIds();
-        console.log('roomid:', roomIds, 'serverviceid:', serviceIds, 'requirements:', requirements, 'customer:', idCustomer, 'schedule:', selectedSchedule)
+        const selectedRoomIds = getSelectedRoomIds();
+        const selectedServiceIds = getSelectedServiceIds();
+        console.log('roomid:', selectedRoomIds, 'serverviceid:', selectedServiceIds, 'requirements:', requirements, 'customer:', idCustomer, 'schedule:', selectedSchedule)
         try {
-            const res = await getPayment(roomIds, serviceIds, requirements, idCustomer, selectedSchedule);
+
+            const res = await createPayment(selectedRoomIds, selectedServiceIds, requirements, idCustomer, selectedSchedule);
             console.log(res);
             setUrlPayment(res.data.data);
             console.log('url', res.data.data);
@@ -85,6 +98,19 @@ const BookNowModal = ({
         } catch (error) {
             console.error('Error fetching payment:', error);
         }
+    };
+    const formatDate = (dateTimeString) => {
+        const dateTime = new Date(dateTimeString);
+        const hours = dateTime.getHours();
+        const minutes = dateTime.getMinutes();
+        const day = dateTime.getDate();
+        const month = dateTime.getMonth() + 1; // Months are 0-indexed
+        const year = dateTime.getFullYear();
+
+        // Pad single digit minutes with leading zero
+        const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+        return `${hours}:${formattedMinutes} ${day}/${month}/${year}`;
     };
 
     return (
@@ -117,7 +143,7 @@ const BookNowModal = ({
                         </Col>
                         <Col md={3}>
                             <h6 className='fw-bold'>Giá Phòng</h6>
-                            <h5>{room.roomType.price.toLocaleString()} đ</h5>
+                            <h5>{room?.roomType?.price?.toLocaleString()} đ</h5>
                         </Col>
                         <Col md={2} className="d-flex align-items-center justify-content-end">
                             <Button onClick={() => handleRemoveRoom(room)} className='btn btn-danger'>Hủy</Button>
@@ -125,6 +151,10 @@ const BookNowModal = ({
                     </Row>
                 ))}
                 <Form id="bookingForm" onSubmit={handleSubmit}>
+                    <Form.Group controlId="formName" className="mb-3">
+                        <Form.Label>Lịch trình đã chọn</Form.Label>
+                        <Form.Control type="text" placeholder="" readOnly value={schedule ? `${formatDate(schedule.startDate)} - ${formatDate(schedule.endDate)}` : 'Loading...'} />
+                    </Form.Group>
                     <Form.Group controlId="formName" className="mb-3">
                         <Form.Label>Họ và tên</Form.Label>
                         <Form.Control type="text" placeholder="Nhập họ và tên" readOnly value={customer ? customer.fullName : ''} />
@@ -141,6 +171,7 @@ const BookNowModal = ({
                         <Form.Label>Yêu cầu của bạn</Form.Label>
                         <Form.Control as="textarea" rows={3} placeholder="Nhập yêu cầu của bạn" value={requirements} onChange={handleOnChange} />
                     </Form.Group>
+                    <p style={{ color: 'red', fontSize: '12px' }}>* Đã bao gồm tất cả các dịch vụ khi bạn thuê trọn tàu</p>
                 </Form>
             </Modal.Body>
             <Modal.Footer>

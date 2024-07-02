@@ -5,9 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { SEARCH_YACHT } from '../../redux/type/Type';
 import { login } from './../../services/ApiServices';
+import { YachtListReducer } from './../../redux/reducer/YachtListReducer';
 
 const FormSearch = () => {
     const dispatch = useDispatch();
+    // const { selectedLocation } = useSelector(state => state.YachtListReducer);
 
     const [searchData, setSearchData] = useState({
         name: '',
@@ -29,7 +31,7 @@ const FormSearch = () => {
             type: SEARCH_YACHT,
             payload: searchData
         });
-    }, [searchData]);
+    }, [searchData, dispatch]);
 
     const hanldeSubmit = (e) => {
         e.preventDefault();
@@ -61,7 +63,6 @@ const FormSearch = () => {
                                     <option value='Hạ Long'>Vịnh Hạ Long</option>
                                     <option value='Lan Hạ'>Vịnh Lan Hạ</option>
                                     <option value='Cát Bà'>Đảo Cát Bà</option>
-
                                 </select>
 
                             </Col>

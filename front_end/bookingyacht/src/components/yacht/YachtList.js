@@ -9,7 +9,6 @@ import { getAllYachtHome } from '../../services/ApiServices';
 import { useSelector, useDispatch } from 'react-redux';
 import { getYachtListApi } from '../../redux/action/YachtListAction'
 const YachtList = () => {
-
     const [pagging, setPagging] = useState([]); // page 1, 2, 3, ...
     const [paggingYacht, setPaggingYacht] = useState([]); // yachts in a page
     const [currentPage, setCurrentPage] = useState(1);
@@ -18,13 +17,9 @@ const YachtList = () => {
 
     const { yachtList } = useSelector((state) => state.YachtListReducer);
 
-    const getYachtList = () => {
-        dispatch(getYachtListApi())
-    }
-
     useEffect(() => {
-        getYachtList();
-    }, [])
+        dispatch(getYachtListApi())
+    }, [dispatch])
 
     useEffect(() => {
         if (yachtList.length > 0) {
