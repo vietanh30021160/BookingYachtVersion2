@@ -246,8 +246,8 @@ public class CustomerController {
     }
 
     //send mail for mail verification
-    @PostMapping("/forgotPassword/verifyEmail/{email}")
-    public ResponseEntity<?> verifyEmail(@PathVariable("email")String  email) {
+    @PostMapping("/forgotPassword/verifyEmail")
+    public ResponseEntity<?> verifyEmail(@RequestParam String  email) {
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setData(iForgotPassword.verifyEmail(email));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);

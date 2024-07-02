@@ -33,7 +33,7 @@ public class ForgotPasswordService implements IForgotPassword {
     @Autowired
     private SpringTemplateEngine templateEngine;
     @Override
-    public String verifyEmail(String email) {
+    public boolean verifyEmail(String email) {
         try {
             Customer customer = customerRepository.findCustomerByEmail(email);
             Account account = accountRepository.findAccountByCustomer(customer);
@@ -49,6 +49,7 @@ public class ForgotPasswordService implements IForgotPassword {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(email);
             message.setSubject("OTP for Forgot Password request!");
+
             message.setText("Xin chào: "+ customer.getFullName()+
                     "\n Chúng tôi gửi thông tin truy cập hệ thống của bạn: \n"+
                     "- Tên truy cập: "+ customer.getAccount().getUsername()+
@@ -59,29 +60,29 @@ public class ForgotPasswordService implements IForgotPassword {
             mailSender.send(message);
             forgotPasswordRepository.save(forgotPassword);
 
-            return "Email sent for verification.";
+            return true;
         }catch (Exception e){
             System.out.println("Email k ton tai.");
         }
-        return null;
+        return false;
     }
 
     @Override
-    public String  veryfiOTP(Integer otp, String email) {
+    public boolean  veryfiOTP(Integer otp, String email) {
         try {
 
             ForgotPassword forgotPassword = forgotPasswordRepository.findByOtpAndEmail(otp,email);
 
             if(forgotPassword.getExpirationTime().before(Date.from(Instant.now()))){
                 forgotPasswordRepository.delete(forgotPassword);
-                return "OTP has expired! ";
+                return false;
             }else{
                 forgotPasswordRepository.delete(forgotPassword);
-                return "OTP verified!";
+                return true;
             }
 
         }catch (Exception e){
-            return "Email or OTP invalid!";
+            return false;
         }
     }
 
