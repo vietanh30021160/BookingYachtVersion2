@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ScheduleService implements ISchedule {
@@ -57,5 +58,18 @@ public class ScheduleService implements ISchedule {
             System.out.println("error get all schedule "+e.getMessage());
         }
         return scheduleDTOList;
+    }
+
+    @Override
+    public ScheduleDTO getScheduleById(String idSchedule) {
+        Optional<Schedule> schedule = scheduleRepository.findById(idSchedule);
+        if(schedule.isPresent()){
+            ScheduleDTO scheduleDTO = new ScheduleDTO();
+            scheduleDTO.setIdSchedule(schedule.get().getIdSchedule());
+            scheduleDTO.setStartDate(schedule.get().getStartDate());
+            scheduleDTO.setEndDate(schedule.get().getEndDate());
+            return scheduleDTO;
+        }
+        return null;
     }
 }
