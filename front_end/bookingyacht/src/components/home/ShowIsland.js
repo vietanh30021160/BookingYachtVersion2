@@ -26,9 +26,10 @@ const ShowIsland = () => {
     const onClickLocation = (location) => {
         dispatch({
             type: SET_SELECTED_LOCATION,
-            payload: { location: location.name } // Dispatch with location name as payload
+            payload: location.name
         });
-    }
+    };
+
     const renderLocation = () => {
         return locations.map((location, index) => {
             return (

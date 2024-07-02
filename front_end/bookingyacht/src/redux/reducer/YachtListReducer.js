@@ -3,7 +3,8 @@ import { FILTER_YACHT, GET_ALL_YACHT, SEARCH_YACHT, SET_SELECTED_LOCATION } from
 const initYachtListState = {
     yachtList: [],
     originalYachtList: [],
-    // selectedLocation: 'all'
+    // isSearch: false,
+    selectedLocation: 'all',
 }
 
 export const YachtListReducer = (state = initYachtListState, action) => {
@@ -12,7 +13,7 @@ export const YachtListReducer = (state = initYachtListState, action) => {
             return {
                 ...state,
                 yachtList: action.payload,
-                originalYachtList: action.payload
+                originalYachtList: action.payload,
             }
         case SEARCH_YACHT:
             const { name, location } = action.payload
@@ -20,13 +21,13 @@ export const YachtListReducer = (state = initYachtListState, action) => {
                 const matchedName = name.toLowerCase().trim() === '' || yacht.name.toLowerCase().includes(name.toLowerCase().trim())
                 const matchedLocation = location === 'all' || yacht.location.name === location;
                 // const matchedPrice = price === 'all' ? yacht : yacht.price <= price
-
                 //Du thuyền chỉ được thêm vào filteredYachtList nếu cả matchedName và matchedLocation đều là true.
                 return matchedName && matchedLocation;
             })
             return {
                 ...state,
-                yachtList: filteredYachtList // Update yachtList with search results
+                yachtList: filteredYachtList, // Update yachtList with search results
+                // isSearch: true
             };
 
         case FILTER_YACHT:
@@ -46,12 +47,25 @@ export const YachtListReducer = (state = initYachtListState, action) => {
             });
             return {
                 ...state,
-                yachtList: filteredYachtList2
+                yachtList: filteredYachtList2,
+                // isSearch: true
             };
         case SET_SELECTED_LOCATION:
             return {
                 ...state,
                 selectedLocation: action.payload
+            };
+        case 'SEARCH_YACHT_BY_LOCATION':
+            console.log('co')
+            const selectedLocation2 = action.payload;
+            console.log('redux Selected location:', selectedLocation2);
+            const filteredYachtListByLocation = state.originalYachtList.filter((yacht) => {
+                return yacht.location.name === selectedLocation2;
+            });
+            console.log('Filtered yacht list by location:', filteredYachtListByLocation);
+            return {
+                ...state,
+                yachtList: filteredYachtListByLocation,
             };
         default:
             return state

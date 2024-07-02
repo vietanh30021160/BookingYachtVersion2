@@ -9,11 +9,12 @@ import { YachtListReducer } from './../../redux/reducer/YachtListReducer';
 
 const FormSearch = () => {
     const dispatch = useDispatch();
-    // const { selectedLocation } = useSelector(state => state.YachtListReducer);
+    const { selectedLocation } = useSelector(state => state.YachtListReducer);
+    console.log("selectedLocation:", selectedLocation)
 
     const [searchData, setSearchData] = useState({
         name: '',
-        location: 'all',
+        location: selectedLocation || 'all',
         price: 'all',
     });
 
@@ -24,8 +25,8 @@ const FormSearch = () => {
             ...searchData,
             [name]: value
         })
-
     };
+
     useEffect(() => {
         dispatch({
             type: SEARCH_YACHT,
@@ -35,7 +36,19 @@ const FormSearch = () => {
 
     const hanldeSubmit = (e) => {
         e.preventDefault();
+        dispatch({
+            type: SEARCH_YACHT,
+            payload: searchData
+        });
     }
+
+    useEffect(() => {
+        dispatch({
+            type: SEARCH_YACHT,
+            payload: searchData
+        });
+    }, []);
+
 
     return (
         <div>
@@ -58,7 +71,7 @@ const FormSearch = () => {
                                 </FormGroup>
                             </Col>
                             <Col>
-                                <select className='select p-2' name='location' onChange={handleChange} style={{ color: '#595C5F' }}>
+                                <select className='select p-2' name='location' onChange={handleChange} style={{ color: '#595C5F' }} value={searchData.location}>
                                     <option value='all'>Tất cả các địa điểm</option>
                                     <option value='Hạ Long'>Vịnh Hạ Long</option>
                                     <option value='Lan Hạ'>Vịnh Lan Hạ</option>
@@ -67,7 +80,7 @@ const FormSearch = () => {
 
                             </Col>
                             <Col>
-                                <select className='select p-2' name='price' onChange={handleChange} style={{ color: '#595C5F' }}>
+                                <select className='select p-2' name='price' onChange={handleChange} style={{ color: '#595C5F' }} value={searchData.price}>
                                     <option value='all'>Tất cả các mức giá</option>
                                     <option value='1 Đến 3 Triệu'>1 Đến 3 Triệu</option>
                                     <option value='3 Đến 6 Triệu'>3 Đến 6 Triệu</option>

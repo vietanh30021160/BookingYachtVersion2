@@ -19,7 +19,6 @@ const FindYacht = () => {
     const [selectedServices, setSelectedServices] = useState([]);
     const [selectedTypes, setSelectedTypes] = useState([]);
     const [yachtServiceIds, setYachtServiceIds] = useState([]);
-    console.log(selectedServices)
 
     useEffect(() => {
         const fetchYachtServiceIds = async () => {
