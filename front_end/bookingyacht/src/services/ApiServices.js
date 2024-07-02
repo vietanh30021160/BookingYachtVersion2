@@ -283,7 +283,7 @@ export const confirmBooking = (idCompany, idBookingOrder) => {
 }
 
 export const canelBooking = (idCompany, idBookingOrder) => {
-    return axios.put(`/api/companies/${idCompany}/confirm/${idBookingOrder}`)
+    return axios.put(`/api/companies/${idCompany}/cancel/${idBookingOrder}`)
 }
 
 export const getBookingByAmount = (idCompany, min, max) => {
@@ -311,5 +311,5 @@ export const updateScheduleYacht = (yachtId, scheduleId, startDate, endDate) => 
 }
 
 export const deleteScheduleYacht = (yachtId, scheduleId) => {
-return axios.delete(`/api/companies/deleteSchedule/${yachtId}/${scheduleId}`)
+    return axios.delete(`/api/companies/deleteSchedule/${yachtId}/${scheduleId}`)
 }

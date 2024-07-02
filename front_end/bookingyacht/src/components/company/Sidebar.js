@@ -81,7 +81,7 @@ const Sidebar = (props) => {
                     </Menu>
 
 
-                    <Menu iconShape="circle">
+                    {/* <Menu iconShape="circle">
                         <MenuItem
                             icon={<FaMoneyCheckAlt />}
                         >
@@ -89,7 +89,7 @@ const Sidebar = (props) => {
                             <Link to='/manage-company/bill' />
                         </MenuItem>
 
-                    </Menu>
+                    </Menu> */}
                     <Menu iconShape="circle">
                         <MenuItem
                             icon={<ImProfile />}
