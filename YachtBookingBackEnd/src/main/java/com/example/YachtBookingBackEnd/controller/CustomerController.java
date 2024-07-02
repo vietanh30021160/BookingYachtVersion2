@@ -2,6 +2,7 @@ package com.example.YachtBookingBackEnd.controller;
 
 import com.example.YachtBookingBackEnd.payload.response.DataResponse;
 import com.example.YachtBookingBackEnd.service.implement.*;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,20 +22,21 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CustomerController {
-    private IAccount iAccount;
-    private ICustomer iCustomer;
-    private IPayment iPayment;
-    private IYacht iYacht;
-    private IFile iFile;
-    private IYachtImage iYachtImage;
-    private IService iService;
-    private ISchedule iSchedule;
-    private IRoom iRoom;
-    private IRoomType iRoomType;
-    private IYachtType iYachtType;
-    private IRoomImage iRoomImage;
-
-
+    IAccount iAccount;
+    ICustomer iCustomer;
+    IPayment iPayment;
+    IYacht iYacht;
+    IFile iFile;
+    IYachtImage iYachtImage;
+    IService iService;
+    ISchedule iSchedule;
+    IRoom iRoom;
+    IRoomType iRoomType;
+    IYachtType iYachtType;
+    IBookingOrder iBookingOrder;
+    IBill iBill;
+    IRoomImage iRoomImage;
+    IForgotPassword iForgotPassword;
 
     @PostMapping("/accounts")
     ResponseEntity<?> register(@RequestParam String username,
@@ -82,12 +84,7 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/profile/changePassword/{customerAccountId}")
-    ResponseEntity<?> changePassword(@PathVariable String customerAccountId,@RequestParam String password){
-        DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iAccount.updateAccount(customerAccountId, password));
-        return new ResponseEntity<>(dataResponse,HttpStatus.OK);
-    }
+
 
     @PutMapping("/profile/updateCustomer/{customerId}")
     ResponseEntity<?> updateCustomer(@PathVariable String customerId,@RequestParam String fullName,
@@ -185,10 +182,10 @@ public class CustomerController {
         dataResponse.setData(iRoom.getRoomByID(roomId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-    @GetMapping("/roomType/getAllRoomType")
-    public ResponseEntity<?>getAllRoomType(){
+    @GetMapping("/roomType/getAllRoomType/{yachtId}")
+    public ResponseEntity<?>getAllRoomType(@PathVariable("yachtId") String  yachtId){
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iRoomType.getAllRoomType());
+        dataResponse.setData(iRoomType.getAllRoomType(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @GetMapping("/getAllRoomSchedule/{idYacht}/{idSchedule}")
@@ -223,10 +220,27 @@ public class CustomerController {
         dataResponse.setData(iCustomer.getAllCompanies());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
     @GetMapping("/getYachtType")
     public ResponseEntity<?> getYachtType(){
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYachtType.getYachtTypes());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/bookingOrders/{idCustomer}")
+    public ResponseEntity<?> GetBookingOrderByCustomer(@PathVariable String idCustomer){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iBookingOrder.getBookingByCustomerID(idCustomer));
+
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/bills/{idCustomer}")
+    public ResponseEntity<?> GetBillsByCustomer(@PathVariable String idCustomer){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iBill.getAllBillsByCustomer(idCustomer));
+
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
@@ -248,5 +262,36 @@ public class CustomerController {
         dataResponse.setData(iRoomImage.getAllImageByIdRoom(roomId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
+    //send mail for mail verification
+    @PostMapping("/forgotPassword/verifyEmail/{email}")
+    public ResponseEntity<?> verifyEmail(@PathVariable("email")String  email) {
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iForgotPassword.verifyEmail(email));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/forgotPassword/verifyOTP/{otp}/{email}")
+    public ResponseEntity<?> verifyOTP(@PathVariable("otp") Integer otp, @PathVariable String email){
+        DataResponse  dataResponse = new DataResponse<>();
+        dataResponse.setData(iForgotPassword.veryfiOTP(otp, email));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/forgotPassword/changePasswordByEmail/{email}")
+    public ResponseEntity<?> changePasswordByEmail(@PathVariable("email")String email,@RequestParam String password){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iForgotPassword.changePassword(email, password));
+        return new ResponseEntity<>(dataResponse,HttpStatus.OK);
+    }
+
+    @PutMapping("/profile/changePasswordByIdAccount/{customerAccountId}")
+    public ResponseEntity<?> changePasswordByIdAccount(@PathVariable String customerAccountId,@RequestParam String password){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iAccount.updateAccount(customerAccountId, password));
+        return new ResponseEntity<>(dataResponse,HttpStatus.OK);
+    }
+
+
 
 }

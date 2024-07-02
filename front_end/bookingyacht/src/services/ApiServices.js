@@ -296,3 +296,20 @@ export const getBookingByAmount = (idCompany, min, max) => {
 }
 
 
+export const createScheduleYacht = (yachtId, startDate, endDate) => {
+    const data = new FormData();
+    data.append('startDate', startDate);
+    data.append('endDate', endDate);
+    return axios.post(`/api/companies/addSchedule/${yachtId}`, data)
+}
+
+export const updateScheduleYacht = (yachtId, scheduleId, startDate, endDate) => {
+    const data = new FormData();
+    data.append('startDate', startDate);
+    data.append('endDate', endDate);
+    return axios.put(`/api/companies/updateSchedule/${yachtId}/${scheduleId}`, data)
+}
+
+export const deleteScheduleYacht = (yachtId, scheduleId) => {
+return axios.delete(`/api/companies/deleteSchedule/${yachtId}/${scheduleId}`)
+}

@@ -30,4 +30,6 @@ public interface CompanyRepository extends JpaRepository<Company, String> {
     @Query("SELECT c.idCompany FROM Company c WHERE c.account.idAccount = :idAccount AND c.exist = 1")
     String findIdCompanyByIdAccount(@Param("idAccount") String idAccount);
 
+    @Query("SELECT COUNT(c) > 0 FROM Company c WHERE c.email = :email")
+    boolean checkEmailExist(@Param("email") String email);
 }

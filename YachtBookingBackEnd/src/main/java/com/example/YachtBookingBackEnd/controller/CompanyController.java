@@ -302,10 +302,10 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/roomType/getAllRoomType")
-    public ResponseEntity<?>getAllRoomType(){
+    @GetMapping("/roomType/getAllRoomType/{yachtId}")
+    public ResponseEntity<?>getAllRoomType(@PathVariable ("yachtId") String  yachtId){
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iRoomType.getAllRoomType());
+        dataResponse.setData(iRoomType.getAllRoomType(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
