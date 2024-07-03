@@ -45,7 +45,7 @@ const ManageRoom = () => {
 
     const getAllRoom = async () => {
         let res = await getAllRoomByYacht(idYacht);
-        if (res && res.data.data.length > 0) {
+        if (res && res.data && res.data.data) {
             setListRoom(res.data.data)
         } else {
             toast.info('Not Found Room By Yacht');

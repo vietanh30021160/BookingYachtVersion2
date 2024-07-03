@@ -8,6 +8,7 @@ import { FcPlus } from "react-icons/fc";
 import { every } from 'lodash';
 import { createRoom, getAllRoomTypeCompany } from '../../../services/ApiServices';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 const ModalCreateRoom = (props) => {
     const { show, setIsShowModalCreateRoom, idYacht } = props;
@@ -56,8 +57,8 @@ const ModalCreateRoom = (props) => {
 
 
     const getRoomType = async () => {
-        let res = await getAllRoomTypeCompany();
-        if (res && res.data.data.length > 0) {
+        let res = await getAllRoomTypeCompany(idYacht);
+        if (res && res.data && res.data.data) {
             setListRoomType(res.data.data);
         } else {
             toast.info('Not Found Room Type');

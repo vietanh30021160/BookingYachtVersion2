@@ -168,8 +168,8 @@ export const getAllRoomByYacht = (idYacht) => {
     return axios.get(`/api/companies/getRoomByYacht/${idYacht}`);
 }
 
-export const getAllRoomTypeCompany = () => {
-    return axios.get(`/api/companies/roomType/getAllRoomType`);
+export const getAllRoomTypeCompany = (idCompany) => {
+    return axios.get(`/api/companies/roomType/getAllRoomType/${idCompany}`);
 }
 
 export const createImageRoom = (idRoom, image) => {
