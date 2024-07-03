@@ -185,4 +185,4 @@ const RoomSelection = ({ yacht, selectedSchedule }) => {
     );
 };
 
-// export default RoomSelection;
+export default RoomSelection;
