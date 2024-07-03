@@ -71,11 +71,11 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/payment/{idCustomer}")
+    @PostMapping("/payment")
     public ResponseEntity<?> createVnPayPayment(@RequestParam List<String> selectedRoomIds,
                                                 @RequestParam List<String> selectedServiceIds,
                                                 @RequestParam String requirement,
-                                                @PathVariable String idCustomer,
+                                                @RequestParam String idCustomer,
                                                 @RequestParam String idSchedule,
                                                 HttpServletRequest request) {
         DataResponse dataResponse = new DataResponse();
@@ -83,7 +83,6 @@ public class CustomerController {
 
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
 
 
     @PutMapping("/profile/updateCustomer/{customerId}")
