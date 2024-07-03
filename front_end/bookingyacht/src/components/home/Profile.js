@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { FaHome } from "react-icons/fa";
-import ModalUpdateProfileUser from './ModalUpdateProfileUser';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import { FaHome } from "react-icons/fa";
 import { useSelector } from 'react-redux';
-import { getProfileCustomer } from '../../services/ApiServices';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
+import { getProfileCustomer } from '../../services/ApiServices';
+import Bill from './Bill';
+import ModalUpdateProfileUser from './ModalUpdateProfileUser';
 const Profile = () => {
     const [isShowModal, setIsShowModal] = useState(false);
     const idCustomer = useSelector(state => state.account.account.idCustomer);
@@ -101,6 +101,11 @@ const Profile = () => {
                 </Tab>
                 <Tab eventKey="Booking History" title="Booking History" >
                     Booking History
+                </Tab>
+                <Tab eventKey="Bill" title="Bill">
+                    <Bill
+                        idCustomer={idCustomer}
+                    />
                 </Tab>
             </Tabs>
 

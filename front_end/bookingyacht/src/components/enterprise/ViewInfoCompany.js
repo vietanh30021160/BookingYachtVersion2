@@ -50,9 +50,9 @@ const CompanyList = () => {
                                         />
                                     </Col>
                                     <Col md={9}>
-                                        <h5>{company.name}</h5>
+                                        <h5 style={{fontWeight : 'bold'}}>{company.name}</h5>
                                         <p>{company.address}</p>
-                                        <p>{company.email}</p>
+                                        <p style={{fontStyle : 'italic'}}>{company.email}</p>
                                     </Col>
                                 </Row>
                             </Card>

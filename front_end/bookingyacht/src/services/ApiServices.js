@@ -284,3 +284,13 @@ export const updateScheduleYacht = (yachtId, scheduleId, startDate, endDate) => 
 export const deleteScheduleYacht = (yachtId, scheduleId) => {
 return axios.delete(`/api/companies/deleteSchedule/${yachtId}/${scheduleId}`)
 }
+
+export const viewBillByIdCustomer = (idCustomer) =>{
+    return axios.get(`/api/customer/bills/${idCustomer}`)
+}
+export const getFeedbackByIdYacht = (yachtId) =>{
+    return axios.get(`http://localhost:8080/api/customer/getFeedbackByYachtId/${yachtId}`);
+}
+export const addFeedback = (idBooking, idCustomer, formData) => {
+    return axios.post(`http://localhost:8080/api/customer/addFeedback/${idBooking}/${idCustomer}`, formData);
+};
