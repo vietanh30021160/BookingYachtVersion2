@@ -67,6 +67,12 @@ public class BookingOrderService implements IBookingOrder {
     }
 
     @Override
+    public BookingOrderDTO getDetailBooking(String idCustomer, String idBooking) {
+        BookingOrder bookingOrder = bookingOrderRepository.getDetailBookingByCustomer(idCustomer, idBooking);
+        return bookingOrder == null ? null : BookingOrderMapper.toDTO(bookingOrder);
+    }
+
+    @Override
     @Transactional
     public boolean confirmBooking(String idBookingOrder, String idCompany) {
         Optional<BookingOrder> bookingOrderOptional = bookingOrderRepository.findById(idBookingOrder);

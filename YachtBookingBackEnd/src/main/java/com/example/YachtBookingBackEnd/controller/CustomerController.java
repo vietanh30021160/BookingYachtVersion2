@@ -235,6 +235,15 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/bookingOrders/{idCustomer}/{idBooking}")
+    public  ResponseEntity<?> getDetailBooking(@PathVariable String idCustomer,
+                                               @PathVariable String idBooking){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iBookingOrder.getDetailBooking(idCustomer, idBooking));
+
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
     @PutMapping("/bookingOrders/{idCustomer}/cancel/{idBooking}")
     public ResponseEntity<?> cancelBookingByCustomer(@PathVariable String idCustomer,
                                                      @PathVariable String idBooking,
@@ -244,6 +253,7 @@ public class CustomerController {
 
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
 
     @GetMapping("/bills/{idCustomer}")
     public ResponseEntity<?> GetBillsByCustomer(@PathVariable String idCustomer){
