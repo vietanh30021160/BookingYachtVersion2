@@ -67,6 +67,7 @@ public class BookingOrderService implements IBookingOrder {
     }
 
     @Override
+    @Transactional
     public BookingOrderDTO getDetailBooking(String idCustomer, String idBooking) {
         BookingOrder bookingOrder = bookingOrderRepository.getDetailBookingByCustomer(idCustomer, idBooking);
         return bookingOrder == null ? null : BookingOrderMapper.toDTO(bookingOrder);
