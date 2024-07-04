@@ -130,6 +130,7 @@ public class RoomService implements IRoom {
         return false;
     }
 
+
     @Override
     public boolean updateRoom(String roomId, String description, String roomName, MultipartFile avatar) {
         try {
@@ -176,6 +177,8 @@ public class RoomService implements IRoom {
                 roomTypeDTO.setPrice(room.getRoomType().getPrice());
                 roomTypeDTO.setUtilities(room.getRoomType().getUtilities());
                 roomDTO.setRoomType(roomTypeDTO);
+
+                roomDTO.setYachtId(idYacht);
 
                 roomDTOList.add(roomDTO);
             }

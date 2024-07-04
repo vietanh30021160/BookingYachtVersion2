@@ -4,23 +4,79 @@ import { Button, ButtonGroup, FormControl } from 'react-bootstrap'
 import Table from 'react-bootstrap/Table';
 import { FaCirclePlus } from "react-icons/fa6";
 import '../ManageYacht.scss'
-import image from '../../../assets/no53ab0y526yl825.webp'
-import { Link } from 'react-router-dom';
 import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { createImageRoom } from '../../../services/ApiServices';
+import { createImageRoom, deleteImageRoom, getImageByRoom, updateImageRoom } from '../../../services/ApiServices';
+import { toast } from 'react-toastify';
+import { FcPlus } from "react-icons/fc";
+import Accordion from 'react-bootstrap/Accordion';
+import ModalUpdateImageRoom from './ModalUpdateImageRoom';
+
 const ModalManageRoomImage = (props) => {
     const { show, setIsShowModalRoomImage, idRoom } = props;
     const [image, setImage] = useState('');
+    const [listImage, setListImage] = useState([]);
+    const [previewImage, setPreviewImage] = useState("");
+    const [imageUpdate, setImageUpdate] = useState('');
+    const [isShowModalUpdateImage, setIsShowModalUpdateImage] = useState('')
+
+    useEffect(() => {
+        if (show) {
+            getImageRoomById();
+        }
+    }, [show])
+
+
     const handleClose = () => {
         setIsShowModalRoomImage(false);
     }
 
-    const handelUploadImage = async (event) => {
+    const handelUploadImage = (event) => {
         if (event.target.files[0] && event.target && event.target.files) {
+            setPreviewImage(URL.createObjectURL(event.target.files[0]));
             setImage(event.target.files[0]);
-            let res = createImageRoom(image, idRoom)
-            console.log("check image rom", res)
+        }
+    }
+
+
+    const handleCreateImageRoom = async () => {
+        let res = await createImageRoom(idRoom, image);
+        if (res && res.data.data === true) {
+            toast.success('Creaet Successfully');
+            setImage('')
+            setPreviewImage('')
+            getImageRoomById();
+        } else {
+            toast.error('Create Fail');
+        }
+    }
+
+    console.log('id', idRoom)
+    const getImageRoomById = async () => {
+        let res = await getImageByRoom(idRoom);
+        console.log('chekc', res)
+        if (res && res.data && res.data.data) {
+            setListImage(res.data.data);
+        } else {
+            toast.error('Not Have Image')
+        }
+    }
+
+    const handleUpdateImageRoom = (idImage) => {
+        setIsShowModalUpdateImage(true);
+        setImageUpdate(idImage);
+    }
+
+    const handleDeleteImageRoom = async (image) => {
+        if (window.confirm(`You want to delete image ${image}`)) {
+            let res = await deleteImageRoom(image);
+            console.log('del', res);
+            if (res && res.data.data === true) {
+                toast.success('Delete Successfully');
+                getImageRoomById();
+            } else {
+                toast.error('Delete Image Room Fail');
+            }
         }
     }
 
@@ -39,12 +95,32 @@ const ModalManageRoomImage = (props) => {
                     <Modal.Title>Manage Room Image</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <label className='form-label label-upload' htmlFor='labelUpload'> <FaCirclePlus /> Upload File IMAGE</label>
-                    <input
-                        type='file'
-                        hidden id='labelUpload'
-                        onChange={(event) => handelUploadImage(event)}
-                    />
+                    <Accordion defaultActiveKey="0">
+                        <Accordion.Item eventKey="0">
+                            <Accordion.Header>Create Image Room</Accordion.Header>
+                            <Accordion.Body>
+                                <div className='col-mad-12'>
+                                    <label className='form-label label-upload' htmlFor='labelCreateImage'> <FcPlus /> Upload File IMAGE</label>
+                                    <input
+                                        type='file'
+                                        hidden id='labelCreateImage'
+                                        name='image'
+                                        onChange={(event) => handelUploadImage(event)}
+                                    />
+                                </div>
+                                <div className='col-md-12 img-preview'>
+                                    {previewImage ?
+                                        <img src={previewImage} />
+                                        :
+                                        <span>Preview Avartar</span>
+                                    }
+                                </div>
+                                <Button onClick={handleCreateImageRoom} className='btn btn-primary my-2'>Create</Button>
+
+                            </Accordion.Body>
+                        </Accordion.Item>
+
+                    </Accordion>
                     <Table striped bordered hover variant="light">
                         <thead>
                             <tr>
@@ -52,20 +128,24 @@ const ModalManageRoomImage = (props) => {
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td><img src={image} alt='image' width={200} /></td>
-                                <td>
-                                    <ButtonGroup className='d-flex ' style={{ gap: 30, justifyContent: "center", marginTop: 54 }}>
-                                        <label htmlFor='buttonlUpload' className='btn btn-light'><FaPen size='1em' /></label>
-                                        <input type='file'
-                                            hidden id='buttonlUpload'
-                                        />
-                                        <Button className='btn btn-light' style={{ color: "red" }}><MdDelete size='1em' /></Button>
-                                    </ButtonGroup>
-                                </td>
 
-                            </tr>
+                        <tbody>
+                            {
+                                listImage && listImage.map((image) =>
+                                    <tr key={image.idRoomImage}>
+                                        <td><img src={`http://localhost:8080/api/customer/file/${image.imageRoom}`} alt='image' width={200} /></td>
+                                        <td>
+
+                                            <ButtonGroup className='d-flex ' style={{ gap: 30, justifyContent: "center", marginTop: 54 }}>
+                                                <Button onClick={() => handleUpdateImageRoom(image.idRoomImage)} className='btn btn-light'><FaPen size='1em' /></Button>
+
+                                                <Button onClick={() => handleDeleteImageRoom(image.idRoomImage)} className='btn btn-light' style={{ color: "red" }}><MdDelete size='1em' /></Button>
+                                            </ButtonGroup>
+                                        </td>
+
+                                    </tr>
+                                )
+                            }
 
                         </tbody>
                     </Table>
@@ -75,11 +155,16 @@ const ModalManageRoomImage = (props) => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save
-                    </Button>
+
                 </Modal.Footer>
             </Modal>
+
+            <ModalUpdateImageRoom
+                show={isShowModalUpdateImage}
+                setIsShowModalUpdateImage={setIsShowModalUpdateImage}
+                imageUpdate={imageUpdate}
+                getImageRoomById={getImageRoomById}
+            />
         </div>
     );
 };

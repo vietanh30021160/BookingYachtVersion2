@@ -8,7 +8,7 @@ import ReactPaginate from 'react-paginate';
 import './Company.scss'
 import { FaCirclePlus } from "react-icons/fa6";
 import ModalCreateYacht from './Modal/ModalCreateYacht';
-import { deleteYacht, getAllLocation, getAllYachtCompany } from '../../services/ApiServices';
+import { deleteYacht, getAllLocation, getAllYachtCompany, getYachtById } from '../../services/ApiServices';
 import _ from 'lodash';
 import Form from 'react-bootstrap/Form';
 import { toast } from 'react-toastify';
@@ -36,16 +36,19 @@ const ViewYacht = (props) => {
         getLocation();
     }, [])
 
-
+    console.log('id', idCompany)
     const listYacht = async () => {
-        let res = await getAllYachtCompany(idCompany);
-        if (res && res.data.data.length > 0 && res.data.success === true) {
+        let res = await getYachtById(idCompany);
+        console.log('check yacht', res)
+        if (res && res.data.data) {
             setYacht(res.data.data);
             setFilteredYachts(res.data.data);
+            console.log('data', res.data.data)
         } else {
             toast.info('Please Adding New Yacht');
         }
     }
+    console.log('yact l', yacht)
 
     const handleDeleteYacht = async (id, name) => {
         if (window.confirm(`Delete Yacht With Name: ${name}`)) {
@@ -84,19 +87,18 @@ const ViewYacht = (props) => {
     }
     const handleFilterLocation = () => {
         if (filterLocation) {
-            const newYacht = filteredYachts.filter((yacht) =>
+            const newYacht = yacht.filter((yacht) =>
                 yacht.location.idLocation.includes(filterLocation)
             );
             if (newYacht.length > 0) {
-                setYacht(newYacht);
+                setFilteredYachts(newYacht);
             } else {
                 toast.error('No yacht found for this location');
             }
         } else {
-            setYacht(filteredYachts);
+            setFilteredYachts(yacht);
         }
-    }
-
+    };
 
     return (
         <div className='view-yacht-container'>
@@ -134,44 +136,40 @@ const ViewYacht = (props) => {
             <div className='row container'>
                 <div className="col-xl-12">
                     {
-                        yacht && yacht.length > 0 && yacht.map((yacht, index) =>
-                            yacht.exist === 1 ?
-                                (
-                                    <div key={yacht.idYacht} className="card mb-4 order-list">
-                                        <div className="gold-members p-4">
+                        filteredYachts && filteredYachts.length > 0 && filteredYachts.filter(y => y.exist === 1).map((yacht) =>
 
-                                            <div className="media">
+                            <div key={yacht.idYacht} className="card mb-4 order-list">
+                                <div className="gold-members p-4">
 
-                                                <img className="mr-4" src={`http://localhost:8080/api/customer/file/${yacht.image}`} alt="Generic placeholder image" />
+                                    <div className="media">
 
-                                                <div className="media-body">
-                                                    <div className='card-content'>
-                                                        <div className='location'><FaLocationDot />{yacht.location.name}</div>
-                                                        <div className='name'>{yacht.name}</div>
-                                                        <div> <RiShipLine /> Hạ Thủy {yacht.launch} - Tàu Vỏ {yacht.hullBody}  </div>
+                                        <img className="mr-4" src={`http://localhost:8080/api/customer/file/${yacht.image}`} alt="Generic placeholder image" />
 
-                                                    </div>
-                                                    <div className='action d-flex'>
-                                                        <p className="mb-0 text-dark text-dark pt-2"><span className="text-dark font-weight-bold"></span>
-                                                        </p>
-                                                        <div className="float-right">
-                                                            <Button className="btn btn-sm btn-infor" onClick={() => navigate(`/manage-services-yacht/${yacht.idYacht}`)}><i className="feather-check-circle" />Manage Services Yacht</Button>
-                                                            <Button className="btn btn-sm btn-light" onClick={() => navigate(`/manage-schedule/${yacht.idYacht}`)}><i className="feather-trash" /> Manage Schedule </Button>
-                                                            <Button className="btn btn-sm btn-success" onClick={() => navigate(`/manage-yacht/${yacht.idYacht}`)}><i className="feather-check-circle" />Manage Yacht</Button>
-                                                            <Button className="btn btn-sm btn-warning" onClick={() => navigate(`/manage-room/${yacht.idYacht}`)}><i className="feather-trash" /> Manage Room </Button>
-                                                            <Button className="btn btn-sm btn-danger" onClick={() => handleDeleteYacht(yacht.idYacht, yacht.name)}><i className="feather-trash" /> Delete Yacht </Button>
+                                        <div className="media-body">
+                                            <div className='card-content'>
+                                                <div className='location'><FaLocationDot />{yacht.location.name}</div>
+                                                <div className='name'>{yacht.name}</div>
+                                                <div> <RiShipLine /> Hạ Thủy {yacht.launch} - Tàu Vỏ {yacht.hullBody}  </div>
 
-                                                        </div>
-                                                    </div>
+                                                <div>{yacht.exist}</div>
+                                            </div>
+                                            <div className='action d-flex'>
+                                                <p className="mb-0 text-dark text-dark pt-2"><span className="text-dark font-weight-bold"></span>
+                                                </p>
+                                                <div className="float-right">
+                                                    <Button className="btn btn-sm btn-infor" onClick={() => navigate(`/manage-services-yacht/${yacht.idYacht}`)}><i className="feather-check-circle" />Manage Services Yacht</Button>
+                                                    <Button className="btn btn-sm btn-light" onClick={() => navigate(`/manage-schedule/${yacht.idYacht}`)}><i className="feather-trash" /> Manage Schedule </Button>
+                                                    <Button className="btn btn-sm btn-success" onClick={() => navigate(`/manage-yacht/${yacht.idYacht}`)}><i className="feather-check-circle" />Manage Yacht</Button>
+                                                    <Button className="btn btn-sm btn-warning" onClick={() => navigate(`/manage-room/${yacht.idYacht}`)}><i className="feather-trash" /> Manage Room </Button>
+                                                    <Button className="btn btn-sm btn-danger" onClick={() => handleDeleteYacht(yacht.idYacht, yacht.name)}><i className="feather-trash" /> Delete Yacht </Button>
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                )
-                                :
-                                <div>
-                                    You Don't Have Any Yacht Manage
                                 </div>
+                            </div>
+
                         )
 
                     }

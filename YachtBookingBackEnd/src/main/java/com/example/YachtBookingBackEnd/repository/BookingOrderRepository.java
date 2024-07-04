@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
 public interface BookingOrderRepository extends JpaRepository<BookingOrder, String> {
@@ -22,6 +21,11 @@ public interface BookingOrderRepository extends JpaRepository<BookingOrder, Stri
             "JOIN FETCH  r.yacht y " +
             "WHERE  y.company.idCompany = :idCompany ")
     List<BookingOrder> findBookingOrdersByCompany(@Param("idCompany") String idCompany);
+
+    @Query("SELECT b " +
+            "FROM BookingOrder b " +
+            "WHERE b.customer.idCustomer = :idCustomer")
+    List<BookingOrder> findBookingOrdersByCustomer(@Param("idCustomer") String idCustomer);
 
     @Query("SELECT COUNT(b) > 0 " +
             "FROM  BookingOrder b " +
@@ -47,4 +51,7 @@ public interface BookingOrderRepository extends JpaRepository<BookingOrder, Stri
             "FROM BookingOrder b " +
             "WHERE b.status = :status")
     List<BookingOrder> findAllByStatus(@Param("status") String status);
+
+    @Query("SELECT bo FROM BookingOrder bo WHERE bo.idBooking = :id")
+    Optional<BookingOrder> findById(@Param("id") String id);
 }

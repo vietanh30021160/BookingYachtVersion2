@@ -9,7 +9,7 @@ const ServiceSelection = ({ service, roomId, selectedServices, handleServiceChan
                 key={service.idService}
                 type="checkbox"
                 label={`${service.service} (+${service.price.toLocaleString()} đ)`}
-                checked={selectedServices.includes(service.idService)}
+                // checked={selectedServices.includes(service.idService)}
                 onChange={() => handleServiceChange(roomId, service.idService)}
             />
         </div>

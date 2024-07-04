@@ -18,21 +18,10 @@ const SectionHeader = ({ yacht }) => {
     const getServiceByYachtId = async (yachtId) => {
         let res = await getServiceByYacht(yachtId);
         setServices(res.data.data)
-        console.log(res.data.data)
     }
     useEffect(() => {
         getServiceByYachtId(yacht.idYacht)
     }, [yacht.idYacht])
-
-    // const { services } = useSelector(state => state.ServiceByYachtReducer);
-    // console.log(services)
-    // const dispatch = useDispatch();
-
-    // useEffect(() => {
-    //     if (yacht && yacht.idYacht) {
-    //         dispatch(getServiceByYachtApi(yacht.idYacht));
-    //     }
-    // }, [yacht, dispatch]);
 
     const description = yacht.description ? yacht.description.split('.').filter(sentence => sentence.trim()) : [];
     return (

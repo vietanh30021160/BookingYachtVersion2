@@ -3,10 +3,48 @@ import './Home.scss';
 import Card from 'react-bootstrap/Card';
 import { NavLink } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
-import HaLong from '../../assets/Ha-Long.webp';
-import LanHa from '../../assets/vinh-lan-ha.jpg';
-import CatBa from '../../assets/Intro-Cat-Ba.webp';
+import HaLong1 from '../../assets/Ha-Long.webp';
+import HaLong2 from '../../assets/vinh-lan-ha.jpg';
+import HaLong3 from '../../assets/Intro-Cat-Ba.webp';
+import { useEffect, useState } from 'react';
+import { getAllLocationCustomer } from '../../services/ApiServices';
+import { useDispatch } from 'react-redux';
+import { SEARCH_YACHT, SET_SELECTED_LOCATION } from '../../redux/type/Type';
+
 const ShowIsland = () => {
+    const [locations, setLocation] = useState([]);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        const getAllLocation = async () => {
+            const res = await getAllLocationCustomer();
+            if (res && res.data && res.data.data) {
+                setLocation(res.data.data);
+            }
+        }
+        getAllLocation();
+    }, [])
+    const onClickLocation = (location) => {
+        dispatch({
+            type: SET_SELECTED_LOCATION,
+            payload: location.name
+        });
+    };
+
+    const renderLocation = () => {
+        return locations.map((location, index) => {
+            return (
+                <NavLink to={`/duthuyen`} onClick={() => onClickLocation(location)} className='nav-link col-12 col-sm-6 col-md-3 mb-4' key={location.idLocation}>
+                    <Card style={{ height: '330px', width: '320px' }}>
+                        <Card.Img variant="top" src={index === 0 ? HaLong1 : index === 1 ? HaLong2 : HaLong3} style={{ height: 220 }} className='object-fit-cover' />
+                        <Card.Body>
+                            <Card.Title>{location.name}</Card.Title>
+                            <button className='btn btn-outline-dark'>View</button>
+                        </Card.Body>
+                    </Card>
+                </NavLink>
+            )
+        })
+    }
     return (
         <>
             <div className='island-header text-center my-5'>
@@ -21,35 +59,7 @@ const ShowIsland = () => {
                 </div>
             </div>
             <div className='island-body row'>
-                <NavLink to='/duthuyen' className='nav-link col-12 col-sm-6 col-md-3 mb-4'>
-                    <Card style={{ height: '330px', width: '320px' }}>
-                        <Card.Img variant="top" src={HaLong} style={{ height: 220 }} className='object-fit-cover' />
-                        <Card.Body>
-                            <Card.Title>Vịnh Hạ Long</Card.Title>
-                            <button className='btn btn-outline-dark'>View</button>
-                        </Card.Body>
-                    </Card>
-                </NavLink>
-
-                <NavLink to='/duthuyen' className='nav-link col-12 col-sm-6 col-md-3 mb-4'>
-                    <Card style={{ height: '330px', width: '320px' }}>
-                        <Card.Img variant="top" src={CatBa} style={{ height: 220 }} className='object-fit-cover' />
-                        <Card.Body>
-                            <Card.Title>Đảo Cát Bà</Card.Title>
-                            <button className='btn btn-outline-dark'>View</button>
-                        </Card.Body>
-                    </Card>
-                </NavLink>
-
-                <NavLink to='/duthuyen' className='nav-link col-12 col-sm-6 col-md-3 mb-4'>
-                    <Card style={{ height: '330px', width: '320px' }}>
-                        <Card.Img variant="top" src={LanHa} style={{ height: 220 }} className='object-fit-cover' />
-                        <Card.Body>
-                            <Card.Title>Vịnh Lan Hạ</Card.Title>
-                            <button className='btn btn-outline-dark'>View</button>
-                        </Card.Body>
-                    </Card>
-                </NavLink>
+                {renderLocation()}
             </div>
         </>
     )

@@ -93,12 +93,16 @@ public class CompanyService implements ICompany {
         return companyDTO;
     }
 
-    public boolean hideCompany(String idCompany) {
+    public boolean changeExistCompany(String idCompany) {
         Company company = companyRepository.findByIdAndExist(idCompany)
                 .orElseThrow(() -> new RuntimeException("Company not found! Try again"));
+        boolean isExist = company.getExist() == 1;
 
-        // Cập nhật trạng thái của công ty thành ẩn (exist = 0)
-        company.setExist(0);
+        if (isExist) {
+            company.setExist(0);
+        } else {
+            company.setExist(1);
+        }
 
         companyRepository.save(company);
 
@@ -109,6 +113,22 @@ public class CompanyService implements ICompany {
     public Company getCompanyById(String idCompany) {
         return companyRepository.findByIdAndExist(idCompany)
                 .orElseThrow(() -> new RuntimeException("Company not found! Try again"));
+    }
+
+    @Override
+    public CompanyDTO getCompanyDTOById(String idCompany) {
+        Company company = companyRepository.findByIdAndExist(idCompany)
+                .orElseThrow(() -> new RuntimeException("Company not found! Try again"));
+
+        CompanyDTO companyDTO = new CompanyDTO().builder()
+                .idCompany(company.getIdCompany())
+                .name(company.getName())
+                .address(company.getAddress())
+                .logo(company.getLogo())
+                .email(company.getEmail())
+                .exist(company.getExist())
+                .build();
+        return companyDTO;
     }
 
     @Override

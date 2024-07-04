@@ -28,6 +28,8 @@ const ModalUpdateImageYacht = (props) => {
             toast.success("Update Image Successfully");
             handleClose();
             await props.getAllImagesYacht();
+        } else {
+            toast.error('Update Image Yacht Fail')
         }
     }
     return (

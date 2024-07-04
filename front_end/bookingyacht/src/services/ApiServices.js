@@ -1,4 +1,5 @@
 import axios from '../utils/CustomizeApi';
+import { store } from '../redux/Store';
 
 
 export const register = (email, password) => {
@@ -53,11 +54,8 @@ export const updateProfileCustomer = (customerId, email, fullName, phoneNumber, 
     return axios.put(`/api/customer/profile/updateCustomer/${customerId}`, data)
 }
 
-export const getAllYachtCompany = () => {
-    return axios.get('/api/companies/allYacht');
-}
 export const getYachtById = (yachtId) => {
-    return axios.get(`/api/companies/findYachtById/${yachtId}`);
+    return axios.get(`/api/companies/yacht/findByCompany/${yachtId}`);
 }
 export const deleteYacht = (idYacht) => {
     return axios.delete(`/api/companies/yacht/delete/${idYacht}`)
@@ -128,7 +126,7 @@ export const updateYachtImage = (idImage, image) => {
 export const getFeedbackCompany = (idCompany) => {
     return axios.get(`/api/companies/feedBackByIdCompany/${idCompany}`)
 }
-export const getYachtByIdCompany = (idCompany) =>{
+export const getYachtByIdCompany = (idCompany) => {
     return axios.get(`/api/customer/yacht/findByCompany/${idCompany}`)
 }
 
@@ -171,11 +169,11 @@ export const getAllRoomByYacht = (idYacht) => {
     return axios.get(`/api/companies/getRoomByYacht/${idYacht}`);
 }
 
-// export const getAllRoomType = () => {
-//     return axios.get(`/api/companies/roomType/getAllRoomType`);
-// }
+export const getAllRoomTypeCompany = () => {
+    return axios.get(`/api/companies/roomType/getAllRoomType`);
+}
 
-export const createImageRoom = (image, idRoom) => {
+export const createImageRoom = (idRoom, image) => {
     const data = new FormData();
     data.append('image', image);
     return axios.post(`/api/companies/roomImage/insertImage/${idRoom}`, data);
@@ -217,6 +215,15 @@ export const createRoom = (roomName, area, description, roomType, avatar, idYach
     return axios.post(`/api/companies/room/addRoom/${idYacht}`, data);
 }
 
+export const updateRoom = (roomId, roomName, description, avatar) => {
+    const data = new FormData();
+    data.append('roomName', roomName);
+    data.append('description', description);
+    data.append('avatar', avatar);
+
+    return axios.put(`/api/companies/room/updateRoom/${roomId}`, data)
+}
+
 export const createRoomType = (price, type, utilities) => {
     const data = new FormData();
     data.append('price', price);
@@ -237,7 +244,79 @@ export const deleteRoomType = (roomTypeId) => {
     return axios.delete(`/api/companies/roomType/deleteRoomType/${roomTypeId}`);
 }
 
+export const getImageByRoom = (roomId) => {
+    return axios.get(`/api/companies/roomImage/getAllImageByIdRoom/${roomId}`)
+}
+
+export const updateImageRoom = (idImage, image) => {
+    const data = new FormData();
+    data.append('image', image);
+    return axios.put(`/api/companies/roomImage/updateImage/${idImage}`, data)
+}
+
+
 export const getScheduleYacht = (yachtId) => {
     return axios.get(`/api/companies/getScheduleByYacht/${yachtId}`);
 }
 
+export const deleteImageRoom = (idImage) => {
+    return axios.delete(`/api/companies/roomImage/deleteImage/${idImage}`);
+}
+
+export const getProfileCompany = (idCompany) => {
+    return axios.get(`/api/companies/profiles/${idCompany}`);
+}
+
+
+export const createScheduleYacht = (yachtId, startDate, endDate) => {
+    const data = new FormData();
+    data.append('startDate', startDate);
+    data.append('endDate', endDate);
+    return axios.post(`/api/companies/addSchedule/${yachtId}`, data)
+}
+
+export const updateScheduleYacht = (yachtId, scheduleId, startDate, endDate) => {
+    const data = new FormData();
+    data.append('startDate', startDate);
+    data.append('endDate', endDate);
+    return axios.put(`/api/companies/updateSchedule/${yachtId}/${scheduleId}`, data)
+}
+
+export const deleteScheduleYacht = (yachtId, scheduleId) => {
+return axios.delete(`/api/companies/deleteSchedule/${yachtId}/${scheduleId}`)
+}
+export const getCustomerById = (customerId) => {
+    return axios.get(`/api/customer/profile/getProfileCustomerById/${customerId}`);
+}
+
+export const createPayment = (selectedRoomIds, selectedServiceIds, requirement, idCustomer, idSchedule) => {
+    let params = new URLSearchParams();
+    let selectedRoomIdsString = selectedRoomIds.join(',');
+    let selectedServiceIdsString = selectedServiceIds.join(',');
+    params.append('selectedRoomIds', selectedRoomIdsString);
+    params.append('selectedServiceIds', selectedServiceIdsString);
+    params.append('requirement', requirement);
+    params.append('idCustomer', idCustomer);
+    params.append('idSchedule', idSchedule);
+    return axios.post(`/api/customer/payment?${params.toString()}`);
+};
+
+export const getAllRoomByYachtCustomer = (idYacht) => {
+    return axios.get(`/api/customer/getRoomByYacht/${idYacht}`);
+}
+
+export const getAllYachtType = () => {
+    return axios.get(`/api/customer/getYachtType`);
+}
+
+export const getAllYachtServiceId = () => {
+    return axios.get(`/api/customer/getAllYachtService`);
+}
+
+export const getAllLocationCustomer = () => {
+    return axios.get(`/api/customer/getAllLocation`);
+}
+
+export const getScheduleById = (idSchedule) => {
+    return axios.get(`/api/customer/getScheduleById/${idSchedule}`);
+}

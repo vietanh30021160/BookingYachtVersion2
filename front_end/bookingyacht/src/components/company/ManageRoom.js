@@ -45,7 +45,6 @@ const ManageRoom = () => {
             toast.info('Not Found Room By Yacht');
         }
     }
-    console.log("check room", listRoom)
 
     const [dataUpdateRoom, setDataUpdateRoom] = useState('')
     const handleUpdateRoom = (room) => {
@@ -79,8 +78,8 @@ const ManageRoom = () => {
                         </div>
 
                         <div className='col-md-5'>
-                            <Button onClick={() => handlManageImageRoom(room.idRoom)} className='btn btn-light'>Manage Room Image </Button>
-                            <Button onClick={() => setIsShowModalRoomService(true)} className='btn btn-warning mx-2'>Manage Services</Button>
+                            <Button onClick={() => handlManageImageRoom(room.idRoom)} className='btn btn-warning mx-3'>Manage Room Image </Button>
+                            {/* <Button onClick={() => setIsShowModalRoomService(true)} className='btn btn-warning mx-2'>Manage Services</Button> */}
                             <Button onClick={() => handleUpdateRoom(room)} className='btn btn-primary'>Update</Button>
                         </div>
 
@@ -97,7 +96,6 @@ const ManageRoom = () => {
             <ModalManageRoomService
                 show={isShowModalRoomService}
                 setIsShowModalRoomService={setIsShowModalRoomService}
-                idRoom={idRoom}
             />
 
             <ModalUpdateRoom
@@ -105,6 +103,7 @@ const ManageRoom = () => {
                 setIsShowModalUpdateRoom={setIsShowModalUpdateRoom}
                 idRoom={idRoom}
                 dataUpdateRoom={dataUpdateRoom}
+                getAllRoom={getAllRoom}
             />
             <ModalCreateRoom
                 show={isShowModalCreateRoom}

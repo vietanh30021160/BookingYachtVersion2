@@ -2,7 +2,6 @@ package com.example.YachtBookingBackEnd.controller;
 
 import com.example.YachtBookingBackEnd.payload.response.DataResponse;
 import com.example.YachtBookingBackEnd.service.implement.*;
-import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -22,20 +21,23 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CustomerController {
-    private IAccount iAccount;
-    private ICustomer iCustomer;
-    private IPayment iPayment;
-    private IYacht iYacht;
-    private IFile iFile;
-    private IYachtImage iYachtImage;
-    private IService iService;
-    private ISchedule iSchedule;
-    private IRoom iRoom;
-    private IRoomType iRoomType;
-    private IYachtType iYachtType;
-    private IRoomImage iRoomImage;
+    IAccount iAccount;
+    ICustomer iCustomer;
+    IPayment iPayment;
+    IYacht iYacht;
+    IFile iFile;
+    IYachtImage iYachtImage;
+    IService iService;
+    ISchedule iSchedule;
+    IRoom iRoom;
+    IRoomType iRoomType;
+    IYachtType iYachtType;
+    IBookingOrder iBookingOrder;
+    IBill iBill;
+    IRoomImage iRoomImage;
     IForgotPassword iForgotPassword;
-
+    private IYachtService iYachtService;
+    private ILocation iLocation;
 
     @PostMapping("/accounts")
     ResponseEntity<?> register(@RequestParam String username,
@@ -63,14 +65,14 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/getProfileCustomerById/{customerId}")
+
+    @GetMapping("/profile/getProfileCustomerById/{customerId}")
     ResponseEntity<?> getProfileCustomerById(@PathVariable("customerId") String customerId){
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setData(iCustomer.getCustomer(customerId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
-    @GetMapping("/payment")
+    @PostMapping("/payment")
     public ResponseEntity<?> createVnPayPayment(@RequestParam List<String> selectedRoomIds,
                                                 @RequestParam List<String> selectedServiceIds,
                                                 @RequestParam String requirement,
@@ -219,10 +221,27 @@ public class CustomerController {
         dataResponse.setData(iCustomer.getAllCompanies());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
     @GetMapping("/getYachtType")
     public ResponseEntity<?> getYachtType(){
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iYachtType.getYachtTypes());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/bookingOrders/{idCustomer}")
+    public ResponseEntity<?> GetBookingOrderByCustomer(@PathVariable String idCustomer){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iBookingOrder.getBookingByCustomerID(idCustomer));
+
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/bills/{idCustomer}")
+    public ResponseEntity<?> GetBillsByCustomer(@PathVariable String idCustomer){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iBill.getAllBillsByCustomer(idCustomer));
+
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
@@ -242,6 +261,24 @@ public class CustomerController {
     public ResponseEntity<?> getAllImageByIdRoom(@PathVariable String roomId){
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setData(iRoomImage.getAllImageByIdRoom(roomId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getAllYachtService")
+    public ResponseEntity<?> getAllYachtService() {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYachtService.getAllYachtService());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getAllLocation")
+    public ResponseEntity<?> getAllLocation(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iLocation.getAllLocation());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getScheduleById/{id}")
+    public ResponseEntity<?> getScheduleById(@PathVariable String id){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iSchedule.getScheduleById(id));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

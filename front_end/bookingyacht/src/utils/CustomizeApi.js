@@ -1,6 +1,8 @@
 import axios from "axios";
 import NProgress from 'nprogress';
-import { store } from '../redux/Store';
+import { store } from '../redux/Store'
+import { toast } from "react-toastify";
+import Error403 from "../components/page404/Error403";
 
 
 const instance = axios.create({
@@ -43,11 +45,13 @@ instance.interceptors.response.use(function (response) {
     //return Promise.reject(error);
     NProgress.done();
     if (error.response.status === 401) {
-        //(`unauthorized :)`);
-        //localStorage.removeItem("persist:root");
-        //removeLocalStorageToken
+        toast.error('Unauthorized: Please log in again');
+        // Optionally redirect to login page
         // window.location.href = "/login";
-        // toast.error('User Name Or Password Not Correct')
+        return;
+    }
+    if (error.response.status === 403) {
+        toast.error('Forbidden: You do not have permission to access this resource');
         return;
     }
     return Promise.reject(error);
