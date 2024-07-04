@@ -61,8 +61,9 @@ const BookingOrderHistory = () => {
         }
     }
 
-    const handleShowModalDetail = async (bookingOrder) => {
-        let res = await getDetailBookingByCustomer(idCustomer, bookingOrder.idBooking)
+    const handleShowModalDetail = async (idBooking) => {
+        let res = await getDetailBookingByCustomer(idCustomer, idBooking)
+        // console.log('cc', res)
 
         if (res && res.data.data) {
             setBookingDetails(res.data.data);
@@ -96,7 +97,7 @@ const BookingOrderHistory = () => {
                                 <div className="col-11">
                                     <h5 className='card-title'>ID Booking: {bookingOrder.idBooking}</h5>
                                 </div>
-                                <div className='col-1' onClick={() => handleShowModalDetail(bookingOrder)}>
+                                <div className='col-1' onClick={() => handleShowModalDetail(bookingOrder.idBooking)}>
                                     <FaInfoCircle size={24} style={{ color: 'black', cursor: 'pointer'}} />
                                 </div>
                                 <div className="col-12">

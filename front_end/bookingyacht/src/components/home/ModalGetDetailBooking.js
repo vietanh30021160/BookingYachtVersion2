@@ -2,8 +2,11 @@ import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
 const ModalGetDetailBooking = (props) => {
-    const { show, onHide, bookingDetail } = props;
+    const { show, onHide, bookingOrderDetail } = props;
 
+    const formatAmount = (amount) => {
+        return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 
     return (
         <Modal show={show} onHide={onHide}>
@@ -13,28 +16,50 @@ const ModalGetDetailBooking = (props) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {bookingDetail ? (
+                {bookingOrderDetail ? (
                     <div>
-                        <p><strong>ID Booking:</strong> {bookingDetail.idBooking}</p>
-                        <p><strong>ID Booking:</strong> {bookingDetail.bookingTime}</p>
-                        <p><strong>ID Booking:</strong> {bookingDetail.requirement}</p>
-                        <p><strong>ID Booking:</strong> {bookingDetail.status}</p>
-                        <p><strong>ID Booking:</strong> {bookingDetail.schedule.startDate}</p>
-                        <p><strong>ID Booking:</strong> {bookingDetail.schedule.endDate}</p>
-                        <p><strong>ID Booking:</strong> {bookingDetail.customerDTO.fullName}</p>
-                        <p><strong>ID Booking:</strong> {bookingDetail.customerDTO.email}</p>
-                        <p><strong>ID Booking:</strong> {bookingDetail.customerDTO.phone}</p>
-                        <p><strong>ID Booking:</strong> {bookingDetail.customerDTO.address}</p>
-                        <p><strong>ID Booking:</strong> {bookingDetail.yachtName}</p>
-                        <p><strong>ID Booking:</strong> {bookingDetail.rooms.name}</p>
-                        <p><strong>ID Booking:</strong> {bookingDetail.rooms.price}</p>
-                        <p><strong>ID Booking:</strong> {bookingDetail.rooms.area}</p>
+                        <p><strong>ID Booking:</strong> {bookingOrderDetail.idBooking}</p>
+                        <p><strong>Booking Time:</strong> {bookingOrderDetail.bookingTime}</p>
+                        <p><strong>Amount:</strong> {formatAmount(bookingOrderDetail.amount)} VND</p>
+                        <p><strong>Requirement:</strong> {bookingOrderDetail.requirement}</p>
+                        <p><strong>Status:</strong> {bookingOrderDetail.status}</p>
+                        <p><strong>Yacht name:</strong> {bookingOrderDetail.yachtName}</p>
+                        <p><strong>Start date:</strong> {bookingOrderDetail.schedule.startDate}</p>
+                        <p><strong>End date:</strong> {bookingOrderDetail.schedule.endDate}</p>
+                        <p><strong>Customer information:</strong></p>
+                        <ul>
+                            <li>
+                                <p><strong>Full name:</strong> {bookingOrderDetail.customerDTO.fullName}</p>
+                                <p><strong>Email:</strong> {bookingOrderDetail.customerDTO.email}</p>
+                                <p><strong>Phone number:</strong> {bookingOrderDetail.customerDTO.phone}</p>
+                                <p><strong>Address:</strong> {bookingOrderDetail.customerDTO.address}</p>
+                            </li>
+                        </ul>
+                        <p><strong>Rooms:</strong></p>
+                        <ul>
+                            {bookingOrderDetail.rooms.map(room => (
+                                <li key={room.idRoom}>
+                                    <p><strong>Room:</strong> {room.name}</p>
+                                    <p><strong>Price:</strong> {formatAmount(room.price)} VND</p>
+                                    <p><strong>Area:</strong> {room.area}</p>
+                                </li>
+                            ))}
+                        </ul>
+                        <p><strong>Services:</strong></p>
+                        <ul>
+                            {bookingOrderDetail.services.map(service => (
+                                <li key={service.idService}>
+                                    <p><strong>Service:</strong> {service.service}</p>
+                                    <p><strong>Price:</strong> {formatAmount(service.price)} VND</p>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 ) : (
                     <p>Loading...</p>
                 )}
             </Modal.Body>
-            <Modal.Footer>
+            <Modal.Footer style={{ display: 'flex', justifyContent: 'center' }}>
                 <Button variant="secondary" onClick={onHide}>
                     Close
                 </Button>
