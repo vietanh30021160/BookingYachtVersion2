@@ -1,4 +1,5 @@
 import axios from '../utils/CustomizeApi';
+import { store } from '../redux/Store';
 
 
 export const register = (email, password) => {
@@ -312,4 +313,39 @@ export const updateScheduleYacht = (yachtId, scheduleId, startDate, endDate) => 
 
 export const deleteScheduleYacht = (yachtId, scheduleId) => {
     return axios.delete(`/api/companies/deleteSchedule/${yachtId}/${scheduleId}`)
+}
+export const getCustomerById = (customerId) => {
+    return axios.get(`/api/customer/profile/getProfileCustomerById/${customerId}`);
+}
+
+export const createPayment = (selectedRoomIds, selectedServiceIds, requirement, idCustomer, idSchedule) => {
+    let params = new URLSearchParams();
+    let selectedRoomIdsString = selectedRoomIds.join(',');
+    let selectedServiceIdsString = selectedServiceIds.join(',');
+    params.append('selectedRoomIds', selectedRoomIdsString);
+    params.append('selectedServiceIds', selectedServiceIdsString);
+    params.append('requirement', requirement);
+    params.append('idCustomer', idCustomer);
+    params.append('idSchedule', idSchedule);
+    return axios.post(`/api/customer/payment?${params.toString()}`);
+};
+
+export const getAllRoomByYachtCustomer = (idYacht) => {
+    return axios.get(`/api/customer/getRoomByYacht/${idYacht}`);
+}
+
+export const getAllYachtType = () => {
+    return axios.get(`/api/customer/getYachtType`);
+}
+
+export const getAllYachtServiceId = () => {
+    return axios.get(`/api/customer/getAllYachtService`);
+}
+
+export const getAllLocationCustomer = () => {
+    return axios.get(`/api/customer/getAllLocation`);
+}
+
+export const getScheduleById = (idSchedule) => {
+    return axios.get(`/api/customer/getScheduleById/${idSchedule}`);
 }

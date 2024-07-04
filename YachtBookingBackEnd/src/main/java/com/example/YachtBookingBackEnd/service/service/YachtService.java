@@ -17,9 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class YachtService implements IYacht {
@@ -74,8 +72,6 @@ public class YachtService implements IYacht {
                     locationDTO.setIdLocation(yacht.getLocation().getIdLocation());
 
                     yachtDTO.setLocation(locationDTO);
-
-
 
                     listYachtDTO.add(yachtDTO);
                 }

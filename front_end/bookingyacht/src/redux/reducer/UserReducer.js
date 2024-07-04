@@ -2,6 +2,7 @@ import { CUSTOMER_REGISTER, FETCH_USER_LOGIN_SUCCES, USER_LOGOUT } from "../type
 
 const INITIAL_STATE = {
     account: {
+        //tonken
         data: '',
         role: '',
         idCompany: '',

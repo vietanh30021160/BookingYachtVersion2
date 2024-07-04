@@ -8,5 +8,6 @@ public interface ISchedule {
     List<ScheduleDTO> getAllScheduleByYacht(String yachtId);
 
     List<ScheduleDTO> getAllSchedule();
+    ScheduleDTO getScheduleById(String idSchedule);
 
 }

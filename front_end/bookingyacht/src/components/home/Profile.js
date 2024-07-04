@@ -68,8 +68,8 @@ const Profile = () => {
                                 <div className="tab-content profile-tab" id="myTabContent">
                                     <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                         <div className="row">
-                                            <div className="col-md-6">
-                                                <label>User Id</label>
+                                            <div className="col-md-6 " style={{ border: '2px solid #15bbbe', borderRadius: 25, boxShadow: '0px 0px 5px #15bbbe' }}>
+                                                <label >User Id</label>
                                             </div>
                                             <div className="col-md-6">
                                                 <p>{profile.idCustomer}</p>
