@@ -6,9 +6,9 @@ import com.example.YachtBookingBackEnd.entity.RoomType;
 import java.util.List;
 
 public interface IRoomType {
-    List<RoomTypeDTO> getAllRoomType();
+    List<RoomTypeDTO> getAllRoomType(String yachtId);
 
-    boolean addRoomType(String type, long price, String utilities);
+    boolean addRoomType(String type, long price, String utilities, String yachtId);
 
     boolean updateRoomType(String roomTypeId, String type, long price, String utilities);
 

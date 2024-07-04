@@ -66,5 +66,8 @@ public class Yacht {
     private Set<Room> roomSet;
 
     @OneToMany(mappedBy = "yacht")
+    private Set<RoomType> roomTypeSet;
+
+    @OneToMany(mappedBy = "yacht")
     private Set<YachtSchedule> yachtScheduleSet;
 }

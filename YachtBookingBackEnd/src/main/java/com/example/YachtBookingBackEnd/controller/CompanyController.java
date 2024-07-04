@@ -253,18 +253,19 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/roomType/getAllRoomType")
-    public ResponseEntity<?>getAllRoomType(){
+    @GetMapping("/roomType/getAllRoomType/{yachtId}")
+    public ResponseEntity<?>getAllRoomType(@PathVariable("yachtId") String yachtId){
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iRoomType.getAllRoomType());
+        dataResponse.setData(iRoomType.getAllRoomType(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-    @PostMapping("/roomType/addRoomType")
+    @PostMapping("/roomType/addRoomType/{yachtId}")
     public ResponseEntity<?> addRoomType(@RequestParam long price,
                                          @RequestParam String type,
-                                         @RequestParam String utilities){
+                                         @RequestParam String utilities,
+                                         @PathVariable("yachtId")String yachtId){
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iRoomType.addRoomType(type, price, utilities));
+        dataResponse.setData(iRoomType.addRoomType(type, price, utilities, yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @PutMapping("/roomType/updateRoomType/{roomTypeId}")
