@@ -56,7 +56,7 @@ const ModalCreateYacht = (props) => {
         }
     }
     const handleCreateYacht = async () => {
-        let res = await createYacht(idCompany, data.name.trim(), image, data.launch.trim(), data.hullBody.trim(), data.description.trim(), data.rule.trim(), data.itinerary.trim(), data.location, data.yachtType);
+        let res = await createYacht(idCompany, data.name.trim(), image, data.launch, data.hullBody.trim(), data.description.trim(), data.rule.trim(), data.itinerary.trim(), data.location, data.yachtType);
         if (!data.name || !image || !data.launch || !data.hullBody || !data.description || !data.rule || !data.itinerary || !data.location || !data.yachtType) {
             toast.error("Input Not Empty")
         } else {
@@ -121,7 +121,7 @@ const ModalCreateYacht = (props) => {
                                 <Form.Label>Launch</Form.Label>
                                 <Form.Control
                                     name='launch'
-                                    type="text"
+                                    type="date"
                                     placeholder="Launch"
                                     onChange={handleChange}
                                     value={data.launch}

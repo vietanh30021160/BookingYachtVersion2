@@ -95,7 +95,7 @@ const Information = () => {
                         <Form.Label>PhoneNumber</Form.Label>
                         <Form.Control
                             type='text'
-                            placeholder='Start With 0 and 9 Number'
+                            placeholder='Start With 0 and 10 Number'
                             onChange={event => setPhoneNumber(event.target.value)}
                         />
                     </Form.Group>
