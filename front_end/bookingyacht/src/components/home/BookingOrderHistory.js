@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { cancelBookingByCustomer, getBookingOrderByCustomer } from '../../services/ApiServices';
+import { cancelBookingByCustomer, getBookingOrderByCustomer, getDetailBookingByCustomer } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import ReactPaginate from 'react-paginate';
+import { FaInfoCircle } from 'react-icons/fa';
+import { Button, Modal } from 'react-bootstrap';
+import { Input } from 'antd';
+import ModalGetDetailBooking from './ModalGetDetailBooking';
 
 const BookingOrderHistory = () => {
     const idCustomer = useSelector(state => state.account.account.idCustomer);
@@ -11,6 +15,15 @@ const BookingOrderHistory = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [pageCount, setPageCount] = useState(0);
     const itemsPerPage = 4;
+
+    const [cancelReason, setCancelReason] = useState('');
+    const [showModalCancel, setShowModalCancel] = useState(false);
+    const [selectedBooking, setSelectedBooking] = useState(null);
+
+    const [showModalDetail, setShowModalDetail] = useState(false);
+    const [bookingDetails, setBookingDetails] = useState(null);
+
+
 
     useEffect(() => {
         getBookingOrder();
@@ -31,17 +44,32 @@ const BookingOrderHistory = () => {
         }
     }
 
+    const handleShowModalCancel = (bookingOrder) => {
+        setSelectedBooking(bookingOrder);
+        setShowModalCancel(true);
+    }
 
-    const handleCancelBooking = async (bookingOrder) => {
-        if (window.confirm(`If you cancel Booking Order, you wil not receive a refund!\nAre you sure you want to cancel this Booking Order?`)) {
-            let res = await cancelBookingByCustomer(idCustomer, bookingOrder.idBooking)
+    const handleCancelBooking = async () => {
+        let res = await cancelBookingByCustomer(idCustomer, selectedBooking.idBooking, cancelReason || null)
 
-            if (res && res.data.data) {
-                toast.success("Cancel Successfully");
-                getBookingOrder()
-            } else {
-                toast.error("Cancel Fail");
-            }
+        if (res && res.data.data) {
+            toast.success("Cancel Successfully");
+            getBookingOrder()
+            setShowModalCancel(false);
+        } else {
+            toast.error("Cancel Fail");
+        }
+    }
+
+    const handleShowModalDetail = async (bookingOrder) => {
+        let res = await getDetailBookingByCustomer(idCustomer, bookingOrder.idBooking)
+
+        if (res && res.data.data) {
+            setBookingDetails(res.data.data);
+            setShowModalDetail(true);
+        } else {
+            toast.error("Can not load detail Booking Order")
+            console.log("Can not load detail Booking Order")
         }
     }
 
@@ -64,9 +92,12 @@ const BookingOrderHistory = () => {
                 {slicedBooking && slicedBooking.length > 0 && slicedBooking.map(bookingOrder => (
                     <div key={bookingOrder.idBooking} className="card mb-3" style={{ boxShadow: ' 0 4px 8px 0 rgba(0, 0, 255, 0.2)' }}>
                         <div className='card-body'>
-                            <div className="row">
-                                <div className="col-12">
+                            <div className="row align-items-center">
+                                <div className="col-11">
                                     <h5 className='card-title'>ID Booking: {bookingOrder.idBooking}</h5>
+                                </div>
+                                <div className='col-1' onClick={() => handleShowModalDetail(bookingOrder)}>
+                                    <FaInfoCircle size={24} style={{ color: 'black', cursor: 'pointer'}} />
                                 </div>
                                 <div className="col-12">
                                     <p className='card-text'>
@@ -97,7 +128,7 @@ const BookingOrderHistory = () => {
                             </div>
                             {bookingOrder.status === 'Pending' && (
                                 <button className="btn btn-danger mt-2"
-                                    onClick={() => handleCancelBooking(bookingOrder)}
+                                    onClick={() => handleShowModalCancel(bookingOrder)}
                                 >
                                     CANCEL BOOKING
                                 </button>
@@ -106,6 +137,7 @@ const BookingOrderHistory = () => {
                     </div>
                 ))}
             </div>
+
             <div className='page'>
                 <ReactPaginate
                     previousLabel="< Prev"
@@ -129,8 +161,39 @@ const BookingOrderHistory = () => {
                     disableInitialCallback={true}
                 />
             </div>
+
+            {/* Modal */}
+            <Modal show={showModalCancel} onHide={() => setShowModalCancel(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        Cancel Booking Order
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>If you cancel this booking order, you will not receive a refund!</p>
+                    <p>Please enter reason for cancellation (can be left blank):</p>
+                    <Input
+                        type='text'
+                        className='form-control'
+                        value={cancelReason}
+                        onChange={(e) => setCancelReason(e.target.value)}
+                    />
+                </Modal.Body>
+                <Modal.Footer style={{display: 'flex', justifyContent: 'center'}}>
+                    <Button variant='danger' onClick={handleCancelBooking}>
+                        CANCEL BOOKING
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            {/* Modal get Detail */}
+            <ModalGetDetailBooking
+                show = {showModalDetail}
+                onHide = {() => setShowModalDetail(false)}
+                bookingOrderDetail = {bookingDetails}
+            />
         </div>
     );
 };
 
-export default BookingOrderHistory;
+export default BookingOrderHistory; 

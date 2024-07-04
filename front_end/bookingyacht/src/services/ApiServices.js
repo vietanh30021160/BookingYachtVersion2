@@ -289,6 +289,12 @@ export const getBookingOrderByCustomer = (idCustomer) => {
     return axios.get(`/api/customer/bookingOrders/${idCustomer}`)
 }
 
-export const cancelBookingByCustomer = (idCustomer, idBooking) => {
-    return axios.put(`/api/customer/bookingOrders/${idCustomer}/cancel/${idBooking}`)
+export const cancelBookingByCustomer = (idCustomer, idBooking, reason) => {
+    const data = new FormData();
+    data.append('reason', reason)
+    return axios.put(`/api/customer/bookingOrders/${idCustomer}/cancel/${idBooking}`, data)
+}
+
+export const getDetailBookingByCustomer = (idCustomer, idBooking) => {
+    return axios.get(`/api/customer/bookingOrders/${idCustomer}/${idBooking}`)
 }
