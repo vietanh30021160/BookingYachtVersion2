@@ -93,6 +93,16 @@ const ManageSchedule = () => {
         }
     }
 
+    const formatDateTime = (dateString) => {
+        const date = new Date(dateString);
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero indexed
+        const year = date.getFullYear();
+        return `${hours}:${minutes} ${day}/${month}/${year}`;
+    }
+
     return (
         <div>
             <div>
@@ -153,8 +163,8 @@ const ManageSchedule = () => {
                             {
                                 getSchedule && getSchedule.length > 0 && getSchedule.map((schedule) =>
                                     <tr key={schedule.idSchedule}>
-                                        <td>{schedule.startDate}</td>
-                                        <td>{schedule.endDate}</td>
+                                        <td>{formatDateTime(schedule.startDate)}</td>
+                                        <td>{formatDateTime(schedule.endDate)}</td>
                                         <td className="d-flex" style={{ gap: 50, justifyContent: 'center' }}>
                                             <Button
                                                 variant="primary"

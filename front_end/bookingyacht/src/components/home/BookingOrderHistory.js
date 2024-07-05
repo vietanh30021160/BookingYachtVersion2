@@ -78,12 +78,22 @@ const BookingOrderHistory = () => {
         setCurrentPage(data.selected)
     }
 
+    const formatDateTime = (dateString) => {
+        const date = new Date(dateString);
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero indexed
+        const year = date.getFullYear();
+        return `${hours}:${minutes} ${day}/${month}/${year}`;
+    }
+
     const startIndex = currentPage * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const slicedBooking = getBooking.slice(startIndex, endIndex);
 
     const formatAmount = (amount) => {
-        return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
     return (
@@ -102,7 +112,7 @@ const BookingOrderHistory = () => {
                                 </div>
                                 <div className="col-12">
                                     <p className='card-text'>
-                                        <strong>Booking Time:</strong> {bookingOrder.bookingTime}
+                                        <strong>Booking Time:</strong> {formatDateTime(bookingOrder.bookingTime)}
                                     </p>
                                 </div>
                                 <div className="col-12">

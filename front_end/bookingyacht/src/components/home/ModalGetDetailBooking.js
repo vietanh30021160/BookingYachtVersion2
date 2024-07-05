@@ -5,7 +5,17 @@ const ModalGetDetailBooking = (props) => {
     const { show, onHide, bookingOrderDetail } = props;
 
     const formatAmount = (amount) => {
-        return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    const formatDateTime = (dateString) => {
+        const date = new Date(dateString);
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero indexed
+        const year = date.getFullYear();
+        return `${hours}:${minutes} ${day}/${month}/${year}`;
     }
 
     return (
@@ -19,13 +29,13 @@ const ModalGetDetailBooking = (props) => {
                 {bookingOrderDetail ? (
                     <div>
                         <p><strong>ID Booking:</strong> {bookingOrderDetail.idBooking}</p>
-                        <p><strong>Booking Time:</strong> {bookingOrderDetail.bookingTime}</p>
+                        <p><strong>Booking Time:</strong> {formatDateTime(bookingOrderDetail.bookingTime)}</p>
                         <p><strong>Amount:</strong> {formatAmount(bookingOrderDetail.amount)} VND</p>
                         <p><strong>Requirement:</strong> {bookingOrderDetail.requirement}</p>
                         <p><strong>Status:</strong> {bookingOrderDetail.status}</p>
                         <p><strong>Yacht name:</strong> {bookingOrderDetail.yachtName}</p>
-                        <p><strong>Start date:</strong> {bookingOrderDetail.schedule.startDate}</p>
-                        <p><strong>End date:</strong> {bookingOrderDetail.schedule.endDate}</p>
+                        <p><strong>Start date:</strong> {formatDateTime(bookingOrderDetail.schedule.startDate)}</p>
+                        <p><strong>End date:</strong> {formatDateTime(bookingOrderDetail.schedule.endDate)}</p>
                         <p><strong>Customer information:</strong></p>
                         <ul>
                             <li>
