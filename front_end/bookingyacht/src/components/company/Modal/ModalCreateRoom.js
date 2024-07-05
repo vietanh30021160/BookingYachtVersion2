@@ -58,6 +58,7 @@ const ModalCreateRoom = (props) => {
 
     const getRoomType = async () => {
         let res = await getAllRoomTypeCompany(idYacht);
+        console.log('check room', res)
         if (res && res.data && res.data.data) {
             setListRoomType(res.data.data);
         } else {

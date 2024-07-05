@@ -12,6 +12,7 @@ import './ManageYacht.scss'
 import { FaCirclePlus } from "react-icons/fa6";
 import ModalCreateRoom from './Modal/ModalCreateRoom';
 import ReactPaginate from 'react-paginate';
+import ModalRoomType from './Modal/ModalRoomType';
 
 
 const ManageRoom = () => {
@@ -19,6 +20,7 @@ const ManageRoom = () => {
     const [isShowModalRoomService, setIsShowModalRoomService] = useState(false);
     const [isShowModalUpdateRoom, setIsShowModalUpdateRoom] = useState(false);
     const [isShowModalCreateRoom, setIsShowModalCreateRoom] = useState(false);
+    const [isShowModalRoomType, setIsShowModalRoomType] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 4;
@@ -76,7 +78,9 @@ const ManageRoom = () => {
             <hr />
             <div className='row'>
                 <Button className='col-2 btn btn-success' onClick={() => setIsShowModalCreateRoom(true)}><FaCirclePlus style={{ marginRight: 8, marginBottom: 5 }} />Add New Room</Button>
-                <div className='col-6'></div>
+
+                <Button className='col btn btn-warning mx-2' onClick={() => setIsShowModalRoomType(true)}><FaCirclePlus style={{ marginRight: 8, marginBottom: 5 }} />Manage Room Type</Button>
+                <div className='col-md-4'></div>
                 <FormControl
                     className='col-2 mx-2'
                     style={{ width: 'fit-content' }}
@@ -130,6 +134,11 @@ const ManageRoom = () => {
                 setIsShowModalCreateRoom={setIsShowModalCreateRoom}
                 idYacht={idYacht}
                 getAllRoom={getAllRoom}
+            />
+            <ModalRoomType
+                show={isShowModalRoomType}
+                setIsShowModalRoomType={setIsShowModalRoomType}
+                idYacht={idYacht}
             />
             <div className='page'>
                 <ReactPaginate

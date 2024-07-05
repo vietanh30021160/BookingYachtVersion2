@@ -169,8 +169,8 @@ export const getAllRoomByYacht = (idYacht) => {
     return axios.get(`/api/companies/getRoomByYacht/${idYacht}`);
 }
 
-export const getAllRoomTypeCompany = (idCompany) => {
-    return axios.get(`/api/companies/roomType/getAllRoomType/${idCompany}`);
+export const getAllRoomTypeCompany = (yachtId) => {
+    return axios.get(`/api/companies/roomType/getAllRoomType/${yachtId}`);
 }
 
 export const createImageRoom = (idRoom, image) => {
@@ -224,12 +224,12 @@ export const updateRoom = (roomId, roomName, description, avatar) => {
     return axios.put(`/api/companies/room/updateRoom/${roomId}`, data)
 }
 
-export const createRoomType = (price, type, utilities) => {
+export const createRoomType = (price, type, utilities, yachtId) => {
     const data = new FormData();
     data.append('price', price);
     data.append('type', type);
     data.append('utilities', utilities);
-    return axios.post('/api/companies/roomType/addRoomType', data);
+    return axios.post(`/api/companies/roomType/addRoomType/${yachtId}`, data);
 }
 
 export const updateRoomType = (roomTypeId, price, type, utilities) => {

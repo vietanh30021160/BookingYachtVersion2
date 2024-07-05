@@ -100,15 +100,7 @@ const Sidebar = (props) => {
                         </MenuItem>
 
                     </Menu>
-                    <Menu iconShape="circle">
-                        <MenuItem
-                            icon={<FaStar />}
-                        >
-                            Manage Room Type
-                            <Link to='/manage-company/room-type' />
-                        </MenuItem>
 
-                    </Menu>
 
 
                 </SidebarContent>

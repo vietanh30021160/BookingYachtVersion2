@@ -98,7 +98,7 @@ const ModalUpdateRoomType = (props) => {
                         Close
                     </Button>
                     <Button variant="primary" onClick={handleUpdateRoomType}>
-                        Create
+                        Save
                     </Button>
                 </Modal.Footer>
             </Modal>
