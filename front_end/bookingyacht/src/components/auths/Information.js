@@ -40,7 +40,6 @@ const Information = () => {
             //     toast.error('Phone Number Start 0 And 10 Number')
             // } else {
             let res = await fillInformationCustomer(idCustomer, fullName, email, phoneNumber, address);
-            console.log('cheecjk', res)
             if (res && res.data.data === '1') {
                 toast.error('Invalid Form Email')
             } else if (res && res.data.data === '2') {

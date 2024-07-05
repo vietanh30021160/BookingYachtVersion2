@@ -15,7 +15,6 @@ const ViewFeedback = () => {
     }, [])
 
     const getFeedback = async () => {
-        console.log(idCompany)
         let res = await getFeedbackCompany(idCompany);
         if (res && res.data.data) {
             setListFeedback(res.data.data);

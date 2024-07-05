@@ -38,7 +38,6 @@ const Signin = () => {
     const handleLogin = async () => {
         setLoading(true)
         let res = await login(userName.trim(), password.trim());
-        console.log(res);
         if (userName === '' || password === '') {
             toast.error('Input Not Empty');
             setLoading(false);

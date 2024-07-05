@@ -19,7 +19,6 @@ const InformationCompany = () => {
 
     const { idCompany } = useParams();
 
-    console.log("idC", idCompany)
     const handelUploadImage = (event) => {
         if (event.target.files[0] && event.target && event.target.files) {
             setPreviewLogo(URL.createObjectURL(event.target.files[0]));
@@ -29,7 +28,6 @@ const InformationCompany = () => {
 
     const handleFillInformation = () => {
         let res = fillInformationCompany(idCompany, name, address, logo, email);
-        console.log("check fill company", res)
     }
 
     return (

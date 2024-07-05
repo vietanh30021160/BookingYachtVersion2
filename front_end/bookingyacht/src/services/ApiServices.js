@@ -54,8 +54,8 @@ export const updateProfileCustomer = (customerId, email, fullName, phoneNumber, 
     return axios.put(`/api/customer/profile/updateCustomer/${customerId}`, data)
 }
 
-export const getYachtById = (yachtId) => {
-    return axios.get(`/api/companies/yacht/findByCompany/${yachtId}`);
+export const getYachtByIdYacht = (yachtId) => {
+    return axios.get(`/api/companies/findYachtById/${yachtId}`);
 }
 export const deleteYacht = (idYacht) => {
     return axios.delete(`/api/companies/yacht/delete/${idYacht}`)

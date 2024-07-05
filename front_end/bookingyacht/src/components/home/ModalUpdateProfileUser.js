@@ -38,11 +38,8 @@ const ModalUpdateProfileUser = (props) => {
         if (!email || !fullName || !phoneNumber || !address) {
             toast.error('Input Not Empty');
         } else {
-            // if (phonenumber(phoneNumber.trim()) === false) {
-            //     toast.error('Phone Number Start 0 And 10 Number')
-            // } else {
+
             let res = await updateProfileCustomer(profile.idCustomer, email.trim(), fullName.trim(), phoneNumber.trim(), address.trim());
-            console.log("update p", res)
             if (res && res.data.data === true) {
                 toast.success('Update Successfully')
                 handleClose();

@@ -11,7 +11,7 @@ import ReactPaginate from 'react-paginate';
 import ModalUpdateRoomType from './ModalUpdateRoomType';
 
 const ModalRoomType = (props) => {
-    const { show, setIsShowModalRoomType, idYacht } = props;
+    const { show, setIsShowModalRoomType, idYacht, fetchRoomType } = props;
 
     const [isShowModalUpdateRoomType, setIsShowModalUpdateRoomType] = useState(false);
 
@@ -34,7 +34,7 @@ const ModalRoomType = (props) => {
             let res = await createRoomType(price, type, utilities.trim(), idYacht);
             if (res && res.data.data === true) {
                 toast.success('Create Successfully')
-                getRoomType();
+                fetchRoomType()
                 handleClose();
             } else {
                 toast.error('Create Fail')
@@ -72,7 +72,6 @@ const ModalRoomType = (props) => {
     const handleDeleteRoomType = async (type) => {
         if (window.confirm(`You Want To Delete Room Type ${type.utilities}`)) {
             let res = await deleteRoomType(type.idRoomType);
-            console.log('dele', res)
             if (res && res.data && res.data.data === true) {
                 toast.success('Delete Successfully');
                 getRoomType();
@@ -241,9 +240,7 @@ const ModalRoomType = (props) => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleCreateRoomType}>
-                        Create
-                    </Button>
+
                 </Modal.Footer>
             </Modal>
         </div>

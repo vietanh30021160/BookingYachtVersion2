@@ -53,9 +53,7 @@ const ViewBooking = () => {
 
 
     const handleConfrimBooking = async (idBooking) => {
-        console.log('id', idBooking)
         let res = await confirmBooking(idCompany, idBooking);
-        console.log('confim', res);
         if (res && res.data && res.data.data === true) {
             toast.success('Confimed Booking Successfully')
             getBooking();
@@ -65,9 +63,7 @@ const ViewBooking = () => {
     }
 
     const handleCancelBooking = async (idBooking) => {
-        console.log('id', idBooking)
         let res = await canelBooking(idCompany, idBooking);
-        console.log('cancle', res);
         if (res && res.data && res.data.data === true) {
             toast.success('Cancel Booking Successfully')
             getBooking();
@@ -91,7 +87,6 @@ const ViewBooking = () => {
 
     const handleFilterByAmount = async () => {
         let res = await getBookingByAmount(idCompany, min, max)
-        console.log('amo', res)
         if (res && res.data && res.data.data) {
             setListBooking(res.data.data)
         }

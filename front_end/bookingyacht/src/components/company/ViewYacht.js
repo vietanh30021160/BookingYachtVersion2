@@ -8,7 +8,7 @@ import ReactPaginate from 'react-paginate';
 import './Company.scss'
 import { FaCirclePlus } from "react-icons/fa6";
 import ModalCreateYacht from './Modal/ModalCreateYacht';
-import { deleteYacht, getAllLocation, getYachtById, getYachtType } from '../../services/ApiServices';
+import { deleteYacht, getAllLocation, getYachtById, getYachtByIdCompany, getYachtType } from '../../services/ApiServices';
 import _ from 'lodash';
 import Form from 'react-bootstrap/Form';
 import { toast } from 'react-toastify';
@@ -42,19 +42,15 @@ const ViewYacht = (props) => {
         filterAndPaginateYachts();
     }, [searchYacht, filterLocation, filterYachtType, currentPage, yacht]);
 
-    console.log('id', idCompany)
     const listYacht = async () => {
-        let res = await getYachtById(idCompany);
-        console.log('check yacht', res)
+        let res = await getYachtByIdCompany(idCompany);
         if (res && res.data.data) {
             setYacht(res.data.data);
             setFilteredYachts(res.data.data);
-            console.log('data', res.data.data)
         } else {
             toast.info('Please Adding New Yacht');
         }
     }
-    console.log('yact l', yacht)
 
     const handleDeleteYacht = async (id, name) => {
         if (window.confirm(`Delete Yacht With Name: ${name}`)) {

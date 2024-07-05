@@ -73,7 +73,6 @@ const ModalCreateYacht = (props) => {
 
     const getAllType = async () => {
         let res = await getYachtType();
-        console.log("check yacht type", res)
         setYachtType(res.data.data)
     }
 

@@ -51,10 +51,8 @@ const ModalManageRoomImage = (props) => {
         }
     }
 
-    console.log('id', idRoom)
     const getImageRoomById = async () => {
         let res = await getImageByRoom(idRoom);
-        console.log('chekc', res)
         if (res && res.data && res.data.data) {
             setListImage(res.data.data);
         } else {
@@ -70,7 +68,6 @@ const ModalManageRoomImage = (props) => {
     const handleDeleteImageRoom = async (image) => {
         if (window.confirm(`You want to delete image ${image}`)) {
             let res = await deleteImageRoom(image);
-            console.log('del', res);
             if (res && res.data.data === true) {
                 toast.success('Delete Successfully');
                 getImageRoomById();

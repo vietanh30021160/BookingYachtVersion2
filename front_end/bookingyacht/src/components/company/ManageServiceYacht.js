@@ -76,7 +76,6 @@ const ManageServiceYacht = () => {
     const handleDeleteServiceYacht = async (service) => {
         if (window.confirm(`You Want To Delete service ${service.service}`)) {
             let res = await deleteServiceYacht(idYacht, service.idService)
-            console.log('dele', res)
             if (res && res.data.data === true) {
                 toast.success('Delete Successfully')
                 getServiceYacht();

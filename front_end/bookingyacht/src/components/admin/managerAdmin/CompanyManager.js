@@ -63,7 +63,7 @@ const CompanyManager = () => {
         dispatch(fetchCompanies())
     }, [dispatch]);
 
-    useEffect(() =>{
+    useEffect(() => {
         setFilteredCompanies(companies);
     }, [companies])
 
@@ -89,18 +89,18 @@ const CompanyManager = () => {
     };
 
     const handleSearchByName = value => {
-       setSearchName(value);
-       filterCompanies(value, searchEmail, searchId)
+        setSearchName(value);
+        filterCompanies(value, searchEmail, searchId)
 
-       setCurrentPage(1);
+        setCurrentPage(1);
     };
 
     // Hàm tìm kiếm khách hàng theo tên
     const handleSearchByEmail = value => {
-       setSearchEmail(value);
-       filterCompanies(searchName, value, searchId)
+        setSearchEmail(value);
+        filterCompanies(searchName, value, searchId)
 
-       setCurrentPage(1);
+        setCurrentPage(1);
     };
 
     const handleSearchById = value => {
@@ -108,7 +108,7 @@ const CompanyManager = () => {
         filterCompanies(searchName, searchEmail, value);
         setCurrentPage(1);
     };
-    
+
 
     //Hàm tạo tài khoản cho company
     const handleCreateCompany = async event => {
@@ -141,7 +141,6 @@ const CompanyManager = () => {
                 toast.success('Company created successfully.')
                 fetchCompanies();
                 setNewAccountId(response.data.idAccount)
-                console.log(newAccountId);
                 setShowInfoDetailModal(true)
             } else {
                 // setCreatetAccountMessage('Failed to create company. Please try again.');
@@ -189,15 +188,15 @@ const CompanyManager = () => {
                 logo: null,
                 name: ''
             });
-            
+
             setLogo(null);
         } catch (error) {
             toast.error('Created infomation company false');
         }
     }
 
-    
-    const filterCompanies = (name, email, id) =>{
+
+    const filterCompanies = (name, email, id) => {
         const filtered = companies.filter(companies =>
             companies.name.toLowerCase().includes(name.toLowerCase()) &&
             companies.email.toLowerCase().includes(email.toLowerCase()) &&
@@ -206,7 +205,7 @@ const CompanyManager = () => {
         setFilteredCompanies(filtered)
     }
     const handleHideCompany = companyId => {
-       
+
     };
 
 
@@ -260,9 +259,9 @@ const CompanyManager = () => {
         <div className="container mt-5">
             <h1>Admin Manager</h1>
             <h2>Company Accounts</h2>
-           <div className="d-flex mb-3">
+            <div className="d-flex mb-3">
                 <div style={{ marginRight: '50px' }}>
-                <label>Tìm kiếm theo Id</label>
+                    <label>Tìm kiếm theo Id</label>
                     <input
                         type="text"
                         className="form-control"
@@ -274,7 +273,7 @@ const CompanyManager = () => {
             </div>
             <div className="d-flex mb-3">
                 <div style={{ marginRight: '50px' }}>
-                <label>Tìm kiếm theo tên</label>
+                    <label>Tìm kiếm theo tên</label>
                     <input
                         type="text"
                         className="form-control"
@@ -284,7 +283,7 @@ const CompanyManager = () => {
                     />
                 </div>
                 <div>
-                <label>Tìm kiếm theo email</label>
+                    <label>Tìm kiếm theo email</label>
                     <input
                         type="text"
                         className="form-control"

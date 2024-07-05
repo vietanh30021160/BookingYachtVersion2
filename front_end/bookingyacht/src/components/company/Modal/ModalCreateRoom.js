@@ -5,23 +5,27 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { Button } from 'react-bootstrap'
 import { FcPlus } from "react-icons/fc";
-import { every } from 'lodash';
+import _ from 'lodash';
 import { createRoom, getAllRoomTypeCompany } from '../../../services/ApiServices';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 
 const ModalCreateRoom = (props) => {
-    const { show, setIsShowModalCreateRoom, idYacht } = props;
+    const { show, setIsShowModalCreateRoom, idYacht, listRoomType, fetchRoomType } = props;
     const [image, setImage] = useState("");
     const [previewImage, setPreviewImage] = useState("");
     const [roomName, setRoomName] = useState('');
     const [area, setArea] = useState(0);
-    const [listRoomType, setListRoomType] = useState('');
     const [description, setDescription] = useState('');
     const [roomType, setRoomType] = useState('');
+
     useEffect(() => {
-        getRoomType()
-    }, []);
+        fetchRoomType();
+        if (_.isEmpty(listRoomType)) {
+            toast.warning('Please create room type before creating room');
+            return;
+        }
+    }, [])
 
     const handleClose = () => {
         setIsShowModalCreateRoom(false);
@@ -56,15 +60,6 @@ const ModalCreateRoom = (props) => {
     }
 
 
-    const getRoomType = async () => {
-        let res = await getAllRoomTypeCompany(idYacht);
-        console.log('check room', res)
-        if (res && res.data && res.data.data) {
-            setListRoomType(res.data.data);
-        } else {
-            toast.info('Not Found Room Type');
-        }
-    }
     return (
         <div>
             <Modal size='xl'

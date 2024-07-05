@@ -5,7 +5,7 @@ import { NavLink, useParams } from 'react-router-dom';
 import ModalManageRoomImage from './Modal/ModalManageRoomImage';
 import ModalManageRoomService from './Modal/ModalManageRoomService';
 import ModalUpdateRoom from './Modal/ModalUpdateRoom';
-import { getAllRoomByYacht } from '../../services/ApiServices';
+import { getAllRoomByYacht, getAllRoomTypeCompany } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
 import { TbMeterSquare } from "react-icons/tb";
 import './ManageYacht.scss'
@@ -13,6 +13,7 @@ import { FaCirclePlus } from "react-icons/fa6";
 import ModalCreateRoom from './Modal/ModalCreateRoom';
 import ReactPaginate from 'react-paginate';
 import ModalRoomType from './Modal/ModalRoomType';
+import _ from 'lodash';
 
 
 const ManageRoom = () => {
@@ -32,6 +33,12 @@ const ManageRoom = () => {
     const [listRoom, setListRoom] = useState([]);
 
     const [searchNameRoom, setSearchNameRoom] = useState('');
+    const [filteredRoom, setFilteredRoom] = useState([]);
+
+
+    const [listRoomType, setListRoomType] = useState([]);
+
+
 
 
     const handlManageImageRoom = (idRoom) => {
@@ -42,7 +49,13 @@ const ManageRoom = () => {
 
     useEffect(() => {
         getAllRoom();
+        fetchRoomType()
     }, [])
+
+    useEffect(() => {
+        filterAndPaginateRoom();
+    }, [currentPage, searchNameRoom, listRoom]);
+
 
 
     const getAllRoom = async () => {
@@ -63,8 +76,26 @@ const ManageRoom = () => {
     const handlePageChange = (selectedItem) => {
         setCurrentPage(selectedItem.selected);
     };
-    const displayedRoom = listRoom.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
+    const filterAndPaginateRoom = () => {
+        const filtered = listRoom
+            .filter(y => y.name.toLowerCase().includes(searchNameRoom.toLowerCase().trim()))
+
+
+        setFilteredRoom(filtered);
+    };
+
+    const displayedRoom = filteredRoom.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+
+    const fetchRoomType = async () => {
+        let res = await getAllRoomTypeCompany(idYacht);
+
+        if (res && res.data && res.data.data) {
+            setListRoomType(res.data.data);
+        } else {
+            toast.info('Not Found Room Type');
+        }
+    }
 
 
     return (
@@ -91,7 +122,6 @@ const ManageRoom = () => {
             </div>
             {
                 displayedRoom && displayedRoom.length > 0 && displayedRoom
-                    .filter(room => room.name.toLowerCase().includes(searchNameRoom.toLowerCase()))
                     .map((room) =>
                         <div key={room.idRoom} className='d-flex my-5 room p-3 row ' style={{ gap: 50 }}>
                             <img className='col-md-2' width={170} src={`http://localhost:8080/api/customer/file/${room.avatar}`} />
@@ -134,11 +164,15 @@ const ManageRoom = () => {
                 setIsShowModalCreateRoom={setIsShowModalCreateRoom}
                 idYacht={idYacht}
                 getAllRoom={getAllRoom}
+                fetchRoomType={fetchRoomType}
+                listRoomType={listRoomType}
             />
             <ModalRoomType
                 show={isShowModalRoomType}
                 setIsShowModalRoomType={setIsShowModalRoomType}
                 idYacht={idYacht}
+                fetchRoomType={fetchRoomType}
+
             />
             <div className='page'>
                 <ReactPaginate
@@ -146,7 +180,7 @@ const ManageRoom = () => {
                     onPageChange={handlePageChange}
                     pageRangeDisplayed={3}
                     marginPagesDisplayed={2}
-                    pageCount={Math.ceil(listRoom.length / itemsPerPage)}
+                    pageCount={Math.ceil(filteredRoom.length / itemsPerPage)}
                     previousLabel="< Prev"
                     pageClassName="page-item"
                     pageLinkClassName="page-link"
