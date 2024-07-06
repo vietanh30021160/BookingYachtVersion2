@@ -1,14 +1,8 @@
 package com.example.YachtBookingBackEnd.service.service;
 
 import com.example.YachtBookingBackEnd.dto.*;
-import com.example.YachtBookingBackEnd.entity.Company;
-import com.example.YachtBookingBackEnd.entity.Location;
-import com.example.YachtBookingBackEnd.entity.Yacht;
-import com.example.YachtBookingBackEnd.entity.YachtType;
-import com.example.YachtBookingBackEnd.repository.CompanyRepository;
-import com.example.YachtBookingBackEnd.repository.LocationRepository;
-import com.example.YachtBookingBackEnd.repository.YachtRepository;
-import com.example.YachtBookingBackEnd.repository.YachtTypeRepository;
+import com.example.YachtBookingBackEnd.entity.*;
+import com.example.YachtBookingBackEnd.repository.*;
 import com.example.YachtBookingBackEnd.service.implement.IFile;
 import com.example.YachtBookingBackEnd.service.implement.IYacht;
 import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
@@ -29,6 +23,9 @@ public class YachtService implements IYacht {
     IFile iFile;
     @Autowired
     CompanyRepository companyRepository;
+
+    @Autowired
+    RoomTypeRepository roomTypeRepository;
     @Autowired
     LocationRepository locationRepository;
     @Autowired
@@ -267,6 +264,25 @@ public class YachtService implements IYacht {
             System.out.println(e.getMessage());
         }
         return yachtDTO;
+    }
+
+    @Override
+    public PriceDTO getPriceRoom(String yachtId) {
+        PriceDTO priceDTO = new PriceDTO();
+        try{
+//            List<RoomType> roomTypeList = roomTypeRepository.findAllByYachtId(yachtId);
+            RoomType roomType1 = roomTypeRepository.findHighestPricedRoomTypeByYachtId(yachtId);
+            long highestPrice = roomType1.getPrice();
+            RoomType roomType2  =roomTypeRepository.findLowestPricedRoomTypeByYachtId(yachtId);
+            long lowestPrice = roomType2.getPrice();
+
+            priceDTO.setHighestPrice(highestPrice);
+            priceDTO.setLowestPrice(lowestPrice);
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return priceDTO;
     }
 
 }

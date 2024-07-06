@@ -23,9 +23,11 @@ public class RoomTypeService implements IRoomType {
         List<RoomTypeDTO> roomTypeDTOList  =new ArrayList<>();
 
         try {
-//            Yacht yacht  = yachtRepository.findById(yachtId)
-//                    .orElseThrow(()-> new RuntimeException("Not found yacht") );
-            List<RoomType> roomTypeList = roomTypeRepository.findAllByYacht(yachtId);
+            Yacht yacht  = yachtRepository.findById(yachtId)
+                    .orElseThrow(()-> new RuntimeException("Not found yacht") );
+            System.out.println(yacht);
+            List<RoomType> roomTypeList = roomTypeRepository.findAllByYachtId(yachtId);
+            System.out.println(roomTypeList);
             for (RoomType roomType: roomTypeList
                  ) {
                 RoomTypeDTO roomTypeDTO = new RoomTypeDTO();
@@ -44,8 +46,10 @@ public class RoomTypeService implements IRoomType {
     @Override
     public boolean addRoomType(String type, long price, String utilities, String yachtId) {
         try {
+
             Yacht yacht = yachtRepository.findById(yachtId)
                     .orElseThrow(()->new RuntimeException("not found yacht"));
+            System.out.println(yacht);
             RoomType roomType = new RoomType();
             roomType.setType(type);
             roomType.setPrice(price);
