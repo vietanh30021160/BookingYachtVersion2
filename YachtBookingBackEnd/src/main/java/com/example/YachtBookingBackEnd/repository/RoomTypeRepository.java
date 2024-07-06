@@ -20,7 +20,7 @@ public interface RoomTypeRepository extends JpaRepository<RoomType, String> {
     @Query("SELECT rt FROM RoomType rt WHERE rt.yacht.idYacht = :yachtId")
     List<RoomType> findAllByYachtId(@Param("yachtId") String yachtId);
 
-    List<RoomType> findAllByYacht(Yacht   yacht);
+
 
     @Query(value = "SELECT rt.* FROM room_type rt " +
             "INNER JOIN room r ON rt.id_room_type = r.id_room_type " +

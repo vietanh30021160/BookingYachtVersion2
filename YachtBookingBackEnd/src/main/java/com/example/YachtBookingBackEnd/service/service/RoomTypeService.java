@@ -25,7 +25,7 @@ public class RoomTypeService implements IRoomType {
 
 //            Yacht yacht  = yachtRepository.findById(yachtId)
 //                    .orElseThrow(()-> new RuntimeException("Not found yacht") );
-            List<RoomType> roomTypeList = roomTypeRepository.findAllByYacht(yachtId);
+            List<RoomType> roomTypeList = roomTypeRepository.findAllByYachtId(yachtId);
 
             for (RoomType roomType: roomTypeList
             ) {
