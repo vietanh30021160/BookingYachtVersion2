@@ -28,7 +28,7 @@ public class RoomTypeService implements IRoomType {
             List<RoomType> roomTypeList = roomTypeRepository.findAllByYacht(yachtId);
 
             for (RoomType roomType: roomTypeList
-                 ) {
+            ) {
                 RoomTypeDTO roomTypeDTO = new RoomTypeDTO();
                 roomTypeDTO.setIdRoomType(roomType.getIdRoomType());
                 roomTypeDTO.setType(roomType.getType());

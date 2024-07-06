@@ -313,4 +313,12 @@ public class CustomerController {
 
 
 
+
+    @GetMapping("/yacht/getPriceRoom/{yachtId}")
+    public ResponseEntity<?>getPriceRoom(@PathVariable("yachtId")String  yachtId){
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iYacht.getPriceRoom(yachtId));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
 }
