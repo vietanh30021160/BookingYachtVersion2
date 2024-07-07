@@ -10,13 +10,14 @@ import { getYachtListApi } from '../../redux/action/YachtListAction';
 import NotFound from '../page404/NotFound';
 import axios from 'axios';
 import { getFile } from '../../services/ApiServices';
+import { useSearchTrigger } from '../home/TriggerFormSearch';
 const YachtList = () => {
-
     const [pagging, setPagging] = useState([]); // page 1, 2, 3, ...
     const [paggingYacht, setPaggingYacht] = useState([]); // yachts in a page
     const [currentPage, setCurrentPage] = useState(1);
     const dispatch = useDispatch();
     const { yachtList } = useSelector((state) => state.YachtListReducer);
+    const { triggerSearch } = useSearchTrigger();
     console.log(yachtList);
 
     useEffect(() => {
@@ -46,7 +47,8 @@ const YachtList = () => {
 
     useEffect(() => {
         setCurrentPage(1);
-    }, [yachtList]);
+        triggerSearch();
+    }, [yachtList, triggerSearch]);
 
     const renderPages = () => {
         return pagging.map((page) => {
