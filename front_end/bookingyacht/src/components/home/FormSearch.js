@@ -10,6 +10,7 @@ import { YachtListReducer } from './../../redux/reducer/YachtListReducer';
 const FormSearch = () => {
     const dispatch = useDispatch();
     const { selectedLocation } = useSelector(state => state.YachtListReducer);
+
     console.log("selectedLocation:", selectedLocation)
 
     const [searchData, setSearchData] = useState({
@@ -42,14 +43,6 @@ const FormSearch = () => {
         });
     }
 
-    useEffect(() => {
-        dispatch({
-            type: SEARCH_YACHT,
-            payload: searchData
-        });
-    }, []);
-
-
     return (
         <div>
             <div className='homepage-content container '>
@@ -71,7 +64,7 @@ const FormSearch = () => {
                                 </FormGroup>
                             </Col>
                             <Col>
-                                <select className='select p-2' name='location' onChange={handleChange} style={{ color: '#595C5F' }} value={searchData.location}>
+                                <select className='select p-2 pe-3' name='location' onChange={handleChange} style={{ color: '#595C5F' }} value={searchData.location}>
                                     <option value='all'>Tất cả các địa điểm</option>
                                     <option value='Hạ Long'>Vịnh Hạ Long</option>
                                     <option value='Lan Hạ'>Vịnh Lan Hạ</option>

@@ -283,7 +283,7 @@ export const updateScheduleYacht = (yachtId, scheduleId, startDate, endDate) => 
 }
 
 export const deleteScheduleYacht = (yachtId, scheduleId) => {
-return axios.delete(`/api/companies/deleteSchedule/${yachtId}/${scheduleId}`)
+    return axios.delete(`/api/companies/deleteSchedule/${yachtId}/${scheduleId}`)
 }
 export const getCustomerById = (customerId) => {
     return axios.get(`/api/customer/profile/getProfileCustomerById/${customerId}`);

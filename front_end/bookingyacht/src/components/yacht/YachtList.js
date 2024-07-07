@@ -8,24 +8,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getYachtListApi } from '../../redux/action/YachtListAction';
 import NotFound from '../page404/NotFound';
+import axios from 'axios';
+import { getFile } from '../../services/ApiServices';
 const YachtList = () => {
 
     const [pagging, setPagging] = useState([]); // page 1, 2, 3, ...
     const [paggingYacht, setPaggingYacht] = useState([]); // yachts in a page
     const [currentPage, setCurrentPage] = useState(1);
-
     const dispatch = useDispatch();
     const { yachtList } = useSelector((state) => state.YachtListReducer);
-    const getYachtList = () => {
+    console.log(yachtList);
+
+    useEffect(() => {
         dispatch(getYachtListApi())
-    }
+    }, [dispatch]);
 
     useEffect(() => {
-        getYachtList();
-    }, [dispatch])
-
-    useEffect(() => {
-        if (yachtList.length) {
+        if (yachtList.length > 0) {
             const startIndex = (currentPage - 1) * 5;
             const endIndex = startIndex + 5;
             setPaggingYacht(yachtList.slice(startIndex, endIndex));
@@ -44,6 +43,10 @@ const YachtList = () => {
     const handelChangePage = (pageNumber) => {
         setCurrentPage(pageNumber)
     }
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [yachtList]);
 
     const renderPages = () => {
         return pagging.map((page) => {
@@ -73,7 +76,7 @@ const YachtList = () => {
                             return (
                                 <div className="card row" key={yacht.idYacht} onClick={() => { hanldeSelectedYacht(yacht.idYacht) }} style={{ cursor: 'pointer' }}>
                                     <div className="col-md-5">
-                                        <img style={{ height: '250px', width: '100%' }} className="card-img-top object-fit-cover" src={`${avatarYachtApi}${yacht.image}`} alt="Card image cap" />
+                                        <img style={{ height: '250px', width: '100%' }} className="card-img-top object-fit-cover" src={`${avatarYachtApi}${yacht.image}`} alt="Card cap" />
                                     </div>
                                     <div className="card-body col-md-7">
                                         <div className='card-content'>
