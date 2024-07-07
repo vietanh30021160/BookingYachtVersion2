@@ -30,8 +30,10 @@ const ModalRoomType = (props) => {
     const handleCreateRoomType = async () => {
         if (!price && !type && !utilities) {
             toast.error('Input Not Empty')
+        } else if (price < 0) {
+            toast.error('Price not Negative number')
         } else {
-            let res = await createRoomType(price, type, utilities.trim(), idYacht);
+            let res = await createRoomType(price, type.trim(), utilities.trim(), idYacht);
             if (res && res.data.data === true) {
                 toast.success('Create Successfully')
                 fetchRoomType()
@@ -138,8 +140,7 @@ const ModalRoomType = (props) => {
                                         <Form.Group as={Col} >
                                             <Form.Label>Type</Form.Label>
                                             <Form.Control
-                                                type="number"
-                                                placeholder='Number'
+                                                type="text"
                                                 onChange={event => setType(event.target.value)}
                                             />
                                         </Form.Group>

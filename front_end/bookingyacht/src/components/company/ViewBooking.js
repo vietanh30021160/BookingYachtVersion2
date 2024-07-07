@@ -34,11 +34,26 @@ const ViewBooking = () => {
         filterAndPaginateBooking();
     }, [listBooking, filterSearch, currentPage, filterStatus]);
 
+    const formatDate = (dateTimeString) => {
+        const dateTime = new Date(dateTimeString);
+        const hours = dateTime.getHours();
+        const minutes = dateTime.getMinutes();
+        const day = dateTime.getDate();
+        const month = dateTime.getMonth() + 1; // Months are 0-indexed
+        const year = dateTime.getFullYear();
+
+        // Pad single digit minutes with leading zero
+        const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+        return `${hours}:${formattedMinutes} ${day}/${month}/${year}`;
+    };
+
 
     const getBooking = async () => {
         let res = await getBookingOrder(idCompany);
         if (res && res.data && res.data.data) {
-            setListBooking(res.data.data);
+            const sortedBookings = res.data.data.sort((a, b) => new Date(b.bookingTime) - new Date(a.bookingTime));
+            setListBooking(sortedBookings);
         } else (
             toast.error('Not Found Booking')
         )
@@ -80,6 +95,7 @@ const ViewBooking = () => {
         const filtered = listBooking
             .filter(b => b.customerName.toLowerCase().includes(filterSearch.toLowerCase().trim()))
             .filter(b => filterStatus === '0' ? b : b.status.includes(filterStatus))
+
         setFilterBooking(filtered);
     };
 
@@ -134,14 +150,15 @@ const ViewBooking = () => {
 
                                             <div className="media-body">
                                                 <b >
-                                                    <span className="float-right text-success">{booking.bookingTime}<i className="feather-check-circle text-success" /></span>
+                                                    <span className="float-right text-success">{formatDate(booking.bookingTime)}<i className="feather-check-circle text-success" /></span>
                                                 </b>
                                                 <h6 className="mb-3"><b href="#">
                                                 </b><b className="text-dark">{booking.customerName}</b>
                                                 </h6>
                                                 <p className="text-black-50 mb-1"><i className="feather-map-pin" /> {booking.yachtName}, Amount: {booking.amount}
                                                 </p>
-                                                <p className="text-black-50 mb-1"><i className="feather-list" /> Schedule - <i className="feather-clock ml-2" />Start Date: {booking.schedule.startDate}, End Date: {booking.schedule.endDate} </p>
+                                                <p className="text-black-50 mb-1"><i className="feather-list" /> Schedule - <i className="feather-clock ml-2" />
+                                                    Start Date: {formatDate(booking.schedule.startDate)}, End Date: {formatDate(booking.schedule.endDate)} </p>
                                                 <p className="text-black-50 mb-3"><i className="feather-list" /> Requirement: <i className="feather-clock ml-2" />{booking.requirement}</p>
 
                                                 <hr />

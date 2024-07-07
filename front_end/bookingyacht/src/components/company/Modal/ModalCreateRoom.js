@@ -5,10 +5,10 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { Button } from 'react-bootstrap'
 import { FcPlus } from "react-icons/fc";
-import _ from 'lodash';
 import { createRoom, getAllRoomTypeCompany } from '../../../services/ApiServices';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
+import _ from 'lodash';
 
 const ModalCreateRoom = (props) => {
     const { show, setIsShowModalCreateRoom, idYacht, listRoomType, fetchRoomType } = props;
@@ -21,11 +21,12 @@ const ModalCreateRoom = (props) => {
 
     useEffect(() => {
         fetchRoomType();
-        if (_.isEmpty(listRoomType)) {
-            toast.warning('Please create room type before creating room');
-            return;
-        }
     }, [])
+    useEffect(() => {
+        if (show && _.isEmpty(listRoomType)) {
+            toast.warning('Please create room type before creating room')
+        }
+    }, [show, listRoomType])
 
     const handleClose = () => {
         setIsShowModalCreateRoom(false);
@@ -98,6 +99,7 @@ const ModalCreateRoom = (props) => {
                                 <Form.Label>Room Type</Form.Label>
                                 <Form.Select onChange={event => setRoomType(event.target.value)} >
                                     {
+
                                         listRoomType && listRoomType.map((type) =>
                                             <option key={type.idRoomType} value={type.idRoomType}>{type.utilities}</option>
                                         )
@@ -121,6 +123,7 @@ const ModalCreateRoom = (props) => {
                             <label className='form-label label-upload' htmlFor='labelUpload'> <FcPlus /> Upload File IMAGE</label>
                             <input
                                 type='file'
+                                accept='image/*'
                                 hidden id='labelUpload'
                                 name='image'
                                 onChange={(event) => handelUploadImage(event)}

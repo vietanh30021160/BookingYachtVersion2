@@ -50,6 +50,7 @@ const ManageRoom = () => {
     useEffect(() => {
         getAllRoom();
         fetchRoomType()
+
     }, [])
 
     useEffect(() => {

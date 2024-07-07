@@ -449,6 +449,7 @@ const CompanyManager = () => {
                             <img src={logo || `${getImageApi}${companyDetail.logo}`} alt="Company Logo" style={{ width: 200, marginTop: 20 }} />
                             <Form.Control
                                 type='file'
+                                accept='image/*'
                                 onChange={handleFileChange}
                                 required
                             />

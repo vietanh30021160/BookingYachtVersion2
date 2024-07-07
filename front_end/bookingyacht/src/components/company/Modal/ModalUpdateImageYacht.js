@@ -49,6 +49,7 @@ const ModalUpdateImageYacht = (props) => {
                         <label className='form-label label-upload' htmlFor='labelCreateImage'> <FcPlus /> Upload File IMAGE</label>
                         <input
                             type='file'
+                            accept='image/*'
                             hidden id='labelCreateImage'
                             name='image'
                             onChange={(event) => handelUploadImage(event)}

@@ -17,11 +17,11 @@ const Signup = () => {
 
 
     const handleRegister = async () => {
-        let res = await registerCustomer(userName, password);
+        let res = await registerCustomer(userName.trim(), password.trim());
         if (userName === '' || password === '' || confrimPassword === '') {
             toast.error('Input not empty')
         }
-        else if (password !== confrimPassword) {
+        else if (confrimPassword.trim() !== password.trim()) {
             toast.error('Confirm Passwod Fail');
         }
         else if (res && res.data.data === true) {

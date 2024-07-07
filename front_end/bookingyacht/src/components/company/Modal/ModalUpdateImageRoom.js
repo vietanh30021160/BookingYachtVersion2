@@ -49,6 +49,7 @@ const ModalUpdateImageRoom = (props) => {
                         <label className='form-label label-upload' htmlFor='labelUpdateImageRoom'> <FcPlus /> Upload File IMAGE</label>
                         <input
                             type='file'
+                            accept='image/*'
                             hidden id='labelUpdateImageRoom'
                             name='image'
                             onChange={(event) => handelUpdateImageRoom(event)}

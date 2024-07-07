@@ -68,6 +68,7 @@ const InformationCompany = () => {
                     <input
                         type='file'
                         hidden id='labelUpload'
+                        accept='image/*'
                         name='image'
                         onChange={(event) => handelUploadImage(event)}
                     />
