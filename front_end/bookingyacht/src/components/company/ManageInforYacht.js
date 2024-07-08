@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 import Accordion from 'react-bootstrap/Accordion';
-import { getAllLocation, getYachtById, getYachtType, updateYacht } from '../../services/ApiServices';
+import { getAllLocation, getYachtById, getYachtByIdYacht, getYachtType, updateYacht } from '../../services/ApiServices';
 import Form from 'react-bootstrap/Form';
 import { FcPlus } from "react-icons/fc";
 import _ from 'lodash'
@@ -32,6 +32,15 @@ const ManageInforYacht = (props) => {
         getAllType();
     }, [])
 
+    const getYacht = async () => {
+        const res = await getYachtByIdYacht(idYacht);
+        if (res && res.data && res.data.data) {
+            setInforYacht(res.data.data);
+        } else {
+            toast.error('Not Found Data Yacht')
+        }
+    }
+
     useEffect(() => {
         if (!_.isEmpty(inforYacht)) {
             setDataUpdate(inforYacht)
@@ -44,14 +53,8 @@ const ManageInforYacht = (props) => {
     }, [inforYacht]);
 
 
-    const getYacht = async () => {
-        const res = await getYachtById(idYacht);
-        if (res && res.data.data !== '') {
-            setInforYacht(res.data.data);
-        } else {
-            toast.error('Not Found Data Yacht')
-        }
-    }
+
+
 
 
     const [dataUpdate, setDataUpdate] = useState(initInforYacht)
@@ -66,7 +69,6 @@ const ManageInforYacht = (props) => {
     }
     const getAllType = async () => {
         let res = await getYachtType();
-        console.log("check yacht type", res)
         if (res && res.data.data.length > 0) {
             setListYachtType(res.data.data)
         } else {
@@ -101,9 +103,9 @@ const ManageInforYacht = (props) => {
 
     const handleUpdateYacht = async () => {
         if (!validateInput()) return;
-        let res = await updateYacht(idYacht, dataUpdate.name, image,
-            dataUpdate.hullBody, dataUpdate.description,
-            dataUpdate.rule, dataUpdate.itinerary,
+        let res = await updateYacht(idYacht, dataUpdate.name.trim(), image,
+            dataUpdate.hullBody.trim(), dataUpdate.description.trim(),
+            dataUpdate.rule.trim(), dataUpdate.itinerary.trim(),
             idYachtType, idLocation);
 
         if (res && res.data.data === true) {
@@ -201,6 +203,7 @@ const ManageInforYacht = (props) => {
                                 <label className='form-label label-upload' htmlFor='labelUpload'> <FcPlus /> Upload File IMAGE</label>
                                 <input
                                     type='file'
+                                    accept='image/*'
                                     hidden id='labelUpload'
                                     name='image'
                                     onChange={(event) => handelUploadImage(event)}

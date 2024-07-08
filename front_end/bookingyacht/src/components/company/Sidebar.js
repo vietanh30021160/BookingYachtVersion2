@@ -81,7 +81,7 @@ const Sidebar = (props) => {
                     </Menu>
 
 
-                    <Menu iconShape="circle">
+                    {/* <Menu iconShape="circle">
                         <MenuItem
                             icon={<FaMoneyCheckAlt />}
                         >
@@ -89,7 +89,7 @@ const Sidebar = (props) => {
                             <Link to='/manage-company/bill' />
                         </MenuItem>
 
-                    </Menu>
+                    </Menu> */}
                     <Menu iconShape="circle">
                         <MenuItem
                             icon={<ImProfile />}
@@ -100,31 +100,22 @@ const Sidebar = (props) => {
                         </MenuItem>
 
                     </Menu>
-                    <Menu iconShape="circle">
-                        <MenuItem
-                            icon={<FaStar />}
-                        >
-                            Manage Room Type
-                            <Link to='/manage-company/room-type' />
-                        </MenuItem>
 
-                    </Menu>
 
 
                 </SidebarContent>
 
                 <SidebarFooter style={{ textAlign: 'center' }}>
                     <div
-                        className="sidebar-btn-wrapper"
+                        className="sidebar-btn-wrapper d-flex justify-content-center"
                         style={{
                             padding: '20px 24px',
                         }}
                     >
-                        <NavLink onClick={handleLogout} className='nav-link' to='/signin'><TbLogout2 />Back</NavLink>
-                        {/* <FaGithub /> */}
-                        <span style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                        <NavLink onClick={handleLogout} className='nav-link ' to='/signin'><TbLogout2 />Logout</NavLink>
+                        {/* <span style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
 
-                        </span>
+                        </span> */}
                     </div>
                 </SidebarFooter>
             </ProSidebar>

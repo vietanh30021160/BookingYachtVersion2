@@ -29,7 +29,7 @@ const ModalUpdateRoomType = (props) => {
         if (!price || !type || !utilities) {
             toast.error("Input Not Empty")
         } else {
-            let res = await updateRoomType(dataUpdate.idRoomType, price, type, utilities);
+            let res = await updateRoomType(dataUpdate.idRoomType, price, type, utilities.trim());
             if (res && res.data.data === true) {
                 toast.success('Update Successfully')
                 handleClose();
@@ -98,7 +98,7 @@ const ModalUpdateRoomType = (props) => {
                         Close
                     </Button>
                     <Button variant="primary" onClick={handleUpdateRoomType}>
-                        Create
+                        Save
                     </Button>
                 </Modal.Footer>
             </Modal>

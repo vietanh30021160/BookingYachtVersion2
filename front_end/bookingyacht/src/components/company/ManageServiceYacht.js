@@ -13,6 +13,8 @@ import { FaDeleteLeft } from "react-icons/fa6";
 import ModalUpdateServiceYacht from './Modal/ModalUpdateServiceYacht';
 import { GoArrowDown } from "react-icons/go";
 import { GoArrowUp } from "react-icons/go";
+import ReactPaginate from 'react-paginate';
+import { FormControl } from 'react-bootstrap';
 
 
 
@@ -23,13 +25,16 @@ const ManageServiceYacht = () => {
     const [showModalUpdateServiceYacht, setShowModalUpdateServiceYacht] = useState(false);
 
     const [yachtServices, setYachtServices] = useState([]);
-    const [service, setSurvice] = useState('');
+    const [service, setService] = useState('');
     const [price, setPrice] = useState('');
     const [idService, setIdService] = useState('');
     const [serviceUpdate, setServiceUpdate] = useState({});
+    const [serchService, setSearchService] = useState('');
+
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 5;
 
     useEffect(() => {
-        // getServices();
         getServiceYacht();
     }, [])
 
@@ -37,16 +42,6 @@ const ManageServiceYacht = () => {
         setShowModalUpdateServiceYacht(false)
     }
 
-    // const getServices = async () => {
-    //     let res = await getAllServices();
-    //     console.log(res)
-    //     if (res && res.data.data.length > 0) {
-    //         setServices(res.data.data);
-
-    //     } else {
-    //         toast.info('Not Found Service');
-    //     }
-    // }
 
     const getServiceYacht = async () => {
         let res = await getServiceByYacht(idYacht);
@@ -62,8 +57,10 @@ const ManageServiceYacht = () => {
         if (!service || !price) {
             toast.error('Input Not Empty');
         } else {
-            if (res && res.data.data === true) {
+            if (res && res.data && res.data.data === true) {
                 toast.success('Create Service Yacht Successfully')
+                setService('')
+                setPrice('')
                 getServiceYacht();
             } else {
                 toast.error('Create Fail')
@@ -79,10 +76,13 @@ const ManageServiceYacht = () => {
     const handleDeleteServiceYacht = async (service) => {
         if (window.confirm(`You Want To Delete service ${service.service}`)) {
             let res = await deleteServiceYacht(idYacht, service.idService)
-            console.log('dele', res)
             if (res && res.data.data === true) {
                 toast.success('Delete Successfully')
                 getServiceYacht();
+                setCurrentPage(prevPage => {
+                    const maxPage = Math.ceil((yachtServices.length - 1) / itemsPerPage) - 1;
+                    return prevPage > maxPage ? maxPage : prevPage;
+                });
             } else {
                 toast.error('Delete Fail')
             }
@@ -98,6 +98,11 @@ const ManageServiceYacht = () => {
         const newList = [...yachtServices].sort((a, b) => b.price - a.price);
         setYachtServices(newList);
     }
+
+    const handlePageChange = (selectedItem) => {
+        setCurrentPage(selectedItem.selected);
+    };
+    const displayedService = yachtServices.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
     return (
         <div>
@@ -130,7 +135,7 @@ const ManageServiceYacht = () => {
                                             type='text'
                                             placeholder='Service Yacht'
                                             value={service}
-                                            onChange={e => setSurvice(e.target.value)}
+                                            onChange={e => setService(e.target.value)}
                                         />
                                     </Form.Group>
 
@@ -157,13 +162,18 @@ const ManageServiceYacht = () => {
                 <div
                     className="table-responsive my-5"
                 >
+
                     <table
                         className="table table-striped table-hover table-borderless table-primary align-middle"
                     >
                         <thead className="table-light">
-                            <caption>
-                                List Services
-                            </caption>
+
+                            <FormControl
+                                className='col mx-3 my-2'
+                                type='text'
+                                placeholder='Search Service'
+                                onChange={e => setSearchService(e.target.value)}
+                            />
                             <tr>
                                 <th>Service</th>
                                 <th>
@@ -177,33 +187,57 @@ const ManageServiceYacht = () => {
                         </thead>
                         <tbody className="table-group-divider">
                             {
-                                yachtServices && yachtServices.length > 0 && yachtServices.map((service) =>
+                                displayedService && displayedService.length > 0 && displayedService
+                                    .filter(service => service.service.toLowerCase().includes(serchService.toLowerCase()))
+                                    .map((service) =>
 
-                                    <tr key={service.idService}
-                                        className="table-primary"
-                                    >
-                                        <td>{service.service}</td>
-                                        <td>{service.price}</td>
-                                        <td>
-                                            <div className='d-flex' style={{ gap: 50, justifyContent: 'center' }}>
-                                                <div onClick={() => handleUpdateServiceYacht(service)} style={{ cursor: 'pointer', color: 'blue' }}>
-                                                    <BiSolidEditAlt size={25} />
-                                                    <label className='mx-2'>Edit</label>
+                                        <tr key={service.idService}
+                                            className="table-primary"
+                                        >
+                                            <td>{service.service}</td>
+                                            <td>{service.price}</td>
+                                            <td>
+                                                <div className='d-flex' style={{ gap: 50, justifyContent: 'center' }}>
+                                                    <div onClick={() => handleUpdateServiceYacht(service)} style={{ cursor: 'pointer', color: 'blue' }}>
+                                                        <BiSolidEditAlt size={25} />
+                                                        <label className='mx-2'>Edit</label>
+                                                    </div>
+                                                    <div onClick={() => handleDeleteServiceYacht(service)} style={{ cursor: 'pointer', color: 'red' }}>
+                                                        <FaDeleteLeft size={25} />
+                                                        <label className='mx-2'>Delete</label>
+                                                    </div>
                                                 </div>
-                                                <div onClick={() => handleDeleteServiceYacht(service)} style={{ cursor: 'pointer', color: 'red' }}>
-                                                    <FaDeleteLeft size={25} />
-                                                    <label className='mx-2'>Delete</label>
-                                                </div>
-                                            </div>
-                                        </td>
+                                            </td>
 
-                                    </tr>
-                                )
+                                        </tr>
+                                    )
                             }
 
                         </tbody>
 
                     </table>
+                    <div className='page'>
+                        <ReactPaginate
+                            nextLabel="Next >"
+                            onPageChange={handlePageChange}
+                            pageRangeDisplayed={3}
+                            marginPagesDisplayed={2}
+                            pageCount={Math.ceil(yachtServices.length / itemsPerPage)}
+                            previousLabel="< Prev"
+                            pageClassName="page-item"
+                            pageLinkClassName="page-link"
+                            previousClassName="page-item"
+                            previousLinkClassName="page-link"
+                            nextClassName="page-item"
+                            nextLinkClassName="page-link"
+                            breakLabel="..."
+                            breakClassName="page-item"
+                            breakLinkClassName="page-link"
+                            containerClassName="pagination"
+                            activeClassName="active"
+                            renderOnZeroPageCount={null}
+                        />
+                    </div>
                 </div>
             </div>
             <ModalUpdateServiceYacht

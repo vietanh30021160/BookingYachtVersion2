@@ -3,16 +3,18 @@ import { useSelector } from 'react-redux';
 import { getFeedbackCompany } from '../../services/ApiServices';
 import { GoArrowDown } from "react-icons/go";
 import { GoArrowUp } from "react-icons/go";
+import ReactPaginate from 'react-paginate';
 const ViewFeedback = () => {
     const idCompany = useSelector(state => state.account.account.idCompany);
     const [listFeedback, setListFeedback] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 5;
 
     useEffect(() => {
         getFeedback();
     }, [])
 
     const getFeedback = async () => {
-        console.log(idCompany)
         let res = await getFeedbackCompany(idCompany);
         if (res && res.data.data) {
             setListFeedback(res.data.data);
@@ -55,6 +57,11 @@ const ViewFeedback = () => {
         setListFeedback(newListFeed)
     }
 
+    const handlePageChange = (selectedItem) => {
+        setCurrentPage(selectedItem.selected);
+    };
+    const displayedFeedback = listFeedback.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+
     return (
         <>
             <div
@@ -79,7 +86,7 @@ const ViewFeedback = () => {
                     </thead>
                     <tbody className="table-group-divider">
                         {
-                            listFeedback && listFeedback.map((feddback) =>
+                            displayedFeedback && displayedFeedback.map((feddback) =>
 
                                 <tr
                                     key={feddback.idFeedback}
@@ -106,6 +113,28 @@ const ViewFeedback = () => {
 
                     </tfoot>
                 </table>
+                <div className='page'>
+                    <ReactPaginate
+                        nextLabel="Next >"
+                        onPageChange={handlePageChange}
+                        pageRangeDisplayed={3}
+                        marginPagesDisplayed={2}
+                        pageCount={Math.ceil(listFeedback.length / itemsPerPage)}
+                        previousLabel="< Prev"
+                        pageClassName="page-item"
+                        pageLinkClassName="page-link"
+                        previousClassName="page-item"
+                        previousLinkClassName="page-link"
+                        nextClassName="page-item"
+                        nextLinkClassName="page-link"
+                        breakLabel="..."
+                        breakClassName="page-item"
+                        breakLinkClassName="page-link"
+                        containerClassName="pagination"
+                        activeClassName="active"
+                        renderOnZeroPageCount={null}
+                    />
+                </div>
             </div>
         </>
 

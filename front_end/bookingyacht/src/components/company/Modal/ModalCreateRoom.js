@@ -5,22 +5,28 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { Button } from 'react-bootstrap'
 import { FcPlus } from "react-icons/fc";
-import { every } from 'lodash';
 import { createRoom, getAllRoomTypeCompany } from '../../../services/ApiServices';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+import _ from 'lodash';
 
 const ModalCreateRoom = (props) => {
-    const { show, setIsShowModalCreateRoom, idYacht } = props;
+    const { show, setIsShowModalCreateRoom, idYacht, listRoomType, fetchRoomType } = props;
     const [image, setImage] = useState("");
     const [previewImage, setPreviewImage] = useState("");
     const [roomName, setRoomName] = useState('');
     const [area, setArea] = useState(0);
-    const [listRoomType, setListRoomType] = useState('');
     const [description, setDescription] = useState('');
     const [roomType, setRoomType] = useState('');
+
     useEffect(() => {
-        getRoomType()
-    }, []);
+        fetchRoomType();
+    }, [])
+    useEffect(() => {
+        if (show && _.isEmpty(listRoomType)) {
+            toast.warning('Please create room type before creating room')
+        }
+    }, [show, listRoomType])
 
     const handleClose = () => {
         setIsShowModalCreateRoom(false);
@@ -43,11 +49,11 @@ const ModalCreateRoom = (props) => {
         if (!roomName || !area || !description || !roomType || !previewImage || !image) {
             toast.error('Input Not Empty')
         } else {
-            let res = await createRoom(roomName, area, description, roomType, image, idYacht)
+            let res = await createRoom(roomName.trim(), area, description.trim(), roomType, image, idYacht)
             if (res && res.data.data === true) {
                 toast.success('Create Successfully');
                 handleClose();
-                getRoomType();
+                await props.getAllRoom()
             } else {
                 toast.error('Create Fail')
             }
@@ -55,14 +61,6 @@ const ModalCreateRoom = (props) => {
     }
 
 
-    const getRoomType = async () => {
-        let res = await getAllRoomTypeCompany();
-        if (res && res.data.data.length > 0) {
-            setListRoomType(res.data.data);
-        } else {
-            toast.info('Not Found Room Type');
-        }
-    }
     return (
         <div>
             <Modal size='xl'
@@ -101,6 +99,7 @@ const ModalCreateRoom = (props) => {
                                 <Form.Label>Room Type</Form.Label>
                                 <Form.Select onChange={event => setRoomType(event.target.value)} >
                                     {
+
                                         listRoomType && listRoomType.map((type) =>
                                             <option key={type.idRoomType} value={type.idRoomType}>{type.utilities}</option>
                                         )
@@ -124,6 +123,7 @@ const ModalCreateRoom = (props) => {
                             <label className='form-label label-upload' htmlFor='labelUpload'> <FcPlus /> Upload File IMAGE</label>
                             <input
                                 type='file'
+                                accept='image/*'
                                 hidden id='labelUpload'
                                 name='image'
                                 onChange={(event) => handelUploadImage(event)}
