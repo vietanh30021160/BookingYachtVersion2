@@ -294,3 +294,6 @@ export const getFeedbackByIdYacht = (yachtId) =>{
 export const addFeedback = (idBooking, idCustomer, formData) => {
     return axios.post(`/api/customer/addFeedback/${idBooking}/${idCustomer}`, formData);
 };
+export const existsFeedback = (idBooking) =>{
+    return axios.get(`/api/customer/existsFeedback/${idBooking}`);
+}

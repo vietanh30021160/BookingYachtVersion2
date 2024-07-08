@@ -116,6 +116,14 @@ const CompanyManager = () => {
         const username = form.elements.username.value;
         const password = form.elements.password.value;
         const confirmPassword = form.elements.confirmPassword.value;
+        if(username.length < 3){
+            toast.error('Account name must be more than 3 characters long!');
+            return;
+        }
+        if(password < 8){
+            toast.error('Password must be over 8 characters!');
+            return;
+        }
         if (password !== confirmPassword) {
             setCreatetAccountMessage('Password and confirm password do not match.');
             return;
@@ -181,7 +189,7 @@ const CompanyManager = () => {
             } else {
                 toast.success('Company details added successfully.');
                 setShowInfoDetailModal(false);
-                fetchCompanies();
+                dispatch(fetchCompanies());
 
                 // Reset infomation
                 setComPanyDetail({
@@ -224,7 +232,7 @@ const CompanyManager = () => {
             };
             await axios(config);
             toast.success('Company hidden successfully.');
-            fetchCompanies();
+            dispatch(fetchCompanies())
         }catch (error) {
             toast.error('Failed to hide company. Please try again.');
         } finally {

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Collapse, Container, Form, ListGroup, Modal, Row } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import { addFeedback, viewBillByIdCustomer } from '../../services/ApiServices';
+import { addFeedback, existsFeedback, viewBillByIdCustomer } from '../../services/ApiServices';
+
 const Bill = ({ idCustomer }) => {
   const [bills, setBills] = useState([]);
   const [showDetails, setShowDetails] = useState({});
@@ -32,7 +33,7 @@ const Bill = ({ idCustomer }) => {
     try {
       const response = await addFeedback(currentBillId, idCustomer, formData);
       if (response.data.data === false) {
-        toast.error('Qúy khách đã feeback cho hóa đơn này!.')
+        toast.error('Qúy khách đã feeback cho hóa đơn này!.');
         setShowModal(false);
         setStarRating(0);
         setDescription('');
@@ -59,6 +60,23 @@ const Bill = ({ idCustomer }) => {
           return new Date(b.bookingOrderDTO.bookingTime) - new Date(a.bookingOrderDTO.bookingTime);
         });
         setBills(sortedBills);
+
+        // Check feedback status for each bill
+        const feedbackStatusPromises = sortedBills.map(async (bill) => {
+          const feedbackResponse = await existsFeedback(bill.bookingOrderDTO.idBooking);
+          return {
+            idBooking: bill.bookingOrderDTO.idBooking,
+            hasFeedback: feedbackResponse.data.exists,
+          };
+        });
+
+        const feedbackStatuses = await Promise.all(feedbackStatusPromises);
+        const feedbackStatusesMap = feedbackStatuses.reduce((acc, { idBooking, hasFeedback }) => {
+          acc[idBooking] = hasFeedback;
+          return acc;
+        }, {});
+
+        setReviewedBills(feedbackStatusesMap);
       } catch (error) {
         console.error(error);
       }
@@ -104,7 +122,7 @@ const Bill = ({ idCustomer }) => {
                   </Col>
                 </Row>
 
-                <Button variant="link" onClick={() => toggleDetails(bill.bookingOrderDTO.idBooking)} style={{color : 'black'}}>
+                <Button variant="link" onClick={() => toggleDetails(bill.bookingOrderDTO.idBooking)} style={{ color: 'black' }}>
                   {showDetails[bill.bookingOrderDTO.idBooking] ? 'Ẩn chi tiết' : 'Xem chi tiết'}
                 </Button>
                 <Collapse in={showDetails[bill.bookingOrderDTO.idBooking]}>
@@ -152,18 +170,22 @@ const Bill = ({ idCustomer }) => {
                     </Card.Text>
                   </div>
                 </Collapse>
-                <Button
-                  variant="dark"
-                  className="mt-3"
-                  onClick={() => {
-                    if (!reviewedBills[bill.bookingOrderDTO.idBooking]) {
+                {reviewedBills[bill.bookingOrderDTO.idBooking] ? (
+                  <Button variant="dark" className="mt-3">
+                    Xem đánh giá
+                  </Button>
+                ) : (
+                  <Button
+                    variant="dark"
+                    className="mt-3"
+                    onClick={() => {
                       setCurrentBillId(bill.bookingOrderDTO.idBooking);
                       setShowModal(true);
-                    }
-                  }}
-                >
-                  Đánh giá sản phẩm
-                </Button>
+                    }}
+                  >
+                    Đánh giá sản phẩm
+                  </Button>
+                )}
               </Card.Body>
             </Card>
           </Col>
