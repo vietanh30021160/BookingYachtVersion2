@@ -47,7 +47,7 @@ const YachtList = () => {
 
     useEffect(() => {
         setCurrentPage(1);
-        triggerSearch();
+        // triggerSearch();
     }, [yachtList, triggerSearch]);
 
     const renderPages = () => {

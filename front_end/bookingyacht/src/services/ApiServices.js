@@ -42,7 +42,7 @@ export const registerCustomer = (username, password) => {
 }
 
 export const getProfileCustomer = (customerId) => {
-    return axios.get(`/api/customer/getProfileCustomerById/${customerId}`)
+    return axios.get(`/api/customer/profile/getProfileCustomerById/${customerId}`)
 }
 
 export const updateProfileCustomer = (customerId, email, fullName, phoneNumber, address) => {
@@ -319,4 +319,8 @@ export const getAllLocationCustomer = () => {
 
 export const getScheduleById = (idSchedule) => {
     return axios.get(`/api/customer/getScheduleById/${idSchedule}`);
+}
+
+export const getAllCustomerInfor = () => {
+    return axios.get(`/api/customer/getAllCustomer`);
 }
