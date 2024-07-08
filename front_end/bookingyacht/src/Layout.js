@@ -35,7 +35,7 @@ import ManageSchedule from './components/company/ManageSchedule';
 import ManageServiceYacht from './components/company/ManageServiceYacht';
 import Page404 from './components/page404/Page404';
 import ProtectedRoute from './components/routers/ProtectedRoute';
-
+import VerifyOTP from './components/auths/VerifyOTP';
 
 const Layout = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -64,6 +64,8 @@ const Layout = () => {
                 <Route path='/forgotpassowd' element={<ForgotPassword />}></Route>
                 <Route path='/information/:idCustomer' element={<Information />} />
                 {/* <Route path='/information-company' element={<InformationCompany />} /> */}
+                <Route path='/verifyOTP/:email' element={<VerifyOTP />} />
+
 
 
                 <Route path='/manage-company' element={
@@ -79,6 +81,7 @@ const Layout = () => {
                     <Route path='room-type' element={<ManageRoomType />} />
 
                 </Route>
+                
 
                 <Route path='manage-yacht/:idYacht' element={<ManageYacht />} />
                 <Route path='manage-room/:idYacht' element={<ManageRoom />} />

@@ -34,6 +34,12 @@ export const login = (username, password) => {
     return axios.post('/login/signin', data)
 }
 
+export const verifyEmail=(email)=>{
+    const data = new FormData()
+    data.append('email', email)
+    return axios.post('/api/customer/forgotPassword/verifyEmail', data)
+}
+
 export const registerCustomer = (username, password) => {
     const data = new FormData();
     data.append('username', username);
