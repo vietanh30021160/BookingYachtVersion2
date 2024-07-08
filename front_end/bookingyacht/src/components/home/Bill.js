@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Collapse, Container, Form, ListGroup, Modal, Row } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { addFeedback, viewBillByIdCustomer } from '../../services/ApiServices';
-
 const Bill = ({ idCustomer }) => {
   const [bills, setBills] = useState([]);
   const [showDetails, setShowDetails] = useState({});
@@ -11,8 +10,6 @@ const Bill = ({ idCustomer }) => {
   const [starRating, setStarRating] = useState(0);
   const [description, setDescription] = useState('');
   const [reviewedBills, setReviewedBills] = useState({});
-
-  const navigate = useNavigate();
 
   const toggleDetails = (idBooking) => {
     setShowDetails((prevState) => ({
@@ -28,18 +25,27 @@ const Bill = ({ idCustomer }) => {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('starRating', starRating);
+    const today = new Date().toISOString().split('T')[0];
+    formData.append('date', today);
     formData.append('description', description);
-    formData.append('date', new Date().toLocaleDateString());
+    formData.append('starRating', starRating);
     try {
-      await addFeedback(currentBillId, idCustomer, formData);
-      setReviewedBills((prev) => ({
-        ...prev,
-        [currentBillId]: { starRating, description },
-      }));
-      setShowModal(false);
-      setStarRating(0);
-      setDescription('');
+      const response = await addFeedback(currentBillId, idCustomer, formData);
+      if (response.data.data === false) {
+        toast.error('Qúy khách đã feeback cho hóa đơn này!.')
+        setShowModal(false);
+        setStarRating(0);
+        setDescription('');
+      } else {
+        setReviewedBills((prev) => ({
+          ...prev,
+          [currentBillId]: { starRating, description },
+        }));
+        setShowModal(false);
+        setStarRating(0);
+        setDescription('');
+        toast.success('Cảm ơn quý khách đã sử dụng dịch vụ của chúng tôi!');
+      }
     } catch (error) {
       console.error('Error adding feedback:', error);
     }
@@ -49,7 +55,10 @@ const Bill = ({ idCustomer }) => {
     const fetchBills = async () => {
       try {
         const response = await viewBillByIdCustomer(idCustomer);
-        setBills(response.data.data);
+        const sortedBills = response.data.data.sort((a, b) => {
+          return new Date(b.bookingOrderDTO.bookingTime) - new Date(a.bookingOrderDTO.bookingTime);
+        });
+        setBills(sortedBills);
       } catch (error) {
         console.error(error);
       }
@@ -95,7 +104,7 @@ const Bill = ({ idCustomer }) => {
                   </Col>
                 </Row>
 
-                <Button variant="link" onClick={() => toggleDetails(bill.bookingOrderDTO.idBooking)}>
+                <Button variant="link" onClick={() => toggleDetails(bill.bookingOrderDTO.idBooking)} style={{color : 'black'}}>
                   {showDetails[bill.bookingOrderDTO.idBooking] ? 'Ẩn chi tiết' : 'Xem chi tiết'}
                 </Button>
                 <Collapse in={showDetails[bill.bookingOrderDTO.idBooking]}>
@@ -144,18 +153,16 @@ const Bill = ({ idCustomer }) => {
                   </div>
                 </Collapse>
                 <Button
-                  variant="primary"
+                  variant="dark"
                   className="mt-3"
                   onClick={() => {
-                    if (reviewedBills[bill.bookingOrderDTO.idBooking]) {
-                      navigate(`/mainpage/${bill.bookingOrderDTO.yachtId}`);
-                    } else {
+                    if (!reviewedBills[bill.bookingOrderDTO.idBooking]) {
                       setCurrentBillId(bill.bookingOrderDTO.idBooking);
                       setShowModal(true);
                     }
                   }}
                 >
-                  {reviewedBills[bill.bookingOrderDTO.idBooking] ? 'Xem đánh giá' : 'Đánh giá sản phẩm'}
+                  Đánh giá sản phẩm
                 </Button>
               </Card.Body>
             </Card>

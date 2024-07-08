@@ -116,7 +116,7 @@ const ProfilePage = () => {
                                 {
                                     paggingYacht.map((yacht) => {
                                         return (
-                                            <div className="card row" key={yacht.idYacht} onClick={() => { hanldeSelectedYacht(yacht.idYacht) }} style={{ cursor: 'pointer', marginTop: '20px' }}>
+                                            <div className="card row" key={yacht.idYacht} onClick={() => { hanldeSelectedYacht(yacht.idYacht) }} style={{ cursor: 'pointer', marginTop: '20px'}}>
                                                 <div className="col-md-5">
                                                     <img style={{ height: '250px', width: '100%' }} className="card-img-top object-fit-cover" src={`${avatarYachtApi}${yacht.image}`} alt="Card image cap" />
                                                 </div>

@@ -1,4 +1,4 @@
-import { CUSTOMER_REGISTER, FETCH_USER_LOGIN_SUCCES, USER_LOGOUT } from "../type/Type";
+import { FETCH_USER_LOGIN_SUCCES, USER_LOGOUT } from "../type/Type";
 
 const INITIAL_STATE = {
     account: {
@@ -24,7 +24,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 isAuthenticated: true
             };
         case USER_LOGOUT:
-            return INITIAL_STATE
+            return INITIAL_STATE;
 
         default: return state;
     }
