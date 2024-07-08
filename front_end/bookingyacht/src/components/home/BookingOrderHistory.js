@@ -98,41 +98,41 @@ const BookingOrderHistory = () => {
 
     return (
         <div className="container">
-            <h1>Booking History</h1>
+            <h1>Lịch Sử Đặt Chỗ</h1>
             <div>
                 {slicedBooking && slicedBooking.length > 0 && slicedBooking.map(bookingOrder => (
                     <div key={bookingOrder.idBooking} className="card mb-3" style={{ boxShadow: ' 0 4px 8px 0 rgba(0, 0, 255, 0.2)' }}>
                         <div className='card-body'>
                             <div className="row align-items-center">
                                 <div className="col-11">
-                                    <h5 className='card-title'>ID Booking: {bookingOrder.idBooking}</h5>
+                                    <h5 className='card-title'>Mã đặt chỗ: {bookingOrder.idBooking}</h5>
                                 </div>
                                 <div className='col-1' onClick={() => handleShowModalDetail(bookingOrder.idBooking)}>
-                                    <FaInfoCircle size={24} style={{ color: 'black', cursor: 'pointer'}} />
+                                    <FaInfoCircle size={24} style={{ color: 'black', cursor: 'pointer' }} />
                                 </div>
                                 <div className="col-12">
                                     <p className='card-text'>
-                                        <strong>Booking Time:</strong> {formatDateTime(bookingOrder.bookingTime)}
+                                        <strong>Thời gian đặt chỗ:</strong> {formatDateTime(bookingOrder.bookingTime)}
                                     </p>
                                 </div>
                                 <div className="col-12">
                                     <p className="card-text">
-                                        <strong>Amount:</strong> {formatAmount(bookingOrder.amount)} VND
+                                        <strong>Tổng tiền:</strong> {formatAmount(bookingOrder.amount)} VND
                                     </p>
                                 </div>
                                 <div className="col-12">
                                     <p className="card-text">
-                                        <strong>Requirement:</strong> {bookingOrder.requirement}
+                                        <strong>Yêu cầu:</strong> {bookingOrder.requirement}
                                     </p>
                                 </div>
                                 <div className="col-12">
                                     <p className="card-text">
-                                        <strong>Status:</strong>
+                                        <strong>Trạng thái:</strong>
                                         <span style={{
                                             color: bookingOrder.status === 'Pending' ? 'gray' :
                                                 (bookingOrder.status === 'Confirmed' ? 'green' :
                                                     (bookingOrder.status === 'Cancelled' ? 'red' : 'black'))
-                                        }}>{bookingOrder.status}
+                                        }}> {bookingOrder.status}
                                         </span>
                                     </p>
                                 </div>
@@ -141,7 +141,7 @@ const BookingOrderHistory = () => {
                                 <button className="btn btn-danger mt-2"
                                     onClick={() => handleShowModalCancel(bookingOrder)}
                                 >
-                                    CANCEL BOOKING
+                                    Hủy đặt chỗ
                                 </button>
                             )}
                         </div>
@@ -177,12 +177,12 @@ const BookingOrderHistory = () => {
             <Modal show={showModalCancel} onHide={() => setShowModalCancel(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>
-                        Cancel Booking Order
+                        Hủy Đặt chỗ
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>If you cancel this booking order, you will not receive a refund!</p>
-                    <p>Please enter reason for cancellation (can be left blank):</p>
+                    <p>Nếu bạn hủy đơn đặt chỗ này, bạn sẽ không được hoàn lại tiền!</p>
+                    <p>Vui lòng điền lý do hủy đơn (có thể bỏ trống):</p>
                     <Input
                         type='text'
                         className='form-control'
@@ -190,18 +190,18 @@ const BookingOrderHistory = () => {
                         onChange={(e) => setCancelReason(e.target.value)}
                     />
                 </Modal.Body>
-                <Modal.Footer style={{display: 'flex', justifyContent: 'center'}}>
+                <Modal.Footer style={{ display: 'flex', justifyContent: 'center' }}>
                     <Button variant='danger' onClick={handleCancelBooking}>
-                        CANCEL BOOKING
+                        Hủy đặt chỗ
                     </Button>
                 </Modal.Footer>
             </Modal>
 
             {/* Modal get Detail */}
             <ModalGetDetailBooking
-                show = {showModalDetail}
-                onHide = {() => setShowModalDetail(false)}
-                bookingOrderDetail = {bookingDetails}
+                show={showModalDetail}
+                onHide={() => setShowModalDetail(false)}
+                bookingOrderDetail={bookingDetails}
             />
         </div>
     );

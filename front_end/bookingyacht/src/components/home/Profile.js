@@ -45,7 +45,7 @@ const Profile = () => {
                 className="mb-3"
             >
 
-                <Tab eventKey="profile" title="Profile">
+                <Tab eventKey="profile" title="Hồ sơ">
                     <form>
                         <div className="row">
 
@@ -58,8 +58,8 @@ const Profile = () => {
                                 </div>
                             </div>
                             <div className="col-md-6">
-                                <Button className='btn btn-infor' onClick={() => handleUpdateProfile()}>Edit Profile</Button>
-                                <Link to='/' className='mx-5' style={{ textDecoration: "none" }}><FaHome className='mb-1' /> Home</Link>
+                                <Button className='btn btn-infor' onClick={() => handleUpdateProfile()}>Chỉnh sửa thông tin cá nhân</Button>
+                                <Link to='/' className='mx-5' style={{ textDecoration: "none" }}><FaHome className='mb-1' /> Trang chủ</Link>
                             </div>
                         </div>
                         <div className="row my-5">
@@ -69,7 +69,7 @@ const Profile = () => {
                                     <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                         <div className="row">
                                             <div className="col-md-6">
-                                                <label>User Id</label>
+                                                <label>Mã người dùng</label>
                                             </div>
                                             <div className="col-md-6">
                                                 <p>{profile.idCustomer}</p>
@@ -78,7 +78,7 @@ const Profile = () => {
 
                                         <div className="row">
                                             <div className="col-md-6">
-                                                <label>Email</label>
+                                                <label>Địa chỉ email</label>
                                             </div>
                                             <div className="col-md-6">
                                                 <p>{profile.email}</p>
@@ -86,7 +86,7 @@ const Profile = () => {
                                         </div>
                                         <div className="row">
                                             <div className="col-md-6">
-                                                <label>Phone</label>
+                                                <label>Số điện thoại</label>
                                             </div>
                                             <div className="col-md-6">
                                                 <p>{profile.phone}</p>
@@ -100,7 +100,7 @@ const Profile = () => {
                         </div>
                     </form>
                 </Tab>
-                <Tab eventKey="Booking History" title="Booking History" >
+                <Tab eventKey="Booking History" title="Lịch sử đặt chỗ" >
                   <BookingOrderHistory/>
                 </Tab>
             </Tabs>

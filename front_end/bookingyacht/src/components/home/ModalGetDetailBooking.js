@@ -22,45 +22,45 @@ const ModalGetDetailBooking = (props) => {
         <Modal show={show} onHide={onHide}>
             <Modal.Header closeButton>
                 <Modal.Title>
-                    Booking Order Detail
+                    Chi tiết đơn đặt chỗ
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {bookingOrderDetail ? (
                     <div>
-                        <p><strong>ID Booking:</strong> {bookingOrderDetail.idBooking}</p>
-                        <p><strong>Booking Time:</strong> {formatDateTime(bookingOrderDetail.bookingTime)}</p>
-                        <p><strong>Amount:</strong> {formatAmount(bookingOrderDetail.amount)} VND</p>
-                        <p><strong>Requirement:</strong> {bookingOrderDetail.requirement}</p>
-                        <p><strong>Status:</strong> {bookingOrderDetail.status}</p>
-                        <p><strong>Yacht name:</strong> {bookingOrderDetail.yachtName}</p>
-                        <p><strong>Start date:</strong> {formatDateTime(bookingOrderDetail.schedule.startDate)}</p>
-                        <p><strong>End date:</strong> {formatDateTime(bookingOrderDetail.schedule.endDate)}</p>
-                        <p><strong>Customer information:</strong></p>
+                        <p><strong>Mã đặt chỗ:</strong> {bookingOrderDetail.idBooking}</p>
+                        <p><strong>Thời gian đặt chỗ:</strong> {formatDateTime(bookingOrderDetail.bookingTime)}</p>
+                        <p><strong>Tổng tiền:</strong> {formatAmount(bookingOrderDetail.amount)} VND</p>
+                        <p><strong>Yêu cầu:</strong> {bookingOrderDetail.requirement}</p>
+                        <p><strong>Trạng thái:</strong> {bookingOrderDetail.status}</p>
+                        <p><strong>Tên thuyền:</strong> {bookingOrderDetail.yachtName}</p>
+                        <p><strong>Ngày đi:</strong> {formatDateTime(bookingOrderDetail.schedule.startDate)}</p>
+                        <p><strong>Ngày về:</strong> {formatDateTime(bookingOrderDetail.schedule.endDate)}</p>
+                        <p><strong>Thông tin khách hàng:</strong></p>
                         <ul>
                             <li>
-                                <p><strong>Full name:</strong> {bookingOrderDetail.customerDTO.fullName}</p>
+                                <p><strong>Họ tên:</strong> {bookingOrderDetail.customerDTO.fullName}</p>
                                 <p><strong>Email:</strong> {bookingOrderDetail.customerDTO.email}</p>
-                                <p><strong>Phone number:</strong> {bookingOrderDetail.customerDTO.phone}</p>
-                                <p><strong>Address:</strong> {bookingOrderDetail.customerDTO.address}</p>
+                                <p><strong>Số điện thoại:</strong> {bookingOrderDetail.customerDTO.phone}</p>
+                                <p><strong>Địa chỉ:</strong> {bookingOrderDetail.customerDTO.address}</p>
                             </li>
                         </ul>
-                        <p><strong>Rooms:</strong></p>
+                        <p><strong>Phòng:</strong></p>
                         <ul>
                             {bookingOrderDetail.rooms.map(room => (
                                 <li key={room.idRoom}>
-                                    <p><strong>Room:</strong> {room.name}</p>
-                                    <p><strong>Price:</strong> {formatAmount(room.price)} VND</p>
-                                    <p><strong>Area:</strong> {room.area}</p>
+                                    <p><strong>Phòng:</strong> {room.name}</p>
+                                    <p><strong>Giá:</strong> {formatAmount(room.price)} VND</p>
+                                    <p><strong>Diện tích:</strong> {room.area}</p>
                                 </li>
                             ))}
                         </ul>
-                        <p><strong>Services:</strong></p>
+                        <p><strong>Dịch vụ:</strong></p>
                         <ul>
                             {bookingOrderDetail.services.map(service => (
                                 <li key={service.idService}>
-                                    <p><strong>Service:</strong> {service.service}</p>
-                                    <p><strong>Price:</strong> {formatAmount(service.price)} VND</p>
+                                    <p><strong>Dịch vụ:</strong> {service.service}</p>
+                                    <p><strong>Giá:</strong> {formatAmount(service.price)} VND</p>
                                 </li>
                             ))}
                         </ul>
@@ -71,7 +71,7 @@ const ModalGetDetailBooking = (props) => {
             </Modal.Body>
             <Modal.Footer style={{ display: 'flex', justifyContent: 'center' }}>
                 <Button variant="secondary" onClick={onHide}>
-                    Close
+                    Đóng
                 </Button>
             </Modal.Footer>
         </Modal>
