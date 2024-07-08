@@ -23,7 +23,7 @@ public class BookingOrderMapper {
         scheduleDTO.setEndDate(schedule.getEndDate());
         dto.setSchedule(scheduleDTO);
 
-        // Map customer name
+        // Map customer info
         CustomerDTO customerDTO = new CustomerDTO();
         Customer customer = bookingOrder.getCustomer();
         customerDTO.setIdCustomer(customer.getIdCustomer());

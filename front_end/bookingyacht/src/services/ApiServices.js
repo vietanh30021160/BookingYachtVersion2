@@ -311,7 +311,7 @@ export const updateScheduleYacht = (yachtId, scheduleId, startDate, endDate) => 
 }
 
 export const deleteScheduleYacht = (yachtId, scheduleId) => {
-    return axios.delete(`/api/companies/deleteSchedule/${yachtId}/${scheduleId}`)
+return axios.delete(`/api/companies/deleteSchedule/${yachtId}/${scheduleId}`)
 }
 export const getCustomerById = (customerId) => {
     return axios.get(`/api/customer/profile/getProfileCustomerById/${customerId}`);
@@ -359,4 +359,18 @@ export const getAllLocationCustomer = () => {
 
 export const getScheduleById = (idSchedule) => {
     return axios.get(`/api/customer/getScheduleById/${idSchedule}`);
+}
+
+export const getBookingOrderByCustomer = (idCustomer) => {
+    return axios.get(`/api/customer/bookingOrders/${idCustomer}`)
+}
+
+export const cancelBookingByCustomer = (idCustomer, idBooking, reason) => {
+    const data = new FormData();
+    data.append('reason', reason)
+    return axios.put(`/api/customer/bookingOrders/${idCustomer}/cancel/${idBooking}`, data)
+}
+
+export const getDetailBookingByCustomer = (idCustomer, idBooking) => {
+    return axios.get(`/api/customer/bookingOrders/${idCustomer}/${idBooking}`)
 }

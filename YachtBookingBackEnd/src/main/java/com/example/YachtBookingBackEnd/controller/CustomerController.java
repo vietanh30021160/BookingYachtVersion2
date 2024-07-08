@@ -38,8 +38,8 @@ public class CustomerController {
     IRoomImage iRoomImage;
     IForgotPassword iForgotPassword;
     ICompany iCompany;
-    private IYachtService iYachtService;
-    private ILocation iLocation;
+    IYachtService iYachtService;
+    ILocation iLocation;
 
     @PostMapping("/accounts")
     ResponseEntity<?> register(@RequestParam String username,
@@ -80,6 +80,7 @@ public class CustomerController {
         dataResponse.setData(iCustomer.getCustomer(customerId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
     @PostMapping("/payment")
     public ResponseEntity<?> createVnPayPayment(@RequestParam List<String> selectedRoomIds,
                                                 @RequestParam List<String> selectedServiceIds,
@@ -92,7 +93,6 @@ public class CustomerController {
 
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
 
 
     @PutMapping("/profile/updateCustomer/{customerId}")
@@ -244,6 +244,26 @@ public class CustomerController {
 
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
+    @GetMapping("/bookingOrders/{idCustomer}/{idBooking}")
+    public  ResponseEntity<?> getDetailBooking(@PathVariable String idCustomer,
+                                               @PathVariable String idBooking){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iBookingOrder.getDetailBooking(idCustomer, idBooking));
+
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+    @PutMapping("/bookingOrders/{idCustomer}/cancel/{idBooking}")
+    public ResponseEntity<?> cancelBookingByCustomer(@PathVariable String idCustomer,
+                                                     @PathVariable String idBooking,
+                                                     @RequestParam String reason){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iBookingOrder.cancelBookingByCustomer(idCustomer, idBooking, reason));
+
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
 
     @GetMapping("/bills/{idCustomer}")
     public ResponseEntity<?> GetBillsByCustomer(@PathVariable String idCustomer){

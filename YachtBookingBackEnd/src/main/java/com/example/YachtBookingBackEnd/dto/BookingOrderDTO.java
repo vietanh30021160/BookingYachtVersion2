@@ -21,7 +21,6 @@ public class BookingOrderDTO {
     private String txnRef;
     private ScheduleDTO schedule;
     private CustomerDTO customerDTO;
-    private String customerName;
     private Set<RoomDTO> rooms;
     private Set<ServiceDTO> services;
     private String yachtName;
