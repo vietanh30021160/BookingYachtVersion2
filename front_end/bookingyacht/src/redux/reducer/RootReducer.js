@@ -11,6 +11,8 @@ import { YachtImagesReducer } from './YachtImagesReducer';
 import { YachtListReducer } from './YachtListReducer';
 import { YachtReducer } from './YachtReducer';
 import { YachtServiceReducer } from './YachtServiceReducer';
+import { RoomReducer } from './RoomReducer';
+import { YachtTypeReducer } from './YachtTypeReducer';
 
 const RootReducer = combineReducers({
     account: userReducer,
@@ -21,10 +23,12 @@ const RootReducer = combineReducers({
     YachtServiceReducer,
     ServiceByYachtReducer,
     loginAdmin: loginAdminReducer,
-    admin : AdminReducer,
+    admin: AdminReducer,
     ScheduleReducer,
     OrderReducer,
-    RoomImageReducer
+    RoomImageReducer,
+    RoomReducer,
+    YachtTypeReducer
 });
 
 export default RootReducer;

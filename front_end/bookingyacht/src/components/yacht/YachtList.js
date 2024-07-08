@@ -7,6 +7,7 @@ import './FindYacht.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getYachtListApi } from '../../redux/action/YachtListAction';
+import NotFound from '../page404/NotFound';
 const YachtList = () => {
 
     const [pagging, setPagging] = useState([]); // page 1, 2, 3, ...
@@ -65,34 +66,40 @@ const YachtList = () => {
 
     return (
         <div className="infor-body">
-            {
-                paggingYacht.map((yacht) => {
-                    return (
-                        <div className="card row" key={yacht.idYacht} onClick={() => { hanldeSelectedYacht(yacht.idYacht) }} style={{ cursor: 'pointer', marginTop : '20px' }}>
-                            <div className="col-md-5">
-                                <img style={{ height: '250px', width: '100%' }} className="card-img-top object-fit-cover" src={`${avatarYachtApi}${yacht.image}`} alt="Card image cap" />
-                            </div>
-                            <div className="card-body col-md-7">
-                                <div className='card-content'>
-                                    <div style={{ padding: '10px', color: '#475467', width: '80px' }} className='location'><FaLocationDot />{yacht.location.name}</div>
-                                    <h4 className='name' style={{ marginBottom: 0, fontWeight: 'bold' }}>{yacht.name}</h4>
-                                    <p style={{ margin: '0px' }}>Hạ thủy: {yacht.launch} - Vỏ Tàu {yacht.hullBody}</p>
-                                    <div style={{ fontWeight: 'bold' }}> <RiShipLine /> {yacht.itinerary} </div>
-                                    <div className='price d-flex' style={{ justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <p style={{ color: '#475467', fontWeight: '700' }}>Price: 3.500.000đ</p>
-                                        <button style={{ borderRadius: 25 }} className='btn btn-warning'>Đặt ngay</button>
+            {yachtList.length > 0 ? (
+                <>
+                    {
+                        paggingYacht.map((yacht) => {
+                            return (
+                                <div className="card row" key={yacht.idYacht} onClick={() => { hanldeSelectedYacht(yacht.idYacht) }} style={{ cursor: 'pointer' }}>
+                                    <div className="col-md-5">
+                                        <img style={{ height: '250px', width: '100%' }} className="card-img-top object-fit-cover" src={`${avatarYachtApi}${yacht.image}`} alt="Card image cap" />
+                                    </div>
+                                    <div className="card-body col-md-7">
+                                        <div className='card-content'>
+                                            <div style={{ padding: '10px', color: '#475467', width: '80px' }} className='location'><FaLocationDot />{yacht.location.name}</div>
+                                            <h4 className='name' style={{ marginBottom: 0, fontWeight: 'bold' }}>{yacht.name}</h4>
+                                            <p style={{ margin: '0px' }}>Hạ thủy: {yacht.launch} - Vỏ Tàu {yacht.hullBody}</p>
+                                            <div style={{ fontWeight: 'bold' }}> <RiShipLine /> {yacht.itinerary} </div>
+                                            <div className='price d-flex' style={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <p style={{ color: '#475467', fontWeight: '700' }}>Price: 3.500.000đ</p>
+                                                <button style={{ borderRadius: 25 }} className='btn btn-warning'>Đặt ngay</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    )
-                })
-            }
-            <div className='d-flex justify-content-center'>
-                {renderPages()}
-            </div>
+                            )
+                        })
+                    }
+                    <div className='d-flex justify-content-center'>
+                        {renderPages()}
+                    </div>
+                </>
+            ) : (
+                <NotFound />
+            )}
 
-        </div>
+        </div >
     );
 };
 

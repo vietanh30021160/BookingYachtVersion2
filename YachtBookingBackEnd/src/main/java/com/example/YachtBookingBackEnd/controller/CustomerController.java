@@ -2,7 +2,6 @@ package com.example.YachtBookingBackEnd.controller;
 
 import com.example.YachtBookingBackEnd.payload.response.DataResponse;
 import com.example.YachtBookingBackEnd.service.implement.*;
-import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +38,9 @@ public class CustomerController {
     IRoomImage iRoomImage;
     IForgotPassword iForgotPassword;
     ICompany iCompany;
+    private IYachtService iYachtService;
+    private ILocation iLocation;
+
     @PostMapping("/accounts")
     ResponseEntity<?> register(@RequestParam String username,
                                @RequestParam String password) {
@@ -71,14 +73,14 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/getProfileCustomerById/{customerId}")
+
+    @GetMapping("/profile/getProfileCustomerById/{customerId}")
     ResponseEntity<?> getProfileCustomerById(@PathVariable("customerId") String customerId){
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setData(iCustomer.getCustomer(customerId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
-    @GetMapping("/payment")
+    @PostMapping("/payment")
     public ResponseEntity<?> createVnPayPayment(@RequestParam List<String> selectedRoomIds,
                                                 @RequestParam List<String> selectedServiceIds,
                                                 @RequestParam String requirement,
@@ -119,6 +121,7 @@ public class CustomerController {
         dataResponse.setData(iCustomer.getFeedbackByYachtId(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
 
     @GetMapping("/allYacht")
     public ResponseEntity<?> viewYacht() {
@@ -226,6 +229,7 @@ public class CustomerController {
         dataResponse.setData(iCustomer.getAllCompanies());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
     @GetMapping("/getYachtType")
     public ResponseEntity<?> getYachtType(){
         DataResponse dataResponse = new DataResponse();
@@ -274,10 +278,28 @@ public class CustomerController {
         dataResponse.setData(iCustomer.findIdBookingByCustomerId(idCustomer));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+    @GetMapping("/getAllYachtService")
+    public ResponseEntity<?> getAllYachtService() {
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iYachtService.getAllYachtService());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getAllLocation")
+    public ResponseEntity<?> getAllLocation(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iLocation.getAllLocation());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+    @GetMapping("/getScheduleById/{id}")
+    public ResponseEntity<?> getScheduleById(@PathVariable String id){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iSchedule.getScheduleById(id));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 
     //send mail for mail verification
-    @PostMapping("/forgotPassword/verifyEmail/{email}")
-    public ResponseEntity<?> verifyEmail(@PathVariable("email")String  email) {
+    @PostMapping("/forgotPassword/verifyEmail")
+    public ResponseEntity<?> verifyEmail(@RequestParam String  email) {
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setData(iForgotPassword.verifyEmail(email));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
@@ -308,6 +330,14 @@ public class CustomerController {
     public ResponseEntity<?> existFeedbackForBooking(@PathVariable String idBooking){
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iCustomer.existsFeedbackByIdBooking(idBooking));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/yacht/getPriceRoom/{yachtId}")
+    public ResponseEntity<?>getPriceRoom(@PathVariable("yachtId")String  yachtId){
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iYacht.getPriceRoom(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 

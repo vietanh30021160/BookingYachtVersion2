@@ -2,7 +2,9 @@ package com.example.YachtBookingBackEnd.service.service;
 
 import com.example.YachtBookingBackEnd.dto.RoomTypeDTO;
 import com.example.YachtBookingBackEnd.entity.RoomType;
+import com.example.YachtBookingBackEnd.entity.Yacht;
 import com.example.YachtBookingBackEnd.repository.RoomTypeRepository;
+import com.example.YachtBookingBackEnd.repository.YachtRepository;
 import com.example.YachtBookingBackEnd.service.implement.IRoomType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,16 +14,21 @@ import java.util.List;
 
 @Service
 public class RoomTypeService implements IRoomType {
-
+    @Autowired
+    private YachtRepository yachtRepository;
     @Autowired
     private RoomTypeRepository roomTypeRepository;
     @Override
     public List<RoomTypeDTO> getAllRoomType(String  yachtId) {
         List<RoomTypeDTO> roomTypeDTOList  =new ArrayList<>();
         try {
-            List<RoomType> roomTypeList = roomTypeRepository.findAllRoomTypeByYachtId(yachtId);
+
+//            Yacht yacht  = yachtRepository.findById(yachtId)
+//                    .orElseThrow(()-> new RuntimeException("Not found yacht") );
+            List<RoomType> roomTypeList = roomTypeRepository.findAllByYachtId(yachtId);
+
             for (RoomType roomType: roomTypeList
-                 ) {
+            ) {
                 RoomTypeDTO roomTypeDTO = new RoomTypeDTO();
                 roomTypeDTO.setIdRoomType(roomType.getIdRoomType());
                 roomTypeDTO.setType(roomType.getType());
@@ -36,12 +43,15 @@ public class RoomTypeService implements IRoomType {
     }
 
     @Override
-    public boolean addRoomType(String type, long price, String utilities) {
+    public boolean addRoomType(String type, long price, String utilities, String yachtId) {
         try {
+            Yacht yacht = yachtRepository.findById(yachtId)
+                    .orElseThrow(()->new RuntimeException("not found yacht"));
             RoomType roomType = new RoomType();
             roomType.setType(type);
             roomType.setPrice(price);
             roomType.setUtilities(utilities);
+            roomType.setYacht(yacht);
             roomTypeRepository.save(roomType);
             return  true;
         }catch (Exception e){

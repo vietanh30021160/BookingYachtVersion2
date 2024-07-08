@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { clearSelectionWhenExit } from '../../../redux/action/OrderAction';
 import { getScheduleByYachtApi } from '../../../redux/action/ScheduleAction';
 import { getYachtByYachtIdApi } from '../../../redux/action/YachtAction';
 import RoomSelection from '../priceRoom/RoomSelection';
@@ -20,6 +21,9 @@ const MainPage = () => {
   const dispatch = useDispatch();
   const [currentSection, setCurrentSection] = useState('');
   const [selectedSchedule, setSelectedSchedule] = useState('');
+
+  console.log(selectedSchedule)
+
 
   useEffect(() => {
     if (yachtId) {
@@ -71,6 +75,7 @@ const MainPage = () => {
   }
 
   const hanleScheduleChange = (event) => {
+    dispatch(clearSelectionWhenExit())
     setSelectedSchedule(event.target.value);
   }
 
@@ -86,6 +91,7 @@ const MainPage = () => {
     }
   }, [schedules]);
 
+
   const formatDate = (dateTimeString) => {
     const dateTime = new Date(dateTimeString);
     const hours = dateTime.getHours();
@@ -99,6 +105,14 @@ const MainPage = () => {
 
     return `${hours}:${formattedMinutes} ${day}/${month}/${year}`;
   };
+
+  useEffect(() => {
+    return () => {
+      //componentWillUnmount()
+      // Clean up the selected rooms state when component unmounts
+      dispatch(clearSelectionWhenExit());
+    };
+  }, [dispatch]);
 
   return (
     <div className="container">

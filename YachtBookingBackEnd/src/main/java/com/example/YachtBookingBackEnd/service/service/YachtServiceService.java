@@ -1,6 +1,7 @@
 package com.example.YachtBookingBackEnd.service.service;
 
 import com.example.YachtBookingBackEnd.dto.ServiceDTO;
+import com.example.YachtBookingBackEnd.dto.YachtServiceDTO;
 import com.example.YachtBookingBackEnd.entity.Yacht;
 import com.example.YachtBookingBackEnd.entity.YachtService;
 import com.example.YachtBookingBackEnd.entity.key.KeysYachtService;
@@ -23,6 +24,21 @@ public class YachtServiceService implements IYachtService {
     YachtRepository yachtRepository;
     @Autowired
     ServiceRepository serviceRepository;
+
+    @Override
+    public List<YachtServiceDTO> getAllYachtService() {
+        List<YachtService> yachtServices = yachtServiceRepository.findAll();
+        List<YachtServiceDTO> yachtServiceDTOS = new ArrayList<>();
+        if(yachtServices != null){
+            for(YachtService yachtService : yachtServices) {
+                YachtServiceDTO yachtServiceDTO = new YachtServiceDTO();
+                yachtServiceDTO.setIdYacht(yachtService.getYacht().getIdYacht());
+                yachtServiceDTO.setIdService(yachtService.getService().getIdService());
+                yachtServiceDTOS.add(yachtServiceDTO);
+            }
+        }
+        return yachtServiceDTOS;
+    }
 
     @Override
     public boolean addYachtService(String yachtId, String service, long price) {

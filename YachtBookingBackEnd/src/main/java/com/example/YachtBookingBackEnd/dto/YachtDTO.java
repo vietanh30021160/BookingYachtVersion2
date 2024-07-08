@@ -34,5 +34,6 @@ public class YachtDTO {
     private YachtTypeDTO yachtType;
     private CompanyDTO company;
     private LocationDTO location;
-    private Set<ServiceDTO> yachtServiceSet;
+    private Set<ServiceDTO> serviceSet;
+    private Set<YachtServiceDTO> yachtServiceSet;
 }

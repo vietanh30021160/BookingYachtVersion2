@@ -10,6 +10,7 @@ import { deleteYachtImage, getYachtImage } from '../../services/ApiServices';
 import ModalCreateImageYacht from './Modal/ModalCreateImageYacht';
 import { toast } from 'react-toastify';
 import ModalUpdateImageYacht from './Modal/ModalUpdateImageYacht';
+import ReactPaginate from 'react-paginate';
 
 const ManageYacht = () => {
     const { idYacht } = useParams();
@@ -17,6 +18,13 @@ const ManageYacht = () => {
     const [isShowModalCreateImage, setIsShowModalCreateImage] = useState(false);
     const [isShowModalUpdateImage, setIsShowModalUpdateImage] = useState(false);
     const [listYachtImage, setListYachtImage] = useState([])
+
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 4;
+    const handlePageChange = (selectedItem) => {
+        setCurrentPage(selectedItem.selected);
+    };
+    const displayedImageYacht = listYachtImage.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
     const [dataUpdate, setDataUpdate] = useState('');
     useEffect(() => {
@@ -38,6 +46,10 @@ const ManageYacht = () => {
             if (res && res.data.data === true) {
                 toast.success('Delete Successfully');
                 getAllImagesYacht();
+                setCurrentPage(prevPage => {
+                    const maxPage = Math.ceil((listYachtImage.length - 1) / itemsPerPage) - 1;
+                    return prevPage > maxPage ? maxPage : prevPage;
+                });
             } else {
                 toast.error('Delete Fail');
             }
@@ -86,7 +98,7 @@ const ManageYacht = () => {
                         </thead>
                         <tbody className="table-group-divider">
                             {
-                                listYachtImage && listYachtImage.length > 0 && listYachtImage.map((image) =>
+                                displayedImageYacht && displayedImageYacht.length > 0 && displayedImageYacht.map((image) =>
 
                                     <tr
                                         key={image.idYachtImage}
@@ -112,10 +124,30 @@ const ManageYacht = () => {
                             }
 
                         </tbody>
-                        <tfoot>
 
-                        </tfoot>
                     </table>
+                    <div className='page'>
+                        <ReactPaginate
+                            nextLabel="Next >"
+                            onPageChange={handlePageChange}
+                            pageRangeDisplayed={3}
+                            marginPagesDisplayed={2}
+                            pageCount={Math.ceil(listYachtImage.length / itemsPerPage)}
+                            previousLabel="< Prev"
+                            pageClassName="page-item"
+                            pageLinkClassName="page-link"
+                            previousClassName="page-item"
+                            previousLinkClassName="page-link"
+                            nextClassName="page-item"
+                            nextLinkClassName="page-link"
+                            breakLabel="..."
+                            breakClassName="page-item"
+                            breakLinkClassName="page-link"
+                            containerClassName="pagination"
+                            activeClassName="active"
+                            renderOnZeroPageCount={null}
+                        />
+                    </div>
                 </div>
 
             </div>

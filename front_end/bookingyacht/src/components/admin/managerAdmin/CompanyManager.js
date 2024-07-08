@@ -107,7 +107,7 @@ const CompanyManager = () => {
         filterCompanies(searchName, searchEmail, value);
         setCurrentPage(1);
     };
-
+    
 
     //Hàm tạo tài khoản cho company
     const handleCreateCompany = async event => {
@@ -238,7 +238,7 @@ const CompanyManager = () => {
         } finally {
             setShowConfirmModal(false);
             setSelectedCompany(null);
-        }    
+        }
     }
 
     // Hàm đóng modal
@@ -291,9 +291,9 @@ const CompanyManager = () => {
         <div className="container mt-5">
             <h1>Admin Manager</h1>
             <h2>Company Accounts</h2>
-            <div className="d-flex mb-3">
+           <div className="d-flex mb-3">
                 <div style={{ marginRight: '50px' }}>
-                    <label>Tìm kiếm theo Id</label>
+                <label>Tìm kiếm theo Id</label>
                     <input
                         type="text"
                         className="form-control"
@@ -305,7 +305,7 @@ const CompanyManager = () => {
             </div>
             <div className="d-flex mb-3">
                 <div style={{ marginRight: '50px' }}>
-                    <label>Tìm kiếm theo tên</label>
+                <label>Tìm kiếm theo tên</label>
                     <input
                         type="text"
                         className="form-control"
@@ -315,7 +315,7 @@ const CompanyManager = () => {
                     />
                 </div>
                 <div>
-                    <label>Tìm kiếm theo email</label>
+                <label>Tìm kiếm theo email</label>
                     <input
                         type="text"
                         className="form-control"
@@ -370,7 +370,7 @@ const CompanyManager = () => {
                             </td>
                             <td className='button_mana'>
                                 <Button variant="info" onClick={() => handleShowDetailModal(company)}>View Detail</Button>
-                                <Button variant={company.exist ? 'danger' : 'success'} 
+                                <Button variant={company.exist ? 'danger' : 'success'}
                                 onClick={() => handleHideCompany(company)}>
                                   {company.exist ? 'Hide' : 'Unhide'}
                                 </Button>

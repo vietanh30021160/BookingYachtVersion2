@@ -27,7 +27,6 @@ const ManageSchedule = () => {
     useEffect(() => {
         fetchScheduleYacht()
     }, [])
-    console.log("day la yacht id", yachtId)
 
     const handleClose = () => {
         setShowModalUpdateScheduleYacht(false)
@@ -40,7 +39,6 @@ const ManageSchedule = () => {
             setSchedule(res.data.data)
         } else {
             toast.error("Can not found Schedule")
-            console.log("can not found schedule")
         }
     }
 
@@ -64,7 +62,6 @@ const ManageSchedule = () => {
 
         //call API and wait results
         let res = await createScheduleYacht(yachtId.idYacht, getStartDate, getEndDate);
-        console.log('create', res)
 
         if (res && res.data.data === true) {
             toast.success("Create schedule successfully");
@@ -82,7 +79,6 @@ const ManageSchedule = () => {
     const handleDeleteScheduleYacht = async (schedule) => {
         if (window.confirm(`You Want To Delete Schedule`)) {
             let res = await deleteScheduleYacht(yachtId.idYacht, schedule.idSchedule)
-            console.log('Delete', res)
 
             if (res && res.data.data === true) {
                 toast.success("Delete Successfully");
@@ -126,7 +122,7 @@ const ManageSchedule = () => {
                                         />
                                     </Form.Group>
                                 </Row>
-                                <div className="d-flex" style={{justifyContent: 'center'}}>
+                                <div className="d-flex" style={{ justifyContent: 'center' }}>
                                     <Button
                                         onClick={handleCreateYachtSchedule}
                                         variant="success"

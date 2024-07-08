@@ -29,4 +29,8 @@ public class RoomType {
 
     @OneToMany(mappedBy = "roomType")
     private Set<Room> roomSet;
+
+    @ManyToOne()
+    @JoinColumn(name = "id_yacht", nullable = false)
+    private Yacht yacht;
 }

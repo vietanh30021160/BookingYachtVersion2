@@ -22,7 +22,6 @@ const ModalUpdateImageYacht = (props) => {
         }
     }
     const handleUpdateYachtImage = async () => {
-        console.log("data", dataUpdate)
         let res = await updateYachtImage(dataUpdate.idYachtImage, image);
         if (res && res.data.data === true) {
             toast.success("Update Image Successfully");
@@ -50,6 +49,7 @@ const ModalUpdateImageYacht = (props) => {
                         <label className='form-label label-upload' htmlFor='labelCreateImage'> <FcPlus /> Upload File IMAGE</label>
                         <input
                             type='file'
+                            accept='image/*'
                             hidden id='labelCreateImage'
                             name='image'
                             onChange={(event) => handelUploadImage(event)}

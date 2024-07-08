@@ -8,7 +8,7 @@ import ReactPaginate from 'react-paginate';
 import './Company.scss'
 import { FaCirclePlus } from "react-icons/fa6";
 import ModalCreateYacht from './Modal/ModalCreateYacht';
-import { deleteYacht, getAllLocation, getAllYachtCompany, getYachtById } from '../../services/ApiServices';
+import { deleteYacht, getAllLocation, getYachtById, getYachtByIdCompany, getYachtType } from '../../services/ApiServices';
 import _ from 'lodash';
 import Form from 'react-bootstrap/Form';
 import { toast } from 'react-toastify';
@@ -17,7 +17,7 @@ const ViewYacht = (props) => {
     const navigate = useNavigate();
     const [isShowModal, setIsShowModal] = useState(false);
     const idCompany = useSelector(state => state.account.account.idCompany);
-
+    const [yachtType, setYachtType] = useState([]);
     const [yacht, setYacht] = useState([]);
     // const [idCompany, setIdCompany] = useState('');
 
@@ -26,29 +26,31 @@ const ViewYacht = (props) => {
     const [location, setLocation] = useState([]);
 
     const [filterLocation, setFilterLocation] = useState('');
+    const [filterYachtType, setFilterYachtType] = useState('')
     //pagging
     // const [isChange, setIsChange] = useState(true);
     // const [paggingProuct, setPaggingProduct] = useState([]);
     // const [pagging, setPagging] = useState([]);
-
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 3;
     useEffect(() => {
         listYacht();
         getLocation();
+        getTypeYacht();
     }, [])
+    useEffect(() => {
+        filterAndPaginateYachts();
+    }, [searchYacht, filterLocation, filterYachtType, currentPage, yacht]);
 
-    console.log('id', idCompany)
     const listYacht = async () => {
-        let res = await getYachtById(idCompany);
-        console.log('check yacht', res)
+        let res = await getYachtByIdCompany(idCompany);
         if (res && res.data.data) {
             setYacht(res.data.data);
             setFilteredYachts(res.data.data);
-            console.log('data', res.data.data)
         } else {
             toast.info('Please Adding New Yacht');
         }
     }
-    console.log('yact l', yacht)
 
     const handleDeleteYacht = async (id, name) => {
         if (window.confirm(`Delete Yacht With Name: ${name}`)) {
@@ -56,6 +58,10 @@ const ViewYacht = (props) => {
             if (res.data.data === true) {
                 toast.success('Delete Successfully');
                 listYacht();
+                setCurrentPage(prevPage => {
+                    const maxPage = Math.ceil((yacht.length - 1) / itemsPerPage) - 1;
+                    return prevPage > maxPage ? maxPage : prevPage;
+                });
             } else {
                 toast.error('Delete Fail')
             }
@@ -71,63 +77,64 @@ const ViewYacht = (props) => {
         }
     }
 
-    const handleSearchYacht = () => {
-        if (searchYacht) {
-            const newYacht = yacht.filter((yacht) => yacht.name.toLowerCase().includes(searchYacht.toLocaleLowerCase().trim()))
-            if (newYacht && newYacht.length > 0) {
-                setYacht(newYacht);
-                setSearchYacht('');
-            } else {
-                toast.error('Not Found Yacht')
-            }
-        } else {
-            setYacht(filteredYachts)
+    const getTypeYacht = async () => {
+        let res = await getYachtType();
+        if (res && res.data && res.data.data) {
+            setYachtType(res.data.data)
         }
-
     }
-    const handleFilterLocation = () => {
-        if (filterLocation) {
-            const newYacht = yacht.filter((yacht) =>
-                yacht.location.idLocation.includes(filterLocation)
-            );
-            if (newYacht.length > 0) {
-                setFilteredYachts(newYacht);
-            } else {
-                toast.error('No yacht found for this location');
-            }
-        } else {
-            setFilteredYachts(yacht);
-        }
+
+    const handlePageChange = (selectedItem) => {
+        setCurrentPage(selectedItem.selected);
     };
+
+    const filterAndPaginateYachts = () => {
+        const filtered = yacht
+            .filter(y => y.name.toLowerCase().includes(searchYacht.toLowerCase().trim()))
+            .filter(y => filterLocation === '0' ? y : y.location.idLocation.includes(filterLocation))
+            .filter(y => filterYachtType === '0' ? y : y.yachtType.idYachtType.includes(filterYachtType))
+            .filter(y => y.exist === 1);
+
+        setFilteredYachts(filtered);
+    };
+
+    const displayedYachts = filteredYachts.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+
+
 
     return (
         <div className='view-yacht-container'>
-            <div className='row my-4 mx-2'>
-
+            <div className='row my-4 mx-1'>
 
                 <Button className='col-2 btn btn-success' onClick={() => setIsShowModal(true)}><FaCirclePlus style={{ marginRight: 8, marginBottom: 5 }} />Add New Yacht</Button>
 
                 <FormGroup className='col-2'>
-
                     <Form.Select onChange={event => setFilterLocation(event.target.value)}>
-                        <option value=''>All Location</option>
+                        <option value='0'>All Location</option>
                         {
                             location && location.length > 0 && location.map((location) =>
                                 <option key={location.idLocation} value={location.idLocation}>{location.name}</option>
                             )
                         }
                     </Form.Select>
-
                 </FormGroup>
-                <Button onClick={handleFilterLocation} className='col-2 btn btn-warning'>Search</Button>
-                <FormGroup className='col-6 d-flex'>
+                <FormGroup className='col-2'>
+                    <Form.Select onChange={event => setFilterYachtType(event.target.value)}>
+                        <option value='0'>All Yacht Type</option>
+                        {
+                            yachtType && yachtType.length > 0 && yachtType.map((type) =>
+                                <option key={type.idYachtType} value={type.idYachtType}>{type.starRanking} Sao</option>
+                            )
+                        }
+                    </Form.Select>
+                </FormGroup>
+                <FormGroup className='col-4 d-flex'>
                     <FormControl
                         placeholder='Search'
                         type='text'
                         value={searchYacht}
                         onChange={(event) => setSearchYacht(event.target.value)}
                     />
-                    <Button onClick={handleSearchYacht} className='btn btn-primary mx-3'>Search</Button>
                 </FormGroup>
 
 
@@ -136,8 +143,7 @@ const ViewYacht = (props) => {
             <div className='row container'>
                 <div className="col-xl-12">
                     {
-                        filteredYachts && filteredYachts.length > 0 && filteredYachts.filter(y => y.exist === 1).map((yacht) =>
-
+                        displayedYachts.map((yacht) =>
                             <div key={yacht.idYacht} className="card mb-4 order-list">
                                 <div className="gold-members p-4">
 
@@ -151,7 +157,6 @@ const ViewYacht = (props) => {
                                                 <div className='name'>{yacht.name}</div>
                                                 <div> <RiShipLine /> Hạ Thủy {yacht.launch} - Tàu Vỏ {yacht.hullBody}  </div>
 
-                                                <div>{yacht.exist}</div>
                                             </div>
                                             <div className='action d-flex'>
                                                 <p className="mb-0 text-dark text-dark pt-2"><span className="text-dark font-weight-bold"></span>
@@ -169,9 +174,7 @@ const ViewYacht = (props) => {
                                     </div>
                                 </div>
                             </div>
-
                         )
-
                     }
 
                 </div>
@@ -181,10 +184,10 @@ const ViewYacht = (props) => {
             <div className='page'>
                 <ReactPaginate
                     nextLabel="Next >"
-                    // onPageChange=
+                    onPageChange={handlePageChange}
                     pageRangeDisplayed={3}
                     marginPagesDisplayed={2}
-                    pageCount={3}
+                    pageCount={Math.ceil(filteredYachts.length / itemsPerPage)}
                     previousLabel="< Prev"
                     pageClassName="page-item"
                     pageLinkClassName="page-link"

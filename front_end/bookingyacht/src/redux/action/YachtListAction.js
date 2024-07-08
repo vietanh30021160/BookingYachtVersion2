@@ -1,5 +1,5 @@
 import { getAllYacht } from "../../services/ApiServices"
-import { GET_ALL_YACHT } from "../type/Type"
+import { GET_ALL_YACHT, SEARCH_YACHT } from "../type/Type"
 
 export const getYachtListApi = () => {
     return async dispatch => {

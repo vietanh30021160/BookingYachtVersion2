@@ -1,21 +1,11 @@
-import { ADD_ROOM, REMOVE_ROOM, RESET_SELECTION, SET_TOTAL_PRICE } from "../type/Type";
+import { ADD_ROOM, BOOK_WHOLE_YACHT, CLEAR_SELECTION_WHEN_EXIT, REMOVE_ROOM, RESET_SELECTION, SET_TOTAL_PRICE } from "../type/Type";
 
 const initialOrderState = {
     selectedRooms: [],
     addingService: [],
-    bookingInfo: {
-        schedule: {
-            startDate: '',
-            endDate: ''
-        },
-        fullName: '',
-        phoneNumber: '',
-        email: '',
-        requirements: ''
-    },
     totalPrice: 0,
 }
-
+console.log('initialOrderState', initialOrderState)
 const OrderReducer = (state = initialOrderState, action) => {
     switch (action.type) {
         case ADD_ROOM:
@@ -40,6 +30,14 @@ const OrderReducer = (state = initialOrderState, action) => {
             return {
                 ...state,
                 totalPrice: action.payload.totalPrice
+            }
+        }
+        case CLEAR_SELECTION_WHEN_EXIT: {
+            return {
+                ...state,
+                selectedRooms: [],
+                addingService: [],
+                totalPrice: 0
             }
         }
         default:

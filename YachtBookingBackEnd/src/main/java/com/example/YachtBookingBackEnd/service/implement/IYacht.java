@@ -1,8 +1,10 @@
 package com.example.YachtBookingBackEnd.service.implement;
 
 import com.example.YachtBookingBackEnd.dto.LocationDTO;
+import com.example.YachtBookingBackEnd.dto.PriceDTO;
 import com.example.YachtBookingBackEnd.dto.ServiceDTO;
 import com.example.YachtBookingBackEnd.dto.YachtDTO;
+import com.example.YachtBookingBackEnd.entity.Yacht;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -17,5 +19,6 @@ public interface IYacht {
     List<YachtDTO> findYachtByCompanyId(String companyId);
     YachtDTO findYachtById(String id);
 
+    PriceDTO getPriceRoom(String yachtId);
 }
 

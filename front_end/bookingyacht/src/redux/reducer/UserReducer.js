@@ -2,6 +2,7 @@ import { FETCH_USER_LOGIN_SUCCES, USER_LOGOUT } from "../type/Type";
 
 const INITIAL_STATE = {
     account: {
+        //tonken
         data: '',
         role: '',
         idCompany: '',

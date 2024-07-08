@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import logo from '../../assets/logo_swp.png'
-import { register, registerCustomer } from '../../services/ApiServices';
+import { registerCustomer } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
-import { Link, NavLink, useNavigate, useParams } from 'react-router-dom';
-
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { IoChevronBackSharp } from "react-icons/io5";
 
 
@@ -17,11 +16,15 @@ const Signup = () => {
 
 
     const handleRegister = async () => {
-        let res = await registerCustomer(userName, password);
+        let res = await registerCustomer(userName.trim(), password.trim());
         if (userName === '' || password === '' || confrimPassword === '') {
             toast.error('Input not empty')
+        } else if (userName.length < 3) {
+            toast.error('User name must be more than 3 chars')
+        } else if (password.length < 8) {
+            toast.error('Password must be at least 8 characters long.')
         }
-        else if (password !== confrimPassword) {
+        else if (confrimPassword.trim() !== password.trim()) {
             toast.error('Confirm Passwod Fail');
         }
         else if (res && res.data.data === true) {
@@ -77,11 +80,7 @@ const Signup = () => {
                                                         />
                                                     </div>
                                                 </div>
-                                                {/* <div className="d-flex flex-row align-items-center mb-4">
-                                                    <div className="form-outline flex-fill mb-0">
-                                                        <input type="text" hidden value={() => setRole('customer')} className="form-control" />
-                                                    </div>
-                                                </div> */}
+
                                                 Đã có tài khoản
                                                 <Link to='/signin'>Đăng nhập</Link>
                                                 <div>
