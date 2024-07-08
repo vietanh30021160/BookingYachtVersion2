@@ -4,10 +4,9 @@ import Modal from 'react-bootstrap/Modal';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import _, { add } from 'lodash';
+import _ from 'lodash';
 import { updateProfileCustomer } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
-import { Today } from '@mui/icons-material';
 const ModalUpdateProfileUser = (props) => {
     const { show, handleClose, profile } = props;
     const [email, setEmail] = useState('');
@@ -47,7 +46,6 @@ const ModalUpdateProfileUser = (props) => {
             } else {
                 toast.error('Update Fail')
             }
-            // }
         }
     }
 
