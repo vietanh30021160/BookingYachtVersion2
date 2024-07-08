@@ -183,23 +183,13 @@ public class CustomerService implements ICustomer {
     }
 
     @Override
-    public boolean addFeedback(int starRating, String description, String idBooking, String idCustomer, String idYacht, LocalDate date) {
+    public boolean addFeedback(LocalDate date, String description, String idBooking, int starRating, String idCustomer) {
         try{
-//            // Kiểm tra xem khách hàng đã đặt thuyền này chưa
-//            List<Yacht> yachts = yachtRepository.findYachtsByCustomerAndBooking(idCustomer, idBooking);
-//            boolean yachtBooked = yachts.stream().anyMatch(yacht -> yacht.getIdYacht().equals(idYacht));
-//
-//            if(!yachtBooked){
-//                throw new RuntimeException("Customer has not booked this yacht");
-//            }
-//            // Kiểm tra xem đơn đặt phòng có tồn tại, đã hoàn thành và thuộc về khách hàng hay không
-//            BookingOrder bookingOrder = bookingOrderRepository.findByIdAndCustomerIdAndStatus(idBooking, idCustomer)
-//                    .orElseThrow(() -> new RuntimeException("Booking not found or not completed or does not belong to the customer"));
-//
-//            // Kiểm tra xem đơn đặt phòng có hóa đơn không
-//            if(!billRepository.existsByBookingOrder_IdBooking(idBooking)){
-//                throw new RuntimeException("Bill does not exist for this booking");
-//            }
+            Yacht yacht = yachtRepository.findYachtsByCustomerAndBooking(idCustomer, idBooking);
+            if (yacht == null) {
+                System.out.println("Yacht not found for the given customer and booking.");
+                return false;
+            }
             // Lấy danh sách idBooking của khách hàng từ cơ sở dữ liệu
             List<String> idBookings = findIdBookingByCustomerId(idCustomer);
             // Kiểm tra nếu idBooking hợp lệ và chưa có feedback trước đó
@@ -212,8 +202,6 @@ public class CustomerService implements ICustomer {
                 Customer customer = new Customer();
                 customer.setIdCustomer(idCustomer);
                 feedback.setCustomer(customer);
-                Yacht yacht = new Yacht();
-                yacht.setIdYacht(idYacht);
                 feedback.setYacht(yacht);
 
                 feedbackRepository.save(feedback);
@@ -294,6 +282,11 @@ public class CustomerService implements ICustomer {
     public boolean isFeedbackAllowed(String idBooking) {
         Feedback feedback = feedbackRepository.findFeedbackByIdBooking(idBooking);
         return feedback == null; // Trả về true nếu không có feedback nào cho idBooking
+    }
+
+    @Override
+    public boolean existsFeedbackByIdBooking(String idBooking) {
+        return feedbackRepository.existsByIdBooking(idBooking);
     }
 
     private boolean isValidEmail(String email) {

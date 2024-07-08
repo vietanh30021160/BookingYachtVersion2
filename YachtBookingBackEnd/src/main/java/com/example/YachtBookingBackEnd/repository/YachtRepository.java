@@ -14,7 +14,7 @@ public interface YachtRepository extends JpaRepository<Yacht, String> {
     List<Yacht> findAllByCompanyId(@Param("companyId") String companyId);
 
     @Query(value = "SELECT y.* FROM yacht y JOIN yacht_schedule ys ON y.id_yacht = ys.id_yacht JOIN schedule s ON ys.id_schedule = s.id_schedule JOIN booking_order bo ON bo.id_schedule = s.id_schedule JOIN bill b ON b.id_booking = bo.id_booking WHERE bo.id_customer = :idCustomer AND bo.id_booking = :idBooking", nativeQuery = true)
-    List<Yacht> findYachtsByCustomerAndBooking(@Param("idCustomer") String idCustomer, @Param("idBooking") String idBooking);
+    Yacht findYachtsByCustomerAndBooking(@Param("idCustomer") String idCustomer, @Param("idBooking") String idBooking);
 
     @Query("SELECT y.idYacht " +
             "FROM Yacht y " +

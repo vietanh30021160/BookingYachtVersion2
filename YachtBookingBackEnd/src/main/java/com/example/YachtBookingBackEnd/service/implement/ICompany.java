@@ -25,6 +25,5 @@ public interface ICompany {
 
     List<FeedbackDTO> getFeedbacksByCompanyId(String idCompany);
 
-    CompanyDTO getCompanyDTOById(String idCompany);
 
 }

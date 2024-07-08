@@ -20,7 +20,7 @@ public interface ICustomer {
 
     CustomerDTO findCustomerByUsername(String username);
 
-    boolean addFeedback(int starRating, String description, String idBooking, String idCustomer, String idYacht, LocalDate date  );
+    boolean addFeedback(LocalDate date, String description, String idBooking, int starRating, String idCustomer);
 
     List<FeedbackDTO> getFeedbackByYachtId(String yachtId);
 
@@ -29,4 +29,6 @@ public interface ICustomer {
     List<String> findIdBookingByCustomerId(String customerId);
 
     boolean isFeedbackAllowed(String idBooking);
+
+    boolean existsFeedbackByIdBooking(String idBooking);
 }

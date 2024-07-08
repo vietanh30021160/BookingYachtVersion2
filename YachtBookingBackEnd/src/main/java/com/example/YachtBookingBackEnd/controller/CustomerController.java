@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -104,15 +103,14 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/addFeedback/{idBooking}/{idCustomer}/{idYacht}")
-    public ResponseEntity<?> addFeedback(@RequestParam int starRating,
+    @PostMapping("/addFeedback/{idBooking}/{idCustomer}")
+    public ResponseEntity<?> addFeedback(@RequestParam LocalDate date,
                                          @RequestParam String description,
                                          @PathVariable String idBooking,
-                                         @PathVariable String idCustomer,
-                                         @PathVariable String idYacht,
-                                         @RequestParam LocalDate date) {
+                                         @RequestParam int starRating,
+                                         @PathVariable String idCustomer) {
         DataResponse dataResponse = new DataResponse();
-        dataResponse.setData(iCustomer.addFeedback(starRating,description,idBooking,idCustomer,idYacht,date));
+        dataResponse.setData(iCustomer.addFeedback(date,description,idBooking,starRating,idCustomer));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @GetMapping("/getFeedbackByYachtId/{yachtId}")
@@ -121,7 +119,6 @@ public class CustomerController {
         dataResponse.setData(iCustomer.getFeedbackByYachtId(yachtId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
 
     @GetMapping("/allYacht")
     public ResponseEntity<?> viewYacht() {
@@ -307,6 +304,11 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse,HttpStatus.OK);
     }
 
-
+    @GetMapping("/existsFeedback/{idBooking}")
+    public ResponseEntity<?> existFeedbackForBooking(@PathVariable String idBooking){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iCustomer.existsFeedbackByIdBooking(idBooking));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 
 }

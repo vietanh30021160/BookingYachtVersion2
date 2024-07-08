@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: "jdbc:mysql://localhost:3306/yachtdu"
+    url: "jdbc:mysql://localhost:3306/project_swp"
     username: root
     password: mixi091203
   jpa:
