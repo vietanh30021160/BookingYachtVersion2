@@ -11,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.regex.Pattern;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class CustomerService implements ICustomer {
+    PasswordEncoder passwordEncoder;
     CustomerRepository customerRepository;
     AccountRepository accountRepository;
     FeedbackRepository feedbackRepository;
@@ -270,6 +272,19 @@ public class CustomerService implements ICustomer {
             System.out.println("Exception: " + e.getMessage());
         }
         return companyDTOList;
+    }
+
+    @Override
+    public boolean changePasswordCustomer(String idCustomer, String password) {
+        try {
+            Account account = customerRepository.getAccountByIdCustomer(idCustomer);
+            account.setPassword(passwordEncoder.encode(password));
+            accountRepository.save(account);
+            return true;
+        }catch (Exception e){
+            System.out.println("Error by: "+e);
+        }
+        return false;
     }
 
 

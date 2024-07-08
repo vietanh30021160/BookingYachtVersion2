@@ -1,5 +1,6 @@
 package com.example.YachtBookingBackEnd.repository;
 
+import com.example.YachtBookingBackEnd.entity.Account;
 import com.example.YachtBookingBackEnd.entity.Company;
 import com.example.YachtBookingBackEnd.entity.Feedback;
 import com.example.YachtBookingBackEnd.entity.Yacht;
@@ -32,4 +33,6 @@ public interface CompanyRepository extends JpaRepository<Company, String> {
 
     @Query("SELECT COUNT(c) > 0 FROM Company c WHERE c.email = :email")
     boolean checkEmailExist(@Param("email") String email);
+    @Query("SELECT c.account from Company c where c.idCompany=:idCompany")
+    Account getAccountByIdCompany(@Param("idCompany") String idCompany);
 }

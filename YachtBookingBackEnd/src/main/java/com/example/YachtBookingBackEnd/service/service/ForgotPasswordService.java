@@ -52,7 +52,7 @@ public class ForgotPasswordService implements IForgotPassword {
 
             message.setText("Xin chào: "+ customer.getFullName()+
                     "\n Chúng tôi gửi thông tin truy cập hệ thống của bạn: \n"+
-                    "- Tên truy cập: "+ customer.getAccount().getUsername()+
+                    "Tên truy cập: "+ customer.getAccount().getUsername()+
                     "\n Mã OTP để đổi mật khẩu: " +otp+
                     "\n Bạn vui lòng đổi lại để đảm bảo an toàn thông tin.\n" +
                     "Đây là email tự động vui lòng không trả lời.");

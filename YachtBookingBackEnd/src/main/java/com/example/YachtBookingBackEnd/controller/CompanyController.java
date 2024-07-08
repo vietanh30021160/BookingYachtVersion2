@@ -42,6 +42,12 @@ public class CompanyController {
         dataResponse.setData(iCompany.getCompanyDTOById(idCompany));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+    @PutMapping("/profiles/changePassword/{idCompany}")
+    public ResponseEntity<?>changePassword(@PathVariable("idCompany") String idCompany, @RequestParam String password){
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iCompany.changePasswordCompany(idCompany, password));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 
     // Done
     @GetMapping("/allYacht")
@@ -406,5 +412,7 @@ public class CompanyController {
         dataResponse.setData(iLocation.getAllLocation());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
+
 
 }

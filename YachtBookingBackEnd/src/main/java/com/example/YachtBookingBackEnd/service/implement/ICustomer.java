@@ -26,4 +26,5 @@ public interface ICustomer {
 
     List<CompanyDTO> getAllCompanies();
 
+    boolean changePasswordCustomer(String idCustomer, String password);
 }

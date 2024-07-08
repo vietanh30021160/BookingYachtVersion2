@@ -13,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,7 +29,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CompanyService implements ICompany {
     CompanyRepository companyRepository;
+    AccountRepository accountRepository;
     IFile iFile;
+    PasswordEncoder passwordEncoder;
 
     @Override
     public List<CompanyDTO> searchCompanyByName(String name) {
@@ -152,6 +155,19 @@ public class CompanyService implements ICompany {
             log.error("Error updating company with ID: " + idCompany, e);
             return false;
         }
+    }
+
+    @Override
+    public boolean changePasswordCompany(String idCompany, String password){
+        try {
+            Account account = companyRepository.getAccountByIdCompany(idCompany);
+            account.setPassword(passwordEncoder.encode(password));
+            accountRepository.save(account);
+            return true;
+        }catch (Exception e){
+            System.out.println("Error by: "+e);
+        }
+        return false;
     }
 
 
