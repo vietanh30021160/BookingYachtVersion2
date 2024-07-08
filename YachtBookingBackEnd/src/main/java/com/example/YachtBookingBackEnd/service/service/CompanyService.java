@@ -94,7 +94,7 @@ public class CompanyService implements ICompany {
     }
 
     public boolean changeExistCompany(String idCompany) {
-        Company company = companyRepository.findByIdAndExist(idCompany)
+        Company company = companyRepository.findById(idCompany)
                 .orElseThrow(() -> new RuntimeException("Company not found! Try again"));
         boolean isExist = company.getExist() == 1;
 

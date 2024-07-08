@@ -25,7 +25,7 @@ public interface YachtRepository extends JpaRepository<Yacht, String> {
 
     @Query("SELECT y.idYacht " +
             "FROM Yacht y " +
-            "JOIN y.yachtServiceSet ys " +
-            "WHERE ys.service = :service")
-    String getIdByService(@Param("service") Service service);
+            "JOIN y.yachtScheduleSet ys " +
+            "WHERE ys.schedule.idSchedule = :idSchedule")
+    String getIdByService(@Param("idSchedule") String idSchedule);
 }

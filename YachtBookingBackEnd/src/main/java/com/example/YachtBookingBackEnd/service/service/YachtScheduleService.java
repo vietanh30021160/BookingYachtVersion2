@@ -4,6 +4,7 @@ import com.example.YachtBookingBackEnd.entity.Schedule;
 import com.example.YachtBookingBackEnd.entity.Yacht;
 import com.example.YachtBookingBackEnd.entity.YachtSchedule;
 import com.example.YachtBookingBackEnd.entity.key.KeysYachtSchedule;
+import com.example.YachtBookingBackEnd.repository.BookingOrderRepository;
 import com.example.YachtBookingBackEnd.repository.ScheduleRepository;
 import com.example.YachtBookingBackEnd.repository.YachtRepository;
 import com.example.YachtBookingBackEnd.repository.YachtScheduleRepository;
@@ -24,6 +25,8 @@ public class YachtScheduleService implements IYachtSchedule {
     private ScheduleRepository scheduleRepository;
     @Autowired
     private YachtRepository yachtRepository;
+    @Autowired
+    private BookingOrderRepository bookingOrderRepository;
 
     @Override
     public boolean addYachtSchedule(String yachtId, LocalDateTime startDate,  LocalDateTime endDate) {
@@ -69,18 +72,24 @@ public class YachtScheduleService implements IYachtSchedule {
     }
 
     @Override
-    public boolean deleteYachtSchedule(String yachtId, String scheduleId) {
+    public String deleteYachtSchedule(String yachtId, String scheduleId) {
         try{
             KeysYachtSchedule keysYachtSchedule = new KeysYachtSchedule(yachtId, scheduleId);
             Optional<YachtSchedule> yachtSchedule = yachtScheduleRepository.findByKeys(keysYachtSchedule);
             if(yachtSchedule.isPresent()){
+                //check if there are any bookings associated with this schedule
+                boolean hasBookings = bookingOrderRepository.findBySchedule(yachtSchedule.get().getSchedule());
+                if (hasBookings) {
+                    log.error("Cannot delete yacht schedule: Schedule is associated with bookings");
+                    return "22";
+                }
                 yachtScheduleRepository.delete(yachtSchedule.get());
-                return true;
+                return "00";
             }
         }catch (Exception e){
-            System.out.println("Error delete yacht schedule: "+e.getMessage());
+            log.error("Error delete yacht schedule: "+e.getMessage());
         }
-        return false;
+        return "11";
     }
 
     @Override

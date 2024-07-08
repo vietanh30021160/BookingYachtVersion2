@@ -60,4 +60,11 @@ public interface BookingOrderRepository extends JpaRepository<BookingOrder, Stri
 
     @Query("SELECT bo FROM BookingOrder bo WHERE bo.idBooking = :id")
     Optional<BookingOrder> findById(@Param("id") String id);
+
+    @Query("SELECT COUNT(b) > 0 " +
+            "FROM BookingOrder  b " +
+            "WHERE b.schedule = :schedule " +
+            "AND b.status = 'Confirmed' " +
+            "OR b.status = 'Pending'")
+    boolean findBySchedule(@Param("schedule") Schedule schedule);
 }

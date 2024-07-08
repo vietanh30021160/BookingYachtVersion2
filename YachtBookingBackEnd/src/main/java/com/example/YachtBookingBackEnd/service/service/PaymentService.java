@@ -93,7 +93,7 @@ public class PaymentService implements IPayment {
             Optional<com.example.YachtBookingBackEnd.entity.Service> optionalService = serviceRepository.findById(serviceId);
             com.example.YachtBookingBackEnd.entity.Service service = optionalService.orElseThrow(() -> new RuntimeException("Invalid service ID: " + serviceId));
 
-            String idYacht = yachtRepository.getIdByService(service);
+            String idYacht = yachtRepository.getIdByService(idSchedule);
             boolean isServiceExistInYacht = yachtServiceRepository.isServiceExistInYacht(serviceId, idYacht);
             if (!isServiceExistInYacht) {
                 throw new IllegalArgumentException("Service " + serviceId + " is not available");
