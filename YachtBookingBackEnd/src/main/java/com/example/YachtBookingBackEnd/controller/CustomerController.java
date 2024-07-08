@@ -311,6 +311,12 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse,HttpStatus.OK);
     }
 
+    @GetMapping("/getAllCustomer")
+    ResponseEntity<?> customerList(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iCustomer.getAllCustomer());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 
 
 }
