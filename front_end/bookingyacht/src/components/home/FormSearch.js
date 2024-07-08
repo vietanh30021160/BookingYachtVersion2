@@ -17,7 +17,7 @@ const FormSearch = () => {
     const [searchData, setSearchData] = useState({
         name: '',
         location: selectedLocation || 'all',
-        price: 'all',
+        // price: 'all',
     });
 
     console.log(searchData)
@@ -62,7 +62,7 @@ const FormSearch = () => {
                     </div>
                     <div className='form-search'>
                         <Row>
-                            <Col md={5}>
+                            <Col md={7}>
                                 <FormGroup>
                                     <FormControl
                                         placeholder='Search Yacht'
@@ -72,7 +72,7 @@ const FormSearch = () => {
                                     />
                                 </FormGroup>
                             </Col>
-                            <Col>
+                            <Col md={3}>
                                 <select className='select p-2 pe-3' name='location' onChange={handleChange} style={{ color: '#595C5F' }} value={searchData.location}>
                                     <option value='all'>Tất cả các địa điểm</option>
                                     <option value='Hạ Long'>Vịnh Hạ Long</option>
@@ -81,15 +81,15 @@ const FormSearch = () => {
                                 </select>
 
                             </Col>
-                            <Col>
+                            {/* <Col>
                                 <select className='select p-2' name='price' onChange={handleChange} style={{ color: '#595C5F' }} value={searchData.price}>
                                     <option value='all'>Tất cả các mức giá</option>
                                     <option value='1 Đến 3 Triệu'>1 Đến 3 Triệu</option>
                                     <option value='3 Đến 6 Triệu'>3 Đến 6 Triệu</option>
                                     <option value='Trên 6 Triệu'>Trên 6 Triệu</option>
                                 </select>
-                            </Col>
-                            <Col>
+                            </Col> */}
+                            <Col md={2}>
                                 <button style={{ paddingLeft: '30px', paddingRight: '30px' }} size='lg'>Search</button>
                             </Col>
                         </Row>
