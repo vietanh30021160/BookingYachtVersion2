@@ -11,9 +11,13 @@ public interface IBookingOrder {
 
     List<BookingOrderDTO> getBookingByCustomerID(String idCustomer);
 
+    BookingOrderDTO getDetailBooking(String idCustomer, String idBooking);
+
     boolean confirmBooking(String idBookingOrder, String idCompany);
 
     boolean cancelBooking(String idBookingOrder, String reason, String idCompany);
+
+    boolean cancelBookingByCustomer(String idCustomer, String idBooking, String reason);
 
     void autoConfirmAndCancelBookings();
 }

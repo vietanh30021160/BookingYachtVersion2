@@ -1,12 +1,56 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+import _ from 'lodash';
+import { useSelector } from 'react-redux';
+import { FcPlus } from "react-icons/fc";
+import { updateProfileCompany } from '../../../services/ApiServices';
+import { toast } from 'react-toastify';
+
 const ModalUpdateProfile = (props) => {
-    const { show, handleClose } = props;
+    const { show, handleClose, profile } = props;
+    const idCompany = useSelector(state => state.account.account.idCompany);
+
+    const [email, setEmail] = useState('');
+    const [address, setAddress] = useState('');
+    const [name, setName] = useState('');
+    const [image, setImage] = useState("");
+    const [previewImage, setPreviewImage] = useState("");
+
+
+    useEffect(() => {
+        if (!_.isEmpty(profile)) {
+            setEmail(profile.email);
+            setAddress(profile.address);
+            setName(profile.name);
+            setPreviewImage(profile.logo)
+        }
+    }, [profile])
+    const handelUploadImage = (event) => {
+        if (event.target.files[0] && event.target && event.target.files) {
+            setPreviewImage(URL.createObjectURL(event.target.files[0]));
+            setImage(event.target.files[0]);
+        }
+
+    }
+
+    const handleUpdateProfile = async () => {
+        let res = await updateProfileCompany(idCompany, name.trim(), address.trim(), image)
+        if (!name || !address) {
+            toast.error("Input Not Empty")
+        } else if (res && res.data && res.data.data === true) {
+            toast.success('Update Successfully');
+            handleClose();
+            await props.getProfile();
+        } else {
+            toast.error('Update Fail')
+        }
+    }
+
     return (
         <div>
             <Modal size='xl' show={show} onHide={handleClose} autoFocus>
@@ -18,52 +62,43 @@ const ModalUpdateProfile = (props) => {
                         <Row className="mb-3">
                             <Form.Group as={Col} controlId="formGridEmail">
                                 <Form.Label>Email</Form.Label>
-                                <Form.Control type="email" placeholder="Enter email" />
+                                <Form.Control disabled value={email} onChange={event => setEmail(event.target.value)} />
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="formGridPassword">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" placeholder="Password" />
+                                <Form.Label>Address</Form.Label>
+                                <Form.Control type="text" value={address} onChange={event => setAddress(event.target.value)} />
                             </Form.Group>
                         </Row>
 
                         <Form.Group className="mb-3" controlId="formGridAddress1">
-                            <Form.Label>Address</Form.Label>
-                            <Form.Control placeholder="1234 Main St" />
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control type='text' value={name} onChange={event => setName(event.target.value)} />
                         </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="formGridAddress2">
-                            <Form.Label>Address 2</Form.Label>
-                            <Form.Control placeholder="Apartment, studio, or floor" />
-                        </Form.Group>
-
-                        <Row className="mb-3">
-                            <Form.Group as={Col} controlId="formGridCity">
-                                <Form.Label>City</Form.Label>
-                                <Form.Control />
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridState">
-                                <Form.Label>State</Form.Label>
-                                <Form.Select defaultValue="Choose...">
-                                    <option>Choose...</option>
-                                    <option>...</option>
-                                </Form.Select>
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridZip">
-                                <Form.Label>Zip</Form.Label>
-                                <Form.Control />
-                            </Form.Group>
-                        </Row>
-
+                        <div className='col-mad-12'>
+                            <label className='form-label label-upload' htmlFor='labelCreateImage'> <FcPlus /> Upload File IMAGE</label>
+                            <input
+                                type='file'
+                                accept='image/*'
+                                hidden id='labelCreateImage'
+                                name='image'
+                                onChange={(event) => handelUploadImage(event)}
+                            />
+                        </div>
+                        <div className='col-md-12 img-preview'>
+                            {previewImage ?
+                                <img src={previewImage} />
+                                :
+                                <span>Preview Avartar</span>
+                            }
+                        </div>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
+                    <Button onClick={handleUpdateProfile} variant="primary">
                         Save
                     </Button>
                 </Modal.Footer>

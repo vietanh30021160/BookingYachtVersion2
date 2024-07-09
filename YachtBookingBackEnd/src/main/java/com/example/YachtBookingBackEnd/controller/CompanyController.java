@@ -214,7 +214,7 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    /* ===End BookingOrder management=== */
+    /* ===End SOrder management=== */
     //Done
     @PutMapping("/yacht/updateImage/{imageId}")
     public ResponseEntity<?>updateYachtImage(@PathVariable String imageId, @RequestParam MultipartFile image){

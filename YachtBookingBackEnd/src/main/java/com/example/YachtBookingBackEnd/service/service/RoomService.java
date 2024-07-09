@@ -243,6 +243,7 @@ public class RoomService implements IRoom {
                 roomDTO.setRoomImageSet(roomImageDTOList);
 
                 roomDTOList.add(roomDTO);
+                System.out.println(roomDTO);
             }
         }
         return roomDTOList;

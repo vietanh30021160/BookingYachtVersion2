@@ -4,9 +4,9 @@ import { Card, Col, Image, Row } from 'react-bootstrap';
 import { FaLocationDot } from "react-icons/fa6";
 import { RiShipLine } from "react-icons/ri";
 import { useNavigate, useParams } from 'react-router-dom';
+import banner from '../../assets/bannercompany.png';
 import '../yacht/FindYacht.scss';
 import './InfoCompany.scss';
-
 const ProfilePage = () => {
     const getImageApi = `http://localhost:8080/api/customer/file/`
     const { idCompany } = useParams();
@@ -76,7 +76,7 @@ const ProfilePage = () => {
 
     return (
         <div>
-            <Image src='https://www.monchericruises.vn/wp-content/uploads/2022/03/adbf8893bbc6619838d7-scaled.jpg' className="cover-photo" />
+            <Image src={banner} className="cover-photo" />
             <div className='container'>
                 <Row className="justify-content-center">
                     <Col xs={12} className="text-center cover-photo-container">
@@ -116,7 +116,7 @@ const ProfilePage = () => {
                                 {
                                     paggingYacht.map((yacht) => {
                                         return (
-                                            <div className="card row" key={yacht.idYacht} onClick={() => { hanldeSelectedYacht(yacht.idYacht) }} style={{ cursor: 'pointer', marginTop: '20px' }}>
+                                            <div className="card row" key={yacht.idYacht} onClick={() => { hanldeSelectedYacht(yacht.idYacht) }} style={{ cursor: 'pointer', marginTop: '20px'}}>
                                                 <div className="col-md-5">
                                                     <img style={{ height: '250px', width: '100%' }} className="card-img-top object-fit-cover" src={`${avatarYachtApi}${yacht.image}`} alt="Card image cap" />
                                                 </div>

@@ -6,4 +6,6 @@ public interface IMailSender {
     void sendCancelMail(String to, String idBooking, String reason, String companyName);
 
     void senConfirmMail(String to, String idBooking, String companyName);
+
+    void sendCanelMailFromCustomer(String to, String idBooking, String reason);
 }

@@ -20,7 +20,7 @@ const ModalUpdateServiceYacht = (props) => {
     }, [serviceUpdate])
 
     const handleUpdateServiceYacht = async () => {
-        let res = await upadteServiceYacht(idYacht, serviceUpdate.idService, service, price);
+        let res = await upadteServiceYacht(idYacht, serviceUpdate.idService, service.trim(), price);
         if (!service || !price) {
             toast.error('Input Not Empty')
             return;
@@ -57,7 +57,7 @@ const ModalUpdateServiceYacht = (props) => {
                             <Form.Group as={Col} >
                                 <Form.Label>Price</Form.Label>
                                 <Form.Control
-                                    type="text"
+                                    type="number"
                                     value={price}
                                     onChange={(event) => setPrice(event.target.value)}
                                 />

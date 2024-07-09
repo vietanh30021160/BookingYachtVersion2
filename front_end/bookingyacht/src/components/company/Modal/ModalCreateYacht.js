@@ -56,7 +56,7 @@ const ModalCreateYacht = (props) => {
         }
     }
     const handleCreateYacht = async () => {
-        let res = await createYacht(idCompany, data.name, image, data.launch, data.hullBody, data.description, data.rule, data.itinerary, data.location, data.yachtType);
+        let res = await createYacht(idCompany, data.name.trim(), image, data.launch, data.hullBody.trim(), data.description.trim(), data.rule.trim(), data.itinerary.trim(), data.location, data.yachtType);
         if (!data.name || !image || !data.launch || !data.hullBody || !data.description || !data.rule || !data.itinerary || !data.location || !data.yachtType) {
             toast.error("Input Not Empty")
         } else {
@@ -73,7 +73,6 @@ const ModalCreateYacht = (props) => {
 
     const getAllType = async () => {
         let res = await getYachtType();
-        console.log("check yacht type", res)
         setYachtType(res.data.data)
     }
 
@@ -121,7 +120,7 @@ const ModalCreateYacht = (props) => {
                                 <Form.Label>Launch</Form.Label>
                                 <Form.Control
                                     name='launch'
-                                    type="text"
+                                    type="date"
                                     placeholder="Launch"
                                     onChange={handleChange}
                                     value={data.launch}
@@ -189,6 +188,7 @@ const ModalCreateYacht = (props) => {
                             <label className='form-label label-upload' htmlFor='labelUpload'> <FcPlus /> Upload File IMAGE</label>
                             <input
                                 type='file'
+                                accept='image/*'
                                 hidden id='labelUpload'
                                 name='image'
                                 onChange={(event) => handelUploadImage(event)}

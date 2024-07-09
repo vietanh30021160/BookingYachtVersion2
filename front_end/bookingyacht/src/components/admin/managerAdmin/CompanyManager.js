@@ -15,6 +15,7 @@ const CompanyManager = () => {
 
     const [showCompanyModal, setShowCompanyModal] = useState(false);
     const [showDetailModal, setShowDetailModal] = useState(false);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
 
     const [showInfoDetailModal, setShowInfoDetailModal] = useState(false);
     const [newAccountId, setNewAccountId] = useState(null);
@@ -54,8 +55,6 @@ const CompanyManager = () => {
     const [paging, setPaging] = useState([]);
     const [pagedCompany, setPagedCompanys] = useState([]);
 
-
-    // const [showPassword, setShowPassword] = useState(false);
     const [createAccountMessage, setCreatetAccountMessage] = useState('');
 
     // Lấy khách hàng khi thành phần được tải
@@ -63,7 +62,7 @@ const CompanyManager = () => {
         dispatch(fetchCompanies())
     }, [dispatch]);
 
-    useEffect(() =>{
+    useEffect(() => {
         setFilteredCompanies(companies);
     }, [companies])
 
@@ -89,18 +88,18 @@ const CompanyManager = () => {
     };
 
     const handleSearchByName = value => {
-       setSearchName(value);
-       filterCompanies(value, searchEmail, searchId)
+        setSearchName(value);
+        filterCompanies(value, searchEmail, searchId)
 
-       setCurrentPage(1);
+        setCurrentPage(1);
     };
 
     // Hàm tìm kiếm khách hàng theo tên
     const handleSearchByEmail = value => {
-       setSearchEmail(value);
-       filterCompanies(searchName, value, searchId)
+        setSearchEmail(value);
+        filterCompanies(searchName, value, searchId)
 
-       setCurrentPage(1);
+        setCurrentPage(1);
     };
 
     const handleSearchById = value => {
@@ -117,6 +116,14 @@ const CompanyManager = () => {
         const username = form.elements.username.value;
         const password = form.elements.password.value;
         const confirmPassword = form.elements.confirmPassword.value;
+        if(username.length < 3){
+            toast.error('Account name must be more than 3 characters long!');
+            return;
+        }
+        if(password < 8){
+            toast.error('Password must be over 8 characters!');
+            return;
+        }
         if (password !== confirmPassword) {
             setCreatetAccountMessage('Password and confirm password do not match.');
             return;
@@ -141,7 +148,6 @@ const CompanyManager = () => {
                 toast.success('Company created successfully.')
                 fetchCompanies();
                 setNewAccountId(response.data.idAccount)
-                console.log(newAccountId);
                 setShowInfoDetailModal(true)
             } else {
                 // setCreatetAccountMessage('Failed to create company. Please try again.');
@@ -177,27 +183,32 @@ const CompanyManager = () => {
                 },
                 data: data
             };
-            await axios(config);
-            toast.success('Company details added successfully.');
-            setShowInfoDetailModal(false);
-            fetchCompanies();
+            const response = await axios(config);
+            if (response.data.data === false) {
+                toast.error('Adding information failed, this email may already exist!')
+            } else {
+                toast.success('Company details added successfully.');
+                setShowInfoDetailModal(false);
+                dispatch(fetchCompanies());
 
-            // Reset infomation
-            setComPanyDetail({
-                address: '',
-                email: '',
-                logo: null,
-                name: ''
-            });
-            
-            setLogo(null);
+                // Reset infomation
+                setComPanyDetail({
+                    address: '',
+                    email: '',
+                    logo: null,
+                    name: ''
+                });
+
+                setLogo(null);
+            }
+
         } catch (error) {
             toast.error('Created infomation company false');
         }
     }
 
-    
-    const filterCompanies = (name, email, id) =>{
+
+    const filterCompanies = (name, email, id) => {
         const filtered = companies.filter(companies =>
             companies.name.toLowerCase().includes(name.toLowerCase()) &&
             companies.email.toLowerCase().includes(email.toLowerCase()) &&
@@ -205,10 +216,30 @@ const CompanyManager = () => {
         )
         setFilteredCompanies(filtered)
     }
-    const handleHideCompany = companyId => {
-       
+    const handleHideCompany = company => {
+        setSelectedCompany(company);
+        setShowConfirmModal(true);
     };
 
+    const handleConfirmHideCompany = async () =>{
+        try{
+            const config = {
+                method: 'put',
+                url: `http://localhost:8080/api/admins/companies/${selectedCompany.idCompany}`,
+                headers: {
+                    'Authorization': getAuthHeader(),
+                },
+            };
+            await axios(config);
+            toast.success('Company hidden successfully.');
+            dispatch(fetchCompanies())
+        }catch (error) {
+            toast.error('Failed to hide company. Please try again.');
+        } finally {
+            setShowConfirmModal(false);
+            setSelectedCompany(null);
+        }
+    }
 
     // Hàm đóng modal
     const handleCloseDetailModal = () => setShowDetailModal(false);
@@ -339,7 +370,10 @@ const CompanyManager = () => {
                             </td>
                             <td className='button_mana'>
                                 <Button variant="info" onClick={() => handleShowDetailModal(company)}>View Detail</Button>
-                                <Button variant="danger" onClick={() => handleHideCompany(company.id)}>Hidden</Button>
+                                <Button variant={company.exist ? 'danger' : 'success'}
+                                onClick={() => handleHideCompany(company)}>
+                                  {company.exist ? 'Hide' : 'Unhide'}
+                                </Button>
                             </td>
                         </tr>
                     ))}
@@ -459,6 +493,24 @@ const CompanyManager = () => {
                         </Button>
                     </Form>
                 </Modal.Body>
+            </Modal>
+            <Modal show={showConfirmModal} onHide={() => setShowConfirmModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm Hide Company</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                {selectedCompany?.exist
+                        ? 'Are you sure you want to hide this company?'
+                        : 'Are you sure you want to unhide this company?'}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant='secondary' onClick={() => setShowConfirmModal(false)}>
+                        Cancel
+                    </Button>
+                    <Button variant='danger' onClick={handleConfirmHideCompany}>
+                        Confirm
+                    </Button>
+                </Modal.Footer>
             </Modal>
         </div>
     );

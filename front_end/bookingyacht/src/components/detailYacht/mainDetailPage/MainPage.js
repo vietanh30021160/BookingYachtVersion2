@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { Col } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { clearSelectionWhenExit } from '../../../redux/action/OrderAction';
+import { getScheduleByYachtApi } from '../../../redux/action/ScheduleAction';
+import { getYachtByYachtIdApi } from '../../../redux/action/YachtAction';
 import RoomSelection from '../priceRoom/RoomSelection';
 import Rating from '../rating/Rating';
 import Map from '../scheduleDetail/Map';
 import SectionHeader from '../sectionHeader/SectionHeade';
 import SimpleSlider from '../sliderPage/SliderImg';
 import './MainPage.scss';
-import { useParams } from 'react-router-dom';
-import { getYachtByYachtId } from '../../../services/ApiServices';
-import { Col } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import { getYachtByYachtIdApi } from '../../../redux/action/YachtAction';
-import { getScheduleByYachtApi } from '../../../redux/action/ScheduleAction';
-import { CLEAR_SELECTION_WHEN_EXIT } from '../../../redux/type/Type';
-import { clearSelectionWhenExit } from '../../../redux/action/OrderAction';
 
 
 
@@ -154,7 +152,7 @@ const MainPage = () => {
         </div>
 
         <div id="reviews" className="content-section-sticky6 mt-5 mb-5">
-          <Rating />
+          <Rating yachtId={yachtId}/>
         </div>
       </Col>
 

@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Container, FormCheck } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import { FaArrowRightLong } from "react-icons/fa6";
+import { useDispatch, useSelector } from 'react-redux';
+import { addRoomAction, removeRoomAction, resetSelectionAction, setTotalPrice } from '../../../redux/action/OrderAction';
+import { getAddingServiceByYacht, getUnbookedRoomsByYachtAndSchedule } from '../../../services/ApiServices';
 import BookNowModal from './BookNowModal';
 import './FormRoom.scss';
 import RoomDetailModal from './RoomDetailModal';
 import RoomItem from './RoomItem';
-import { getAddingServiceByYacht, getUnbookedRoomsByYachtAndSchedule } from '../../../services/ApiServices';
-import { useSelector, useDispatch } from 'react-redux';
-import { addRoomAction, removeRoomAction, resetSelectionAction, setTotalPrice } from '../../../redux/action/OrderAction';
-import OrderReducer from './../../../redux/reducer/OrderReducer';
+// import OrderReducer from './../../../redux/reducer/OrderReducer';
+
 const RoomSelection = ({ yacht, selectedSchedule }) => {
     const [originalRooms, setOriginalRooms] = useState([]);
     const [filteredRooms, setFilteredRooms] = useState([]);

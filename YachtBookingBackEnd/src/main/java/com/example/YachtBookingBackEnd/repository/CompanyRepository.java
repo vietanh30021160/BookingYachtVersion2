@@ -24,6 +24,8 @@ public interface CompanyRepository extends JpaRepository<Company, String> {
     Optional<Company> findByIdAndExist(@Param("idCompany") String idCompany);
 
     boolean existsCompanyByName(String name);
+    @Query("SELECT c from Company c WHERE c.email =:email")
+    Company findCompanyByEmail(@Param("email") String email);
 
     @Query("SELECT f FROM Feedback f join Yacht y on f.yacht.idYacht = y.idYacht join Company c on y.company.idCompany = c.idCompany where c.idCompany = :idCompany")
     List<Feedback> findFeedbacksByCompanyId(@Param("idCompany") String idCompany);

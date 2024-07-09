@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
+import { useForm } from 'react-hook-form';
 import Modal from 'react-bootstrap/Modal';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -8,12 +9,57 @@ import _, { add } from 'lodash';
 import { updateProfileCustomer } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
 import { Today } from '@mui/icons-material';
+import { getAllCustomerInfor } from '../../services/ApiServices';
 const ModalUpdateProfileUser = (props) => {
     const { show, handleClose, profile } = props;
     const [email, setEmail] = useState('');
     const [fullName, setFullName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [address, setAddress] = useState('');
+    const [customers, setCustomers] = useState([]);
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+
+    useEffect(() => {
+        const fetchCustomers = async () => {
+            try {
+                const res = await getAllCustomerInfor();
+                setCustomers(res.data.data);
+            } catch (error) {
+                console.error('Failed to fetch customers:', error);
+            }
+        };
+        fetchCustomers();
+    }, [])
+
+    const validatePhoneNumber = (value) => {
+        if (!/^[0]\d{9}$/.test(value)) {
+            return 'Phone number must start with 0 and be 10 digits long';
+        }
+        if (customers.some(customer => customer.phone === value && customer.phone !== profile.phone)) {
+            return 'Phone number already exists';
+        }
+        return true;
+    };
+
+    const validateFullName = (value) => {
+        if (value.length < 6) {
+            return 'Full name must be at least 6 characters long';
+        }
+        if (customers.some(customer => customer.fullName === value && customer.fullName !== profile.fullName)) {
+            return 'Full name already exists';
+        }
+        return true;
+    };
+
+    const validateEmail = (value) => {
+        const isExist = customers.some(customer => customer.email === value && customer.email !== profile.email);
+        if (isExist) {
+            return 'Email already exists';
+        }
+        return true;
+    }
+
+    console.log('customer', customers);
 
     useEffect(() => {
         if (!_.isEmpty(profile)) {
@@ -24,35 +70,23 @@ const ModalUpdateProfileUser = (props) => {
         }
     }, [profile])
 
-    // const phonenumber = (inputtxt) => {
-    //     var phoneno = "^0[0-9]{9}$";
-    //     if (inputtxt.value.match(phoneno)) {
-    //         return true;
-    //     }
-    //     else {
-    //         return false;
-    //     }
-    // }
+    const onSubmit = async (data) => {
+        const { email, fullName, phoneNumber, address } = data;
 
-    const handleUpodateProfile = async () => {
         if (!email || !fullName || !phoneNumber || !address) {
             toast.error('Input Not Empty');
         } else {
-            // if (phonenumber(phoneNumber.trim()) === false) {
-            //     toast.error('Phone Number Start 0 And 10 Number')
-            // } else {
             let res = await updateProfileCustomer(profile.idCustomer, email.trim(), fullName.trim(), phoneNumber.trim(), address.trim());
-            console.log("update p", res)
             if (res && res.data.data === true) {
-                toast.success('Update Successfully')
+                console.log('res', res.data.data);
+                toast.success('Update Successfully');
                 handleClose();
                 await props.getProfile();
             } else {
-                toast.error('Update Fail')
+                toast.error('Update Fail');
             }
-            // }
         }
-    }
+    };
 
     return (
         <div>
@@ -61,59 +95,75 @@ const ModalUpdateProfileUser = (props) => {
                     <Modal.Title>Update Profile</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form>
+                    <Form onSubmit={handleSubmit(onSubmit)}>
                         <Row className="mb-3">
                             <Form.Group as={Col} controlId="formGridEmail">
                                 <Form.Label>Email</Form.Label>
                                 <Form.Control
                                     type="email"
-                                    value={email}
-                                    onChange={event => setEmail(event.target.value)}
+                                    {...register('email', { required: 'Email is required', validate: validateEmail })}
+                                    isInvalid={!!errors.email}
+                                    defaultValue={profile.email}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.email?.message}
+                                </Form.Control.Feedback>
+
                             </Form.Group>
 
-                            <Form.Group as={Col} controlId="formGridPassword">
-                                <Form.Label>FullName</Form.Label>
+                            <Form.Group as={Col} controlId="formGridFullName">
+                                <Form.Label>Full Name</Form.Label>
                                 <Form.Control
                                     type="text"
-                                    value={fullName}
-                                    onChange={event => setFullName(event.target.value)}
+                                    {...register('fullName', { validate: validateFullName })}
+                                    isInvalid={errors.fullName}
+                                    defaultValue={profile.fullName}
 
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.fullName?.message}
+                                </Form.Control.Feedback>
                             </Form.Group>
                         </Row>
                         <Row className="mb-3">
-                            <Form.Group as={Col} controlId="formGridEmail">
+                            <Form.Group as={Col} controlId="formGridPhoneNumber">
                                 <Form.Label>PhoneNumber</Form.Label>
                                 <Form.Control
-                                    type="email"
-                                    placeholder='Start With 0 and 9 Number'
-                                    value={phoneNumber}
-                                    onChange={event => setPhoneNumber(event.target.value)}
+                                    type="text"
+                                    placeholder='Start with 0 and 9 digits'
+                                    {...register('phoneNumber', { validate: validatePhoneNumber })}
+                                    isInvalid={errors.phoneNumber}
+                                    defaultValue={profile.phone}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.phoneNumber?.message}
+                                </Form.Control.Feedback>
                             </Form.Group>
 
-                            <Form.Group as={Col} controlId="formGridPassword">
+                            <Form.Group as={Col} controlId="formGridAddress">
                                 <Form.Label>Address</Form.Label>
                                 <Form.Control
                                     type="text"
-                                    value={address}
-                                    onChange={event => setAddress(event.target.value)}
+                                    {...register('address', { required: 'Address is required' })}
+                                    isInvalid={errors.address}
+                                    defaultValue={profile.address}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.address?.message}
+                                </Form.Control.Feedback>
                             </Form.Group>
                         </Row>
-
-
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>
+                                Close
+                            </Button>
+                            <Button variant="primary" type='submit'>
+                                Save
+                            </Button>
+                        </Modal.Footer>
                     </Form>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleUpodateProfile}>
-                        Save
-                    </Button>
-                </Modal.Footer>
+
             </Modal>
         </div>
     );

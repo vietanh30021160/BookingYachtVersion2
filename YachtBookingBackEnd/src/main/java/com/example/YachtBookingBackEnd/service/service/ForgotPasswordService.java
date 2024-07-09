@@ -1,9 +1,11 @@
 package com.example.YachtBookingBackEnd.service.service;
 
 import com.example.YachtBookingBackEnd.entity.Account;
+import com.example.YachtBookingBackEnd.entity.Company;
 import com.example.YachtBookingBackEnd.entity.Customer;
 import com.example.YachtBookingBackEnd.entity.ForgotPassword;
 import com.example.YachtBookingBackEnd.repository.AccountRepository;
+import com.example.YachtBookingBackEnd.repository.CompanyRepository;
 import com.example.YachtBookingBackEnd.repository.CustomerRepository;
 import com.example.YachtBookingBackEnd.repository.ForgotPasswordRepository;
 import com.example.YachtBookingBackEnd.service.implement.IForgotPassword;
@@ -25,16 +27,19 @@ public class ForgotPasswordService implements IForgotPassword {
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
+    private CompanyRepository companyRepository;
+    @Autowired
     private ForgotPasswordRepository forgotPasswordRepository;
     @Autowired
-    JavaMailSender mailSender;
+    private JavaMailSender mailSender;
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private SpringTemplateEngine templateEngine;
     @Override
     public boolean verifyEmail(String email) {
         try {
+
             Customer customer = customerRepository.findCustomerByEmail(email);
             if (customer == null) {
                 System.out.println("Customer không tồn tại.");

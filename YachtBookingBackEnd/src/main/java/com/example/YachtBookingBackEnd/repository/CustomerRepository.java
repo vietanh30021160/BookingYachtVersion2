@@ -1,6 +1,7 @@
 package com.example.YachtBookingBackEnd.repository;
 
 import com.example.YachtBookingBackEnd.entity.Account;
+import com.example.YachtBookingBackEnd.entity.BookingOrder;
 import com.example.YachtBookingBackEnd.entity.Customer;
 import com.example.YachtBookingBackEnd.entity.Feedback;
 import org.springframework.data.domain.Page;
@@ -25,4 +26,7 @@ public interface CustomerRepository extends JpaRepository<Customer, String> {
     @Query("SELECT c.account from Customer c where c.idCustomer=:idCustomer")
     Account getAccountByIdCustomer(@Param("idCustomer") String idCustomer);
 
+
+    @Query("SELECT b.idBooking FROM BookingOrder b join b.customer c where c.idCustomer = :idCustomer")
+    List<String> findIdBookingByCustomerId(@Param("idCustomer") String idCustomer);
 }

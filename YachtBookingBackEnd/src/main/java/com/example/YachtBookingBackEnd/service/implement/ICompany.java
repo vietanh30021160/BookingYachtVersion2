@@ -27,4 +27,5 @@ public interface ICompany {
 
     boolean changePasswordCompany(String idCompany, String password);
 
+
 }
