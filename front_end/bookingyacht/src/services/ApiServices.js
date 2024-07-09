@@ -40,6 +40,18 @@ export const verifyEmail=(email)=>{
     return axios.post('/api/customer/forgotPassword/verifyEmail', data)
 }
 
+export const verifyOTP=(email,otp)=>{
+    const data = new FormData()
+    data.append('otp', otp)
+    return axios.post(`/api/customer/forgotPassword/verifyOTP/${email}`, data)
+}
+
+export const changePasswordByEmail=(email,password)=>{
+    const data = new FormData()
+    data.append('password', password)
+    return axios.post(`/api/customer/forgotPassword/changePasswordByEmail/${email}`, data)
+}
+
 export const registerCustomer = (username, password) => {
     const data = new FormData();
     data.append('username', username);

@@ -8,7 +8,7 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
 
   const handleVerify = async (event) => {
-    event.preventDefault(); // Ngăn chặn hành vi mặc định của form
+    event.preventDefault(); 
 
     if (!email) {
       toast.error("Không được để trống!");
@@ -58,8 +58,7 @@ const ForgotPassword = () => {
                     <div className="d-grid">
                       <button
                         type="submit"
-                        className="btn btn-lg btn-primary"
-                      >
+                        className="btn btn-lg btn-primary">
                         Xác thực Email
                       </button>
                     </div>
@@ -75,6 +74,7 @@ const ForgotPassword = () => {
           </div>
         </div>
       </div>
+      
     </div>
   );
 };

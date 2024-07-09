@@ -1,7 +1,30 @@
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { verifyOTP } from "../../services/ApiServices";
+
 
 export default function VerifyOTP() {
+  const[otp, setOTP]=useState("")
+  const navigate = useNavigate();
+  const {email} = useParams();
+  const handleVerify = async (event) => {
+    event.preventDefault(); 
+
+    if (!otp) {
+      toast.error("Không được để trống!");
+    } else {
+      let res = await verifyOTP(email,otp);
+
+      if (res && res.data && res.data.data === true) {
+        navigate(`/changePasswordByEmail/${email}`)
+      }else{
+        toast.error("OTP không tồn tại");
+      }
+    }
+  };
+
+
   return (
     <div className=" py-3 py-md-5 my-5">
       <div className="container">
@@ -19,13 +42,14 @@ export default function VerifyOTP() {
                   </div>
                 </div>
               </div>
-              <form>
+              <form onSubmit={handleVerify}>
                 <div className="row gy-3 gy-md-4 overflow-hidden">
                   <div className="col-12">
                     <label className="form-label">
                       OTP <span className="text-danger">*</span>
                     </label>
                     <input
+                      onChange={(otp)=> setOTP(otp.target.value)}
                       type="text"
                       className="form-control"
                       name="otp"
