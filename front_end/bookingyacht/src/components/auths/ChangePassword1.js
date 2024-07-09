@@ -21,7 +21,7 @@ export default function ChangePassword1() {
       if(password===rePassword){
         await changePasswordByEmail(email, password)
         toast.success('Đổi mật khẩu thành công');
-        navigate('/')
+        navigate('/signin')
       }else{
         toast.error('Mật khẩu mới và mật khẩu xác nhận phải trùng nhau!')
       }
