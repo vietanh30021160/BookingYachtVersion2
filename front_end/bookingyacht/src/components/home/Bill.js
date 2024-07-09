@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Collapse, Container, Form, ListGroup, Modal, Row } from 'react-bootstrap';
+import { GiNotebook } from "react-icons/gi";
 import { toast } from 'react-toastify';
 import { addFeedback, existsFeedback, viewBillByIdCustomer } from '../../services/ApiServices';
-
 const Bill = ({ idCustomer }) => {
   const [bills, setBills] = useState([]);
   const [showDetails, setShowDetails] = useState({});
@@ -91,7 +91,7 @@ const Bill = ({ idCustomer }) => {
           <Col key={index} sm={12} md={6} className="mb-4">
             <Card>
               <Card.Header className="text-center">
-                <h2>Thông tin hóa đơn</h2>
+                <h2><GiNotebook color='#42F5E9' /> Hóa Đơn</h2>
               </Card.Header>
               <Card.Body>
                 <Row>
@@ -119,10 +119,25 @@ const Bill = ({ idCustomer }) => {
                     <Card.Text>
                       <strong>Email:</strong> {bill.bookingOrderDTO.customerDTO.email}
                     </Card.Text>
+                    {reviewedBills[bill.bookingOrderDTO.idBooking] ? (
+                      <Button variant="dark" className="mt-3">
+                        Xem đánh giá
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="warning"
+                        className="mt-3"
+                        onClick={() => {
+                          setCurrentBillId(bill.bookingOrderDTO.idBooking);
+                          setShowModal(true);
+                        }}
+                      >
+                        Đánh giá sản phẩm
+                      </Button>
+                    )}
                   </Col>
                 </Row>
-
-                <Button variant="link" onClick={() => toggleDetails(bill.bookingOrderDTO.idBooking)} style={{ color: 'black' }}>
+                <Button variant="link" onClick={() => toggleDetails(bill.bookingOrderDTO.idBooking)} style={{ color: '#42F5E9' }}>
                   {showDetails[bill.bookingOrderDTO.idBooking] ? 'Ẩn chi tiết' : 'Xem chi tiết'}
                 </Button>
                 <Collapse in={showDetails[bill.bookingOrderDTO.idBooking]}>
@@ -170,22 +185,6 @@ const Bill = ({ idCustomer }) => {
                     </Card.Text>
                   </div>
                 </Collapse>
-                {reviewedBills[bill.bookingOrderDTO.idBooking] ? (
-                  <Button variant="dark" className="mt-3">
-                    Xem đánh giá
-                  </Button>
-                ) : (
-                  <Button
-                    variant="dark"
-                    className="mt-3"
-                    onClick={() => {
-                      setCurrentBillId(bill.bookingOrderDTO.idBooking);
-                      setShowModal(true);
-                    }}
-                  >
-                    Đánh giá sản phẩm
-                  </Button>
-                )}
               </Card.Body>
             </Card>
           </Col>

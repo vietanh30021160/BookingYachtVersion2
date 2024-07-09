@@ -360,3 +360,9 @@ export const getAllLocationCustomer = () => {
 export const getScheduleById = (idSchedule) => {
     return axios.get(`/api/customer/getScheduleById/${idSchedule}`);
 }
+export const getAllFeedback = () =>{
+    return axios.get('/api/customer/getAllFeedback');
+}
+export const getAllCompany = () =>{
+    return axios.get('/api/customer/getAllCompany');
+}
