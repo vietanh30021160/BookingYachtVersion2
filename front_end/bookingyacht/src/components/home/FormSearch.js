@@ -6,16 +6,18 @@ import { toast } from 'react-toastify';
 import { SEARCH_YACHT } from '../../redux/type/Type';
 import { login } from './../../services/ApiServices';
 import { YachtListReducer } from './../../redux/reducer/YachtListReducer';
+// import { useSearchTrigger } from './TriggerFormSearch';
 
 const FormSearch = () => {
     const dispatch = useDispatch();
     const { selectedLocation } = useSelector(state => state.YachtListReducer);
+    // const { trigger } = useSearchTrigger();
     console.log("selectedLocation:", selectedLocation)
 
     const [searchData, setSearchData] = useState({
         name: '',
         location: selectedLocation || 'all',
-        price: 'all',
+        // price: 'all',
     });
 
     console.log(searchData)
@@ -34,6 +36,14 @@ const FormSearch = () => {
         });
     }, [searchData, dispatch]);
 
+    useEffect(() => {
+        // This effect will run once when trigger changes
+        dispatch({
+            type: SEARCH_YACHT,
+            payload: searchData
+        });
+    }, [dispatch, searchData]);
+
     const hanldeSubmit = (e) => {
         e.preventDefault();
         dispatch({
@@ -41,14 +51,6 @@ const FormSearch = () => {
             payload: searchData
         });
     }
-
-    useEffect(() => {
-        dispatch({
-            type: SEARCH_YACHT,
-            payload: searchData
-        });
-    }, []);
-
 
     return (
         <div>
@@ -60,7 +62,7 @@ const FormSearch = () => {
                     </div>
                     <div className='form-search'>
                         <Row>
-                            <Col md={5}>
+                            <Col md={7}>
                                 <FormGroup>
                                     <FormControl
                                         placeholder='Search Yacht'
@@ -70,8 +72,8 @@ const FormSearch = () => {
                                     />
                                 </FormGroup>
                             </Col>
-                            <Col>
-                                <select className='select p-2' name='location' onChange={handleChange} style={{ color: '#595C5F' }} value={searchData.location}>
+                            <Col md={3}>
+                                <select className='select p-2 pe-3' name='location' onChange={handleChange} style={{ color: '#595C5F' }} value={searchData.location}>
                                     <option value='all'>Tất cả các địa điểm</option>
                                     <option value='Hạ Long'>Vịnh Hạ Long</option>
                                     <option value='Lan Hạ'>Vịnh Lan Hạ</option>
@@ -79,15 +81,7 @@ const FormSearch = () => {
                                 </select>
 
                             </Col>
-                            <Col>
-                                <select className='select p-2' name='price' onChange={handleChange} style={{ color: '#595C5F' }} value={searchData.price}>
-                                    <option value='all'>Tất cả các mức giá</option>
-                                    <option value='1 Đến 3 Triệu'>1 Đến 3 Triệu</option>
-                                    <option value='3 Đến 6 Triệu'>3 Đến 6 Triệu</option>
-                                    <option value='Trên 6 Triệu'>Trên 6 Triệu</option>
-                                </select>
-                            </Col>
-                            <Col>
+                            <Col md={2}>
                                 <button style={{ paddingLeft: '30px', paddingRight: '30px' }} size='lg'>Search</button>
                             </Col>
                         </Row>
