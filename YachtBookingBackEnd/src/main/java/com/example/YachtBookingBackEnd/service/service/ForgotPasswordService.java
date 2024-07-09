@@ -36,7 +36,30 @@ public class ForgotPasswordService implements IForgotPassword {
     public boolean verifyEmail(String email) {
         try {
             Customer customer = customerRepository.findCustomerByEmail(email);
+            if (customer == null) {
+                System.out.println("Customer không tồn tại.");
+                return false;
+            }
+
             Account account = accountRepository.findAccountByCustomer(customer);
+            if (account == null) {
+                System.out.println("Account không tồn tại.");
+                return false;
+            }
+
+            ForgotPassword existingForgotPassword = forgotPasswordRepository.findByEmail(email);
+
+            if (existingForgotPassword != null) {
+                //Check expiration time of OTP
+                if (existingForgotPassword.getExpirationTime().before(Date.from(Instant.now()))) {
+                    //Delete old OTP
+                    forgotPasswordRepository.delete(existingForgotPassword);
+                    System.out.println("OTP cũ đã hết hạn và bị xóa.");
+                } else {
+                    System.out.println("OTP vẫn còn hiệu lực.");
+                    return false;
+                }
+            }
 
             int otp = generateOTP();
 
@@ -68,10 +91,14 @@ public class ForgotPasswordService implements IForgotPassword {
     }
 
     @Override
-    public boolean  veryfiOTP(Integer otp, String email) {
+    public boolean veryfiOTP(int otp, String email) {
         try {
 
             ForgotPassword forgotPassword = forgotPasswordRepository.findByOtpAndEmail(otp,email);
+            if (forgotPassword == null) {
+                System.out.println("OTP doesn't exist");
+                return false;
+            }
 
             if(forgotPassword.getExpirationTime().before(Date.from(Instant.now()))){
                 forgotPasswordRepository.delete(forgotPassword);

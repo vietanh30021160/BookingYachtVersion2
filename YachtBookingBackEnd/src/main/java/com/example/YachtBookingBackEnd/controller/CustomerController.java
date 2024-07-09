@@ -297,8 +297,8 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/forgotPassword/verifyOTP/{otp}/{email}")
-    public ResponseEntity<?> verifyOTP(@PathVariable("otp") Integer otp, @PathVariable String email){
+    @PostMapping("/forgotPassword/verifyOTP/{email}")
+    public ResponseEntity<?> verifyOTP(@RequestParam int otp, @PathVariable String email){
         DataResponse  dataResponse = new DataResponse<>();
         dataResponse.setData(iForgotPassword.veryfiOTP(otp, email));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
@@ -317,9 +317,6 @@ public class CustomerController {
         dataResponse.setData(iAccount.updateAccount(customerAccountId, password));
         return new ResponseEntity<>(dataResponse,HttpStatus.OK);
     }
-
-
-
 
     @GetMapping("/yacht/getPriceRoom/{yachtId}")
     public ResponseEntity<?>getPriceRoom(@PathVariable("yachtId")String  yachtId){
