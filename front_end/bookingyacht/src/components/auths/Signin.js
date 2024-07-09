@@ -51,7 +51,7 @@ const Signin = () => {
             } else if (role && role.role === 'ROLE_CUSTOMER') {
                 toast.success("Login Successful");
                 setLoading(false);
-                navigate(-1);
+                navigate('/duthuyen');
             }
         } else {
             toast.error('User Name Or Password Invalid')

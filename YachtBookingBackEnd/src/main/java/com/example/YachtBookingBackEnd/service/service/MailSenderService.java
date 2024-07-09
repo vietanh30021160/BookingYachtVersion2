@@ -45,4 +45,17 @@ public class MailSenderService implements IMailSender {
                 "Best regards,\n" + companyName;
         sendNewMail(to, subject, body);
     }
+
+    @Override
+    public void sendCanelMailFromCustomer(String to, String idBooking, String reason) {
+        String subject = "Yacht Booking Cancellation Notice";
+        String body = "Dear Customer,\n\n" +
+                "We regret to inform you that your booking with ID " + idBooking + " has been cancelled.\n\n" +
+                "Reason: " + reason + "\n\n" +
+                "Booking orders will not be refunded for any reason.\n\n" +
+                "Thank you for booking with us.\n\n" +
+                "Best regards, Booking System";
+    }
+
+
 }
