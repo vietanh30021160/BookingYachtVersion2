@@ -80,7 +80,6 @@ public class CustomerController {
         dataResponse.setData(iCustomer.getCustomer(customerId));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
-
     @PostMapping("/payment")
     public ResponseEntity<?> createVnPayPayment(@RequestParam List<String> selectedRoomIds,
                                                 @RequestParam List<String> selectedServiceIds,
@@ -93,6 +92,7 @@ public class CustomerController {
 
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
 
 
     @PutMapping("/profile/updateCustomer/{customerId}")
@@ -344,6 +344,13 @@ public class CustomerController {
         DataResponse dataResponse = new DataResponse();
         dataResponse.setData(iAccount.updateAccount(customerAccountId, password));
         return new ResponseEntity<>(dataResponse,HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllCustomer")
+    ResponseEntity<?> customerList(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iCustomer.getAllCustomer());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
     @GetMapping("/existsFeedback/{idBooking}")

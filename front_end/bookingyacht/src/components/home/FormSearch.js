@@ -6,12 +6,12 @@ import { toast } from 'react-toastify';
 import { SEARCH_YACHT } from '../../redux/type/Type';
 import { login } from './../../services/ApiServices';
 import { YachtListReducer } from './../../redux/reducer/YachtListReducer';
-// import { useSearchTrigger } from './TriggerFormSearch';
+import { useSearchTrigger } from './TriggerFormSearch';
 
 const FormSearch = () => {
     const dispatch = useDispatch();
     const { selectedLocation } = useSelector(state => state.YachtListReducer);
-    // const { trigger } = useSearchTrigger();
+    const { trigger } = useSearchTrigger();
     console.log("selectedLocation:", selectedLocation)
 
     const [searchData, setSearchData] = useState({
@@ -42,7 +42,7 @@ const FormSearch = () => {
             type: SEARCH_YACHT,
             payload: searchData
         });
-    }, [dispatch, searchData]);
+    }, [trigger, dispatch, searchData]);
 
     const hanldeSubmit = (e) => {
         e.preventDefault();

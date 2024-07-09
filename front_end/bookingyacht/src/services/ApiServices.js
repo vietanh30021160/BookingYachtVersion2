@@ -41,7 +41,7 @@ export const registerCustomer = (username, password) => {
 }
 
 export const getProfileCustomer = (customerId) => {
-    return axios.get(`/api/customer/getProfileCustomerById/${customerId}`)
+    return axios.get(`/api/customer/profile/getProfileCustomerById/${customerId}`)
 }
 
 export const updateProfileCustomer = (customerId, email, fullName, phoneNumber, address) => {
@@ -311,7 +311,7 @@ export const updateScheduleYacht = (yachtId, scheduleId, startDate, endDate) => 
 }
 
 export const deleteScheduleYacht = (yachtId, scheduleId) => {
-return axios.delete(`/api/companies/deleteSchedule/${yachtId}/${scheduleId}`)
+    return axios.delete(`/api/companies/deleteSchedule/${yachtId}/${scheduleId}`)
 }
 export const getCustomerById = (customerId) => {
     return axios.get(`/api/customer/profile/getProfileCustomerById/${customerId}`);
@@ -329,16 +329,16 @@ export const createPayment = (selectedRoomIds, selectedServiceIds, requirement, 
     return axios.post(`/api/customer/payment?${params.toString()}`);
 };
 
-export const viewBillByIdCustomer = (idCustomer) =>{
+export const viewBillByIdCustomer = (idCustomer) => {
     return axios.get(`/api/customer/bills/${idCustomer}`)
 }
-export const getFeedbackByIdYacht = (yachtId) =>{
+export const getFeedbackByIdYacht = (yachtId) => {
     return axios.get(`/api/customer/getFeedbackByYachtId/${yachtId}`);
 }
 export const addFeedback = (idBooking, idCustomer, formData) => {
     return axios.post(`/api/customer/addFeedback/${idBooking}/${idCustomer}`, formData);
 };
-export const existsFeedback = (idBooking) =>{
+export const existsFeedback = (idBooking) => {
     return axios.get(`/api/customer/existsFeedback/${idBooking}`);
 }
 export const getAllRoomByYachtCustomer = (idYacht) => {
@@ -361,6 +361,10 @@ export const getScheduleById = (idSchedule) => {
     return axios.get(`/api/customer/getScheduleById/${idSchedule}`);
 }
 
+export const getAllCustomerInfor = () => {
+    return axios.get(`/api/customer/getAllCustomer`);
+}
+
 export const getBookingOrderByCustomer = (idCustomer) => {
     return axios.get(`/api/customer/bookingOrders/${idCustomer}`)
 }
@@ -373,4 +377,8 @@ export const cancelBookingByCustomer = (idCustomer, idBooking, reason) => {
 
 export const getDetailBookingByCustomer = (idCustomer, idBooking) => {
     return axios.get(`/api/customer/bookingOrders/${idCustomer}/${idBooking}`)
+}
+
+export const getHighestAndLowestPriceByYacht = (idYacht) => {
+    return axios.get(`/api/customer/yacht/getPriceRoom/{yachtId}/${idYacht}`)
 }
