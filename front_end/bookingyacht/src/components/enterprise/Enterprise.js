@@ -51,43 +51,15 @@ const BusinessItems = () => (
   </div>
 );
 
-// Component FormSearch
-const FormSearch = () => (
-  <div className="form-search">
-    <div className="Search-Cart">
-      <div className="header-form">
-        <h4>Bạn Lựa Chọn Du Thuyền Hạ Long nào ?</h4>
-        <p>Hơn 100 tour du thuyền sang trọng, đẳng cấp 5 sao thăm vịnh Hạ Long và vịnh Lan Hạ đang chờ đón bạn.</p>
-      </div>
-      <div className="body-form">
-        <div className="input-group mb-3">
-          <input type="text" className="form-control" placeholder="Nhập tên du thuyền" />
-        </div>
-        <div className="input-group mb-3">
-          <select className="form-select">
-            <option selected>Tất cả địa điểm</option>
-          </select>
-        </div>
-        <div className="input-group mb-3">
-          <select className="form-select">
-            <option selected>Tất cả mức giá</option>
-          </select>
-        </div>
-        <div className="input-group mb-3 buton">
-          <div className="button-wrapper">
-            <button className="btn btn-primary">Tìm Kiếm</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
 // Component HeaderPage
 const HeaderPage = () => (
   <div className="body-page">
-    <FormSearch />
     <div className="container">
+      <div style={{ padding: '30px' }}>
+        <h1 style={{ fontWeight: 'bold', textAlign : 'center' , fontStyle : 'italic'}}>Chào Mừng Bạn Đến Với Các Doanh Nghiệp Lớn Nhất
+          <br />
+          Và Uy Tín Của Chúng Tôi.</h1>
+      </div>
       <div className="row">
         <div className="col-lg-6">
           <div className="content-1">
@@ -98,7 +70,7 @@ const HeaderPage = () => (
           <BusinessItems />
         </div>
         <div>
-          <ViewInfoCompany/>
+          <ViewInfoCompany />
         </div>
       </div>
     </div>

@@ -13,11 +13,13 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -28,7 +30,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CompanyService implements ICompany {
     CompanyRepository companyRepository;
+    AccountRepository accountRepository;
     IFile iFile;
+    PasswordEncoder passwordEncoder;
 
     @Override
     public List<CompanyDTO> searchCompanyByName(String name) {
@@ -94,7 +98,7 @@ public class CompanyService implements ICompany {
     }
 
     public boolean changeExistCompany(String idCompany) {
-        Company company = companyRepository.findByIdAndExist(idCompany)
+        Company company = companyRepository.findById(idCompany)
                 .orElseThrow(() -> new RuntimeException("Company not found! Try again"));
         boolean isExist = company.getExist() == 1;
 
@@ -113,7 +117,22 @@ public class CompanyService implements ICompany {
     public Company getCompanyById(String idCompany) {
         return companyRepository.findByIdAndExist(idCompany)
                 .orElseThrow(() -> new RuntimeException("Company not found! Try again"));
+
     }
+//    public CompanyDTO getCompanyDTOById(String idCompany) {
+//            Optional<Company> company = companyRepository.findByIdAndExist(idCompany);
+//
+//            CompanyDTO companyDTO = new CompanyDTO().builder()
+//                    .idCompany(company.get().getIdCompany())
+//                    .name(company.get().getName())
+//                    .address(company.get().getAddress())
+//                    .logo(company.get().getLogo())
+//                    .email(company.get().getEmail())
+//                    .exist(company.get().getExist())
+//                    .build();
+//
+//            return companyDTO;
+//    }
 
     @Override
     public CompanyDTO getCompanyDTOById(String idCompany) {
@@ -152,6 +171,19 @@ public class CompanyService implements ICompany {
             log.error("Error updating company with ID: " + idCompany, e);
             return false;
         }
+    }
+
+    @Override
+    public boolean changePasswordCompany(String idCompany, String password){
+        try {
+            Account account = companyRepository.getAccountByIdCompany(idCompany);
+            account.setPassword(passwordEncoder.encode(password));
+            accountRepository.save(account);
+            return true;
+        }catch (Exception e){
+            System.out.println("Error by: "+e);
+        }
+        return false;
     }
 
 
@@ -201,6 +233,7 @@ public class CompanyService implements ICompany {
                     feedbackDTO.setIdFeedback(feedback.getIdFeedback());
                     feedbackDTO.setStarRating(feedback.getStarRating());
                     feedbackDTO.setDescription(feedback.getDescription());
+                    feedbackDTO.setDate(feedback.getDate());
                     feedbackDTO.setIdBooking(feedback.getIdBooking());
 
                     Customer customer = new Customer();

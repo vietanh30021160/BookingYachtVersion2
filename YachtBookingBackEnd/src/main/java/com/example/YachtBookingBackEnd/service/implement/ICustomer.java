@@ -1,11 +1,11 @@
 package com.example.YachtBookingBackEnd.service.implement;
 
 
-import com.example.YachtBookingBackEnd.dto.CompanyDTO;
-import com.example.YachtBookingBackEnd.dto.CustomerDTO;
-import com.example.YachtBookingBackEnd.dto.FeedbackDTO;
+import com.example.YachtBookingBackEnd.dto.*;
 import com.example.YachtBookingBackEnd.entity.Company;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -20,10 +20,21 @@ public interface ICustomer {
 
     CustomerDTO findCustomerByUsername(String username);
 
-    boolean addFeedback(int starRating, String description, String idBooking, String idCustomer, String idYacht );
+    boolean addFeedback(LocalDate date, String description, String idBooking, int starRating, String idCustomer);
 
     List<FeedbackDTO> getFeedbackByYachtId(String yachtId);
 
     List<CompanyDTO> getAllCompanies();
+
+
+    boolean changePasswordCustomer(String idCustomer, String password);
+
+    List<String> findIdBookingByCustomerId(String customerId);
+
+    boolean isFeedbackAllowed(String idBooking);
+
+    boolean existsFeedbackByIdBooking(String idBooking);
+
+    List<FeedbackDTO> getAllFeedback();
 
 }

@@ -1,18 +1,19 @@
 package com.example.YachtBookingBackEnd.service.service;
 
-import com.example.YachtBookingBackEnd.dto.AccountDTO;
-import com.example.YachtBookingBackEnd.dto.CompanyDTO;
-import com.example.YachtBookingBackEnd.dto.CustomerDTO;
-import com.example.YachtBookingBackEnd.dto.FeedbackDTO;
+import com.example.YachtBookingBackEnd.dto.*;
 import com.example.YachtBookingBackEnd.entity.*;
 import com.example.YachtBookingBackEnd.repository.*;
 import com.example.YachtBookingBackEnd.service.implement.ICustomer;
+import com.example.YachtBookingBackEnd.service.implement.IYacht;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +25,7 @@ import java.util.regex.Pattern;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class CustomerService implements ICustomer {
+    PasswordEncoder passwordEncoder;
     CustomerRepository customerRepository;
     AccountRepository accountRepository;
     FeedbackRepository feedbackRepository;
@@ -31,6 +33,7 @@ public class CustomerService implements ICustomer {
     BillRepository billRepository;
     YachtRepository yachtRepository;
     CompanyRepository companyRepository;
+    IYacht iYacht;
 
     public static final String ROLE_CUSTOMER = "CUSTOMER";
 
@@ -184,36 +187,33 @@ public class CustomerService implements ICustomer {
     }
 
     @Override
-    public boolean addFeedback(int starRating, String description, String idBooking, String idCustomer, String idYacht) {
+    public boolean addFeedback(LocalDate date, String description, String idBooking, int starRating, String idCustomer) {
         try{
-            // Kiểm tra xem khách hàng đã đặt thuyền này chưa
-            List<Yacht> yachts = yachtRepository.findYachtsByCustomerAndBooking(idCustomer, idBooking);
-            boolean yachtBooked = yachts.stream().anyMatch(yacht -> yacht.getIdYacht().equals(idYacht));
-
-            if(!yachtBooked){
-                throw new RuntimeException("Customer has not booked this yacht");
+            Yacht yacht = yachtRepository.findYachtsByCustomerAndBooking(idCustomer, idBooking);
+            if (yacht == null) {
+                System.out.println("Yacht not found for the given customer and booking.");
+                return false;
             }
-            // Kiểm tra xem đơn đặt phòng có tồn tại, đã hoàn thành và thuộc về khách hàng hay không
-            BookingOrder bookingOrder = bookingOrderRepository.findByIdAndCustomerIdAndStatus(idBooking, idCustomer)
-                    .orElseThrow(() -> new RuntimeException("Booking not found or not completed or does not belong to the customer"));
+            // Lấy danh sách idBooking của khách hàng từ cơ sở dữ liệu
+            List<String> idBookings = findIdBookingByCustomerId(idCustomer);
+            // Kiểm tra nếu idBooking hợp lệ và chưa có feedback trước đó
+            if(idBookings != null && idBookings.contains(idBooking) && isFeedbackAllowed(idBooking)){
+                Feedback feedback = new Feedback();
+                feedback.setStarRating(starRating);
+                feedback.setDescription(description);
+                feedback.setDate(date);
+                feedback.setIdBooking(idBooking);
+                Customer customer = new Customer();
+                customer.setIdCustomer(idCustomer);
+                feedback.setCustomer(customer);
+                feedback.setYacht(yacht);
 
-            // Kiểm tra xem đơn đặt phòng có hóa đơn không
-            if(!billRepository.existsByBookingOrder_IdBooking(idBooking)){
-                throw new RuntimeException("Bill does not exist for this booking");
+                feedbackRepository.save(feedback);
+                return true;
+            }else{
+                System.out.println("Feedback not allowed for this booking.");
+                return false;
             }
-            Feedback feedback = new Feedback();
-            feedback.setStarRating(starRating);
-            feedback.setDescription(description);
-            feedback.setIdBooking(idBooking);
-            Customer customer = new Customer();
-            customer.setIdCustomer(idCustomer);
-            feedback.setCustomer(customer);
-            Yacht yacht = new Yacht();
-            yacht.setIdYacht(idYacht);
-            feedback.setYacht(yacht);
-
-            feedbackRepository.save(feedback);
-            return true;
         }catch (Exception e){
             System.out.println("Error: " + e.getMessage());
             return false;
@@ -232,6 +232,7 @@ public class CustomerService implements ICustomer {
                     feedbackDTO.setStarRating(feedback.getStarRating());
                     feedbackDTO.setDescription(feedback.getDescription());
                     feedbackDTO.setIdBooking(feedback.getIdBooking());
+                    feedbackDTO.setDate(feedback.getDate());
                     Customer customer = new Customer();
                     customer.setIdCustomer(feedback.getCustomer().getIdCustomer());
                     customer.setFullName(feedback.getCustomer().getFullName());
@@ -270,6 +271,68 @@ public class CustomerService implements ICustomer {
             System.out.println("Exception: " + e.getMessage());
         }
         return companyDTOList;
+    }
+
+    @Override
+
+    public boolean changePasswordCustomer(String idCustomer, String password) {
+        try {
+            Account account = customerRepository.getAccountByIdCustomer(idCustomer);
+            account.setPassword(passwordEncoder.encode(password));
+            accountRepository.save(account);
+            return true;
+        }catch (Exception e){
+            System.out.println("Error by: "+e);
+        }
+        return false;
+    }
+
+
+    public List<String> findIdBookingByCustomerId(String customerId) {
+        List<String> listIdBooking = customerRepository.findIdBookingByCustomerId(customerId);
+        if(listIdBooking == null){
+            System.out.println("List idBooking not found for customer ID: " + customerId);
+        }
+        return listIdBooking;
+    }
+
+    @Override
+    public boolean isFeedbackAllowed(String idBooking) {
+        Feedback feedback = feedbackRepository.findFeedbackByIdBooking(idBooking);
+        return feedback == null; // Trả về true nếu không có feedback nào cho idBooking
+    }
+
+    @Override
+    public boolean existsFeedbackByIdBooking(String idBooking) {
+        return feedbackRepository.existsByIdBooking(idBooking);
+    }
+
+    @Override
+    public List<FeedbackDTO> getAllFeedback() {
+        List<FeedbackDTO> feedbackDTOList = new ArrayList<>();
+        try {
+            List<Feedback> feedbacks = feedbackRepository.findAll();
+            if (feedbacks != null) {
+                for (Feedback feedback : feedbacks) {
+                    if(feedback.getStarRating() > 4){
+                        FeedbackDTO feedbackDTO = new FeedbackDTO();
+                        feedbackDTO.setIdFeedback(feedback.getIdFeedback());
+                        feedbackDTO.setStarRating(feedback.getStarRating());
+                        feedbackDTO.setDescription(feedback.getDescription());
+                        Customer customer = new Customer();
+                        customer.setIdCustomer(feedback.getCustomer().getIdCustomer());
+                        customer.setFullName(feedback.getCustomer().getFullName());
+                        feedbackDTO.setCustomer(customer);
+                        YachtDTO yacht = iYacht.findYachtById(feedback.getYacht().getIdYacht());
+                        feedbackDTO.setIdYacht(yacht.getName());
+                        feedbackDTOList.add(feedbackDTO);
+                    }
+                }
+            }
+        }catch (Exception e){
+            System.out.println("Exception: " + e.getMessage());
+        }
+        return feedbackDTOList;
     }
 
 

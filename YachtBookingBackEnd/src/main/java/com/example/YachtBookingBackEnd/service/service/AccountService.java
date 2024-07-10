@@ -195,6 +195,7 @@ public class AccountService implements IAccount {
             company.setAddress(address);
             if (companyRepository.checkEmailExist(email)) {
                 log.error("Email already exists");
+                return false;
             } else {
                 company.setEmail(email);
             }
