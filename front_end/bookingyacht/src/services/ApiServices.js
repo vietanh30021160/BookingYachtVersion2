@@ -380,5 +380,5 @@ export const getDetailBookingByCustomer = (idCustomer, idBooking) => {
 }
 
 export const getHighestAndLowestPriceByYacht = (idYacht) => {
-    return axios.get(`/api/customer/yacht/getPriceRoom/{yachtId}/${idYacht}`)
+    return axios.get(`/api/customer/yacht/getPriceRoom/${idYacht}`)
 }
