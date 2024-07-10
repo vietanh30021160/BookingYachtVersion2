@@ -4,6 +4,7 @@ import com.example.YachtBookingBackEnd.dto.*;
 import com.example.YachtBookingBackEnd.entity.*;
 import com.example.YachtBookingBackEnd.repository.*;
 import com.example.YachtBookingBackEnd.service.implement.ICustomer;
+import com.example.YachtBookingBackEnd.service.implement.IYacht;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -30,6 +31,7 @@ public class CustomerService implements ICustomer {
     BillRepository billRepository;
     YachtRepository yachtRepository;
     CompanyRepository companyRepository;
+    IYacht iYacht;
 
     public static final String ROLE_CUSTOMER = "CUSTOMER";
 
@@ -287,6 +289,34 @@ public class CustomerService implements ICustomer {
     @Override
     public boolean existsFeedbackByIdBooking(String idBooking) {
         return feedbackRepository.existsByIdBooking(idBooking);
+    }
+
+    @Override
+    public List<FeedbackDTO> getAllFeedback() {
+        List<FeedbackDTO> feedbackDTOList = new ArrayList<>();
+        try {
+            List<Feedback> feedbacks = feedbackRepository.findAll();
+            if (feedbacks != null) {
+                for (Feedback feedback : feedbacks) {
+                    if(feedback.getStarRating() > 4){
+                        FeedbackDTO feedbackDTO = new FeedbackDTO();
+                        feedbackDTO.setIdFeedback(feedback.getIdFeedback());
+                        feedbackDTO.setStarRating(feedback.getStarRating());
+                        feedbackDTO.setDescription(feedback.getDescription());
+                        Customer customer = new Customer();
+                        customer.setIdCustomer(feedback.getCustomer().getIdCustomer());
+                        customer.setFullName(feedback.getCustomer().getFullName());
+                        feedbackDTO.setCustomer(customer);
+                        YachtDTO yacht = iYacht.findYachtById(feedback.getYacht().getIdYacht());
+                        feedbackDTO.setIdYacht(yacht.getName());
+                        feedbackDTOList.add(feedbackDTO);
+                    }
+                }
+            }
+        }catch (Exception e){
+            System.out.println("Exception: " + e.getMessage());
+        }
+        return feedbackDTOList;
     }
 
     private boolean isValidEmail(String email) {

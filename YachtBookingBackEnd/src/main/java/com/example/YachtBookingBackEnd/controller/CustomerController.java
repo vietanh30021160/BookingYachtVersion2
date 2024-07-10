@@ -368,4 +368,11 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/getAllFeedback")
+    public ResponseEntity<?> getAllFeedback(){
+        DataResponse dataResponse = new DataResponse();
+        dataResponse.setData(iCustomer.getAllFeedback());
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
+
 }

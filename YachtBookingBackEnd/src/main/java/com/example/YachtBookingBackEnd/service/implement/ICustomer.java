@@ -31,4 +31,6 @@ public interface ICustomer {
     boolean isFeedbackAllowed(String idBooking);
 
     boolean existsFeedbackByIdBooking(String idBooking);
+
+    List<FeedbackDTO> getAllFeedback();
 }

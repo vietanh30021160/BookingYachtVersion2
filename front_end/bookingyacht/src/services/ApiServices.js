@@ -329,16 +329,16 @@ export const createPayment = (selectedRoomIds, selectedServiceIds, requirement, 
     return axios.post(`/api/customer/payment?${params.toString()}`);
 };
 
-export const viewBillByIdCustomer = (idCustomer) => {
+export const viewBillByIdCustomer = (idCustomer) =>{
     return axios.get(`/api/customer/bills/${idCustomer}`)
 }
-export const getFeedbackByIdYacht = (yachtId) => {
+export const getFeedbackByIdYacht = (yachtId) =>{
     return axios.get(`/api/customer/getFeedbackByYachtId/${yachtId}`);
 }
 export const addFeedback = (idBooking, idCustomer, formData) => {
     return axios.post(`/api/customer/addFeedback/${idBooking}/${idCustomer}`, formData);
 };
-export const existsFeedback = (idBooking) => {
+export const existsFeedback = (idBooking) =>{
     return axios.get(`/api/customer/existsFeedback/${idBooking}`);
 }
 export const getAllRoomByYachtCustomer = (idYacht) => {
@@ -359,6 +359,12 @@ export const getAllLocationCustomer = () => {
 
 export const getScheduleById = (idSchedule) => {
     return axios.get(`/api/customer/getScheduleById/${idSchedule}`);
+}
+export const getAllFeedback = () =>{
+    return axios.get('/api/customer/getAllFeedback');
+}
+export const getAllCompany = () =>{
+    return axios.get('/api/customer/getAllCompany');
 }
 
 export const getAllCustomerInfor = () => {
