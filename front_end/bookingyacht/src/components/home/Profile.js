@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { FaHome } from "react-icons/fa";
-import ModalUpdateProfileUser from './ModalUpdateProfileUser';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import { FaHome } from "react-icons/fa";
 import { useSelector } from 'react-redux';
-import { getProfileCustomer } from '../../services/ApiServices';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { getProfileCustomer } from '../../services/ApiServices';
+import Bill from './Bill';
 import BookingHistory from './BookingHistory';
+import BookingOrderHistory from './BookingOrderHistory';
+import ModalUpdateProfileUser from './ModalUpdateProfileUser';
 
 const Profile = () => {
     const [isShowModal, setIsShowModal] = useState(false);
@@ -18,8 +20,8 @@ const Profile = () => {
         getProfile();
     }, [])
 
-
     const [profile, setProfile] = useState({});
+
     const handleClose = () => {
         setIsShowModal(false);
     }
@@ -32,6 +34,7 @@ const Profile = () => {
             toast.error('Please Fill Information')
         )
     }
+
 
     const handleUpdateProfile = () => {
         setIsShowModal(true);
@@ -52,7 +55,7 @@ const Profile = () => {
                             <div className="col-md-6">
                                 <div className="profile-head">
                                     <h2>
-                                        {profile.fullName}
+                                        User Name: {profile.fullName}
                                     </h2>
 
                                 </div>
@@ -65,34 +68,41 @@ const Profile = () => {
                         <div className="row my-5">
 
                             <div className="col-md-8">
-                                <div className="tab-content profile-tab" id="myTabContent">
+                                <div className="tab-content profile-tab p-4" id="myTabContent" style={{ border: '2px solid #15bbbe', borderRadius: 25, boxShadow: '0px 0px 5px #15bbbe' }}>
                                     <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                         <div className="row">
-                                            <div className="col-md-6 " style={{ border: '2px solid #15bbbe', borderRadius: 25, boxShadow: '0px 0px 5px #15bbbe' }}>
-                                                <label >User Id</label>
+                                            <div className="col-md-2 " >
+                                                <label >User Id: </label>
                                             </div>
-                                            <div className="col-md-6">
+                                            <div className="col-md-10">
                                                 <p>{profile.idCustomer}</p>
                                             </div>
                                         </div>
 
                                         <div className="row">
-                                            <div className="col-md-6">
-                                                <label>Email</label>
+                                            <div className="col-md-2">
+                                                <label>Email: </label>
                                             </div>
-                                            <div className="col-md-6">
+                                            <div className="col-md-10">
                                                 <p>{profile.email}</p>
                                             </div>
                                         </div>
                                         <div className="row">
-                                            <div className="col-md-6">
-                                                <label>Phone</label>
+                                            <div className="col-md-2">
+                                                <label>Phone: </label>
                                             </div>
-                                            <div className="col-md-6">
+                                            <div className="col-md-10">
                                                 <p>{profile.phone}</p>
                                             </div>
                                         </div>
-
+                                        <div className="row">
+                                            <div className="col-md-2">
+                                                <label>Address: </label>
+                                            </div>
+                                            <div className="col-md-10">
+                                                <p>{profile.address}</p>
+                                            </div>
+                                        </div>
                                     </div>
 
                                 </div>
@@ -101,10 +111,14 @@ const Profile = () => {
                     </form>
                 </Tab>
                 <Tab eventKey="Booking History" title="Booking History" >
-                    {/* Booking History */}
-                    <BookingHistory />
+                    <BookingOrderHistory />
+                </Tab >
+                <Tab eventKey="Bill" title="Bill">
+                    <Bill
+                        idCustomer={idCustomer}
+                    />
                 </Tab>
-            </Tabs>
+            </Tabs >
 
 
             <ModalUpdateProfileUser
@@ -113,7 +127,7 @@ const Profile = () => {
                 profile={profile}
                 getProfile={getProfile}
             />
-        </div>
+        </div >
 
     );
 };

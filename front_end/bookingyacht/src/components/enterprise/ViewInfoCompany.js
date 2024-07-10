@@ -1,7 +1,7 @@
-import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { getAllCompany } from '../../services/ApiServices';
 import './Enterprise.scss';
 
 const CompanyList = () => {
@@ -10,7 +10,7 @@ const CompanyList = () => {
     // const [loading, setLoading] = useState(true);
     const getImageApi = `http://localhost:8080/api/customer/file/`
     useEffect(() => {
-        axios.get('http://localhost:8080/api/customer/getAllCompany')
+       getAllCompany()
             .then(res => {
                 setCompanies(res.data.data.filter(c => c.exist === 1));
             })
@@ -50,9 +50,9 @@ const CompanyList = () => {
                                         />
                                     </Col>
                                     <Col md={9}>
-                                        <h5>{company.name}</h5>
+                                        <h5 style={{fontWeight : 'bold'}}>{company.name}</h5>
                                         <p>{company.address}</p>
-                                        <p>{company.email}</p>
+                                        <p style={{fontStyle : 'italic'}}>{company.email}</p>
                                     </Col>
                                 </Row>
                             </Card>

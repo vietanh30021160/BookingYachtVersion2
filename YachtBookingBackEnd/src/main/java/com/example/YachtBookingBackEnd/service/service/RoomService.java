@@ -124,6 +124,7 @@ public class RoomService implements IRoom {
                     .orElseThrow(()-> new RuntimeException("Not found yacht!"));
             room.setYacht(yacht);
             roomRepository.save(room);
+            return true;
         }catch (Exception e){
             System.out.println("Can't insert room: "+e);
         }
@@ -243,6 +244,7 @@ public class RoomService implements IRoom {
                 roomDTO.setRoomImageSet(roomImageDTOList);
 
                 roomDTOList.add(roomDTO);
+                System.out.println(roomDTO);
             }
         }
         return roomDTOList;

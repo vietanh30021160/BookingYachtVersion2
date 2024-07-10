@@ -22,7 +22,12 @@ const ShowIsland = () => {
             }
         }
         getAllLocation();
-    }, [])
+        dispatch({
+            type: SET_SELECTED_LOCATION,
+            payload: 'all'
+        });
+    }, [dispatch])
+
     const onClickLocation = (location) => {
         dispatch({
             type: SET_SELECTED_LOCATION,

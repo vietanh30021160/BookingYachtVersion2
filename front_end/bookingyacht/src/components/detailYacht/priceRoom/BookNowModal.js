@@ -177,7 +177,7 @@ const BookNowModal = ({
             <Modal.Footer>
                 <h5 className="me-auto">Tổng tiền: {totalPrice.toLocaleString()} đ</h5>
                 <Button variant="secondary" onClick={handleClose}>Đóng</Button>
-                <Button variant='warning' type="submit" form="bookingForm"><GoCheckCircle style={{ marginRight: '5px' }} />Đặt ngay</Button>
+                <Button variant='warning' type="submit" form="bookingForm"><GoCheckCircle style={{ marginRight: '5px' }} />Thanh toán</Button>
             </Modal.Footer>
         </Modal>
     );

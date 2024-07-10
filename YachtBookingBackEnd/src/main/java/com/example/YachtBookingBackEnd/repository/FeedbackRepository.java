@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface FeedbackRepository extends JpaRepository<Feedback, String> {
     List<Feedback> findByYachtIdYacht(String yachtId);
+    Feedback findFeedbackByIdBooking(String idBooking);
+    boolean existsByIdBooking(String idBooking);
 }

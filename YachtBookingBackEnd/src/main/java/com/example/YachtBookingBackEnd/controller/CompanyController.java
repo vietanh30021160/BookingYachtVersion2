@@ -42,6 +42,12 @@ public class CompanyController {
         dataResponse.setData(iCompany.getCompanyDTOById(idCompany));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+    @PutMapping("/profiles/changePassword/{idCompany}")
+    public ResponseEntity<?>changePassword(@PathVariable("idCompany") String idCompany, @RequestParam String password){
+        DataResponse dataResponse = new DataResponse<>();
+        dataResponse.setData(iCompany.changePasswordCompany(idCompany, password));
+        return new ResponseEntity<>(dataResponse, HttpStatus.OK);
+    }
 
     // Done
     @GetMapping("/allYacht")
@@ -208,7 +214,7 @@ public class CompanyController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-    /* ===End BookingOrder management=== */
+    /* ===End SOrder management=== */
     //Done
     @PutMapping("/yacht/updateImage/{imageId}")
     public ResponseEntity<?>updateYachtImage(@PathVariable String imageId, @RequestParam MultipartFile image){
@@ -406,5 +412,7 @@ public class CompanyController {
         dataResponse.setData(iLocation.getAllLocation());
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
+
+
 
 }
