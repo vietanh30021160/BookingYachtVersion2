@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { getProfileCustomer } from '../../services/ApiServices';
 import Bill from './Bill';
+import BookingHistory from './BookingHistory';
 import BookingOrderHistory from './BookingOrderHistory';
 import ModalUpdateProfileUser from './ModalUpdateProfileUser';
 
@@ -33,6 +34,7 @@ const Profile = () => {
             toast.error('Please Fill Information')
         )
     }
+
 
     const handleUpdateProfile = () => {
         setIsShowModal(true);
@@ -109,14 +111,14 @@ const Profile = () => {
                     </form>
                 </Tab>
                 <Tab eventKey="Booking History" title="Booking History" >
-                    <BookingOrderHistory/>
-                </Tab>
+                    <BookingOrderHistory />
+                </Tab >
                 <Tab eventKey="Bill" title="Bill">
                     <Bill
                         idCustomer={idCustomer}
                     />
                 </Tab>
-            </Tabs>
+            </Tabs >
 
 
             <ModalUpdateProfileUser
@@ -125,7 +127,7 @@ const Profile = () => {
                 profile={profile}
                 getProfile={getProfile}
             />
-        </div>
+        </div >
 
     );
 };
