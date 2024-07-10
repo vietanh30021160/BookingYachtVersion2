@@ -11,7 +11,7 @@ import ReactPaginate from 'react-paginate';
 import ModalUpdateRoomType from './ModalUpdateRoomType';
 
 const ModalRoomType = (props) => {
-    const { show, setIsShowModalRoomType, idYacht, fetchRoomType } = props;
+    const { show, setIsShowModalRoomType, idYacht } = props;
 
     const [isShowModalUpdateRoomType, setIsShowModalUpdateRoomType] = useState(false);
 
@@ -36,8 +36,10 @@ const ModalRoomType = (props) => {
             let res = await createRoomType(price, type.trim(), utilities.trim(), idYacht);
             if (res && res.data.data === true) {
                 toast.success('Create Successfully')
-                fetchRoomType()
-                handleClose();
+                getRoomType()
+                setPrice('');
+                setType('');
+                setUtilities('');
             } else {
                 toast.error('Create Fail')
             }
@@ -46,9 +48,7 @@ const ModalRoomType = (props) => {
 
 
     const [dataUpdate, setDataUpdate] = useState([]);
-
     const [roomType, setRoomType] = useState([]);
-
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 3;
 
@@ -105,7 +105,7 @@ const ModalRoomType = (props) => {
     }
 
     const displayedRoomTypes = roomType.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
-
+    console.log('check', displayedRoomTypes)
     return (
         <div>
             <Modal

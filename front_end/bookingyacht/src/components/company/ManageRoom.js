@@ -50,7 +50,6 @@ const ManageRoom = () => {
     useEffect(() => {
         getAllRoom();
         fetchRoomType()
-
     }, [])
 
     useEffect(() => {
@@ -90,7 +89,6 @@ const ManageRoom = () => {
 
     const fetchRoomType = async () => {
         let res = await getAllRoomTypeCompany(idYacht);
-
         if (res && res.data && res.data.data) {
             setListRoomType(res.data.data);
         } else {

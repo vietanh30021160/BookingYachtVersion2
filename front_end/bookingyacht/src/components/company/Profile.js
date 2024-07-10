@@ -3,6 +3,7 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 import ModalUpdateProfile from './Modal/ModalUpdateProfile';
 import { useSelector } from 'react-redux';
 import { getProfileCompany } from '../../services/ApiServices';
+import { Link } from 'react-router-dom';
 const ProfileCompany = () => {
 
     const idCompany = useSelector(state => state.account.account.idCompany);
@@ -66,6 +67,7 @@ const ProfileCompany = () => {
                                             <ButtonGroup>
                                                 <Button onClick={() => setIsShowModal(true)} className='btn btn-primary'>Edit</Button>
                                             </ButtonGroup>
+                                            <Link className='mx-3'>Change Password</Link>
                                         </div>
                                     </div>
                                 </div>
