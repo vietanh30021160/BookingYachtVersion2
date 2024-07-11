@@ -328,13 +328,13 @@ const CompanyManager = () => {
             <div className='mb-3'>
                 <div className='row'>
                     <div className='col d-flex justify-content-between'>
-                        <DropdownButton id="dropdown-basic-button" title="Sort Options" variant='dark'>
-                            <Dropdown.Item onClick={() => handleSortChange('idCompany', 'asc')}>ID Ascending</Dropdown.Item>
-                            <Dropdown.Item onClick={() => handleSortChange('idCompany', 'desc')}>ID Descending</Dropdown.Item>
-                            <Dropdown.Item onClick={() => handleSortChange('name', 'asc')}>Name Ascending</Dropdown.Item>
-                            <Dropdown.Item onClick={() => handleSortChange('name', 'desc')}>Name Descending</Dropdown.Item>
+                        <DropdownButton id="dropdown-basic-button" title="Sắp xếp" variant='dark'>
+                            <Dropdown.Item onClick={() => handleSortChange('idCompany', 'asc')}>ID tăng dần</Dropdown.Item>
+                            <Dropdown.Item onClick={() => handleSortChange('idCompany', 'desc')}>ID giảm dần</Dropdown.Item>
+                            <Dropdown.Item onClick={() => handleSortChange('name', 'asc')}>Tên tăng dần</Dropdown.Item>
+                            <Dropdown.Item onClick={() => handleSortChange('name', 'desc')}>Tên giảm dần</Dropdown.Item>
                         </DropdownButton>
-                        <Button variant="success" onClick={() => setShowCompanyModal(true)} className="ml-2">Create Company Account</Button>
+                        <Button variant="success" onClick={() => setShowCompanyModal(true)} className="ml-2">Tạo Tài Khoản</Button>
                     </div>
                 </div>
             </div>
@@ -343,11 +343,11 @@ const CompanyManager = () => {
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Address</th>
+                        <th>Họ Và Tên</th>
+                        <th>Địa Chỉ</th>
                         <th>Email</th>
-                        <th>Exist</th>
-                        <th>Action</th>
+                        <th>Trạng Thái</th>
+                        <th>Hành Động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -369,10 +369,10 @@ const CompanyManager = () => {
                                 )}
                             </td>
                             <td className='button_mana'>
-                                <Button variant="info" onClick={() => handleShowDetailModal(company)}>View Detail</Button>
+                                <Button variant="info" onClick={() => handleShowDetailModal(company)}>Chi Tiết</Button>
                                 <Button variant={company.exist ? 'danger' : 'success'}
                                 onClick={() => handleHideCompany(company)}>
-                                  {company.exist ? 'Hide' : 'Unhide'}
+                                  {company.exist ? 'Chặn' : 'Bỏ Chặn'}
                                 </Button>
                             </td>
                         </tr>

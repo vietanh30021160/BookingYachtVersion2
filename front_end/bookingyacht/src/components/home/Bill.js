@@ -62,7 +62,7 @@ const Bill = ({ idCustomer }) => {
         setBills(sortedBills);
 
         // Check feedback status for each bill
-        const feedbackStatusPromises = sortedBills.map(async (bill) => {
+        const feedbackStatus = sortedBills.map(async (bill) => {
           const feedbackResponse = await existsFeedback(bill.bookingOrderDTO.idBooking);
           return {
             idBooking: bill.bookingOrderDTO.idBooking,
@@ -70,7 +70,7 @@ const Bill = ({ idCustomer }) => {
           };
         });
 
-        const feedbackStatuses = await Promise.all(feedbackStatusPromises);
+        const feedbackStatuses = await Promise.all(feedbackStatus);
         const feedbackStatusesMap = feedbackStatuses.reduce((acc, { idBooking, hasFeedback }) => {
           acc[idBooking] = hasFeedback;
           return acc;
@@ -120,7 +120,7 @@ const Bill = ({ idCustomer }) => {
                       <strong>Email:</strong> {bill.bookingOrderDTO.customerDTO.email}
                     </Card.Text>
                     {reviewedBills[bill.bookingOrderDTO.idBooking] ? (
-                      <Button variant="dark" className="mt-3">
+                      <Button variant="warning" className="mt-3">
                         Xem đánh giá
                       </Button>
                     ) : (

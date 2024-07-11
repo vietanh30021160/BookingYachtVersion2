@@ -1,9 +1,10 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Dropdown, DropdownButton, Modal, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { fetchCustomers } from '../../../redux/action/AdminAction';
 import './Manager.scss';
-
 const CustomerManager = () => {
 
     const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const CustomerManager = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [paging, setPaging] = useState([]);
     const [pagedCustomers, setPagedCustomers] = useState([]);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
 
     // Lấy khách hàng khi thành phần được tải
     useEffect(() => {
@@ -87,10 +89,36 @@ const CustomerManager = () => {
     };
 
     // Hàm xóa khách hàng
-    const handleDeleteCustomer = customerId => {
-        // Add delete customer logic here
-        // setIsChange(!isChange);
+    const handleHideCustomer = customer => {
+        setSelectedCustomer(customer);
+        setShowConfirmModal(true);
     };
+
+    const getAuthHeader = () => {
+        const token = localStorage.getItem('token');
+        return token ? `Bearer ${token}` : '';
+    };
+
+    const handleConfirmHideCustomer = async () =>{
+        try{
+            const config = {
+                method: 'put',
+                url: `http://localhost:8080/api/admins/disableCustomer/${selectedCustomer.idCustomer}`,
+                headers: {
+                    'Authorization': getAuthHeader(),
+                },
+            };
+            await axios(config);
+            toast.success('Company hidden successfully.');
+            dispatch(fetchCustomers())
+        }catch (error) {
+            toast.error('Failed to hide company. Please try again.');
+        } finally {
+            setShowConfirmModal(false);
+            setSelectedCustomer(null);
+        }
+    }
+
 
     // Hàm đóng modal
     const handleCloseModal = () => setShowModal(false);
@@ -192,11 +220,11 @@ const CustomerManager = () => {
             </div>
 
             <div className="d-flex mb-3">
-                <DropdownButton id="dropdown-basic-button" title="Sort Options" variant='dark'>
-                    <Dropdown.Item onClick={() => handleSortChange('idCustomer', 'asc')}>ID Ascending</Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleSortChange('idCustomer', 'desc')}>ID Descending</Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleSortChange('fullName', 'asc')}>Name Ascending</Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleSortChange('fullName', 'desc')}>Name Descending</Dropdown.Item>
+                <DropdownButton id="dropdown-basic-button" title="Sắp xếp" variant='dark'>
+                    <Dropdown.Item onClick={() => handleSortChange('idCustomer', 'asc')}>ID tăng dần</Dropdown.Item>
+                    <Dropdown.Item onClick={() => handleSortChange('idCustomer', 'desc')}>ID giảm dần</Dropdown.Item>
+                    <Dropdown.Item onClick={() => handleSortChange('fullName', 'asc')}>Tên tăng dần</Dropdown.Item>
+                    <Dropdown.Item onClick={() => handleSortChange('fullName', 'desc')}>Tên giảm dần</Dropdown.Item>
                 </DropdownButton>
             </div>
 
@@ -204,11 +232,11 @@ const CustomerManager = () => {
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Full Name</th>
+                        <th>Họ Và Tên</th>
                         <th>Email</th>
-                        <th>Phone</th>
-                        <th>Address</th>
-                        <th>Action</th>
+                        <th>Số Điện Thoại</th>
+                        <th>Địa chỉ</th>
+                        <th>Hành Động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -220,8 +248,8 @@ const CustomerManager = () => {
                             <td>{customer.phone}</td>
                             <td>{customer.address}</td>
                             <td className='button_mana'>
-                                <Button variant="info" onClick={() => handleShowModal(customer)}>View Detail</Button>
-                                <Button variant="danger" onClick={() => handleDeleteCustomer(customer.accountDTO.idAccount)}>Delete</Button>
+                                <Button variant="info" onClick={() => handleShowModal(customer)}>Chi tiết</Button>
+                                <Button variant="danger" onClick={() => handleHideCustomer(customer)}>Vô Hiệu Hóa</Button>
                             </td>
                         </tr>
                     ))}
@@ -258,6 +286,22 @@ const CustomerManager = () => {
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseModal}>
                         Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show={showConfirmModal} onHide={() => setShowConfirmModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm Hide Customer</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                <Modal.Title>Bạn có chắc chắn muốn vô hiệu hóa tài khoản này không!</Modal.Title>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant='secondary' onClick={() => setShowConfirmModal(false)}>
+                        Cancel
+                    </Button>
+                    <Button variant='danger' onClick={handleConfirmHideCustomer}>
+                        Confirm
                     </Button>
                 </Modal.Footer>
             </Modal>
