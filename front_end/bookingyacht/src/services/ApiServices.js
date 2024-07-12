@@ -406,3 +406,11 @@ export const getDetailBookingByCustomer = (idCustomer, idBooking) => {
 export const getHighestAndLowestPriceByYacht = (idYacht) => {
     return axios.get(`/api/customer/yacht/getPriceRoom/${idYacht}`)
 }
+
+export const changePasswordCompany = (idCompany, oldPassword, newPassword, confirmPassword) => {
+    const data = new FormData()
+    data.append('oldPassword', oldPassword)
+    data.append('newPassword', newPassword)
+    data.append('confirmPassword', confirmPassword)
+    return axios.put(`/api/companies/profiles/changePassword/${idCompany}`, data)
+}

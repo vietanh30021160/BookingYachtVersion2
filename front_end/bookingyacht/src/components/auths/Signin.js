@@ -5,11 +5,9 @@ import { login } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
 import { useNavigate, Link } from 'react-router-dom';
 import { NavLink } from 'react-router-dom'
-// import { useDispatch, useSelector } from 'react-redux';
 import { ImSpinner10 } from "react-icons/im";
 import { doLogin } from '../../redux/action/UserAction';
 import { useDispatch } from 'react-redux';
-// import { Rlogin } from '../../redux/action/CustomerAction';
 import { jwtDecode } from "jwt-decode";
 import { BiSolidHome } from "react-icons/bi";
 

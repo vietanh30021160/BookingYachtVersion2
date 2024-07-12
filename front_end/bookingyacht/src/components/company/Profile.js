@@ -4,15 +4,18 @@ import ModalUpdateProfile from './Modal/ModalUpdateProfile';
 import { useSelector } from 'react-redux';
 import { getProfileCompany } from '../../services/ApiServices';
 import { Link } from 'react-router-dom';
+import ModalChangePassCompany from './Modal/ModalChangePassCompany';
 const ProfileCompany = () => {
 
     const idCompany = useSelector(state => state.account.account.idCompany);
 
     const [isShowModal, setIsShowModal] = useState(false);
     const [profile, setProfile] = useState({});
+    const [showModalChangePass, setShowModalChangePass] = useState(false)
 
     const handleClose = () => {
         setIsShowModal(false);
+        setShowModalChangePass(false)
     }
 
     useEffect(() => {
@@ -26,9 +29,6 @@ const ProfileCompany = () => {
         }
     }
 
-    const handlleChangePassword = () => {
-
-    }
 
     return (
 
@@ -71,7 +71,7 @@ const ProfileCompany = () => {
                                             <ButtonGroup>
                                                 <Button onClick={() => setIsShowModal(true)} className='btn btn-primary'>Edit</Button>
                                             </ButtonGroup>
-                                            <Link onClick={handlleChangePassword} className='mx-3'>Change Password</Link>
+                                            <Link onClick={() => setShowModalChangePass(true)} className='mx-3'>Change Password</Link>
                                         </div>
                                     </div>
                                 </div>
@@ -85,6 +85,10 @@ const ProfileCompany = () => {
                 handleClose={handleClose}
                 profile={profile}
                 getProfile={getProfile}
+            />
+            <ModalChangePassCompany
+                show={showModalChangePass}
+                handleClose={handleClose}
             />
 
         </div>
