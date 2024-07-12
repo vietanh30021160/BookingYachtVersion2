@@ -27,7 +27,7 @@ public interface ICustomer {
     List<CompanyDTO> getAllCompanies();
 
 
-    boolean changePasswordCustomer(String idCustomer, String password);
+
 
     List<String> findIdBookingByCustomerId(String customerId);
 
@@ -37,4 +37,5 @@ public interface ICustomer {
 
     List<FeedbackDTO> getAllFeedback();
 
+    String  changePasswordCustomer(String idCustomer, String oldPassword, String newPassword, String confirmPassword);
 }

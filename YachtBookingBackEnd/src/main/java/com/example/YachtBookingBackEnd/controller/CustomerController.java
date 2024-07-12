@@ -63,9 +63,12 @@ public class CustomerController {
     }
 
     @PutMapping("/profiles/changePassword/{idCustomer}")
-    public ResponseEntity<?>changePassword(@PathVariable("idCustomer") String idCustomer, @RequestParam String password){
+    public ResponseEntity<?>changePassword(@PathVariable("idCustomer") String idCustomer,
+                                           @RequestParam String newPassword,
+                                           @RequestParam String confirmPassword,
+                                           @RequestParam String oldPassword){
         DataResponse dataResponse = new DataResponse<>();
-        dataResponse.setData(iCustomer.changePasswordCustomer(idCustomer, password));
+        dataResponse.setData(iCustomer.changePasswordCustomer(idCustomer, oldPassword,newPassword,confirmPassword));
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
