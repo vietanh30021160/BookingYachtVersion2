@@ -67,8 +67,7 @@ export default function ChangePassword1() {
                           type="text"
                           className="form-control"
                           name="rePassword"
-                          id="rePassword"
-                        />
+                          id="rePassword" />
                       </div>
                       <div className="col-12">
                         <div className="d-grid">

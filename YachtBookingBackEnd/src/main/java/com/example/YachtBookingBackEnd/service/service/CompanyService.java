@@ -13,6 +13,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +36,7 @@ public class CompanyService implements ICompany {
     AccountRepository accountRepository;
     IFile iFile;
     PasswordEncoder passwordEncoder;
+    AuthenticationManager authenticationManager;
 
     @Override
     public List<CompanyDTO> searchCompanyByName(String name) {
@@ -174,16 +178,35 @@ public class CompanyService implements ICompany {
     }
 
     @Override
-    public boolean changePasswordCompany(String idCompany, String password){
+    public String changePasswordCompany(String idCompany, String oldPassword, String newPassword, String confirmPassword){
         try {
-            Account account = companyRepository.getAccountByIdCompany(idCompany);
-            account.setPassword(passwordEncoder.encode(password));
-            accountRepository.save(account);
-            return true;
+            Company company= companyRepository.findById(idCompany).
+                    orElseThrow(()->new RuntimeException("Not found"));
+
+            Account account = accountRepository.findAccountByCompany(company);
+            String username = account.getUsername();
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, oldPassword));
+            if(authentication.isAuthenticated()){
+                if(newPassword.equals(confirmPassword)) {
+                    account.setPassword(passwordEncoder.encode(newPassword));
+                    accountRepository.save(account);
+                    System.out.println("Success");
+                    return "200";
+                }
+                else if (!newPassword.equals(confirmPassword)){
+                    System.out.println("New password not matched confirm password");
+                    return "999";
+                }
+            }else{
+                System.out.println("Old password incorrect");
+                return "400";
+            }
         }catch (Exception e){
-            System.out.println("Error by: "+e);
+            System.out.println("Old password incorrect");
+
         }
-        return false;
+        return "400";
     }
 
 
