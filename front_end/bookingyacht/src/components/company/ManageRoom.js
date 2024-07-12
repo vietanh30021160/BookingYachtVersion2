@@ -18,9 +18,13 @@ import _ from 'lodash';
 
 const ManageRoom = () => {
     const [isShowModalRoomImage, setIsShowModalRoomImage] = useState(false);
+
     const [isShowModalRoomService, setIsShowModalRoomService] = useState(false);
+
     const [isShowModalUpdateRoom, setIsShowModalUpdateRoom] = useState(false);
+
     const [isShowModalCreateRoom, setIsShowModalCreateRoom] = useState(false);
+
     const [isShowModalRoomType, setIsShowModalRoomType] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(0);

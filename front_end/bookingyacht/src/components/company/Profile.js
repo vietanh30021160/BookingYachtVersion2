@@ -26,6 +26,10 @@ const ProfileCompany = () => {
         }
     }
 
+    const handlleChangePassword = () => {
+
+    }
+
     return (
 
         <div>
@@ -67,7 +71,7 @@ const ProfileCompany = () => {
                                             <ButtonGroup>
                                                 <Button onClick={() => setIsShowModal(true)} className='btn btn-primary'>Edit</Button>
                                             </ButtonGroup>
-                                            <Link className='mx-3'>Change Password</Link>
+                                            <Link onClick={handlleChangePassword} className='mx-3'>Change Password</Link>
                                         </div>
                                     </div>
                                 </div>

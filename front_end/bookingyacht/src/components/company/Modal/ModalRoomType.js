@@ -14,8 +14,6 @@ const ModalRoomType = (props) => {
     const { show, setIsShowModalRoomType, idYacht } = props;
 
     const [isShowModalUpdateRoomType, setIsShowModalUpdateRoomType] = useState(false);
-
-
     const [price, setPrice] = useState(0);
     const [type, setType] = useState(0);
     const [utilities, setUtilities] = useState('');
@@ -28,7 +26,7 @@ const ModalRoomType = (props) => {
     }
 
     const handleCreateRoomType = async () => {
-        if (!price && !type && !utilities) {
+        if (price === 0 || !type || !utilities) {
             toast.error('Input Not Empty')
         } else if (price < 0) {
             toast.error('Price not Negative number')
@@ -37,7 +35,7 @@ const ModalRoomType = (props) => {
             if (res && res.data.data === true) {
                 toast.success('Create Successfully')
                 getRoomType()
-                setPrice('');
+                setPrice(0);
                 setType('');
                 setUtilities('');
             } else {
