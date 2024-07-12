@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Collapse, Container, Form, ListGroup, Modal, Row } from 'react-bootstrap';
 import { GiNotebook } from "react-icons/gi";
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { addFeedback, existsFeedback, viewBillByIdCustomer } from '../../services/ApiServices';
 const Bill = ({ idCustomer }) => {
@@ -11,6 +12,8 @@ const Bill = ({ idCustomer }) => {
   const [starRating, setStarRating] = useState(0);
   const [description, setDescription] = useState('');
   const [reviewedBills, setReviewedBills] = useState({});
+  const [idYacht, setIdYacht] = useState(0);
+  const navigate = useNavigate();
 
   const toggleDetails = (idBooking) => {
     setShowDetails((prevState) => ({
@@ -66,7 +69,7 @@ const Bill = ({ idCustomer }) => {
           const feedbackResponse = await existsFeedback(bill.bookingOrderDTO.idBooking);
           return {
             idBooking: bill.bookingOrderDTO.idBooking,
-            hasFeedback: feedbackResponse.data.exists,
+            hasFeedback: feedbackResponse.data.data,
           };
         });
 
@@ -83,6 +86,10 @@ const Bill = ({ idCustomer }) => {
     };
     fetchBills();
   }, [idCustomer]);
+  
+  const handleViewFeeback = (yachtId) =>{
+    navigate(`/mainpage/${yachtId}`)
+  }
 
   return (
     <Container className="my-4">
@@ -120,7 +127,11 @@ const Bill = ({ idCustomer }) => {
                       <strong>Email:</strong> {bill.bookingOrderDTO.customerDTO.email}
                     </Card.Text>
                     {reviewedBills[bill.bookingOrderDTO.idBooking] ? (
-                      <Button variant="warning" className="mt-3">
+                      <Button 
+                      variant="warning" 
+                      className="mt-3"
+                      onClick={() => handleViewFeeback(bill.bookingOrderDTO.rooms[0].yachtId)}
+                      >
                         Xem đánh giá
                       </Button>
                     ) : (
