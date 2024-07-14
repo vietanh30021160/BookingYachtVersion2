@@ -3,11 +3,11 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { FormControl, FormGroup } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import { changePasswordCompany } from '../../../services/ApiServices';
 import { useSelector } from 'react-redux';
-const ModalChangePassCompany = (props) => {
+import { changePasswordCustomer } from '../../services/ApiServices';
+const ModalChangePassCustomer = (props) => {
     const { show, handleClose } = props;
-    const idCompany = useSelector(state => state.account.account.idCompany)
+    const idCustomer = useSelector(state => state.account.account.idCustomer)
 
     const [showPassword, setShowPassword] = useState(false);
     const [showPassword1, setShowPassword1] = useState(false);
@@ -24,8 +24,7 @@ const ModalChangePassCompany = (props) => {
         } else if (newPassword.length < 8) {
             toast.error('New Password must be at least 8 charaters')
         } else {
-            let res = await changePasswordCompany(idCompany, oldPassword.trim(), newPassword.trim(), confirmPassword.trim())
-
+            let res = await changePasswordCustomer(idCustomer, oldPassword.trim(), newPassword.trim(), confirmPassword.trim())
             if (res && res.data && res.data.data === "400") {
                 toast.error('Old password incorrect')
             } else if (res && res.data && res.data.data === "999") {
@@ -39,7 +38,6 @@ const ModalChangePassCompany = (props) => {
             }
         }
     }
-
     return (
         <div>
             <Modal show={show} onHide={handleClose}>
@@ -95,4 +93,4 @@ const ModalChangePassCompany = (props) => {
     );
 };
 
-export default ModalChangePassCompany;
+export default ModalChangePassCustomer;

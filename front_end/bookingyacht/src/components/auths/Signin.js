@@ -33,9 +33,11 @@ const Signin = () => {
 
     const navigate = useNavigate();
 
+
     const handleLogin = async () => {
         setLoading(true)
         let res = await login(userName.trim(), password.trim());
+
         if (userName === '' || password === '') {
             toast.error('Input Not Empty');
             setLoading(false);
@@ -58,6 +60,12 @@ const Signin = () => {
         }
     }
 
+    const hanldeKeyDown = (e) => {
+        if (e && e.key === 'Enter') {
+            handleLogin();
+        }
+    }
+
     return (
         <>
             <section className="vh-100">
@@ -74,6 +82,7 @@ const Signin = () => {
                                     placeholder='UserName'
                                     className="form-control form-control-lg"
                                     value={userName}
+                                    onKeyDown={e => hanldeKeyDown(e)}
                                     onChange={(event) => setUserName(event.target.value)}
                                 />
                             </div>
@@ -82,6 +91,7 @@ const Signin = () => {
                                     placeholder='Password'
                                     className="form-control form-control-lg"
                                     value={password}
+                                    onKeyDown={e => hanldeKeyDown(e)}
                                     onChange={(event) => setPassword(event.target.value)}
                                 />
                                 <i className={showPassword === true ? "fa-regular fa-eye" : "fa-regular fa-eye-slash"}
@@ -101,6 +111,7 @@ const Signin = () => {
                                     onClick={() => handleLogin()}
                                     className='btn btn-primary'
                                     disabled={loading}
+
                                 >
                                     {loading === true && <ImSpinner10 className='loaderIcon' />}
                                     <span>Đăng nhập</span>

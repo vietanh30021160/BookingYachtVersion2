@@ -414,3 +414,12 @@ export const changePasswordCompany = (idCompany, oldPassword, newPassword, confi
     data.append('confirmPassword', confirmPassword)
     return axios.put(`/api/companies/profiles/changePassword/${idCompany}`, data)
 }
+export const changePasswordCustomer = (idCustomer, oldPassword, newPassword, confirmPassword) => {
+    const data = new FormData()
+    data.append('oldPassword', oldPassword)
+    data.append('newPassword', newPassword)
+    data.append('confirmPassword', confirmPassword)
+    return axios.put(`/api/customer/profiles/changePassword/${idCustomer}`, data)
+}
+
+
