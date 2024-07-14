@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import './Company.scss';
-import { Button, Form, FormControl, FormGroup, FormSelect } from 'react-bootstrap';
+import { Button, Form, FormControl, FormGroup } from 'react-bootstrap';
 import ReactPaginate from 'react-paginate';
-import './Company.scss'
 import { useSelector } from 'react-redux';
-import { canelBooking, confirmBooking, getBookingByAmount, getBookingOrder } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
+import { canelBooking, confirmBooking, getBookingByAmount, getBookingOrder } from '../../services/ApiServices';
+import './Company.scss';
 
-import ModalViewDetailBooking from './ModalViewDetailBooking';
 import { Link } from 'react-router-dom';
+import ModalViewDetailBooking from './ModalViewDetailBooking';
 
 const ViewBooking = () => {
     const idCompany = useSelector(state => state.account.account.idCompany);
@@ -93,7 +92,7 @@ const ViewBooking = () => {
 
     const filterAndPaginateBooking = () => {
         const filtered = listBooking
-            .filter(b => b.customerName.toLowerCase().includes(filterSearch.toLowerCase().trim()))
+            .filter(b => b.customerDTO.fullName.toLowerCase().includes(filterSearch.toLowerCase().trim()))
             .filter(b => filterStatus === '0' ? b : b.status.includes(filterStatus))
 
         setFilterBooking(filtered);
@@ -153,7 +152,7 @@ const ViewBooking = () => {
                                                     <span className="float-right text-success">{formatDate(booking.bookingTime)}<i className="feather-check-circle text-success" /></span>
                                                 </b>
                                                 <h6 className="mb-3"><b href="#">
-                                                </b><b className="text-dark">{booking.customerName}</b>
+                                                </b><b className="text-dark">{booking.customerDTO.fullName}</b>
                                                 </h6>
                                                 <p className="text-black-50 mb-1"><i className="feather-map-pin" /> {booking.yachtName}, Amount: {booking.amount}
                                                 </p>
