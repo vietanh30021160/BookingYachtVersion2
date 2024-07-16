@@ -26,6 +26,7 @@ public interface ICustomer {
 
     List<CompanyDTO> getAllCompanies();
 
+    boolean disableCustomerById(String idCustomer);
 
 
 

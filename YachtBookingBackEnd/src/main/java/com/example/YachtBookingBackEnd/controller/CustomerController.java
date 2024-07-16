@@ -371,8 +371,6 @@ public class CustomerController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
 
-
-
     @GetMapping("/yacht/getPriceRoom/{yachtId}")
     public ResponseEntity<?>getPriceRoom(@PathVariable("yachtId")String  yachtId){
         DataResponse dataResponse = new DataResponse<>();

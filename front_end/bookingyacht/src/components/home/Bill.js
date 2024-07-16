@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Collapse, Container, Form, ListGroup, Modal, Row } from 'react-bootstrap';
 import { GiNotebook } from "react-icons/gi";
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { addFeedback, existsFeedback, viewBillByIdCustomer } from '../../services/ApiServices';
 const Bill = ({ idCustomer }) => {
@@ -11,6 +12,8 @@ const Bill = ({ idCustomer }) => {
   const [starRating, setStarRating] = useState(0);
   const [description, setDescription] = useState('');
   const [reviewedBills, setReviewedBills] = useState({});
+  const [idYacht, setIdYacht] = useState(0);
+  const navigate = useNavigate();
 
   const toggleDetails = (idBooking) => {
     setShowDetails((prevState) => ({
@@ -62,15 +65,15 @@ const Bill = ({ idCustomer }) => {
         setBills(sortedBills);
 
         // Check feedback status for each bill
-        const feedbackStatusPromises = sortedBills.map(async (bill) => {
+        const feedbackStatus = sortedBills.map(async (bill) => {
           const feedbackResponse = await existsFeedback(bill.bookingOrderDTO.idBooking);
           return {
             idBooking: bill.bookingOrderDTO.idBooking,
-            hasFeedback: feedbackResponse.data.exists,
+            hasFeedback: feedbackResponse.data.data,
           };
         });
 
-        const feedbackStatuses = await Promise.all(feedbackStatusPromises);
+        const feedbackStatuses = await Promise.all(feedbackStatus);
         const feedbackStatusesMap = feedbackStatuses.reduce((acc, { idBooking, hasFeedback }) => {
           acc[idBooking] = hasFeedback;
           return acc;
@@ -83,6 +86,10 @@ const Bill = ({ idCustomer }) => {
     };
     fetchBills();
   }, [idCustomer]);
+
+  const handleViewFeeback = (yachtId) => {
+    navigate(`/mainpage/${yachtId}`)
+  }
 
   return (
     <Container className="my-4">
@@ -120,7 +127,11 @@ const Bill = ({ idCustomer }) => {
                       <strong>Email:</strong> {bill.bookingOrderDTO.customerDTO.email}
                     </Card.Text>
                     {reviewedBills[bill.bookingOrderDTO.idBooking] ? (
-                      <Button variant="dark" className="mt-3">
+                      <Button
+                        variant="warning"
+                        className="mt-3"
+                        onClick={() => handleViewFeeback(bill.bookingOrderDTO.rooms[0].yachtId)}
+                      >
                         Xem đánh giá
                       </Button>
                     ) : (
@@ -142,6 +153,13 @@ const Bill = ({ idCustomer }) => {
                 </Button>
                 <Collapse in={showDetails[bill.bookingOrderDTO.idBooking]}>
                   <div>
+                    <hr />
+                    <h5>Thông tin lịch trình</h5>
+                    <Card.Text>
+                      <strong>Ngày đi</strong> {new Date(bill.bookingOrderDTO.schedule.startDate).toLocaleString()}
+                      <br/>
+                      <strong>Ngày về:</strong>{new Date(bill.bookingOrderDTO.schedule.endDate).toLocaleString()}
+                    </Card.Text>
                     <hr />
                     <h5>Thông tin phòng</h5>
                     {bill.bookingOrderDTO.rooms.map((room, roomIndex) => (

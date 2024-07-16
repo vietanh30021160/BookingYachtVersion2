@@ -92,7 +92,7 @@ public class CustomerService implements ICustomer {
                     accountDTO.setIdAccount(customer.getAccount().getIdAccount());
                     accountDTO.setUsername(customer.getAccount().getUsername());
                     accountDTO.setPassword(customer.getAccount().getPassword());
-
+                    accountDTO.setStatus(customer.getAccount().getStatus());
 
 
                     customerDTO.setIdCustomer(customer.getIdCustomer());
@@ -103,8 +103,6 @@ public class CustomerService implements ICustomer {
                     customerDTO.setAddress(customer.getAddress());
                     customerDTOList.add(customerDTO);
                 }
-
-
             }
         } catch (Exception e) {
             System.out.println("Exception: " + e.getMessage());
@@ -276,6 +274,20 @@ public class CustomerService implements ICustomer {
             System.out.println("Exception: " + e.getMessage());
         }
         return companyDTOList;
+    }
+
+    @Override
+    public boolean disableCustomerById(String idCustomer) {
+        CustomerDTO customer = getCustomer(idCustomer);
+        Account account = accountRepository.findById(customer.getAccountDTO().getIdAccount())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid account ID"));
+
+        if(account != null){
+            account.setStatus(0);
+            accountRepository.save(account);
+            return true;
+        }
+        return false;
     }
 
     @Override
