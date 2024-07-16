@@ -86,8 +86,8 @@ const Bill = ({ idCustomer }) => {
     };
     fetchBills();
   }, [idCustomer]);
-  
-  const handleViewFeeback = (yachtId) =>{
+
+  const handleViewFeeback = (yachtId) => {
     navigate(`/mainpage/${yachtId}`)
   }
 
@@ -127,10 +127,10 @@ const Bill = ({ idCustomer }) => {
                       <strong>Email:</strong> {bill.bookingOrderDTO.customerDTO.email}
                     </Card.Text>
                     {reviewedBills[bill.bookingOrderDTO.idBooking] ? (
-                      <Button 
-                      variant="warning" 
-                      className="mt-3"
-                      onClick={() => handleViewFeeback(bill.bookingOrderDTO.rooms[0].yachtId)}
+                      <Button
+                        variant="warning"
+                        className="mt-3"
+                        onClick={() => handleViewFeeback(bill.bookingOrderDTO.rooms[0].yachtId)}
                       >
                         Xem đánh giá
                       </Button>
@@ -153,6 +153,13 @@ const Bill = ({ idCustomer }) => {
                 </Button>
                 <Collapse in={showDetails[bill.bookingOrderDTO.idBooking]}>
                   <div>
+                    <hr />
+                    <h5>Thông tin lịch trình</h5>
+                    <Card.Text>
+                      <strong>Ngày đi</strong> {new Date(bill.bookingOrderDTO.schedule.startDate).toLocaleString()}
+                      <br/>
+                      <strong>Ngày về:</strong>{new Date(bill.bookingOrderDTO.schedule.endDate).toLocaleString()}
+                    </Card.Text>
                     <hr />
                     <h5>Thông tin phòng</h5>
                     {bill.bookingOrderDTO.rooms.map((room, roomIndex) => (
