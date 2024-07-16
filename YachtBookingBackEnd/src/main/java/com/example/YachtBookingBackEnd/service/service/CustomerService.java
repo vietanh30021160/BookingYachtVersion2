@@ -9,6 +9,11 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -24,6 +29,7 @@ import java.util.regex.Pattern;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class CustomerService implements ICustomer {
+    PasswordEncoder passwordEncoder;
     CustomerRepository customerRepository;
     AccountRepository accountRepository;
     FeedbackRepository feedbackRepository;
@@ -32,6 +38,7 @@ public class CustomerService implements ICustomer {
     YachtRepository yachtRepository;
     CompanyRepository companyRepository;
     IYacht iYacht;
+    AuthenticationManager authenticationManager;
 
     public static final String ROLE_CUSTOMER = "CUSTOMER";
 
@@ -85,7 +92,7 @@ public class CustomerService implements ICustomer {
                     accountDTO.setIdAccount(customer.getAccount().getIdAccount());
                     accountDTO.setUsername(customer.getAccount().getUsername());
                     accountDTO.setPassword(customer.getAccount().getPassword());
-
+                    accountDTO.setStatus(customer.getAccount().getStatus());
 
 
                     customerDTO.setIdCustomer(customer.getIdCustomer());
@@ -96,8 +103,6 @@ public class CustomerService implements ICustomer {
                     customerDTO.setAddress(customer.getAddress());
                     customerDTOList.add(customerDTO);
                 }
-
-
             }
         } catch (Exception e) {
             System.out.println("Exception: " + e.getMessage());
@@ -272,6 +277,53 @@ public class CustomerService implements ICustomer {
     }
 
     @Override
+    public boolean disableCustomerById(String idCustomer) {
+        CustomerDTO customer = getCustomer(idCustomer);
+        Account account = accountRepository.findById(customer.getAccountDTO().getIdAccount())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid account ID"));
+
+        if(account != null){
+            account.setStatus(0);
+            accountRepository.save(account);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String  changePasswordCustomer(String idCustomer, String oldPassword, String newPassword, String confirmPassword) {
+        try {
+            Customer customer = customerRepository.findById(idCustomer).orElseThrow(
+                    ()->new RuntimeException("Not found"));
+
+
+            Account account = accountRepository.findAccountByCustomer(customer);
+            String username = account.getUsername();
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, oldPassword));
+            if(authentication.isAuthenticated()){
+                if(newPassword.equals(confirmPassword)) {
+                    account.setPassword(passwordEncoder.encode(newPassword));
+                    accountRepository.save(account);
+                    System.out.println("Success");
+                    return "200";
+                }
+                else if (!newPassword.equals(confirmPassword)){
+                    System.out.println("New password not matched confirm password");
+                    return "999";
+                }
+            }else{
+                System.out.println("Old password incorrect");
+                return "400";
+            }
+        }catch (Exception e){
+            System.out.println("Old password incorrect");
+
+        }
+        return "400";
+    }
+
+
     public List<String> findIdBookingByCustomerId(String customerId) {
         List<String> listIdBooking = customerRepository.findIdBookingByCustomerId(customerId);
         if(listIdBooking == null){
@@ -318,6 +370,7 @@ public class CustomerService implements ICustomer {
         }
         return feedbackDTOList;
     }
+
 
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
