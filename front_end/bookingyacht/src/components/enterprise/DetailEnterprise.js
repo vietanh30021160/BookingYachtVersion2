@@ -6,9 +6,9 @@ import { IoMdBoat, IoMdMail } from "react-icons/io";
 import { LuMapPin } from "react-icons/lu";
 import { RiShipLine } from "react-icons/ri";
 import { useNavigate, useParams } from 'react-router-dom';
+import { getHighestAndLowestPriceByYacht } from '../../services/ApiServices';
 import '../yacht/FindYacht.scss';
 import './InfoCompany.scss';
-import { getHighestAndLowestPriceByYacht } from '../../services/ApiServices';
 const ProfilePage = () => {
     const getImageApi = `http://localhost:8080/api/customer/file/`
     const { idCompany } = useParams();
@@ -104,12 +104,10 @@ const ProfilePage = () => {
                     <Col xs={12} className="text-center cover-photo-container">
                         {company && (
                             <div className="profile-info container">
-                                <Image src={`${getImageApi}${company.logo}`} className="profile-photo" />
+                            <Image src={`${getImageApi}${company.logo}`} className="profile-photo" />
                                 <div className="profile-text">
                                     <h2 style={{ fontWeight: 'bold', fontSize: '50px', color: '#0E4F4F', fontFamily: 'Roboto, sans-serif' }}><IoMdBoat />{company.name}</h2>
                                     <p style={{ fontWeight: 'bold' }}><i>Chào mừng bạn đến với du thuyền, điểm đến hàng đầu cho những trải nghiệm du thuyền
-                                    <h2 style={{ fontWeight: 'bold', fontSize: '50px' }}>{company.name}</h2>
-                                    <p><i>Chào mừng bạn đến với du thuyền, điểm đến hàng đầu cho những trải nghiệm du thuyền
                                         sang trọng và đẳng cấp! Chúng tôi tự hào mang đến cho khách hàng những chuyến hải trình
                                         đáng nhớ, kết hợp giữa sự thoải mái, tiện nghi và phong cách thượng lưu.</i></p>
                                 </div>
@@ -140,27 +138,10 @@ const ProfilePage = () => {
                                 {
                                     paggingYacht.map((yacht) => {
                                         return (
-                                            <div className="card row" key={yacht.idYacht} onClick={() => { hanldeSelectedYacht(yacht.idYacht) }} style={{ cursor: 'pointer', marginTop: '20px' }}>
-                                                <Row>
-                                                    <div className="col-md-5">
-                                                        <img style={{ height: '250px', width: '100%', borderRadius : '35px', padding : '15px 0' }} className="card-img-top object-fit-cover" src={`${avatarYachtApi}${yacht.image}`} alt="Card image cap" />
-                                                    </div>
-                                                    <div className="card-body col-md-7">
-                                                        <div className='card-content'>
-                                                            <div style={{ padding: '10px', color: '#475467', width: '80px' }} className='location'><FaLocationDot />{yacht.location.name}</div>
-                                                            <h4 className='name' style={{ marginBottom: 0, fontWeight: 'bold' }}>{yacht.name}</h4>
-                                                            <p style={{ margin: '0px' }}>Hạ thủy: {yacht.launch} - Vỏ Tàu {yacht.hullBody}</p>
-                                                            <div style={{ fontWeight: 'bold' }}> <RiShipLine /> {yacht.itinerary} </div>
-                                                            <div className='price d-flex' style={{ justifyContent: 'space-between', alignItems: 'center' }}>
-                                                                <p style={{ color: '#475467', fontWeight: '700' }}>Price: 3.3350.000đ</p>
-                                                                <button style={{ borderRadius: 25 }} className='btn btn-warning'>Đặt ngay</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </Row>
                                             <div className="card row d-flex" key={yacht.idYacht} onClick={() => { hanldeSelectedYacht(yacht.idYacht) }} style={{ cursor: 'pointer', marginTop: '20px' }}>
+                                                <Row>
                                                 <div className="col-md-5">
-                                                    <img style={{ height: '200px', width: '80%' }} className="card-img-top object-fit-cover" src={`${avatarYachtApi}${yacht.image}`} alt="Card cap" />
+                                                    <img style={{ height: '250px', width: '100%', borderRadius : '35px', padding : '15px 0' }} className="card-img-top object-fit-cover" src={`${avatarYachtApi}${yacht.image}`} alt="Card cap" />
                                                 </div>
                                                 <div className="card-body col-md-7">
                                                     <div className='card-content'>
@@ -173,7 +154,8 @@ const ProfilePage = () => {
                                                             <button style={{ borderRadius: 25 }} className='btn btn-warning'>Đặt ngay</button>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>    
+                                                </Row>
                                             </div>
                                         )
                                     })
