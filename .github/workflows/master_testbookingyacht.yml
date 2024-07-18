@@ -11,10 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: bookingyacht
+        working-directory: bookingyacht  # Adjust this if the directory is different
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Display directory structure
+        run: ls -R
 
       - name: Set up Node.js version
         uses: actions/setup-node@v3
@@ -51,7 +54,7 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     defaults:
       run:
-        working-directory: bookingyacht
+        working-directory: bookingyacht  # Adjust this if the directory is different
 
     steps:
       - name: List artifacts available for download (debugging)
