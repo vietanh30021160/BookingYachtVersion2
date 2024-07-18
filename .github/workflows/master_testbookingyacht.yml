@@ -12,6 +12,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: bookingyacht
 
     steps:
       - uses: actions/checkout@v4
@@ -23,15 +26,12 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          cd bookingyacht
           npm install
           npm run build --if-present
           npm run test --if-present || true  # Bỏ qua lỗi test không nghiêm trọng
 
       - name: Zip artifact for deployment
-        run: |
-          cd bookingyacht
-          zip -r ../release.zip ./*
+        run: zip -r ../release.zip ./*
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -45,6 +45,9 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    defaults:
+      run:
+        working-directory: bookingyacht
     
     steps:
       - name: Download artifact from build job
@@ -63,7 +66,3 @@ jobs:
           slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D2D7847427A34165B0A257915AF159DB }}
-
-defaults:
-  run:
-    working-directory: bookingyacht
