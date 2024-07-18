@@ -1,12 +1,11 @@
 import axios from "axios";
 import NProgress from 'nprogress';
-import { store } from '../redux/Store'
 import { toast } from "react-toastify";
-import Error403 from "../components/page404/Error403";
+import { store } from '../redux/Store';
 
 
 const instance = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: 'yachtbookingbackend.azurewebsites.net',
 });
 
 NProgress.configure({

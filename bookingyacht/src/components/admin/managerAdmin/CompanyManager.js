@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { fetchCompanies } from '../../../redux/action/AdminAction';
 import './Manager.scss';
 const CompanyManager = () => {
-    const getImageApi = `http://localhost:8080/api/customer/file/`
+    const getImageApi = `yachtbookingbackend.azurewebsites.net/api/customer/file/`
     const dispatch = useDispatch();
     const companies = useSelector(state => state.admin.companies);
 
@@ -137,7 +137,7 @@ const CompanyManager = () => {
         try {
             const config = {
                 method: 'post',
-                url: 'http://localhost:8080/api/admins/accounts',
+                url: 'yachtbookingbackend.azurewebsites.net/api/admins/accounts',
                 headers: {
                     'Authorization': getAuthHeader(),
                 },
@@ -175,7 +175,7 @@ const CompanyManager = () => {
         try {
             const config = {
                 method: 'post',
-                url: `http://localhost:8080/api/admins/accounts/${newAccountId}`,
+                url: `yachtbookingbackend.azurewebsites.net/api/admins/accounts/${newAccountId}`,
                 headers: {
                     'Authorization': getAuthHeader(),
                     // 'Content-Type': 'multipart/form-data'
@@ -224,7 +224,7 @@ const CompanyManager = () => {
         try {
             const config = {
                 method: 'put',
-                url: `http://localhost:8080/api/admins/companies/${selectedCompany.idCompany}`,
+                url: `yachtbookingbackend.azurewebsites.net/api/admins/companies/${selectedCompany.idCompany}`,
                 headers: {
                     'Authorization': getAuthHeader(),
                 },
