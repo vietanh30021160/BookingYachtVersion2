@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy Node.js app to Azure Web App - testBookingYacht CI
 
 on:
@@ -28,16 +25,21 @@ jobs:
         run: |
           npm install
           npm run build --if-present
-          npm run test --if-present || true  # Bỏ qua lỗi test không nghiêm trọng
+          npm run test --if-present || true
+        env:
+          CI: true
 
       - name: Zip artifact for deployment
         run: zip -r ../release.zip ./*
+
+      - name: Check if release.zip exists
+        run: ls -la ../release.zip
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: release.zip
+          path: ../release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -55,8 +57,11 @@ jobs:
         with:
           name: node-app
 
+      - name: Check artifact contents
+        run: unzip -l node-app/release.zip
+
       - name: Unzip artifact for deployment
-        run: unzip release.zip
+        run: unzip node-app/release.zip
       
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
