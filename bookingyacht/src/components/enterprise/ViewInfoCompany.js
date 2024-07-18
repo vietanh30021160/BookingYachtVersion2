@@ -8,7 +8,7 @@ const CompanyList = () => {
     const [companies, setCompanies] = useState([]);
     const navigate = useNavigate();
     // const [loading, setLoading] = useState(true);
-    const getImageApi = `yachtbookingbackend.azurewebsites.net/api/customer/file/`
+    const getImageApi = `https://yachtbookingbackend.azurewebsites.net/api/customer/file/`
     useEffect(() => {
        getAllCompany()
             .then(res => {

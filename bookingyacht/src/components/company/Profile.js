@@ -40,7 +40,7 @@ const ProfileCompany = () => {
                             <div className="card mb-3" style={{ borderRadius: '.5rem' }}>
                                 <div className="row g-0">
                                     <div className="col-md-4 gradient-custom text-center" style={{ borderTopLeftRadius: '.3rem', borderBottomLeftRadius: '.3rem' }}>
-                                        <img src={`yachtbookingbackend.azurewebsites.net/api/customer/file/${profile.logo}`} alt='logo' className="img-fluid my-5" style={{ width: 80 }} />
+                                        <img src={`https://yachtbookingbackend.azurewebsites.net/api/customer/file/${profile.logo}`} alt='logo' className="img-fluid my-5" style={{ width: 80 }} />
 
                                     </div>
                                     <div className="col-md-8">

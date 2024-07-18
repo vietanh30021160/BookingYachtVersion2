@@ -17,7 +17,7 @@ const BookNowModal = ({
     handleClose,
     selectedSchedule
 }) => {
-    const getAvatarApi = `yachtbookingbackend.azurewebsites.net/api/customer/file/`;
+    const getAvatarApi = `https://yachtbookingbackend.azurewebsites.net/api/customer/file/`;
     const isLogged = useSelector(state => state.account.isAuthenticated);
     console.log('isLogged', isLogged)
     const [customer, setCustomer] = useState(null);

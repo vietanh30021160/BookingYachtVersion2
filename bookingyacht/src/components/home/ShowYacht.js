@@ -38,7 +38,7 @@ const ShowYacht = () => {
         }
     }, [yachtList]);
 
-    const avatarYachtApi = 'yachtbookingbackend.azurewebsites.net/api/customer/file/'
+    const avatarYachtApi = 'https://yachtbookingbackend.azurewebsites.net/api/customer/file/'
 
     return (
         <>

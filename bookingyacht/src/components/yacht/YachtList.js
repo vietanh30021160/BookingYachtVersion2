@@ -40,7 +40,7 @@ const YachtList = () => {
         }
     }, [yachtList, currentPage]);
 
-    const avatarYachtApi = 'yachtbookingbackend.azurewebsites.net/api/customer/file/'
+    const avatarYachtApi = 'https://yachtbookingbackend.azurewebsites.net/api/customer/file/'
 
     const handelChangePage = (pageNumber) => {
         setCurrentPage(pageNumber)

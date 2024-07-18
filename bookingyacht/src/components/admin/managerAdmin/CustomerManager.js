@@ -89,7 +89,7 @@ const CustomerManager = () => {
         try {
             const config = {
                 method: 'put',
-                url: `yachtbookingbackend.azurewebsites.net/api/admins/disableCustomer/${selectedCustomer.idCustomer}`,
+                url: `https://yachtbookingbackend.azurewebsites.net/api/admins/disableCustomer/${selectedCustomer.idCustomer}`,
                 headers: {
                     'Authorization': getAuthHeader(),
                 },

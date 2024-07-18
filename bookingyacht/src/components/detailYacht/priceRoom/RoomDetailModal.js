@@ -23,7 +23,7 @@ const RoomDetailModal = ({ selectedRoom, show, handleClose }) => {
         setCurrentIndex(selectedIndex);
     };
 
-    const getImageApi = `yachtbookingbackend.azurewebsites.net/api/customer/file/`;
+    const getImageApi = `https://yachtbookingbackend.azurewebsites.net/api/customer/file/`;
     const utilities = selectedRoom.roomType?.utilities ? selectedRoom.roomType.utilities.split('.').filter(sentence => sentence.trim()) : [];
 
     const renderUtilities = () => {

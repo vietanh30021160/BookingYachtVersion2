@@ -130,7 +130,7 @@ const ModalManageRoomImage = (props) => {
                             {
                                 listImage && listImage.map((image) =>
                                     <tr key={image.idRoomImage}>
-                                        <td><img src={`yachtbookingbackend.azurewebsites.net/api/customer/file/${image.imageRoom}`} alt='image' width={200} /></td>
+                                        <td><img src={`https://yachtbookingbackend.azurewebsites.net/api/customer/file/${image.imageRoom}`} alt='image' width={200} /></td>
                                         <td>
 
                                             <ButtonGroup className='d-flex ' style={{ gap: 30, justifyContent: "center", marginTop: 54 }}>

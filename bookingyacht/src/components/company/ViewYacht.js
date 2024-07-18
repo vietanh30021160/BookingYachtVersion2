@@ -147,7 +147,7 @@ const ViewYacht = (props) => {
 
                                     <div className="media">
 
-                                        <img className="mr-4" src={`yachtbookingbackend.azurewebsites.net/api/customer/file/${yacht.image}`} alt="Generic placeholder image" />
+                                        <img className="mr-4" src={`https://yachtbookingbackend.azurewebsites.net/api/customer/file/${yacht.image}`} alt="Generic placeholder image" />
 
                                         <div className="media-body">
                                             <div className='card-content'>

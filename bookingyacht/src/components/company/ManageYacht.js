@@ -105,7 +105,7 @@ const ManageYacht = () => {
                                         className="table-primary"
                                     >
                                         <td>
-                                            <img src={`yachtbookingbackend.azurewebsites.net/api/customer/file/${image.imageYacht}`} width={200} alt='' />
+                                            <img src={`https://yachtbookingbackend.azurewebsites.net/api/customer/file/${image.imageYacht}`} width={200} alt='' />
                                         </td>
                                         <td width={300}>
                                             <Row>

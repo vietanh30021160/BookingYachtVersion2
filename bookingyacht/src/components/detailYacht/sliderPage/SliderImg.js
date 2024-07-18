@@ -28,7 +28,7 @@ const SimpleSlider = ({ yacht }) => {
     }
   };
 
-  const getImageApi = `yachtbookingbackend.azurewebsites.net/api/customer/file/`
+  const getImageApi = `https://yachtbookingbackend.azurewebsites.net/api/customer/file/`
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
