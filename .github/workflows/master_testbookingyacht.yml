@@ -66,10 +66,10 @@ jobs:
           name: node-app
 
       - name: Check artifact contents
-        run: unzip -l node-app/release.zip
+        run: unzip -l release.zip
 
       - name: Unzip artifact for deployment
-        run: unzip node-app/release.zip -d deployment
+        run: unzip release.zip -d deployment
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
